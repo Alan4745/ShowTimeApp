@@ -37,8 +37,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#333',
   },
   buttonText: {
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
   },
 });

@@ -15,7 +15,7 @@ export default function RegisterMethodScreen() {
       email: 'user@gmail.com', // Mock email from Google
       username: 'GoogleUser', // Mock username from Google
     });
-    (navigation.navigate as any)({ name: 'RegisterMethod' });
+    (navigation.navigate as any)({ name: 'Username' });
   };
 
   const handleAppleSignUp = () => {
@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#333',
   },
   dividerText: {
+    fontFamily: 'AnonymousPro-Bold',
     color: '#666',
     fontSize: 14,
     marginHorizontal: 16,
@@ -200,9 +201,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   createAccountText: {
+    fontFamily: 'AnonymousPro-Bold',
     color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 19,
+    fontWeight: '400',
   },
   bottomSection: {
     alignItems: 'center',
@@ -232,9 +234,10 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   signInText: {
+    fontFamily: 'AnonymousPro-Bold',
     color: '#000',
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 19,
+    fontWeight: '400',
   },
   termsContainer: {
     paddingHorizontal: 20,
@@ -246,7 +249,11 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
   linkText: {
+    fontFamily: 'AnonymousPro-Regular',
     color: '#4A90E2',
     textDecorationLine: 'underline',
+    fontSize: 13,
+    fontWeight: '400',
+
   },
 });

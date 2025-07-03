@@ -16,11 +16,12 @@ export default function ScreenTitle({ title, style }: ScreenTitleProps) {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 26,
+    fontWeight: '400',
+    lineHeight: 26, // 100% line height
     color: '#fff',
     textAlign: 'center',
     marginBottom: 60,
-    lineHeight: 40,
   },
 });

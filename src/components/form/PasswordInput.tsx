@@ -56,9 +56,11 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   label: {
-    fontSize: 16,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 18,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#fff',
-    fontWeight: '500',
     marginLeft: 4,
   },
   passwordContainer: {
@@ -67,6 +69,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   passwordInput: {
+    fontFamily: 'AnonymousPro-Regular',
     backgroundColor: 'transparent',
     borderWidth: 2,
     borderColor: '#333',
@@ -75,6 +78,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingRight: 50,
     fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#fff',
     flex: 1,
   },
@@ -84,8 +89,11 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   error: {
+    fontFamily: 'AnonymousPro-Regular',
     color: '#ff4444',
-    fontSize: 12,
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 16,
     marginLeft: 4,
   },
 });

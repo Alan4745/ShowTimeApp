@@ -72,14 +72,14 @@ export default function SummaryScreen() {
     return `${dateObj.month}/${dateObj.day}/${dateObj.year}`;
   };
 
-  const getAuthMethodDisplay = (method: string) => {
-    switch (method) {
-      case 'google': return 'Google';
-      case 'apple': return 'Apple';
-      case 'email': return 'Email';
-      default: return 'Unknown';
-    }
-  };
+  // const getAuthMethodDisplay = (method: string) => {
+  //   switch (method) {
+  //     case 'google': return 'Google';
+  //     case 'apple': return 'Apple';
+  //     case 'email': return 'Email';
+  //     default: return 'Unknown';
+  //   }
+  // };
 
   return (
     <ScreenLayout currentStep={14} totalSteps={14} showBackButton={true}>
@@ -245,21 +245,27 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   welcomeText: {
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 26,
+    fontWeight: '700',
+    lineHeight: 26,
     color: '#fff',
     marginBottom: 4,
   },
   usernameText: {
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 26,
+    fontWeight: '700',
+    lineHeight: 26,
     color: '#4A90E2',
     marginBottom: 8,
   },
   subtitleText: {
-    fontSize: 18,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#999',
-    fontWeight: '500',
   },
   scrollView: {
     flex: 1,
@@ -283,8 +289,10 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#fff',
   },
   infoGrid: {
@@ -299,14 +307,19 @@ const styles = StyleSheet.create({
     borderBottomColor: '#333',
   },
   infoLabel: {
-    fontSize: 14,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 16,
     color: '#999',
     flex: 1,
   },
   infoValue: {
-    fontSize: 14,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 16,
     color: '#fff',
-    fontWeight: '500',
     flex: 1,
     textAlign: 'right',
   },
@@ -321,13 +334,17 @@ const styles = StyleSheet.create({
     borderColor: '#4A90E2',
   },
   planTitle: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#fff',
   },
   planPrice: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 20,
+    fontWeight: '700',
+    lineHeight: 20,
     color: '#4A90E2',
   },
   loadingButton: {
@@ -341,7 +358,10 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   loadingText: {
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 16,
     color: '#999',
-    fontSize: 14,
   },
 });

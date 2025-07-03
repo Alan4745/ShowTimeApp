@@ -16,10 +16,12 @@ export default function HelperText({ text, style }: HelperTextProps) {
 
 const styles = StyleSheet.create({
   helperText: {
-    color: '#666',
-    fontSize: 12,
-    textAlign: 'center',
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 13,
+    fontWeight: '400',
     lineHeight: 16,
+    color: '#666',
+    textAlign: 'center',
     paddingHorizontal: 20,
   },
 });

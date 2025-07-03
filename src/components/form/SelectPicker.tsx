@@ -68,9 +68,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    fontSize: 16,
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 26,
+    fontWeight: '700',
+    lineHeight: 26,
     color: '#fff',
-    fontWeight: '600',
     marginBottom: 12,
     textAlign: 'center',
   },
@@ -91,13 +93,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(74, 144, 226, 0.1)',
   },
   selectorText: {
-    fontSize: 16,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#666',
     flex: 1,
     textAlign: 'center',
   },
   selectedSelectorText: {
     color: '#fff',
-    fontWeight: '500',
   },
 });

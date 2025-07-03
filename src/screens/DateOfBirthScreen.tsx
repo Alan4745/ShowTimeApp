@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
 import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
 import ScreenTitle from '../components/common/ScreenTitle';
-import QuickSelectGrid from '../components/form/QuickSelectGrid';
+// import QuickSelectGrid from '../components/form/QuickSelectGrid';
 import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
@@ -50,16 +50,16 @@ export default function DateOfBirthScreen() {
     (navigation as any).navigate('Citizenship');
   };
 
-  const quickSelectItems = [
-    { label: 'Dec 15, 1995', value: { month: 12, day: 15, year: 1995 } },
-    { label: 'Jun 20, 1990', value: { month: 6, day: 20, year: 1990 } },
-  ];
+  // const quickSelectItems = [
+  //   { label: 'Dec 15, 1995', value: { month: 12, day: 15, year: 1995 } },
+  //   { label: 'Jun 20, 1990', value: { month: 6, day: 20, year: 1990 } },
+  // ];
 
-  const handleQuickSelect = (value: { month: number; day: number; year: number }) => {
-    setSelectedMonth(value.month);
-    setSelectedDay(value.day);
-    setSelectedYear(value.year);
-  };
+  // const handleQuickSelect = (value: { month: number; day: number; year: number }) => {
+  //   setSelectedMonth(value.month);
+  //   setSelectedDay(value.day);
+  //   setSelectedYear(value.year);
+  // };
 
   const isFormComplete = selectedMonth && selectedDay && selectedYear;
 
@@ -77,12 +77,12 @@ export default function DateOfBirthScreen() {
           onYearChange={setSelectedYear}
         />
 
-        <QuickSelectGrid
+        {/* <QuickSelectGrid
           title="Quick Select (Demo):"
           items={quickSelectItems}
           onSelect={handleQuickSelect}
           containerStyle={styles.quickSelect}
-        />
+        /> */}
       </ContentContainer>
 
       <BottomSection>
@@ -96,8 +96,8 @@ export default function DateOfBirthScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  quickSelect: {
-    marginTop: 20,
-  },
-});
+// const styles = StyleSheet.create({
+//   quickSelect: {
+//     marginTop: 20,
+//   },
+// });

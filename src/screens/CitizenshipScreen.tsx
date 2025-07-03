@@ -6,7 +6,7 @@ import { useRegistration } from '../context/RegistrationContext';
 import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
 import ScreenTitle from '../components/common/ScreenTitle';
-import QuickSelectGrid from '../components/form/QuickSelectGrid';
+// import QuickSelectGrid from '../components/form/QuickSelectGrid';
 import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
@@ -54,9 +54,9 @@ export default function CitizenshipScreen() {
     setShowCountryModal(false);
   };
 
-  const quickSelectItems = [
-    'Argentina', 'Brazil', 'United States', 'Spain', 'Mexico', 'Canada',
-  ].map(country => ({ label: country, value: country }));
+  // const quickSelectItems = [
+  //   'Argentina', 'Brazil', 'United States', 'Spain', 'Mexico', 'Canada',
+  // ].map(country => ({ label: country, value: country }));
 
   return (
     <ScreenLayout currentStep={4} totalSteps={6}>
@@ -80,13 +80,13 @@ export default function CitizenshipScreen() {
             <ChevronDown color={selectedCountry ? '#4A90E2' : '#666'} size={20} />
           </TouchableOpacity>
         </View>
-
+{/*
         <QuickSelectGrid
           title="Quick Select (Demo):"
           items={quickSelectItems}
           selectedValue={selectedCountry}
           onSelect={setSelectedCountry}
-        />
+        /> */}
       </ContentContainer>
 
       <BottomSection>
@@ -130,9 +130,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(74, 144, 226, 0.1)',
   },
   countrySelectorText: {
-    fontSize: 16,
+    fontFamily: 'AnonymousPro-Regular',
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#666',
     flex: 1,
+    textAlign: 'center',
+    fontSize: 20,
+
   },
   selectedCountrySelectorText: {
     color: '#fff',

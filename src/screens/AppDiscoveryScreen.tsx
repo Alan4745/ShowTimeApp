@@ -72,5 +72,6 @@ const styles = StyleSheet.create({
   selectorContainer: {
     alignItems: 'center',
     paddingHorizontal: 20,
+    marginBottom: 40,
   },
 });

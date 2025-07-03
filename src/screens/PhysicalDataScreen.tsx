@@ -58,7 +58,7 @@ export default function PhysicalDataScreen() {
   return (
     <ScreenLayout currentStep={5} totalSteps={6}>
       <ContentContainer>
-        <ScreenTitle title="What is your current{'\n'}Height and Weight?" />
+        <ScreenTitle title="What is your current Height and Weight?" />
 
         <View style={styles.selectorContainer}>
           <PhysicalDataSelector
