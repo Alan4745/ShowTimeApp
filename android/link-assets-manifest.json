@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/AnonymousPro-Bold.ttf",
+      "sha1": "bfc8d198336c84f11f43c33671de9e23ddf3d058"
+    },
+    {
+      "path": "assets/fonts/AnonymousPro-BoldItalic.ttf",
+      "sha1": "2bcf133316eba7c9838225a449680c178842dc8c"
+    },
+    {
+      "path": "assets/fonts/AnonymousPro-Italic.ttf",
+      "sha1": "6032e47a29201e3e2aaecb56f583d2741bb546c2"
+    },
+    {
+      "path": "assets/fonts/AnonymousPro-Regular.ttf",
+      "sha1": "e5a1581199fe0058ba03e322b9a4823e199dd2b6"
+    }
+  ]
+}
