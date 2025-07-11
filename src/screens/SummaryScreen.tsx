@@ -86,7 +86,7 @@ export default function SummaryScreen() {
             <View style={styles.profileImageContainer}>
               <View style={styles.profileImageBorder}>
                 <Image
-                  source={{ uri: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150' }}
+                  source={{ uri: 'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?semt=ais_hybrid&w=740' }}
                   style={styles.profileImage}
                 />
               </View>
