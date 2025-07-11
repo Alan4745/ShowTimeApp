@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Alert, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Alert, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
-import ScreenLayout from '../components/common/ScreenLayout';
-import ContentContainer from '../components/common/ContentContainer';
-import BottomSection from '../components/common/BottomSection';
-import ContinueButton from '../components/common/ContinueButton';
-import { User, Dumbbell, Trophy, Heart, CreditCard } from 'lucide-react-native';
+import { X, Check } from 'lucide-react-native';
+import { TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'react-native-linear-gradient';
 
 export default function SummaryScreen() {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,37 +15,8 @@ export default function SummaryScreen() {
     setIsLoading(true);
 
     try {
-      // Simulate API call to register user
-      const registrationData = {
-        authMethod: data.authMethod,
-        email: data.email,
-        username: data.username,
-        gender: data.gender,
-        dateOfBirth: data.dateOfBirth,
-        citizenship: data.citizenship,
-        physicalData: data.physicalData,
-        physicalGoal: data.physicalGoal,
-        position: data.position,
-        experienceLevel: data.experienceLevel,
-        trainingFrequency: data.trainingFrequency,
-        contentLikes: data.contentLikes,
-        notificationsEnabled: data.notificationsEnabled,
-        appDiscoverySource: data.appDiscoverySource,
-        selectedPlan: data.selectedPlan,
-        registrationDate: new Date().toISOString(),
-      };
-
-      // Simulate API call delay
+      // Simulate registration process
       await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Here you would make the actual API call
-      // const response = await fetch('/api/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(registrationData)
-      // });
-
-      console.log('Registration Data:', JSON.stringify(registrationData, null, 2));
 
       // Reset registration data after successful registration
       resetData();
@@ -67,301 +36,276 @@ export default function SummaryScreen() {
     }
   };
 
-  const formatDate = (dateObj: any) => {
-    if (!dateObj) {return 'Not specified';}
-    return `${dateObj.month}/${dateObj.day}/${dateObj.year}`;
+  const handleClose = () => {
+    (navigation as any).goBack();
   };
 
-  // const getAuthMethodDisplay = (method: string) => {
-  //   switch (method) {
-  //     case 'google': return 'Google';
-  //     case 'apple': return 'Apple';
-  //     case 'email': return 'Email';
-  //     default: return 'Unknown';
-  //   }
-  // };
+  const calculateAge = () => {
+    if (!data.dateOfBirth) {return 'N/A';}
+    const today = new Date();
+    const birthDate = new Date(data.dateOfBirth.year, data.dateOfBirth.month - 1, data.dateOfBirth.day);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const getTrainingFrequencyShort = () => {
+    if (!data.trainingFrequency) {return 'N/A';}
+    if (data.trainingFrequency.includes('3-5')) {return '3-5';}
+    if (data.trainingFrequency.includes('5-7')) {return '5-7';}
+    if (data.trainingFrequency.includes('+7')) {return '+7';}
+    return 'N/A';
+  };
 
   return (
-    <ScreenLayout currentStep={14} totalSteps={14} showBackButton={true}>
-      <ContentContainer centered={false} style={styles.contentContainer}>
-        <View style={styles.header}>
-          <Text style={styles.welcomeText}>Welcome,</Text>
-          <Text style={styles.usernameText}>{data.username || 'Athlete'}</Text>
-          <Text style={styles.subtitleText}>Profile Summary</Text>
-        </View>
-
-        <ScrollView
-          style={styles.scrollView}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
+    <View style={styles.container}>
+      {/* Header with close button */}
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.closeButton}
+          onPress={handleClose}
         >
-          <View style={styles.summaryCard}>
-            {/* Personal Info */}
-            <View style={styles.section}>
-              <View style={styles.sectionHeader}>
-                <User color="#4A90E2" size={20} />
-                <Text style={styles.sectionTitle}>Personal Information</Text>
-              </View>
-              <View style={styles.infoGrid}>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Gender:</Text>
-                  <Text style={styles.infoValue}>{data.gender || 'Not specified'}</Text>
-                </View>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Age:</Text>
-                  <Text style={styles.infoValue}>
-                    {data.dateOfBirth ?
-                      new Date().getFullYear() - data.dateOfBirth.year :
-                      'Not specified'
-                    }
-                  </Text>
-                </View>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Date of Birth:</Text>
-                  <Text style={styles.infoValue}>{formatDate(data.dateOfBirth)}</Text>
-                </View>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Citizenship:</Text>
-                  <Text style={styles.infoValue}>{data.citizenship || 'Not specified'}</Text>
-                </View>
+          <X color="#fff" size={24} />
+        </TouchableOpacity>
+      </View>
+
+      {/* Title */}
+      <Text style={styles.title}>Ready to Play!</Text>
+
+      {/* Main Card */}
+      <View style={styles.cardContainer}>
+        <LinearGradient
+          colors={['#4A90E2', '#357ABD']}
+          style={styles.card}
+        >
+          {/* Profile Image */}
+          <View style={styles.profileSection}>
+            <View style={styles.profileImageContainer}>
+              <View style={styles.profileImageBorder}>
+                <Image
+                  source={{ uri: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150' }}
+                  style={styles.profileImage}
+                />
               </View>
             </View>
 
-            {/* Athletic Profile */}
-            <View style={styles.section}>
-              <View style={styles.sectionHeader}>
-                <Trophy color="#4A90E2" size={20} />
-                <Text style={styles.sectionTitle}>Athletic Profile</Text>
-              </View>
-              <View style={styles.infoGrid}>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Position:</Text>
-                  <Text style={styles.infoValue}>{data.position || 'Not specified'}</Text>
-                </View>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Experience:</Text>
-                  <Text style={styles.infoValue}>{data.experienceLevel || 'Not specified'}</Text>
-                </View>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Training Frequency:</Text>
-                  <Text style={styles.infoValue}>{data.trainingFrequency || 'Not specified'}</Text>
-                </View>
-              </View>
+            <Text style={styles.username}>{data.username || 'Player'}</Text>
+            <Text style={styles.age}>{calculateAge()} Years</Text>
+          </View>
+
+          {/* Info Grid */}
+          <View style={styles.infoGrid}>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Weight</Text>
+              <Text style={styles.infoValue}>
+                {data.physicalData?.height ? `${data.physicalData.height} cm` : 'N/A'}
+              </Text>
             </View>
 
-            {/* Physical Data */}
-            <View style={styles.section}>
-              <View style={styles.sectionHeader}>
-                <Dumbbell color="#4A90E2" size={20} />
-                <Text style={styles.sectionTitle}>Physical Data & Goals</Text>
-              </View>
-              <View style={styles.infoGrid}>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Height:</Text>
-                  <Text style={styles.infoValue}>
-                    {data.physicalData?.height ? `${data.physicalData.height}cm` : 'Not specified'}
-                  </Text>
-                </View>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Weight:</Text>
-                  <Text style={styles.infoValue}>
-                    {data.physicalData?.weight ? `${data.physicalData.weight}kg` : 'Not specified'}
-                  </Text>
-                </View>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Goal:</Text>
-                  <Text style={styles.infoValue}>{data.physicalGoal || 'Not specified'}</Text>
-                </View>
-              </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Height</Text>
+              <Text style={styles.infoValue}>
+                {data.physicalData?.weight ? `${data.physicalData.weight} kg` : 'N/A'}
+              </Text>
             </View>
 
-            {/* Preferences */}
-            <View style={styles.section}>
-              <View style={styles.sectionHeader}>
-                <Heart color="#4A90E2" size={20} />
-                <Text style={styles.sectionTitle}>Preferences</Text>
-              </View>
-              <View style={styles.infoGrid}>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Content Interests:</Text>
-                  <Text style={styles.infoValue}>
-                    {data.contentLikes?.length ? `${data.contentLikes.length} selected` : 'None selected'}
-                  </Text>
-                </View>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Notifications:</Text>
-                  <Text style={styles.infoValue}>
-                    {data.notificationsEnabled ? 'Enabled' : 'Disabled'}
-                  </Text>
-                </View>
-                <View style={styles.infoItem}>
-                  <Text style={styles.infoLabel}>Found us via:</Text>
-                  <Text style={styles.infoValue}>{data.appDiscoverySource || 'Not specified'}</Text>
-                </View>
-              </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Citizenship</Text>
+              <Text style={styles.infoValue}>{data.citizenship || 'N/A'}</Text>
             </View>
 
-            {/* Selected Plan */}
-            {data.selectedPlan && (
-              <View style={styles.section}>
-                <View style={styles.sectionHeader}>
-                  <CreditCard color="#4A90E2" size={20} />
-                  <Text style={styles.sectionTitle}>Selected Plan</Text>
-                </View>
-                <View style={styles.planInfo}>
-                  <Text style={styles.planTitle}>{data.selectedPlan.title}</Text>
-                  <Text style={styles.planPrice}>{data.selectedPlan.price}</Text>
-                </View>
-              </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Playing Position</Text>
+              <Text style={styles.infoValue}>{data.position || 'N/A'}</Text>
+            </View>
+
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Experience Level</Text>
+              <Text style={styles.infoValue}>{data.experienceLevel || 'N/A'}</Text>
+            </View>
+
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Training Frequency</Text>
+              <Text style={styles.infoValue}>{getTrainingFrequencyShort()}</Text>
+            </View>
+          </View>
+
+          {/* All Set Button */}
+          <View style={styles.allSetButton}>
+            <Text style={styles.allSetText}>All set</Text>
+            <View style={styles.checkIcon}>
+              <Check color="#4A90E2" size={16} strokeWidth={3} />
+            </View>
+          </View>
+
+          {/* Start Button */}
+          <TouchableOpacity
+            style={styles.startButton}
+            onPress={handleFinishRegistration}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator color="#4A90E2" size="small" />
+            ) : (
+              <Text style={styles.startButtonText}>Start</Text>
             )}
-          </View>
-        </ScrollView>
-      </ContentContainer>
-
-      <BottomSection>
-        <ContinueButton
-          onPress={handleFinishRegistration}
-          disabled={isLoading}
-          title={isLoading ? 'Creating Account...' : 'Start Training!'}
-          style={isLoading ? styles.loadingButton : undefined}
-        />
-        {isLoading && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator color="#4A90E2" size="small" />
-            <Text style={styles.loadingText}>Setting up your personalized experience...</Text>
-          </View>
-        )}
-      </BottomSection>
-    </ScreenLayout>
+          </TouchableOpacity>
+        </LinearGradient>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    paddingTop: 10,
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+    paddingHorizontal: 20,
   },
   header: {
+    paddingTop: 20,
+  },
+  closeButton: {
+    width: 32,
+    height: 32,
+    borderWidth: 2,
+    borderColor: '#fff',
+    borderRadius: 16,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 50,
+    marginTop: 0,
+  },
+  cardContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingBottom: 50,
+  },
+  card: {
+    borderRadius: 30,
+    padding: 30,
+    alignItems: 'center',
+    shadowColor: '#4A90E2',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    elevation: 10,
+  },
+  profileSection: {
     alignItems: 'center',
     marginBottom: 30,
   },
-  welcomeText: {
+  profileImageContainer: {
+    marginBottom: 20,
+  },
+  profileImageBorder: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 4,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+    padding: 4,
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 56,
+  },
+  username: {
     fontFamily: 'AnonymousPro-Bold',
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: '700',
-    lineHeight: 26,
     color: '#fff',
     marginBottom: 4,
   },
-  usernameText: {
-    fontFamily: 'AnonymousPro-Bold',
-    fontSize: 26,
-    fontWeight: '700',
-    lineHeight: 26,
-    color: '#4A90E2',
-    marginBottom: 8,
-  },
-  subtitleText: {
+  age: {
     fontFamily: 'AnonymousPro-Regular',
-    fontSize: 20,
-    fontWeight: '400',
-    lineHeight: 20,
-    color: '#999',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 20,
-  },
-  summaryCard: {
-    backgroundColor: '#1a1a1a',
-    borderRadius: 20,
-    padding: 20,
-    gap: 24,
-  },
-  section: {
-    gap: 16,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    marginBottom: 4,
-  },
-  sectionTitle: {
-    fontFamily: 'AnonymousPro-Regular',
-    fontSize: 20,
-    fontWeight: '400',
-    lineHeight: 20,
-    color: '#fff',
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.8)',
   },
   infoGrid: {
-    gap: 12,
+    width: '100%',
+    marginBottom: 30,
   },
-  infoItem: {
+  infoRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: 'rgba(255, 255, 255, 0.2)',
   },
   infoLabel: {
     fontFamily: 'AnonymousPro-Regular',
     fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 16,
-    color: '#999',
+    color: 'rgba(255, 255, 255, 0.8)',
     flex: 1,
   },
   infoValue: {
     fontFamily: 'AnonymousPro-Regular',
     fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 16,
     color: '#fff',
-    flex: 1,
     textAlign: 'right',
+    flex: 1,
   },
-  planInfo: {
+  allSetButton: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'rgba(74, 144, 226, 0.1)',
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#4A90E2',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    width: '100%',
+    marginBottom: 16,
   },
-  planTitle: {
-    fontFamily: 'AnonymousPro-Regular',
-    fontSize: 20,
-    fontWeight: '400',
-    lineHeight: 20,
-    color: '#fff',
-  },
-  planPrice: {
-    fontFamily: 'AnonymousPro-Bold',
-    fontSize: 20,
-    fontWeight: '700',
-    lineHeight: 20,
-    color: '#4A90E2',
-  },
-  loadingButton: {
-    opacity: 0.7,
-  },
-  loadingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    marginTop: 12,
-  },
-  loadingText: {
+  allSetText: {
     fontFamily: 'AnonymousPro-Regular',
     fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 16,
-    color: '#999',
+    color: '#fff',
+    flex: 1,
+  },
+  checkIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  startButton: {
+    backgroundColor: '#fff',
+    borderRadius: 25,
+    paddingVertical: 16,
+    width: '100%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  startButtonText: {
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#4A90E2',
   },
 });

@@ -243,10 +243,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   termsText: {
+    fontFamily: 'AnonymousPro-Regular',
     color: '#666',
-    fontSize: 12,
+    fontSize: 13,
     textAlign: 'center',
     lineHeight: 16,
+    fontWeight: '400',
+
   },
   linkText: {
     fontFamily: 'AnonymousPro-Regular',

@@ -6,7 +6,7 @@ import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
 import ScreenTitle from '../components/common/ScreenTitle';
 import PhysicalDataSelector from '../components/form/PhysicalDataSelector';
-import QuickSelectGrid from '../components/form/QuickSelectGrid';
+// import QuickSelectGrid from '../components/form/QuickSelectGrid';
 import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
@@ -45,15 +45,15 @@ export default function PhysicalDataScreen() {
     (navigation as any).navigate('PhysicalGoal');
   };
 
-  const quickSelectItems = [
-    { label: '70kg / 175cm', value: { weight: '70', height: '175' } },
-    { label: '65kg / 165cm', value: { weight: '65', height: '165' } },
-  ];
+  // const quickSelectItems = [
+  //   { label: '70kg / 175cm', value: { weight: '70', height: '175' } },
+  //   { label: '65kg / 165cm', value: { weight: '65', height: '165' } },
+  // ];
 
-  const handleQuickSelect = (value: { weight: string; height: string }) => {
-    setWeight(value.weight);
-    setHeight(value.height);
-  };
+  // const handleQuickSelect = (value: { weight: string; height: string }) => {
+  //   setWeight(value.weight);
+  //   setHeight(value.height);
+  // };
 
   return (
     <ScreenLayout currentStep={5} totalSteps={6}>
@@ -69,12 +69,12 @@ export default function PhysicalDataScreen() {
           />
         </View>
 
-        <QuickSelectGrid
+        {/* <QuickSelectGrid
           title="Quick Select (Demo):"
           items={quickSelectItems}
           onSelect={handleQuickSelect}
           containerStyle={styles.quickSelect}
-        />
+        /> */}
       </ContentContainer>
 
       <BottomSection>
@@ -89,11 +89,44 @@ export default function PhysicalDataScreen() {
 }
 
 const styles = StyleSheet.create({
-  selectorContainer: {
-    marginBottom: 40,
-    alignItems: 'center',
+  container: {
+    gap: 20,
+    paddingHorizontal: 20,
   },
-  quickSelect: {
-    marginTop: 20,
+  inputGroup: {
+    width: '100%',
+  },
+  inputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  inputContainer: {
+    flex: 1,
+  },
+  input: {
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderColor: '#333',
+    borderRadius: 25,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    fontSize: 16,
+    color: '#fff',
+    textAlign: 'left',
+  },
+  unitContainer: {
+    backgroundColor: '#4A90E2',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 25,
+    minWidth: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  unitText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
