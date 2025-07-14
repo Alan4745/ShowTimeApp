@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar } fro
 import { LinearGradient } from 'react-native-linear-gradient';
 import {useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
-
+import { Image } from 'react-native';
 export default function RegisterMethodScreen() {
   const { updateData } = useRegistration();
   const navigation = useNavigation();
@@ -48,7 +48,7 @@ export default function RegisterMethodScreen() {
           <TouchableOpacity style={styles.socialButton} onPress={handleGoogleSignUp}>
             <View style={styles.iconContainer}>
               <View style={styles.googleIcon}>
-                <Text style={styles.googleG}>G</Text>
+                <Image source={require('../../assets/img/icon/Google.png')} />
               </View>
             </View>
             <Text style={styles.socialButtonText}>Sign up with Google</Text>
@@ -57,7 +57,7 @@ export default function RegisterMethodScreen() {
           {/* Apple Sign Up */}
           <TouchableOpacity style={styles.socialButton} onPress={handleAppleSignUp}>
             <View style={styles.iconContainer}>
-              <Text style={styles.appleIcon}>🍎</Text>
+              <Image source={require('../../assets/img/icon/Apple_Icon.png')} />
             </View>
             <Text style={styles.socialButtonText}>Sign up with Apple</Text>
           </TouchableOpacity>
@@ -140,15 +140,15 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   iconContainer: {
+    marginLeft: 40,
     width: 40,
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 1,
   },
   googleIcon: {
     width: 24,
     height: 24,
-    borderRadius: 12,
-    backgroundColor: '#4285F4',
     alignItems: 'center',
     justifyContent: 'center',
   },

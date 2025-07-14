@@ -1,4 +1,3 @@
-/*************  ✨ Windsurf Command 🌟  *************/
 import React, { useState } from 'react';
 import { View, StyleSheet, StatusBar } from 'react-native';
 import HomeTabScreen from './HomeTabScreen';
@@ -70,4 +69,3 @@ const styles = StyleSheet.create({
 });
 
 
-/*******  74bebc0e-ec2b-4258-a6c7-c0bb91b3ac2a  *******/
