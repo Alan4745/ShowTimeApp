@@ -73,15 +73,20 @@ const styles = StyleSheet.create({
     borderBottomColor: '#333',
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 26,
+    fontWeight: '400',
+    lineHeight: 26,
     color: '#fff',
   },
   closeButton: {
     padding: 4,
   },
   closeText: {
-    fontSize: 18,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#666',
   },
   scrollView: {
@@ -94,7 +99,10 @@ const styles = StyleSheet.create({
     borderBottomColor: '#333',
   },
   itemText: {
-    fontSize: 16,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#fff',
     textAlign: 'center',
   },

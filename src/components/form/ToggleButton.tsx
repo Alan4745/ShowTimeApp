@@ -82,12 +82,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#4A90E2',
   },
   optionText: {
-    fontSize: 16,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#666',
-    fontWeight: '500',
   },
   selectedOptionText: {
     color: '#fff',
-    fontWeight: '600',
   },
 });

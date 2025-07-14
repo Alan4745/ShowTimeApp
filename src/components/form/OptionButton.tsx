@@ -51,9 +51,11 @@ const styles = StyleSheet.create({
     borderColor: '#4A90E2',
   },
   text: {
-    fontSize: 16,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#fff',
-    fontWeight: '500',
   },
   selectedText: {
     color: '#fff',

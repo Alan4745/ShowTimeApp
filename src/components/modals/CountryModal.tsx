@@ -116,15 +116,20 @@ const styles = StyleSheet.create({
     borderBottomColor: '#333',
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 26,
+    fontWeight: '400',
+    lineHeight: 26,
     color: '#fff',
   },
   closeButton: {
     padding: 4,
   },
   closeText: {
-    fontSize: 18,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#666',
   },
   searchContainer: {
@@ -140,8 +145,11 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   searchInput: {
+    fontFamily: 'AnonymousPro-Regular',
     flex: 1,
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#fff',
   },
   scrollView: {
@@ -160,26 +168,33 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(74, 144, 226, 0.1)',
   },
   itemText: {
-    fontSize: 16,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#fff',
     flex: 1,
   },
   selectedItemText: {
     color: '#4A90E2',
-    fontWeight: '600',
   },
   checkmark: {
-    fontSize: 16,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#4A90E2',
-    fontWeight: 'bold',
   },
   noResults: {
     padding: 40,
     alignItems: 'center',
   },
   noResultsText: {
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 20,
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#666',
-    fontSize: 16,
     textAlign: 'center',
   },
 });

@@ -24,22 +24,36 @@ export default function GenderScreen() {
     (navigation as any).navigate('DateOfBirth');
   };
 
-  const genderOptions: Gender[] = ['Female', 'Male', 'Other'];
-
   return (
     <ScreenLayout currentStep={2} totalSteps={6}>
       <ContentContainer>
         <ScreenTitle title="Gender" />
         <View style={styles.optionsContainer}>
-          {genderOptions.map((gender) => (
+          {/* Top row: Female and Male */}
+          <View style={styles.topRow}>
             <OptionButton
-              key={gender}
-              title={gender}
-              selected={selectedGender === gender}
-              onPress={() => setSelectedGender(gender)}
-              style={styles.optionButton}
+              title="Female"
+              selected={selectedGender === 'Female'}
+              onPress={() => setSelectedGender('Female')}
+              style={styles.parallelButton}
             />
-          ))}
+            <OptionButton
+              title="Male"
+              selected={selectedGender === 'Male'}
+              onPress={() => setSelectedGender('Male')}
+              style={styles.parallelButton}
+            />
+          </View>
+
+          {/* Bottom row: Other (centered) */}
+          <View style={styles.bottomRow}>
+            <OptionButton
+              title="Other"
+              selected={selectedGender === 'Other'}
+              onPress={() => setSelectedGender('Other')}
+              style={styles.centerButton}
+            />
+          </View>
         </View>
       </ContentContainer>
 
@@ -58,8 +72,23 @@ const styles = StyleSheet.create({
   optionsContainer: {
     gap: 16,
     alignItems: 'center',
+    width: '100%',
   },
-  optionButton: {
-    minWidth: 120,
+  topRow: {
+    flexDirection: 'row',
+    gap: 16,
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  bottomRow: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  parallelButton: {
+    flex: 1,
+    minWidth: 0, // Allow flex to work properly
+  },
+  centerButton: {
+    width: '48%', // Same width as each parallel button
   },
 });

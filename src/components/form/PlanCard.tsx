@@ -35,11 +35,11 @@ export default function PlanCard({
       ]}
       onPress={onSelect}
     >
-      {isPopular && (
+      {/* {isPopular && (
         <View style={styles.popularBadge}>
           <Text style={styles.popularText}>MOST POPULAR</Text>
         </View>
-      )}
+      )} */}
 
       <View style={styles.header}>
         <Text style={[styles.title, isSelected && styles.selectedTitle]}>
@@ -101,27 +101,14 @@ const styles = StyleSheet.create({
   popularCard: {
     borderColor: '#FF6B6B',
   },
-  popularBadge: {
-    position: 'absolute',
-    top: -8,
-    left: 20,
-    backgroundColor: '#FF6B6B',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  popularText: {
-    color: '#fff',
-    fontSize: 10,
-    fontWeight: 'bold',
-    letterSpacing: 0.5,
-  },
   header: {
     marginBottom: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 22,
+    fontWeight: '700',
+    lineHeight: 26,
     color: '#fff',
     marginBottom: 8,
   },
@@ -129,8 +116,10 @@ const styles = StyleSheet.create({
     color: '#4A90E2',
   },
   price: {
+    fontFamily: 'AnonymousPro-Regular',
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: '400',
+    lineHeight: 20,
     color: '#4A90E2',
     marginBottom: 8,
   },
@@ -138,9 +127,11 @@ const styles = StyleSheet.create({
     color: '#4A90E2',
   },
   description: {
-    fontSize: 14,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 16,
     color: '#999',
-    lineHeight: 18,
   },
   selectedDescription: {
     color: '#ccc',
@@ -170,9 +161,11 @@ const styles = StyleSheet.create({
     borderColor: '#555',
   },
   featureText: {
-    fontSize: 14,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 16,
     color: '#ccc',
-    lineHeight: 18,
     flex: 1,
   },
   selectedFeatureText: {

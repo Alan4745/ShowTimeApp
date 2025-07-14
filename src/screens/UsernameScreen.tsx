@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
 import ScreenLayout from '../components/common/ScreenLayout';
@@ -31,7 +31,7 @@ export default function UsernameScreen() {
   };
 
   return (
-    <ScreenLayout currentStep={1} totalSteps={6}>
+    <ScreenLayout currentStep={1} totalSteps={6} style={styles.titleFont}>
       <ContentContainer>
         <ScreenTitle title="Username" />
         <FormInput
@@ -54,3 +54,12 @@ export default function UsernameScreen() {
     </ScreenLayout>
   );
 }
+
+const styles = StyleSheet.create({
+  titleFont: {
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 24,
+    lineHeight: 33,
+  },
+});
+

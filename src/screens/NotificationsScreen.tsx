@@ -17,7 +17,7 @@ export default function NotificationsScreen() {
 
   const handleContinue = () => {
     updateData({ notificationsEnabled: notificationsEnabled } as RegistrationData);
-    (navigation as any).navigate('AppDiscovery');
+    (navigation as any).navigate('PlanSelection');
   };
 
   const handleToggleSelect = (option: string) => {

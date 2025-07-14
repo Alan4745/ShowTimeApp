@@ -24,7 +24,7 @@ export default function AppDiscoveryScreen() {
     }
 
     updateData({ appDiscoverySource: selectedSource } as RegistrationData);
-    (navigation as any).navigate('PlanSelection');
+    (navigation as any).navigate('Notifications');
 };
 
   const discoveryOptions: AppDiscoverySource[] = [
@@ -72,5 +72,6 @@ const styles = StyleSheet.create({
   selectorContainer: {
     alignItems: 'center',
     paddingHorizontal: 20,
+    marginBottom: 40,
   },
 });

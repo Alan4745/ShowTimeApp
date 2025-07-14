@@ -70,7 +70,7 @@ export default function ContentLikesScreen() {
     }
 
     updateData({ contentLikes: selectedContent });
-    (navigation as any).navigate('Notifications');
+    (navigation as any).navigate('AppDiscovery');
   };
 
   return (
