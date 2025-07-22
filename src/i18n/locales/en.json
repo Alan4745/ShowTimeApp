@@ -1,0 +1,200 @@
+{
+  "common": {
+    "continue": "Continue",
+    "start": "Start",
+    "close": "Close",
+    "back": "Back",
+    "home": "Home",
+    "learn": "Learn",
+    "coaches": "Coaches",
+    "yes": "Yes",
+    "no": "No",
+    "or": "or"
+  },
+  "registration": {
+    "createAccount": "Create your\naccount",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "username": "Username",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "dateOfBirth": "Enter your\nDate of birth",
+    "citizenship": "Citizenship",
+    "physicalData": "What is your current\nHeight and Weight?",
+    "physicalGoal": "Physical Goal",
+    "gainMuscle": "Gain muscle",
+    "loseFat": "Lose fat",
+    "maintain": "Maintain",
+    "position": "Playing Position",
+    "experienceLevel": "Experience Level",
+    "trainingFrequency": "Training Frequency",
+    "contentLikes": "Content You Like",
+    "notifications": "Enable notifications",
+    "appDiscovery": "How did you find out\nabout the app?",
+    "planSelection": "Plan Selection",
+    "readyToPlay": "Ready to Play!",
+    "signUpGoogle": "Sign up with Google",
+    "signUpApple": "Sign up with Apple",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "termsAgreement": "By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use."
+  },
+  "planSelection": {
+    "trainSmarter": "TRAIN SMARTER,",
+    "goFurther": "GO FURTHER WITH",
+    "showtimePro": "SHOWTIME PRO",
+    "startFreeTrial": "Start My 10-Day Free Trial",
+    "basicPlan": "Basic Plan | Try it risk-free — cancel anytime",
+    "recommendedFor": "Recommended for",
+    "playersReady": "players ready to",
+    "takeNextStep": "take the next step",
+    "voicesOfPlayers": "Voices of",
+    "realPlayers": "Real Players"
+  },
+  "trainingCategories": {
+    "roleTraining": "Role Training",
+    "roleTrainingDesc": "Strength, mobility, and drills tailored to your position on the field.",
+    "smartFuel": "Smart Fuel",
+    "smartFuelDesc": "Nutrition and recovery tips to train harder and bounce back faster.",
+    "mindsetFocus": "Mindset Focus",
+    "mindsetFocusDesc": "Daily habits and mental tools to build resilience, discipline, and drive.",
+    "gameIQ": "Game IQ",
+    "gameIQDesc": "Tactical analysis and match breakdowns to sharpen your football intelligence."
+  },
+  "homeScreen": {
+    "trendingVideos": "Trending Videos",
+    "training": "Training",
+    "mindset": "Mindset",
+    "nutrition": "Nutrition",
+    "lessons": "Lessons"
+  },
+  "helperTexts": {
+    "helperText": "It helps us create a training experience that fits you best.",
+    "passwordRequirement": "Password must be at least 8 characters long",
+    "termsText": "By creating an account, you agree to our Terms of Service and Privacy Policy"
+  },
+  "errors": {
+    "emailRequired": "Email is required",
+    "invalidEmail": "Please enter a valid email address",
+    "passwordRequired": "Password is required",
+    "passwordTooShort": "Password must be at least 8 characters long",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordsNotMatch": "Passwords do not match",
+    "usernameRequired": "Please enter a username",
+    "usernameTooShort": "Username must be at least 3 characters long",
+    "selectGender": "Please select your gender",
+    "selectDateOfBirth": "Please select your complete date of birth",
+    "ageRestriction": "You must be at least 13 years old to register",
+    "selectCitizenship": "Please select your citizenship",
+    "enterPhysicalData": "Please enter both weight and height",
+    "validWeight": "Please enter a valid weight (1-500 kg)",
+    "validHeight": "Please enter a valid height (1-300 cm)",
+    "selectPhysicalGoal": "Please select your physical goal",
+    "selectPosition": "Please select your playing position",
+    "selectExperienceLevel": "Please select your experience level",
+    "selectTrainingFrequency": "Please select your training frequency",
+    "selectContentLikes": "Please select at least one content type you like",
+    "selectAppDiscovery": "Please select how you found out about the app"
+  },
+  "quickSelect": "Quick Select (Demo):",
+  "positions": {
+    "goalkeeper": "Goalkeeper",
+    "defender": "Defender",
+    "centerBack": "Center Back",
+    "fullback": "Fullback",
+    "midfielder": "Midfielder",
+    "winger": "Winger",
+    "forward": "Forward"
+  },
+  "experienceLevels": {
+    "highSchool": "High School",
+    "academy": "Academy",
+    "college": "College",
+    "semiPro": "Semi-Pro",
+    "lowerDivisionPro": "Lower division Pro"
+  },
+  "trainingFrequencies": {
+    "sessions3to5": "3-5 sessions per week",
+    "sessions5to7": "5-7 sessions per week",
+    "sessionsPlus7": "+7 sessions per week"
+  },
+  "contentTypes": {
+    "trainingRoutines": "Training routines",
+    "trainingRoutinesDesc": "(fitness, drills, and structured plans)",
+    "nutritionRecipes": "Nutrition & recipes",
+    "nutritionRecipesDesc": "(healthy eating and tips)",
+    "dailyMotivation": "Daily motivation",
+    "dailyMotivationDesc": "(quotes, challenges, real stories)",
+    "highlightVideos": "Highlight videos",
+    "highlightVideosDesc": "(tapes, plays, replays)",
+    "coachInterviews": "Coach interviews",
+    "coachInterviewsDesc": "(audio and video)",
+    "recoveryTips": "Recovery tips & physical wellness",
+    "athleteStories": "Athlete & coach life stories",
+    "personalAchievements": "Personal achievements & completed challenges",
+    "communityQA": "Community: Q&A and peer interaction",
+    "eventsGiveaways": "Events & giveaways",
+    "eventsGiveawaysDesc": "(updates, tournaments, prizes)"
+  },
+  "appDiscoverySources": {
+    "tiktok": "TikTok",
+    "youtube": "Youtube",
+    "instagram": "Instagram (or Facebook)",
+    "instagramAd": "Instagram Advertisement",
+    "friendsFamily": "Friends/Family/Coach",
+    "appStore": "App Store Search",
+    "otherSource": "Other"
+  },
+  "summary": {
+    "weight": "Weight",
+    "height": "Height",
+    "playingPosition": "Playing Position",
+    "allSet": "All set"
+  },
+  "units": {
+    "cm": "cm",
+    "kg": "kg",
+    "years": "Years"
+  },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+  "placeholders": {
+    "enterEmail": "Enter your email",
+    "createPassword": "Create a password",
+    "confirmYourPassword": "Confirm your password",
+    "chooseUsername": "Choose a username",
+    "selectCitizenshipPlaceholder": "Select your citizenship",
+    "selectPosition": "Select your position",
+    "selectLevel": "Select your level",
+    "selectFrequency": "Select training frequency",
+    "selectDiscoverySource": "Select discovery source",
+    "searchCountries": "Search countries..."
+  },
+  "modalTitles": {
+    "selectMonth": "Select Month",
+    "selectDay": "Select Day",
+    "selectYear": "Select Year",
+    "selectPositionTitle": "Select Position",
+    "selectExperienceLevelTitle": "Select Experience Level",
+    "selectTrainingFrequencyTitle": "Select Training Frequency",
+    "selectCitizenshipTitle": "Select Citizenship"
+  },
+  "splash": {
+    "splashFooter": "© 2025 | Where talent meets opportunity | USA"
+  }
+}

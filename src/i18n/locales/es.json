@@ -1,0 +1,200 @@
+{
+  "common": {
+    "continue": "Continuar",
+    "start": "Comenzar",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "home": "Inicio",
+    "learn": "Aprender",
+    "coaches": "Entrenadores",
+    "yes": "Sí",
+    "no": "No",
+    "or": "o"
+  },
+  "registration": {
+    "createAccount": "Crea tu\ncuenta",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "username": "Nombre de usuario",
+    "gender": "Género",
+    "male": "Masculino",
+    "female": "Femenino",
+    "other": "Otro",
+    "dateOfBirth": "Ingresa tu\nfecha de nacimiento",
+    "citizenship": "Ciudadanía",
+    "physicalData": "¿Cuál es tu\nestatura y peso actual?",
+    "physicalGoal": "Objetivo físico",
+    "gainMuscle": "Ganar músculo",
+    "loseFat": "Perder grasa",
+    "maintain": "Mantener",
+    "position": "Posición de juego",
+    "experienceLevel": "Nivel de experiencia",
+    "trainingFrequency": "Frecuencia de entrenamiento",
+    "contentLikes": "Contenido que te gusta",
+    "notifications": "Habilitar notificaciones",
+    "appDiscovery": "¿Cómo te enteraste\nde la aplicación?",
+    "planSelection": "Selección de plan",
+    "readyToPlay": "¡Listo para jugar!",
+    "signUpGoogle": "Registrarse con Google",
+    "signUpApple": "Registrarse con Apple",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión",
+    "termsAgreement": "Al registrarte, aceptas los Términos de Servicio y la Política de Privacidad, incluyendo el Uso de Cookies."
+  },
+  "planSelection": {
+    "trainSmarter": "ENTRENA MÁS INTELIGENTE,",
+    "goFurther": "VE MÁS LEJOS CON",
+    "showtimePro": "SHOWTIME PRO",
+    "startFreeTrial": "Comenzar mi prueba gratuita de 10 días",
+    "basicPlan": "Plan Básico | Pruébalo sin riesgo — cancela en cualquier momento",
+    "recommendedFor": "Recomendado para",
+    "playersReady": "jugadores listos para",
+    "takeNextStep": "dar el siguiente paso",
+    "voicesOfPlayers": "Voces de",
+    "realPlayers": "Jugadores Reales"
+  },
+  "trainingCategories": {
+    "roleTraining": "Entrenamiento por Posición",
+    "roleTrainingDesc": "Fuerza, movilidad y ejercicios adaptados a tu posición en el campo.",
+    "smartFuel": "Combustible Inteligente",
+    "smartFuelDesc": "Consejos de nutrición y recuperación para entrenar más duro y recuperarte más rápido.",
+    "mindsetFocus": "Enfoque Mental",
+    "mindsetFocusDesc": "Hábitos diarios y herramientas mentales para desarrollar resistencia, disciplina e impulso.",
+    "gameIQ": "IQ del Juego",
+    "gameIQDesc": "Análisis táctico y desglose de partidos para agudizar tu inteligencia futbolística."
+  },
+  "homeScreen": {
+    "trendingVideos": "Videos en tendencia",
+    "training": "Entrenamiento",
+    "mindset": "Mentalidad",
+    "nutrition": "Nutrición",
+    "lessons": "Lecciones"
+  },
+  "helperTexts": {
+    "helperText": "Nos ayuda a crear una experiencia de entrenamiento que se adapte mejor a ti.",
+    "passwordRequirement": "La contraseña debe tener al menos 8 caracteres",
+    "termsText": "Al crear una cuenta, aceptas nuestros Términos de Servicio y Política de Privacidad"
+  },
+  "errors": {
+    "emailRequired": "El correo electrónico es requerido",
+    "invalidEmail": "Por favor ingresa un correo electrónico válido",
+    "passwordRequired": "La contraseña es requerida",
+    "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
+    "confirmPasswordRequired": "Por favor confirma tu contraseña",
+    "passwordsNotMatch": "Las contraseñas no coinciden",
+    "usernameRequired": "Por favor ingresa un nombre de usuario",
+    "usernameTooShort": "El nombre de usuario debe tener al menos 3 caracteres",
+    "selectGender": "Por favor selecciona tu género",
+    "selectDateOfBirth": "Por favor selecciona tu fecha de nacimiento completa",
+    "ageRestriction": "Debes tener al menos 13 años para registrarte",
+    "selectCitizenship": "Por favor selecciona tu ciudadanía",
+    "enterPhysicalData": "Por favor ingresa tanto el peso como la estatura",
+    "validWeight": "Por favor ingresa un peso válido (1-500 kg)",
+    "validHeight": "Por favor ingresa una estatura válida (1-300 cm)",
+    "selectPhysicalGoal": "Por favor selecciona tu objetivo físico",
+    "selectPosition": "Por favor selecciona tu posición de juego",
+    "selectExperienceLevel": "Por favor selecciona tu nivel de experiencia",
+    "selectTrainingFrequency": "Por favor selecciona tu frecuencia de entrenamiento",
+    "selectContentLikes": "Por favor selecciona al menos un tipo de contenido que te guste",
+    "selectAppDiscovery": "Por favor selecciona cómo te enteraste de la aplicación"
+  },
+  "quickSelect": "Selección rápida (Demo):",
+  "positions": {
+    "goalkeeper": "Portero",
+    "defender": "Defensor",
+    "centerBack": "Defensa central",
+    "fullback": "Lateral",
+    "midfielder": "Centrocampista",
+    "winger": "Extremo",
+    "forward": "Delantero"
+  },
+  "experienceLevels": {
+    "highSchool": "Preparatoria",
+    "academy": "Academia",
+    "college": "Universidad",
+    "semiPro": "Semi-profesional",
+    "lowerDivisionPro": "Profesional división menor"
+  },
+  "trainingFrequencies": {
+    "sessions3to5": "3-5 sesiones por semana",
+    "sessions5to7": "5-7 sesiones por semana",
+    "sessionsPlus7": "+7 sesiones por semana"
+  },
+  "contentTypes": {
+    "trainingRoutines": "Rutinas de entrenamiento",
+    "trainingRoutinesDesc": "(fitness, ejercicios y planes estructurados)",
+    "nutritionRecipes": "Nutrición y recetas",
+    "nutritionRecipesDesc": "(alimentación saludable y consejos)",
+    "dailyMotivation": "Motivación diaria",
+    "dailyMotivationDesc": "(frases, desafíos, historias reales)",
+    "highlightVideos": "Videos destacados",
+    "highlightVideosDesc": "(grabaciones, jugadas, repeticiones)",
+    "coachInterviews": "Entrevistas con entrenadores",
+    "coachInterviewsDesc": "(audio y video)",
+    "recoveryTips": "Consejos de recuperación y bienestar físico",
+    "athleteStories": "Historias de vida de atletas y entrenadores",
+    "personalAchievements": "Logros personales y desafíos completados",
+    "communityQA": "Comunidad: Preguntas y respuestas e interacción entre pares",
+    "eventsGiveaways": "Eventos y sorteos",
+    "eventsGiveawaysDesc": "(actualizaciones, torneos, premios)"
+  },
+  "appDiscoverySources": {
+    "tiktok": "TikTok",
+    "youtube": "Youtube",
+    "instagram": "Instagram (o Facebook)",
+    "instagramAd": "Anuncio de Instagram",
+    "friendsFamily": "Amigos/Familia/Entrenador",
+    "appStore": "Búsqueda en App Store",
+    "otherSource": "Otro"
+  },
+  "summary": {
+    "weight": "Peso",
+    "height": "Estatura",
+    "playingPosition": "Posición de juego",
+    "allSet": "Todo listo"
+  },
+  "units": {
+    "cm": "cm",
+    "kg": "kg",
+    "years": "Años"
+  },
+  "months": {
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "Octubre",
+    "november": "Noviembre",
+    "december": "Diciembre"
+  },
+  "placeholders": {
+    "enterEmail": "Ingresa tu correo electrónico",
+    "createPassword": "Crea una contraseña",
+    "confirmYourPassword": "Confirma tu contraseña",
+    "chooseUsername": "Elige un nombre de usuario",
+    "selectCitizenshipPlaceholder": "Selecciona tu ciudadanía",
+    "selectPosition": "Selecciona tu posición",
+    "selectLevel": "Selecciona tu nivel",
+    "selectFrequency": "Selecciona frecuencia de entrenamiento",
+    "selectDiscoverySource": "Selecciona fuente de descubrimiento",
+    "searchCountries": "Buscar países..."
+  },
+  "modalTitles": {
+    "selectMonth": "Seleccionar mes",
+    "selectDay": "Seleccionar día",
+    "selectYear": "Seleccionar año",
+    "selectPositionTitle": "Seleccionar posición",
+    "selectExperienceLevelTitle": "Seleccionar nivel de experiencia",
+    "selectTrainingFrequencyTitle": "Seleccionar frecuencia de entrenamiento",
+    "selectCitizenshipTitle": "Seleccionar ciudadanía"
+  },
+  "splash": {
+    "splashFooter": "© 2025 | Donde el talento encuentra oportunidad | USA"
+  }
+}
