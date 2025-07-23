@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { useRegistration } from '../context/RegistrationContext';
 import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
@@ -12,17 +13,18 @@ import HelperText from '../components/common/HelperText';
 
 export default function UsernameScreen() {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const { updateData } = useRegistration();
 
   const handleContinue = () => {
     if (!username.trim()) {
-      Alert.alert('Error', 'Please enter a username');
+      Alert.alert(t('errors.usernameRequired'));
       return;
     }
 
     if (username.length < 3) {
-      Alert.alert('Error', 'Username must be at least 3 characters long');
+      Alert.alert(t('errors.usernameTooShort'));
       return;
     }
 
@@ -33,9 +35,9 @@ export default function UsernameScreen() {
   return (
     <ScreenLayout currentStep={1} totalSteps={6} style={styles.titleFont}>
       <ContentContainer>
-        <ScreenTitle title="Username" />
+        <ScreenTitle title={t('registration.username')} />
         <FormInput
-          placeholder="Choose a username"
+          placeholder={t('placeholders.chooseUsername')}
           value={username}
           onChangeText={setUsername}
           autoCapitalize="none"
@@ -49,7 +51,7 @@ export default function UsernameScreen() {
           onPress={handleContinue}
           disabled={!username.trim()}
         />
-        <HelperText text="It helps us create a training experience that fits you best." />
+        <HelperText text={t('helperTexts.helperText')} />
       </BottomSection>
     </ScreenLayout>
   );

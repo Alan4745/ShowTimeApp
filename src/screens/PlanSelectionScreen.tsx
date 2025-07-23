@@ -1,72 +1,84 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions, Image, FlatList } from 'react-native';
-import { LinearGradient } from 'react-native-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient'; // Corregí importación
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
 import { X, Check, Star, ChevronDown, Lock } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
-const trainingCategories = [
-  {
-    icon: <Image source={require('../../assets/img/icon/learn.png')} style={{ width: 22, height: 28, resizeMode: 'contain' }} />,
-    title: 'Role Training',
-    description: 'Strength, mobility, and drills tailored to your position on the field.',
-  },
-  {
-    icon: <Image source={require('../../assets/img/icon/apple.png')} style={{ width: 22, height: 28, resizeMode: 'contain' }} />,
-    title: 'Smart Fuel',
-    description: 'Nutrition and recovery tips to train harder and bounce back faster.',
-  },
-  {
-    icon: <Image source={require('../../assets/img/icon/head.png')} style={{ width: 22, height: 28, resizeMode: 'contain' }} />,
-    title: 'Mindset Focus',
-    description: 'Daily habits and mental tools to build resilience, discipline, and drive.',
-  },
-  {
-    icon: <Image source={require('../../assets/img/icon/points.png')} style={{width: 22, height: 28, resizeMode: 'contain'}} />,
-    title: 'Game IQ',
-    description: 'Tactical analysis and match breakdowns to sharpen your football intelligence.',
-  },
-];
-
-const testimonials = [
-  {
-    id: 1,
-    name: 'Mateo Seoane',
-    avatar: '#',
-    timeAgo: 'Hace 3 meses',
-    rating: 5,
-    text: 'I used to doubt myself a lot. The mindset lessons in this app helped me stay focused, build confidence, and enjoy the game again 🧠⚽',
-  },
-  {
-    id: 2,
-    name: 'Carlos Rodriguez',
-    avatar: '#',
-    timeAgo: 'Hace 1 mes',
-    rating: 5,
-    text: 'The training routines are incredible! My performance on the field has improved dramatically since I started using this app 💪⚽',
-  },
-  {
-    id: 3,
-    name: 'Sofia Martinez',
-    avatar: '#',
-    timeAgo: 'Hace 2 semanas',
-    rating: 5,
-    text: 'Amazing nutrition tips and recovery advice. I feel stronger and more energized during training sessions 🍎💚',
-  },
-];
-
 export default function PlanSelectionScreen() {
+  const { t } = useTranslation();
   const [selectedPlan, setSelectedPlan] = useState<string>('basic');
   const { updateData } = useRegistration();
   const navigation = useNavigation();
 
+  const trainingCategories = [
+    {
+      icon: <Image source={require('../../assets/img/icon/learn.png')} style={{ width: 22, height: 28, resizeMode: 'contain' }} />,
+      title: t('planSelection.trainingCategories.roleTraining.title'),
+      description: t('planSelection.trainingCategories.roleTraining.description'),
+    },
+    {
+      icon: <Image source={require('../../assets/img/icon/apple.png')} style={{ width: 22, height: 28, resizeMode: 'contain' }} />,
+      title: t('planSelection.trainingCategories.smartFuel.title'),
+      description: t('planSelection.trainingCategories.smartFuel.description'),
+    },
+    {
+      icon: <Image source={require('../../assets/img/icon/head.png')} style={{ width: 22, height: 28, resizeMode: 'contain' }} />,
+      title: t('planSelection.trainingCategories.mindsetFocus.title'),
+      description: t('planSelection.trainingCategories.mindsetFocus.description'),
+    },
+    {
+      icon: <Image source={require('../../assets/img/icon/points.png')} style={{ width: 22, height: 28, resizeMode: 'contain' }} />,
+      title: t('planSelection.trainingCategories.gameIQ.title'),
+      description: t('planSelection.trainingCategories.gameIQ.description'),
+    },
+  ];
+
+  const testimonials = [
+    {
+      id: 1,
+      name: 'Mateo Seoane',
+      avatar: '#',
+      timeAgo: t('planSelection.testimonials.timeAgo.monthsAgo', { count: 3 }),
+      rating: 5,
+      text: t('planSelection.testimonials.mateo.text'),
+    },
+    {
+      id: 2,
+      name: 'Carlos Rodriguez',
+      avatar: '#',
+      timeAgo: t('planSelection.testimonials.timeAgo.monthAgo', { count: 1 }),
+      rating: 5,
+      text: t('planSelection.testimonials.carlos.text'),
+    },
+    {
+      id: 3,
+      name: 'Sofia Martinez',
+      avatar: '#',
+      timeAgo: t('planSelection.testimonials.timeAgo.weeksAgo', { count: 2 }),
+      rating: 5,
+      text: t('planSelection.testimonials.sofia.text'),
+    },
+  ];
+
   const handleContinue = () => {
     const planData = {
       id: selectedPlan,
-      title: selectedPlan === 'free' ? 'Start Free' : selectedPlan === 'premium' ? 'Premium' : 'Basic',
-      price: selectedPlan === 'free' ? 'Free' : selectedPlan === 'premium' ? '$197/month' : '$97/month',
+      title:
+        selectedPlan === 'free'
+          ? t('planSelection.plans.startFree')
+          : selectedPlan === 'premium'
+          ? t('planSelection.plans.premium')
+          : t('planSelection.plans.basic'),
+      price:
+        selectedPlan === 'free'
+          ? t('planSelection.plans.price.free')
+          : selectedPlan === 'premium'
+          ? t('planSelection.plans.price.premium')
+          : t('planSelection.plans.price.basic'),
       priceValue: selectedPlan === 'free' ? 0 : selectedPlan === 'premium' ? 197 : 97,
     };
 
@@ -88,66 +100,39 @@ export default function PlanSelectionScreen() {
     handleContinue();
   };
 
+  const featuresList = [
+    t('planSelection.features.previewAllSections'),
+    t('planSelection.features.accessAllContent'),
+    t('planSelection.features.mindsetMotivation'),
+    t('planSelection.features.directChatCoaches'),
+    t('planSelection.features.customPlans'),
+  ];
+
   return (
     <View style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        {/* Hero Section - Full Screen */}
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {/* Hero Section */}
         <View style={styles.heroContainer}>
-          <ImageBackground
-            source={require('../../assets/img/Football.jpg')}
-            style={styles.backgroundImage}
-            resizeMode="cover"
-          >
-            {/* Dark overlay for better text readability */}
-            <LinearGradient
-              colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.5)', 'rgba(0,0,0,0.7)']}
-              style={styles.overlay}
-            >
-              {/* Header with Close Button */}
+          <ImageBackground source={require('../../assets/img/Football.jpg')} style={styles.backgroundImage} resizeMode="cover">
+            <LinearGradient colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.5)', 'rgba(0,0,0,0.7)']} style={styles.overlay}>
               <View style={styles.header}>
-                {/* Header section with gradient background */}
-                <LinearGradient
-                  colors={['rgba(0,0,0,0.95)', 'rgba(0,0,0,0.8)', 'rgba(0,0,0,0.1)']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 0, y: 1 }}
-                  style={styles.headerGradient}
-                >
-                  <TouchableOpacity
-                    style={styles.closeButton}
-                    onPress={handleClose}
-                  >
+                <LinearGradient colors={['rgba(0,0,0,0.95)', 'rgba(0,0,0,0.8)', 'rgba(0,0,0,0.1)']} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} style={styles.headerGradient}>
+                  <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
                     <X color="#fff" size={24} />
                   </TouchableOpacity>
-
                   <View style={styles.headerTitleContainer}>
-                    <Text style={styles.heroTitle}>TRAIN SMARTER,</Text>
-                    <Text style={styles.heroTitle}>GO FURTHER WITH</Text>
-                    <Text style={styles.heroTitle}>SHOWTIME PRO</Text>
+                    <Text style={styles.heroTitle}>{t('planSelection.hero.titleLine1')}</Text>
+                    <Text style={styles.heroTitle}>{t('planSelection.hero.titleLine2')}</Text>
+                    <Text style={styles.heroTitle}>{t('planSelection.hero.titleLine3')}</Text>
                   </View>
                 </LinearGradient>
               </View>
-
-              {/* Spacer for middle content */}
               <View style={styles.middleSpacer} />
-
-              {/* Button Section at bottom */}
               <View style={styles.buttonSection}>
-                <TouchableOpacity
-                  style={styles.freeTrialButton}
-                  onPress={handleFreeTrialPress}
-                >
-                  <Text style={styles.freeTrialText}>Start My 10-Day Free Trial</Text>
+                <TouchableOpacity style={styles.freeTrialButton} onPress={handleFreeTrialPress}>
+                  <Text style={styles.freeTrialText}>{t('planSelection.buttons.startFreeTrial')}</Text>
                 </TouchableOpacity>
-
-                <Text style={styles.freeTrialSubtext}>
-                  Basic Plan | Try it risk-free — cancel anytime
-                </Text>
-
-                {/* Scroll Down Indicator */}
+                <Text style={styles.freeTrialSubtext}>{t('planSelection.texts.basicPlanDescription')}</Text>
                 <View style={styles.scrollIndicator}>
                   <ChevronDown color="rgba(255,255,255,0.7)" size={24} />
                 </View>
@@ -156,21 +141,17 @@ export default function PlanSelectionScreen() {
           </ImageBackground>
         </View>
 
-        {/* Rest of Content - Starts on second screen */}
+        {/* Content Section */}
         <View style={styles.contentSection}>
-          {/* Recommended Section */}
           <View style={styles.recommendedSection}>
-            <Text style={styles.recommendedTitle}>Recommended for</Text>
-            <Text style={styles.recommendedTitle}>players ready to</Text>
-            <Text style={styles.recommendedTitle}>take the next step</Text>
+            <Text style={styles.recommendedTitle}>{t('planSelection.recommended.title1')}</Text>
+            <Text style={styles.recommendedTitle}>{t('planSelection.recommended.title2')}</Text>
+            <Text style={styles.recommendedTitle}>{t('planSelection.recommended.title3')}</Text>
 
-             {/* Training Categories */}
             <View style={styles.categoriesContainer}>
               {trainingCategories.map((category, index) => (
                 <View key={index} style={styles.categoryCard}>
-                  <View style={styles.categoryIconLeft}>
-                    {category.icon}
-                  </View>
+                  <View style={styles.categoryIconLeft}>{category.icon}</View>
                   <View style={styles.categoryTextContent}>
                     <Text style={styles.categoryCardTitle}>{category.title}</Text>
                     <Text style={styles.categoryCardDescription}>{category.description}</Text>
@@ -179,67 +160,49 @@ export default function PlanSelectionScreen() {
               ))}
             </View>
 
-            {/* Spacer to push button to bottom */}
             <View />
 
-            {/* Coaches Section */}
             <View style={styles.coachesSection}>
               <View style={styles.coachesIcon}>
                 <Image source={require('../../assets/img/icon/Coaches.png')} style={{ position: 'absolute', top: '30%', left: '50%', transform: [{ translateX: 1 }, { translateY: -12 }] }} />
-                <Image source={require('../../assets/img/icon/Elipses.png')} style={{  top: '-17%'}} />
+                <Image source={require('../../assets/img/icon/Elipses.png')} style={{ top: '-17%' }} />
               </View>
-              <Text style={styles.coachesTitle}>COACHES</Text>
+              <Text style={styles.coachesTitle}>{t('planSelection.coaches.title')}</Text>
               <View style={styles.coachesFeatures}>
-                <Text style={styles.coachesFeature}>1.Personalized training plans created by real pro-level coaches.</Text>
-                <Text style={styles.coachesFeature}>2. Direct chat access for questions, feedback, and progress tracking.</Text>
-                <Text style={styles.coachesFeature}>3. Monthly follow-up calls or video reviews to support your growth.</Text>
+                <Text style={styles.coachesFeature}>{t('planSelection.coaches.feature1')}</Text>
+                <Text style={styles.coachesFeature}>{t('planSelection.coaches.feature2')}</Text>
+                <Text style={styles.coachesFeature}>{t('planSelection.coaches.feature3')}</Text>
               </View>
-               <TouchableOpacity
-                  style={styles.premiumButton}
-                  onPress={handlePremiumPress}
-                >
-                  <Text style={styles.premiumText}>Premium Plan</Text>
-                </TouchableOpacity>
-              <Text style={styles.premiumPlanSubtext}>Connect with coaches who’ve trained academy and pro players.</Text>
+              <TouchableOpacity style={styles.premiumButton} onPress={handlePremiumPress}>
+                <Text style={styles.premiumText}>{t('planSelection.buttons.premiumPlan')}</Text>
+              </TouchableOpacity>
+              <Text style={styles.premiumPlanSubtext}>{t('planSelection.texts.coachesSubtext')}</Text>
             </View>
           </View>
 
-          {/* Plans Comparison */}
           <View style={styles.plansSection}>
-            <Text style={styles.plansSectionTitle}>Start Free, Train</Text>
-            <Text style={styles.plansSectionTitle}>Smarter, Go Pro</Text>
+            <Text style={styles.plansSectionTitle}>{t('planSelection.plansTitle.line1')}</Text>
+            <Text style={styles.plansSectionTitle}>{t('planSelection.plansTitle.line2')}</Text>
 
-            {/* Features Comparison Table */}
             <View style={styles.featuresTable}>
               <View style={styles.featuresHeader}>
-                <Text style={styles.featuresHeaderTextLeft}>Feature</Text>
-                <Text style={styles.featuresHeaderText}>Free</Text>
-                <Text style={styles.featuresHeaderText}>Basic</Text>
-                <Text style={styles.featuresHeaderText}>Premium</Text>
+                <Text style={styles.featuresHeaderTextLeft}>{t('planSelection.featuresTable.featureHeader')}</Text>
+                <Text style={styles.featuresHeaderText}>{t('planSelection.featuresTable.free')}</Text>
+                <Text style={styles.featuresHeaderText}>{t('planSelection.featuresTable.basic')}</Text>
+                <Text style={styles.featuresHeaderText}>{t('planSelection.featuresTable.premium')}</Text>
               </View>
 
-              {[
-                'Preview all sections',
-                'Access to all content',
-                'Mindset & motivation',
-                'Direct chat with coaches',
-                'Custom Plans',
-              ].map((feature, index) => (
-                <View key={index} style={{ ...styles.featureRow, backgroundColor: (index % 2 === 0 ? '#252A30' : '' ).toString()}}>
+              {featuresList.map((feature, index) => (
+                <View
+                  key={index}
+                  style={[styles.featureRow, { backgroundColor: index % 2 === 0 ? '#252A30' : 'transparent' }]}
+                >
                   <Text style={styles.featureText}>{feature}</Text>
                   <View style={styles.featureStatus}>
-                    {index === 0 ? (
-                      <Check color="#fff" size={16} style={styles.featureAbled}/>
-                    ) : (
-                      <Lock color="#252A30" size={16} style={styles.featureDisabled} />
-                    )}
+                    {index === 0 ? <Check color="#fff" size={16} style={styles.featureAbled} /> : <Lock color="#252A30" size={16} style={styles.featureDisabled} />}
                   </View>
                   <View style={styles.featureStatus}>
-                    {index <= 2 ? (
-                      <Check color="#fff" size={16} style={styles.featureAbled}/>
-                    ) : (
-                      <Lock color="#252A30" size={16} style={styles.featureDisabled} />
-                    )}
+                    {index <= 2 ? <Check color="#fff" size={16} style={styles.featureAbled} /> : <Lock color="#252A30" size={16} style={styles.featureDisabled} />}
                   </View>
                   <View style={styles.featureStatus}>
                     <Check color="#fff" size={16} style={styles.featureAbled} />
@@ -249,10 +212,9 @@ export default function PlanSelectionScreen() {
             </View>
           </View>
 
-          {/* Testimonials */}
           <View style={styles.testimonialsSection}>
-            <Text style={styles.testimonialsTitle}>Voices of</Text>
-            <Text style={styles.testimonialsTitle}>Real Players</Text>
+            <Text style={styles.testimonialsTitle}>{t('planSelection.testimonials.titleLine1')}</Text>
+            <Text style={styles.testimonialsTitle}>{t('planSelection.testimonials.titleLine2')}</Text>
 
             <FlatList
               data={testimonials}
@@ -270,7 +232,7 @@ export default function PlanSelectionScreen() {
                       <Text style={styles.testimonialName}>{item.name}</Text>
                       <View style={styles.testimonialMeta}>
                         <View style={styles.starsContainer}>
-                          {[1,2,3,4,5].map(i => (
+                          {[1, 2, 3, 4, 5].map((i) => (
                             <Star key={i} color="#4A90E2" size={14} fill="#4A90E2" />
                           ))}
                         </View>
@@ -278,25 +240,19 @@ export default function PlanSelectionScreen() {
                       </View>
                     </View>
                   </View>
-                  <Text style={styles.testimonialText}>
-                    {item.text}
-                  </Text>
+                  <Text style={styles.testimonialText}>{item.text}</Text>
                 </View>
               )}
             />
           </View>
 
-          {/* Bottom CTA */}
           <View style={styles.bottomSection}>
-            <Text style={styles.bottomText}>You're free to cancel</Text>
-            <Text style={styles.bottomText}>whenever. No penalties, no</Text>
-            <Text style={styles.bottomText}>extra costs.</Text>
+            <Text style={styles.bottomText}>{t('planSelection.bottomText.line1')}</Text>
+            <Text style={styles.bottomText}>{t('planSelection.bottomText.line2')}</Text>
+            <Text style={styles.bottomText}>{t('planSelection.bottomText.line3')}</Text>
 
-            <TouchableOpacity
-              style={styles.finalTrialButton}
-              onPress={handleFreeTrialPress}
-            >
-              <Text style={styles.finalTrialButtonText}>Start My 10-Day Free Trial</Text>
+            <TouchableOpacity style={styles.finalTrialButton} onPress={handleFreeTrialPress}>
+              <Text style={styles.finalTrialButtonText}>{t('planSelection.buttons.startFreeTrial')}</Text>
             </TouchableOpacity>
           </View>
         </View>

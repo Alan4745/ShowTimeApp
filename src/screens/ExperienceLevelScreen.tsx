@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Alert, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useRegistration } from '../context/RegistrationContext';
+import { useRegistration, RegistrationData } from '../context/RegistrationContext';  // <--- Aquí importa RegistrationData
+import { useTranslation } from 'react-i18next';
 import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
 import ScreenTitle from '../components/common/ScreenTitle';
@@ -11,9 +12,16 @@ import HelperText from '../components/common/HelperText';
 import DropdownModal from '../components/modals/DropdownModal';
 import { ChevronDown } from 'lucide-react-native';
 
-type ExperienceLevel = 'High School' | 'Academy' | 'College' | 'Semi-Pro' | 'Lower division Pro';
+// Define el tipo usando las claves internas (que coinciden con las keys de tu JSON)
+type ExperienceLevel =
+  | 'highSchool'
+  | 'academy'
+  | 'college'
+  | 'semiPro'
+  | 'lowerDivisionPro';
 
 export default function ExperienceLevelScreen() {
+  const { t } = useTranslation();
   const [selectedLevel, setSelectedLevel] = useState<ExperienceLevel | null>(null);
   const [showModal, setShowModal] = useState(false);
   const { updateData } = useRegistration();
@@ -21,31 +29,41 @@ export default function ExperienceLevelScreen() {
 
   const handleContinue = () => {
     if (!selectedLevel) {
-      Alert.alert('Error', 'Please select your experience level');
+      Alert.alert(t('errors.selectExperienceLevel'), t('errors.selectExperienceLevel'));
       return;
     }
 
-    updateData({ experienceLevel: selectedLevel });
+    // Aquí guardamos el valor traducido a las opciones internas para RegistrationData
+    // Si tu RegistrationData usa los valores "High School", "Academy" etc, mapea aquí
+    const mapToRegistrationValue: Record<ExperienceLevel, RegistrationData['experienceLevel']> = {
+      highSchool: 'High School',
+      academy: 'Academy',
+      college: 'College',
+      semiPro: 'Semi-Pro',
+      lowerDivisionPro: 'Lower division Pro',
+    };
+
+    updateData({ experienceLevel: mapToRegistrationValue[selectedLevel] });
     (navigation as any).navigate('TrainingFrequency');
   };
 
   const experienceLevels: ExperienceLevel[] = [
-    'High School',
-    'Academy',
-    'College',
-    'Semi-Pro',
-    'Lower division Pro',
+    'highSchool',
+    'academy',
+    'college',
+    'semiPro',
+    'lowerDivisionPro',
   ];
 
-  const handleLevelSelect = (level: string) => {
-    setSelectedLevel(level as ExperienceLevel);
+  const handleLevelSelect = (level: ExperienceLevel) => {
+    setSelectedLevel(level);
     setShowModal(false);
   };
 
   return (
     <ScreenLayout currentStep={8} totalSteps={12}>
       <ContentContainer>
-        <ScreenTitle title="Experience Level" />
+        <ScreenTitle title={t('registration.experienceLevel')} />
 
         <View style={styles.selectorContainer}>
           <TouchableOpacity
@@ -55,11 +73,13 @@ export default function ExperienceLevelScreen() {
             ]}
             onPress={() => setShowModal(true)}
           >
-            <Text style={[
-              styles.levelSelectorText,
-              selectedLevel && styles.selectedLevelSelectorText,
-            ]}>
-              {selectedLevel || 'Select your level'}
+            <Text
+              style={[
+                styles.levelSelectorText,
+                selectedLevel && styles.selectedLevelSelectorText,
+              ]}
+            >
+              {selectedLevel ? t(`experienceLevels.${selectedLevel}`) : t('errors.selectExperienceLevel')}
             </Text>
             <ChevronDown color={selectedLevel ? '#4A90E2' : '#666'} size={20} />
           </TouchableOpacity>
@@ -67,20 +87,17 @@ export default function ExperienceLevelScreen() {
       </ContentContainer>
 
       <BottomSection>
-        <ContinueButton
-          onPress={handleContinue}
-          disabled={!selectedLevel}
-        />
-        <HelperText text="It helps us create a training experience that fits you best." />
+        <ContinueButton onPress={handleContinue} disabled={!selectedLevel} />
+        <HelperText text={t('helperTexts.helperText')} />
       </BottomSection>
 
       <DropdownModal
         visible={showModal}
         onClose={() => setShowModal(false)}
-        title="Select Experience Level"
+        title={t('modalTitles.selectExperienceLevelTitle')}
         items={experienceLevels}
         onSelect={handleLevelSelect}
-        renderItem={(item) => item}
+        renderItem={(item) => t(`experienceLevels.${item}`)}
       />
     </ScreenLayout>
   );

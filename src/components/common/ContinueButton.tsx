@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 interface ContinueButtonProps {
   onPress: () => void;
@@ -11,16 +12,19 @@ interface ContinueButtonProps {
 export default function ContinueButton({
   onPress,
   disabled = false,
-  title = 'Continue',
+  title,
   style,
 }: ContinueButtonProps) {
+  const { t } = useTranslation();
+  const buttonTitle = title || t('common.continue');
+
   return (
     <TouchableOpacity
       style={[styles.button, disabled && styles.disabledButton, style]}
       onPress={onPress}
       disabled={disabled}
     >
-      <Text style={styles.buttonText}>{title}</Text>
+      <Text style={styles.buttonText}>{buttonTitle}</Text>
     </TouchableOpacity>
   );
 }

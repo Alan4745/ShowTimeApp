@@ -8,64 +8,37 @@ import MultiSelectGrid from '../components/form/MultiSelectGrid';
 import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
+import { useTranslation } from 'react-i18next';
 
-const contentOptions = [
-  {
-    id: 'training-routines',
-    title: 'Training routines',
-    subtitle: '(fitness, drills, and structured plans)',
-  },
-  {
-    id: 'nutrition-recipes',
-    title: 'Nutrition & recipes',
-    subtitle: '(healthy eating and tips)',
-  },
-  {
-    id: 'daily-motivation',
-    title: 'Daily motivation',
-    subtitle: '(quotes, challenges, real stories)',
-  },
-  {
-    id: 'highlight-videos',
-    title: 'Highlight videos',
-    subtitle: '(tapes, plays, replays)',
-  },
-  {
-    id: 'coach-interviews',
-    title: 'Coach interviews',
-    subtitle: '(audio and video)',
-  },
-  {
-    id: 'recovery-tips',
-    title: 'Recovery tips & physical wellness',
-  },
-  {
-    id: 'athlete-stories',
-    title: 'Athlete & coach life stories',
-  },
-  {
-    id: 'personal-achievements',
-    title: 'Personal achievements & completed challenges',
-  },
-  {
-    id: 'community-qa',
-    title: 'Community: Q&A and peer interaction',
-  },
-  {
-    id: 'events-giveaways',
-    title: 'Events & giveaways',
-    subtitle: '(updates, tournaments, prizes)',
-  },
+const contentOptionKeys = [
+  'trainingRoutines',
+  'nutritionRecipes',
+  'dailyMotivation',
+  'highlightVideos',
+  'coachInterviews',
+  'recoveryTips',
+  'athleteStories',
+  'personalAchievements',
+  'communityQA',
+  'eventsGiveaways',
 ];
 
 export default function ContentLikesScreen() {
   const [selectedContent, setSelectedContent] = useState<string[]>([]);
   const { updateData } = useRegistration();
   const navigation = useNavigation();
+  const { t } = useTranslation();
+
+  // Construimos las opciones traducidas
+  const contentOptions = contentOptionKeys.map((key) => ({
+    id: key,
+    title: t(`contentTypes.${key}`),
+    subtitle: t(`contentTypes.${key}Desc`, ''), // si no existe descripción, '' evita que se muestre "undefined"
+  }));
 
   const handleContinue = () => {
     if (selectedContent.length === 0) {
-      Alert.alert('Error', 'Please select at least one content type you like');
+      Alert.alert(t('errors.selectContentLikes'), t('errors.selectContentLikes'));
       return;
     }
 
@@ -77,7 +50,7 @@ export default function ContentLikesScreen() {
     <ScreenLayout currentStep={10} totalSteps={14}>
       <ContentContainer centered={false} style={styles.contentContainer}>
         <MultiSelectGrid
-          title="Content You Like"
+          title={t('registration.contentLikes')}
           items={contentOptions}
           selectedItems={selectedContent}
           onSelectionChange={setSelectedContent}
@@ -89,7 +62,7 @@ export default function ContentLikesScreen() {
           onPress={handleContinue}
           disabled={selectedContent.length === 0}
         />
-        <HelperText text="It helps us create a training experience that fits you best." />
+        <HelperText text={t('helperTexts.helperText')} />
       </BottomSection>
     </ScreenLayout>
   );

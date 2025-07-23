@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
+import { useTranslation } from 'react-i18next';
 import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
 import ScreenTitle from '../components/common/ScreenTitle';
@@ -14,6 +15,7 @@ type Gender = 'Male' | 'Female' | 'Other';
 
 export default function GenderScreen() {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const [selectedGender, setSelectedGender] = useState<Gender | null>(null);
   const { updateData } = useRegistration();
 
@@ -27,18 +29,18 @@ export default function GenderScreen() {
   return (
     <ScreenLayout currentStep={2} totalSteps={6}>
       <ContentContainer>
-        <ScreenTitle title="Gender" />
+        <ScreenTitle title={t('registration.gender')} />
         <View style={styles.optionsContainer}>
           {/* Top row: Female and Male */}
           <View style={styles.topRow}>
             <OptionButton
-              title="Female"
+              title={t('registration.female')}
               selected={selectedGender === 'Female'}
               onPress={() => setSelectedGender('Female')}
               style={styles.parallelButton}
             />
             <OptionButton
-              title="Male"
+              title={t('registration.male')}
               selected={selectedGender === 'Male'}
               onPress={() => setSelectedGender('Male')}
               style={styles.parallelButton}
@@ -48,7 +50,7 @@ export default function GenderScreen() {
           {/* Bottom row: Other (centered) */}
           <View style={styles.bottomRow}>
             <OptionButton
-              title="Other"
+              title={t('registration.other')}
               selected={selectedGender === 'Other'}
               onPress={() => setSelectedGender('Other')}
               style={styles.centerButton}
@@ -62,7 +64,7 @@ export default function GenderScreen() {
           onPress={handleContinue}
           disabled={!selectedGender}
         />
-        <HelperText text="It helps us create a training experience that fits you best." />
+        <HelperText text={t('helperTexts.helperText')} />
       </BottomSection>
     </ScreenLayout>
   );
@@ -92,3 +94,4 @@ const styles = StyleSheet.create({
     width: '48%', // Same width as each parallel button
   },
 });
+

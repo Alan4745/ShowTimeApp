@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import ContentCard from '../components/common/ContentCard';
+import { useTranslation } from 'react-i18next';
 
 export default function LearnTabScreen() {
+  const { t } = useTranslation();
 
   const handleCardPress = (category: string) => {
     console.log(`${category} card pressed`);
@@ -10,11 +12,10 @@ export default function LearnTabScreen() {
 
   return (
     <View style={styles.container}>
-
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Training Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Training</Text>
+          <Text style={styles.sectionTitle}>{t('homeScreen.training')}</Text>
           <View style={styles.cardGrid}>
             <ContentCard
               style={styles.card}
@@ -29,7 +30,7 @@ export default function LearnTabScreen() {
 
         {/* Mindset Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Mindset</Text>
+          <Text style={styles.sectionTitle}>{t('homeScreen.mindset')}</Text>
           <View style={styles.cardGrid}>
             <ContentCard
               style={styles.card}
@@ -44,7 +45,7 @@ export default function LearnTabScreen() {
 
         {/* Nutrition Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Nutrition</Text>
+          <Text style={styles.sectionTitle}>{t('homeScreen.nutrition')}</Text>
           <View style={styles.cardGrid}>
             <ContentCard
               style={styles.cardWide}

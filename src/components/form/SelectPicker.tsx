@@ -3,10 +3,15 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ChevronDown } from 'lucide-react-native';
 import DropdownModal from '../modals/DropdownModal';
 
+interface SelectOption {
+  label: string;
+  value: string;
+}
+
 interface SelectPickerProps {
   label: string;
   placeholder: string;
-  options: string[];
+  options: SelectOption[];
   selectedValue: string | null;
   onSelect: (value: string) => void;
   containerStyle?: any;
@@ -22,8 +27,11 @@ export default function SelectPicker({
 }: SelectPickerProps) {
   const [showModal, setShowModal] = useState(false);
 
-  const handleSelect = (value: string) => {
-    onSelect(value);
+  const selectedLabel = options.find(opt => opt.value === selectedValue)?.label || placeholder;
+
+  const handleSelect = (label: string) => {
+    const selectedOption = options.find(opt => opt.label === label);
+    if (selectedOption) {onSelect(selectedOption.value);}
     setShowModal(false);
   };
 
@@ -42,7 +50,7 @@ export default function SelectPicker({
           styles.selectorText,
           selectedValue && styles.selectedSelectorText,
         ]}>
-          {selectedValue || placeholder}
+          {selectedLabel}
         </Text>
         <ChevronDown
           color={selectedValue ? '#4A90E2' : '#666'}
@@ -54,7 +62,7 @@ export default function SelectPicker({
         visible={showModal}
         onClose={() => setShowModal(false)}
         title={`Select ${label}`}
-        items={options}
+        items={options.map(opt => opt.label)}
         onSelect={handleSelect}
         renderItem={(item) => item}
       />

@@ -5,8 +5,10 @@ import { useRegistration } from '../context/RegistrationContext';
 import { X, Check } from 'lucide-react-native';
 import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'react-native-linear-gradient';
+import { useTranslation } from 'react-i18next';
 
 export default function SummaryScreen() {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const { data, resetData } = useRegistration();
   const navigation = useNavigation();
@@ -27,9 +29,9 @@ export default function SummaryScreen() {
     } catch (error) {
       console.error('Registration failed:', error);
       Alert.alert(
-        'Registration Failed',
-        'There was an error completing your registration. Please try again.',
-        [{ text: 'OK' }]
+        t('common.registrationFailed'),
+        t('errors.tryAgain'),
+        [{ text: t('common.ok') }]
       );
     } finally {
       setIsLoading(false);
@@ -41,7 +43,7 @@ export default function SummaryScreen() {
   };
 
   const calculateAge = () => {
-    if (!data.dateOfBirth) {return 'N/A';}
+    if (!data.dateOfBirth) {return t('common.na');}
     const today = new Date();
     const birthDate = new Date(data.dateOfBirth.year, data.dateOfBirth.month - 1, data.dateOfBirth.day);
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -53,11 +55,11 @@ export default function SummaryScreen() {
   };
 
   const getTrainingFrequencyShort = () => {
-    if (!data.trainingFrequency) {return 'N/A';}
+    if (!data.trainingFrequency) {return t('common.na');}
     if (data.trainingFrequency.includes('3-5')) {return '3-5';}
     if (data.trainingFrequency.includes('5-7')) {return '5-7';}
     if (data.trainingFrequency.includes('+7')) {return '+7';}
-    return 'N/A';
+    return t('common.na');
   };
 
   return (
@@ -73,7 +75,7 @@ export default function SummaryScreen() {
       </View>
 
       {/* Title */}
-      <Text style={styles.title}>Ready to Play!</Text>
+      <Text style={styles.title}>{t('registration.readyToPlay')}</Text>
 
       {/* Main Card */}
       <View style={styles.cardContainer}>
@@ -92,50 +94,50 @@ export default function SummaryScreen() {
               </View>
             </View>
 
-            <Text style={styles.username}>{data.username || 'Player'}</Text>
-            <Text style={styles.age}>{calculateAge()} Years</Text>
+            <Text style={styles.username}>{data.username || t('registration.username')}</Text>
+            <Text style={styles.age}>{calculateAge()} {t('units.years')}</Text>
           </View>
 
           {/* Info Grid */}
           <View style={styles.infoGrid}>
             <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Weight</Text>
+              <Text style={styles.infoLabel}>{t('summary.weight')}</Text>
               <Text style={styles.infoValue}>
-                {data.physicalData?.height ? `${data.physicalData.height} cm` : 'N/A'}
+                {data.physicalData?.height ? `${data.physicalData.height} ${t('units.cm')}` : t('common.na')}
               </Text>
             </View>
 
             <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Height</Text>
+              <Text style={styles.infoLabel}>{t('summary.height')}</Text>
               <Text style={styles.infoValue}>
-                {data.physicalData?.weight ? `${data.physicalData.weight} kg` : 'N/A'}
+                {data.physicalData?.weight ? `${data.physicalData.weight} ${t('units.kg')}` : t('common.na')}
               </Text>
             </View>
 
             <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Citizenship</Text>
-              <Text style={styles.infoValue}>{data.citizenship || 'N/A'}</Text>
+              <Text style={styles.infoLabel}>{t('registration.citizenship')}</Text>
+              <Text style={styles.infoValue}>{data.citizenship || t('common.na')}</Text>
             </View>
 
             <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Playing Position</Text>
-              <Text style={styles.infoValue}>{data.position || 'N/A'}</Text>
+              <Text style={styles.infoLabel}>{t('summary.playingPosition')}</Text>
+              <Text style={styles.infoValue}>{data.position || t('common.na')}</Text>
             </View>
 
             <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Experience Level</Text>
-              <Text style={styles.infoValue}>{data.experienceLevel || 'N/A'}</Text>
+              <Text style={styles.infoLabel}>{t('registration.experienceLevel')}</Text>
+              <Text style={styles.infoValue}>{data.experienceLevel || t('common.na')}</Text>
             </View>
 
             <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Training Frequency</Text>
+              <Text style={styles.infoLabel}>{t('registration.trainingFrequency')}</Text>
               <Text style={styles.infoValue}>{getTrainingFrequencyShort()}</Text>
             </View>
           </View>
 
           {/* All Set Button */}
           <View style={styles.allSetButton}>
-            <Text style={styles.allSetText}>All set</Text>
+            <Text style={styles.allSetText}>{t('summary.allSet')}</Text>
             <View style={styles.checkIcon}>
               <Check color="#4A90E2" size={16} strokeWidth={3} />
             </View>
@@ -150,7 +152,7 @@ export default function SummaryScreen() {
             {isLoading ? (
               <ActivityIndicator color="#4A90E2" size="small" />
             ) : (
-              <Text style={styles.startButtonText}>Start</Text>
+              <Text style={styles.startButtonText}>{t('common.start')}</Text>
             )}
           </TouchableOpacity>
         </LinearGradient>
@@ -309,3 +311,4 @@ const styles = StyleSheet.create({
     color: '#4A90E2',
   },
 });
+

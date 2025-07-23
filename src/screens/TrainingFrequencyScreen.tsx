@@ -10,40 +10,48 @@ import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
 import { ChevronDown } from 'lucide-react-native';
 import DropdownModal from '../components/modals/DropdownModal';
+import { useTranslation } from 'react-i18next';
 
-type TrainingFrequency = '3-5 sessions per week' | '5-7 sessions per week' | '+7 sessions per week';
+type TrainingFrequency = 'sessions3to5' | 'sessions5to7' | 'sessionsPlus7';
 
 export default function TrainingFrequencyScreen() {
   const [selectedFrequency, setSelectedFrequency] = useState<TrainingFrequency | null>(null);
   const [showModal, setShowModal] = useState(false);
   const { updateData } = useRegistration();
-  const navigattion = useNavigation();
+  const navigation = useNavigation();
+  const { t } = useTranslation();
+
+  // Mapeo para guardar el valor compatible con RegistrationContext y traducido para mostrar
+  const frequencyOptions: { key: TrainingFrequency; label: string; }[] = [
+    { key: 'sessions3to5', label: t('trainingFrequencies.sessions3to5') },
+    { key: 'sessions5to7', label: t('trainingFrequencies.sessions5to7') },
+    { key: 'sessionsPlus7', label: t('trainingFrequencies.sessionsPlus7') },
+  ];
 
   const handleContinue = () => {
     if (!selectedFrequency) {
-      Alert.alert('Error', 'Please select your training frequency');
+      Alert.alert(t('errors.selectTrainingFrequency'), t('errors.selectTrainingFrequency'));
       return;
     }
-
-    updateData({ trainingFrequency: selectedFrequency });
-    (navigattion as any).navigate('ContentLikes');
+    // Guardamos la clave interna que usas en el contexto
+    const frequencyMap = {
+      sessions3to5: '3-5 sessions per week',
+      sessions5to7: '5-7 sessions per week',
+      sessionsPlus7: '+7 sessions per week',
+    };
+    updateData({ trainingFrequency: frequencyMap[selectedFrequency] as any });
+    (navigation as any).navigate('ContentLikes');
   };
 
-  const frequencyOptions: TrainingFrequency[] = [
-    '3-5 sessions per week',
-    '5-7 sessions per week',
-    '+7 sessions per week',
-  ];
-
-  const handleFrequencySelect = (frequency: string) => {
-    setSelectedFrequency(frequency as TrainingFrequency);
+  const handleFrequencySelect = (frequencyKey: TrainingFrequency) => {
+    setSelectedFrequency(frequencyKey);
     setShowModal(false);
   };
 
   return (
     <ScreenLayout currentStep={9} totalSteps={12}>
       <ContentContainer>
-        <ScreenTitle title="Training Frequency" />
+        <ScreenTitle title={t('registration.trainingFrequency')} />
 
         <View style={styles.selectorContainer}>
           <TouchableOpacity
@@ -53,11 +61,13 @@ export default function TrainingFrequencyScreen() {
             ]}
             onPress={() => setShowModal(true)}
           >
-            <Text style={[
-              styles.frequencySelectorText,
-              selectedFrequency && styles.selectedFrequencySelectorText,
-            ]}>
-              {selectedFrequency || 'Select training frequency'}
+            <Text
+              style={[
+                styles.frequencySelectorText,
+                selectedFrequency && styles.selectedFrequencySelectorText,
+              ]}
+            >
+              {selectedFrequency ? t(`trainingFrequencies.${selectedFrequency}`) : t('placeholders.selectFrequency')}
             </Text>
             <ChevronDown color={selectedFrequency ? '#4A90E2' : '#666'} size={20} />
           </TouchableOpacity>
@@ -65,20 +75,17 @@ export default function TrainingFrequencyScreen() {
       </ContentContainer>
 
       <BottomSection>
-        <ContinueButton
-          onPress={handleContinue}
-          disabled={!selectedFrequency}
-        />
-        <HelperText text="It helps us create a training experience that fits you best." />
+        <ContinueButton onPress={handleContinue} disabled={!selectedFrequency} />
+        <HelperText text={t('helperTexts.helperText')} />
       </BottomSection>
 
       <DropdownModal
         visible={showModal}
         onClose={() => setShowModal(false)}
-        title="Select Training Frequency"
-        items={frequencyOptions}
+        title={t('modalTitles.selectTrainingFrequencyTitle')}
+        items={frequencyOptions.map(opt => opt.key)}
         onSelect={handleFrequencySelect}
-        renderItem={(item) => item}
+        renderItem={(item) => t(`trainingFrequencies.${item}`)}
       />
     </ScreenLayout>
   );
