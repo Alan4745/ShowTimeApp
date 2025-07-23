@@ -21,9 +21,9 @@
     "male": "Masculino",
     "female": "Femenino",
     "other": "Otro",
-    "dateOfBirth": "Ingresa tu\nfecha de nacimiento",
+    "dateOfBirth": "Ingresa tu fecha de nacimiento",
     "citizenship": "Ciudadanía",
-    "physicalData": "¿Cuál es tu\nestatura y peso actual?",
+    "physicalData": "¿Cuál es tu estatura y peso actual?",
     "physicalGoal": "Objetivo físico",
     "gainMuscle": "Ganar músculo",
     "loseFat": "Perder grasa",
@@ -33,7 +33,7 @@
     "trainingFrequency": "Frecuencia de entrenamiento",
     "contentLikes": "Contenido que te gusta",
     "notifications": "Habilitar notificaciones",
-    "appDiscovery": "¿Cómo te enteraste\nde la aplicación?",
+    "appDiscovery": "¿Cómo te enteraste de la aplicación?",
     "planSelection": "Selección de plan",
     "readyToPlay": "¡Listo para jugar!",
     "signUpGoogle": "Registrarse con Google",
@@ -97,7 +97,8 @@
     "selectExperienceLevel": "Por favor selecciona tu nivel de experiencia",
     "selectTrainingFrequency": "Por favor selecciona tu frecuencia de entrenamiento",
     "selectContentLikes": "Por favor selecciona al menos un tipo de contenido que te guste",
-    "selectAppDiscovery": "Por favor selecciona cómo te enteraste de la aplicación"
+    "selectAppDiscovery": "Por favor selecciona cómo te enteraste de la aplicación",
+    "fixErrors": "Por favor corrige los errores anteriores antes de continuar"
   },
   "quickSelect": "Selección rápida (Demo):",
   "positions": {

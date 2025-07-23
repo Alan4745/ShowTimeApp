@@ -10,9 +10,11 @@ import PasswordInput from '../components/form/PasswordInput';
 import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
+import { useTranslation } from 'react-i18next';
 
 export default function CreateAccountScreen() {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -44,9 +46,9 @@ export default function CreateAccountScreen() {
     // Email validation
     if (touched.email) {
       if (!email.trim()) {
-        newErrors.email = 'Email is required';
+        newErrors.email = t('errors.emailRequired');
       } else if (!validateEmail(email)) {
-        newErrors.email = 'Please enter a valid email address';
+        newErrors.email = t('errors.invalidEmail');
       } else {
         newErrors.email = '';
       }
@@ -55,9 +57,9 @@ export default function CreateAccountScreen() {
     // Password validation
     if (touched.password) {
       if (!password.trim()) {
-        newErrors.password = 'Password is required';
+        newErrors.password = t('errors.passwordRequired');
       } else if (!validatePassword(password)) {
-        newErrors.password = 'Password must be at least 8 characters long';
+        newErrors.password = t('errors.passwordTooShort');
       } else {
         newErrors.password = '';
       }
@@ -66,16 +68,16 @@ export default function CreateAccountScreen() {
     // Confirm password validation
     if (touched.confirmPassword) {
       if (!confirmPassword.trim()) {
-        newErrors.confirmPassword = 'Please confirm your password';
+        newErrors.confirmPassword = t('errors.confirmPasswordRequired');
       } else if (password !== confirmPassword) {
-        newErrors.confirmPassword = 'Passwords do not match';
+        newErrors.confirmPassword = t('errors.passwordsNotMatch');
       } else {
         newErrors.confirmPassword = '';
       }
     }
 
     setErrors(newErrors);
-  }, [email, password, confirmPassword, touched]);
+  }, [email, password, confirmPassword, touched, t]);
 
   const handleEmailChange = (text: string) => {
     setEmail(text);
@@ -106,12 +108,15 @@ export default function CreateAccountScreen() {
       confirmPassword: true,
     });
 
-    // Check if there are any errors
-    const hasErrors = Object.values(errors).some(error => error !== '') ||
-                     !email.trim() || !password.trim() || !confirmPassword.trim();
+    // Check if there are any errors or empty fields
+    const hasErrors =
+      Object.values(errors).some(error => error !== '') ||
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim();
 
     if (hasErrors) {
-      Alert.alert('Error', 'Please fix the errors above before continuing');
+      Alert.alert(t('common.error') || 'Error', t('errors.fixErrors') || 'Please fix the errors above before continuing');
       return;
     }
 
@@ -124,22 +129,23 @@ export default function CreateAccountScreen() {
     (navigation.navigate as any)({ name: 'Username' });
   };
 
-  const isFormValid = email.trim() &&
-                     password.trim() &&
-                     confirmPassword.trim() &&
-                     !errors.email &&
-                     !errors.password &&
-                     !errors.confirmPassword;
+  const isFormValid =
+    email.trim() &&
+    password.trim() &&
+    confirmPassword.trim() &&
+    !errors.email &&
+    !errors.password &&
+    !errors.confirmPassword;
 
   return (
     <ScreenLayout currentStep={0} totalSteps={6}>
       <ContentContainer>
-        <ScreenTitle title="Create your account" />
+        <ScreenTitle title={t('registration.createAccount')} />
 
         <View style={styles.formContainer}>
           <FormInput
-            label="Email"
-            placeholder="Enter your email"
+            label={t('registration.email')}
+            placeholder={t('placeholders.enterEmail')}
             value={email}
             onChangeText={handleEmailChange}
             keyboardType="email-address"
@@ -149,36 +155,33 @@ export default function CreateAccountScreen() {
           />
 
           <PasswordInput
-            label="Password"
-            placeholder="Create a password"
+            label={t('registration.password')}
+            placeholder={t('placeholders.createPassword')}
             value={password}
             onChangeText={handlePasswordChange}
             error={touched.password ? errors.password : ''}
           />
 
           <PasswordInput
-            label="Confirm Password"
-            placeholder="Confirm your password"
+            label={t('registration.confirmPassword')}
+            placeholder={t('placeholders.confirmYourPassword')}
             value={confirmPassword}
             onChangeText={handleConfirmPasswordChange}
             error={touched.confirmPassword ? errors.confirmPassword : ''}
           />
 
           <HelperText
-            text="Password must be at least 8 characters long"
+            text={t('helperTexts.passwordRequirement')}
             style={styles.passwordRequirements}
           />
         </View>
       </ContentContainer>
 
       <BottomSection>
-        <ContinueButton
-          onPress={handleContinue}
-          disabled={!isFormValid}
-        />
+        <ContinueButton onPress={handleContinue} disabled={!isFormValid} />
 
         <View style={styles.termsContainer}>
-          <HelperText text="By creating an account, you agree to our Terms of Service and Privacy Policy" />
+          <HelperText text={t('helperTexts.termsText')} />
         </View>
       </BottomSection>
     </ScreenLayout>

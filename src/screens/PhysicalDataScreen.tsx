@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Alert, StyleSheet } from 'react-native';
+import {Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { useRegistration } from '../context/RegistrationContext';
 import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
 import ScreenTitle from '../components/common/ScreenTitle';
 import PhysicalDataSelector from '../components/form/PhysicalDataSelector';
-// import QuickSelectGrid from '../components/form/QuickSelectGrid';
 import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
@@ -16,10 +16,11 @@ export default function PhysicalDataScreen() {
   const [height, setHeight] = useState('');
   const { updateData } = useRegistration();
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const handleContinue = () => {
     if (!weight.trim() || !height.trim()) {
-      Alert.alert('Error', 'Please enter both weight and height');
+      Alert.alert(t('common.error'), t('registration.errors.enterPhysicalData'));
       return;
     }
 
@@ -27,12 +28,12 @@ export default function PhysicalDataScreen() {
     const heightNum = parseFloat(height);
 
     if (isNaN(weightNum) || weightNum <= 0 || weightNum > 500) {
-      Alert.alert('Error', 'Please enter a valid weight (1-500 kg)');
+      Alert.alert(t('common.error'), t('registration.errors.validWeight'));
       return;
     }
 
     if (isNaN(heightNum) || heightNum <= 0 || heightNum > 300) {
-      Alert.alert('Error', 'Please enter a valid height (1-300 cm)');
+      Alert.alert(t('common.error'), t('registration.errors.validHeight'));
       return;
     }
 
@@ -45,36 +46,16 @@ export default function PhysicalDataScreen() {
     (navigation as any).navigate('PhysicalGoal');
   };
 
-  // const quickSelectItems = [
-  //   { label: '70kg / 175cm', value: { weight: '70', height: '175' } },
-  //   { label: '65kg / 165cm', value: { weight: '65', height: '165' } },
-  // ];
-
-  // const handleQuickSelect = (value: { weight: string; height: string }) => {
-  //   setWeight(value.weight);
-  //   setHeight(value.height);
-  // };
-
   return (
     <ScreenLayout currentStep={5} totalSteps={6}>
       <ContentContainer>
-        <ScreenTitle title="What is your current Height and Weight?" />
-
-        <View style={styles.selectorContainer}>
-          <PhysicalDataSelector
-            weight={weight}
-            height={height}
-            onWeightChange={setWeight}
-            onHeightChange={setHeight}
-          />
-        </View>
-
-        {/* <QuickSelectGrid
-          title="Quick Select (Demo):"
-          items={quickSelectItems}
-          onSelect={handleQuickSelect}
-          containerStyle={styles.quickSelect}
-        /> */}
+        <ScreenTitle title={t('registration.physicalData')} />
+        <PhysicalDataSelector
+          weight={weight}
+          height={height}
+          onWeightChange={setWeight}
+          onHeightChange={setHeight}
+        />
       </ContentContainer>
 
       <BottomSection>
@@ -82,51 +63,15 @@ export default function PhysicalDataScreen() {
           onPress={handleContinue}
           disabled={!weight.trim() || !height.trim()}
         />
-        <HelperText text="It helps us create a training experience that fits you best." />
+        <HelperText text={t('helperTexts.helperText')} />
       </BottomSection>
     </ScreenLayout>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    gap: 20,
-    paddingHorizontal: 20,
-  },
-  inputGroup: {
-    width: '100%',
-  },
-  inputRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  inputContainer: {
-    flex: 1,
-  },
-  input: {
-    backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: '#333',
-    borderRadius: 25,
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    fontSize: 16,
-    color: '#fff',
-    textAlign: 'left',
-  },
-  unitContainer: {
-    backgroundColor: '#4A90E2',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 25,
-    minWidth: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  unitText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-});
+// const styles = StyleSheet.create({
+//   selectorContainer: {
+//     gap: 20,
+//     paddingHorizontal: 20,
+//   },
+// });

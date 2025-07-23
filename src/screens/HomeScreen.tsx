@@ -5,8 +5,11 @@ import LearnTabScreen from './LearnTabScreen';
 import CoachesTabScreen from './CoachesTabScreen';
 import TabBar from '../components/common/TabBar';
 import AppHeader from '../components/common/AppHeader';
+import { useTranslation } from 'react-i18next';
 
 export default function HomeScreen() {
+  const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState('home');
   const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -30,19 +33,19 @@ export default function HomeScreen() {
   const renderHeader = () => {
     switch (activeTab) {
       case 'home':
-        return <AppHeader title="Home" />;
+        return <AppHeader title={t('common.home')} />;
       case 'learn':
-        return <AppHeader title="Learn" />;
+        return <AppHeader title={t('common.learn')} />;
       case 'coaches':
         return (
           <AppHeader
-            title="Coaches"
+            title={t('common.coaches')}
             userAvatar="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?semt=ais_hybrid&w=740"
             onBookmarkPress={handleBookmarkPress}
           />
         );
       default:
-        return <AppHeader title="Home" />;
+        return <AppHeader title={t('common.home')} />;
     }
   };
 
@@ -67,5 +70,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-

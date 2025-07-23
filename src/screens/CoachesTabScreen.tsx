@@ -2,23 +2,29 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
 import CoachCard from '../components/common/CoachCard';
 import ContentCard from '../components/common/ContentCard';
+import { useTranslation } from 'react-i18next';
 
 const coaches = [
   {
     id: '1',
     name: 'NAME LAST',
-    description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown.',
-    imageUrl: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400',
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.",
+    imageUrl:
+      'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400',
   },
   {
     id: '2',
     name: 'COACH TWO',
-    description: 'Professional football coach with 10+ years of experience in developing young talent and tactical analysis.',
-    imageUrl: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400',
+    description:
+      'Professional football coach with 10+ years of experience in developing young talent and tactical analysis.',
+    imageUrl:
+      'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400',
   },
 ];
 
 export default function CoachesTabScreen() {
+  const { t } = useTranslation();
 
   const handleCoachPress = (coachId: string) => {
     console.log(`Coach ${coachId} pressed`);
@@ -39,11 +45,10 @@ export default function CoachesTabScreen() {
 
   return (
     <View style={styles.container}>
-
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Coaches Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Coaches</Text>
+          <Text style={styles.sectionTitle}>{t('common.coaches')}</Text>
           <FlatList
             data={coaches}
             renderItem={renderCoach}
@@ -56,11 +61,8 @@ export default function CoachesTabScreen() {
 
         {/* Lessons Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Lessons</Text>
-          <ContentCard
-            style={styles.lessonCard}
-            onPress={handleLessonPress}
-          />
+          <Text style={styles.sectionTitle}>{t('homeScreen.lessons')}</Text>
+          <ContentCard style={styles.lessonCard} onPress={handleLessonPress} />
         </View>
       </ScrollView>
     </View>

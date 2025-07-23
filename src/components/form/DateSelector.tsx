@@ -23,14 +23,14 @@ export default function DateSelector({
   const [showMonthModal, setShowMonthModal] = useState(false);
   const [showDayModal, setShowDayModal] = useState(false);
   const [showYearModal, setShowYearModal] = useState(false);
-  
+
   const [monthInput, setMonthInput] = useState('');
   const [dayInput, setDayInput] = useState('');
   const [yearInput, setYearInput] = useState('');
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'July', 'August', 'September', 'October', 'November', 'December',
   ];
 
   // Sync input values with selected values
@@ -51,7 +51,7 @@ export default function DateSelector({
   };
 
   const generateDays = () => {
-    if (!selectedMonth || !selectedYear) return Array.from({ length: 31 }, (_, i) => i + 1);
+    if (!selectedMonth || !selectedYear) {return Array.from({ length: 31 }, (_, i) => i + 1);}
     return Array.from({ length: getDaysInMonth(selectedMonth, selectedYear) }, (_, i) => i + 1);
   };
 
@@ -66,16 +66,16 @@ export default function DateSelector({
 
   const handleMonthInputChange = (text: string) => {
     setMonthInput(text);
-    
+
     if (text === '') {
       onMonthChange(null);
       return;
     }
-    
+
     const month = parseInt(text);
     if (!isNaN(month) && month >= 1 && month <= 12) {
       onMonthChange(month);
-      
+
       // Check if current day is valid for the new month
       if (selectedDay && selectedYear) {
         const maxDays = getDaysInMonth(month, selectedYear);
@@ -90,15 +90,15 @@ export default function DateSelector({
 
   const handleDayInputChange = (text: string) => {
     setDayInput(text);
-    
+
     if (text === '') {
       onDayChange(null);
       return;
     }
-    
+
     const day = parseInt(text);
     const maxDays = selectedMonth && selectedYear ? getDaysInMonth(selectedMonth, selectedYear) : 31;
-    
+
     if (!isNaN(day) && day >= 1 && day <= maxDays) {
       onDayChange(day);
     } else {
@@ -108,18 +108,18 @@ export default function DateSelector({
 
   const handleYearInputChange = (text: string) => {
     setYearInput(text);
-    
+
     if (text === '') {
       onYearChange(null);
       return;
     }
-    
+
     const year = parseInt(text);
     const currentYear = new Date().getFullYear();
-    
+
     if (!isNaN(year) && year >= currentYear - 100 && year <= currentYear - 13) {
       onYearChange(year);
-      
+
       // Check if current day is valid for the new year
       if (selectedDay && selectedMonth) {
         const maxDays = getDaysInMonth(selectedMonth, year);
@@ -136,7 +136,7 @@ export default function DateSelector({
     const monthNumber = months.indexOf(monthName) + 1;
     onMonthChange(monthNumber);
     setShowMonthModal(false);
-    
+
     // Check if current day is valid for the new month
     if (selectedDay && selectedYear) {
       const maxDays = getDaysInMonth(monthNumber, selectedYear);
@@ -154,7 +154,7 @@ export default function DateSelector({
   const handleYearSelect = (year: number) => {
     onYearChange(year);
     setShowYearModal(false);
-    
+
     // Check if current day is valid for the new year
     if (selectedDay && selectedMonth) {
       const maxDays = getDaysInMonth(selectedMonth, year);
@@ -180,7 +180,7 @@ export default function DateSelector({
               keyboardType="numeric"
               maxLength={2}
             />
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.dropdownButton}
               onPress={() => setShowMonthModal(true)}
             >
@@ -205,7 +205,7 @@ export default function DateSelector({
               keyboardType="numeric"
               maxLength={2}
             />
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.dropdownButton}
               onPress={() => setShowDayModal(true)}
             >
@@ -227,7 +227,7 @@ export default function DateSelector({
               keyboardType="numeric"
               maxLength={4}
             />
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.dropdownButton}
               onPress={() => setShowYearModal(true)}
             >

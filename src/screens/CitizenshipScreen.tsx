@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, Alert, StyleSheet } from 'react-native';
 import { ChevronDown } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { useRegistration } from '../context/RegistrationContext';
 import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
 import ScreenTitle from '../components/common/ScreenTitle';
-// import QuickSelectGrid from '../components/form/QuickSelectGrid';
 import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
 import CountryModal from '../components/modals/CountryModal';
 
 export default function CitizenshipScreen() {
+  const { t } = useTranslation();
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [showCountryModal, setShowCountryModal] = useState(false);
   const { updateData } = useRegistration();
@@ -40,13 +41,12 @@ export default function CitizenshipScreen() {
 
   const handleContinue = () => {
     if (!selectedCountry) {
-      Alert.alert('Error', 'Please select your citizenship');
+      Alert.alert(t('errors.selectCitizenship'));
       return;
     }
 
     updateData({ citizenship: selectedCountry });
     (navigation as any).navigate('PhysicalData');
-
   };
 
   const handleCountrySelect = (country: string) => {
@@ -54,14 +54,10 @@ export default function CitizenshipScreen() {
     setShowCountryModal(false);
   };
 
-  // const quickSelectItems = [
-  //   'Argentina', 'Brazil', 'United States', 'Spain', 'Mexico', 'Canada',
-  // ].map(country => ({ label: country, value: country }));
-
   return (
     <ScreenLayout currentStep={4} totalSteps={6}>
       <ContentContainer>
-        <ScreenTitle title="Citizenship" />
+        <ScreenTitle title={t('registration.citizenship')} />
 
         <View style={styles.selectorContainer}>
           <TouchableOpacity
@@ -75,18 +71,11 @@ export default function CitizenshipScreen() {
               styles.countrySelectorText,
               selectedCountry && styles.selectedCountrySelectorText,
             ]}>
-              {selectedCountry || 'Select your citizenship'}
+              {selectedCountry || t('placeholders.selectCitizenshipPlaceholder')}
             </Text>
             <ChevronDown color={selectedCountry ? '#4A90E2' : '#666'} size={20} />
           </TouchableOpacity>
         </View>
-{/*
-        <QuickSelectGrid
-          title="Quick Select (Demo):"
-          items={quickSelectItems}
-          selectedValue={selectedCountry}
-          onSelect={setSelectedCountry}
-        /> */}
       </ContentContainer>
 
       <BottomSection>
@@ -94,7 +83,7 @@ export default function CitizenshipScreen() {
           onPress={handleContinue}
           disabled={!selectedCountry}
         />
-        <HelperText text="It helps us create a training experience that fits you best." />
+        <HelperText text={t('helperTexts.helperText')} />
       </BottomSection>
 
       <CountryModal
@@ -137,9 +126,9 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     fontSize: 20,
-
   },
   selectedCountrySelectorText: {
     color: '#fff',
   },
 });
+

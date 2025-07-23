@@ -12,7 +12,7 @@
     "or": "or"
   },
   "registration": {
-    "createAccount": "Create your\naccount",
+    "createAccount": "Create account",
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm Password",
@@ -21,9 +21,9 @@
     "male": "Male",
     "female": "Female",
     "other": "Other",
-    "dateOfBirth": "Enter your\nDate of birth",
+    "dateOfBirth": "Enter your Date of birth",
     "citizenship": "Citizenship",
-    "physicalData": "What is your current\nHeight and Weight?",
+    "physicalData": "What is your current Height and Weight?",
     "physicalGoal": "Physical Goal",
     "gainMuscle": "Gain muscle",
     "loseFat": "Lose fat",
@@ -93,11 +93,13 @@
     "validWeight": "Please enter a valid weight (1-500 kg)",
     "validHeight": "Please enter a valid height (1-300 cm)",
     "selectPhysicalGoal": "Please select your physical goal",
-    "selectPosition": "Please select your playing position",
-    "selectExperienceLevel": "Please select your experience level",
+    "selectPosition": "Select your position",
+    "selectExperienceLevel": "Select your experience level",
     "selectTrainingFrequency": "Please select your training frequency",
     "selectContentLikes": "Please select at least one content type you like",
-    "selectAppDiscovery": "Please select how you found out about the app"
+    "selectAppDiscovery": "Please select how you found out about the app",
+    "fixErrors": "Please fix the errors above before continuing"
+
   },
   "quickSelect": "Quick Select (Demo):",
   "positions": {

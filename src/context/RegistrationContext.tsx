@@ -1,5 +1,15 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
+// Definimos los valores internos que usaremos como claves para traducción
+export type Position =
+  | 'goalkeeper'
+  | 'defender'
+  | 'centerBack'
+  | 'fullback'
+  | 'midfielder'
+  | 'winger'
+  | 'forward';
+
 export interface RegistrationData {
   email?: string;
   password?: string;
@@ -16,7 +26,7 @@ export interface RegistrationData {
     height: number;
   };
   physicalGoal?: 'Gain muscle' | 'Lose fat' | 'Maintain';
-  position?: 'Goalkeeper' | 'Defender' | 'Center Back' | 'Fullback' | 'Midfielder' | 'Winger' | 'Forward';
+  position?: Position; // ← cambiado aquí
   experienceLevel?: 'High School' | 'Academy' | 'College' | 'Semi-Pro' | 'Lower division Pro';
   trainingFrequency?: '3-5 sessions per week' | '5-7 sessions per week' | '+7 sessions per week';
   contentLikes?: string[];

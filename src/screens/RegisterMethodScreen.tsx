@@ -4,9 +4,12 @@ import { LinearGradient } from 'react-native-linear-gradient';
 import {useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
 import { Image } from 'react-native';
+import { useTranslation } from 'react-i18next';
 export default function RegisterMethodScreen() {
   const { updateData } = useRegistration();
   const navigation = useNavigation();
+  const { t } = useTranslation();
+
 
   const handleGoogleSignUp = () => {
     // Mock Google authentication
@@ -34,7 +37,7 @@ export default function RegisterMethodScreen() {
 
   const handleSignIn = () => {
     console.log('Sign in pressed');
-    // Here you would implement sign in logic
+    // Here would go implement sign in logic
   };
 
   return (
@@ -51,7 +54,7 @@ export default function RegisterMethodScreen() {
                 <Image source={require('../../assets/img/icon/Google.png')} />
               </View>
             </View>
-            <Text style={styles.socialButtonText}>Sign up with Google</Text>
+            <Text style={styles.socialButtonText}>{t('registration.signUpGoogle')}</Text>
           </TouchableOpacity>
 
           {/* Apple Sign Up */}
@@ -59,7 +62,7 @@ export default function RegisterMethodScreen() {
             <View style={styles.iconContainer}>
               <Image source={require('../../assets/img/icon/Apple_Icon.png')} />
             </View>
-            <Text style={styles.socialButtonText}>Sign up with Apple</Text>
+            <Text style={styles.socialButtonText}>{t('registration.signUpApple')}</Text>
           </TouchableOpacity>
 
           {/* Divider */}
@@ -75,29 +78,33 @@ export default function RegisterMethodScreen() {
               colors={['#4A90E2', '#357ABD']}
               style={styles.createAccountButton}
             >
-              <Text style={styles.createAccountText}>Create account</Text>
+              <Text style={styles.createAccountText}>{t('registration.createAccount')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
 
         {/* Bottom section */}
         <View style={styles.bottomSection}>
-          <Text style={styles.alreadyHaveText}>Already have an account?</Text>
+          <Text style={styles.alreadyHaveText}>{t('registration.alreadyHaveAccount')}</Text>
 
           <TouchableOpacity style={styles.signInButton} onPress={handleSignIn}>
-            <Text style={styles.signInText}>Sign in</Text>
+            <Text style={styles.signInText}>{t('registration.signIn')}</Text>
           </TouchableOpacity>
 
           {/* Terms and Privacy */}
           <View style={styles.termsContainer}>
             <Text style={styles.termsText}>
+              {t('registration.termsAgreement')}
+            </Text>
+            {/* <Text style={styles.termsText}>
+              {t('registration.termsAgreement')}
               By signing up, you agree to the{' '}
               <Text style={styles.linkText}>Terms of Service</Text>
               {' '}and{' '}
               <Text style={styles.linkText}>Privacy Policy</Text>
               , including{' '}
               <Text style={styles.linkText}>Cookie Use</Text>.
-            </Text>
+            </Text> */}
           </View>
         </View>
       </View>

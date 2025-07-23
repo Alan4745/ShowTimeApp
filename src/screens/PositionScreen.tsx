@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, Alert, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
+import { useTranslation } from 'react-i18next';
 import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
 import ScreenTitle from '../components/common/ScreenTitle';
@@ -11,17 +12,25 @@ import HelperText from '../components/common/HelperText';
 import DropdownModal from '../components/modals/DropdownModal';
 import { ChevronDown } from 'lucide-react-native';
 
-type Position = 'Goalkeeper' | 'Defender' | 'Center Back' | 'Fullback' | 'Midfielder' | 'Winger' | 'Forward';
+type Position =
+  | 'goalkeeper'
+  | 'defender'
+  | 'centerBack'
+  | 'fullback'
+  | 'midfielder'
+  | 'winger'
+  | 'forward';
 
 export default function PositionScreen() {
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(null);
+  const { t } = useTranslation();
   const { updateData } = useRegistration();
   const [showModal, setShowModal] = useState(false);
   const navigation = useNavigation();
 
   const handleContinue = () => {
     if (!selectedPosition) {
-      Alert.alert('Error', 'Please select your playing position');
+      Alert.alert(t('errors.selectPosition'), t('errors.selectPosition'));
       return;
     }
 
@@ -30,24 +39,24 @@ export default function PositionScreen() {
   };
 
   const positionOptions: Position[] = [
-    'Goalkeeper',
-    'Defender',
-    'Center Back',
-    'Fullback',
-    'Midfielder',
-    'Winger',
-    'Forward',
+    'goalkeeper',
+    'defender',
+    'centerBack',
+    'fullback',
+    'midfielder',
+    'winger',
+    'forward',
   ];
 
-  const handlePositionSelect = (position: string) => {
-    setSelectedPosition(position as Position);
+  const handlePositionSelect = (position: Position) => {
+    setSelectedPosition(position);
     setShowModal(false);
   };
 
   return (
-     <ScreenLayout currentStep={7} totalSteps={12}>
+    <ScreenLayout currentStep={7} totalSteps={12}>
       <ContentContainer>
-        <ScreenTitle title="Playing Position" />
+        <ScreenTitle title={t('registration.position')} />
 
         <View style={styles.selectorContainer}>
           <TouchableOpacity
@@ -57,11 +66,15 @@ export default function PositionScreen() {
             ]}
             onPress={() => setShowModal(true)}
           >
-            <Text style={[
-              styles.positionSelectorText,
-              selectedPosition && styles.selectedPositionSelectorText,
-            ]}>
-              {selectedPosition || 'Select your position'}
+            <Text
+              style={[
+                styles.positionSelectorText,
+                selectedPosition && styles.selectedPositionSelectorText,
+              ]}
+            >
+              {selectedPosition
+                ? t(`positions.${selectedPosition}`)
+                : t('errors.selectPosition')}
             </Text>
             <ChevronDown color={selectedPosition ? '#4A90E2' : '#666'} size={20} />
           </TouchableOpacity>
@@ -69,20 +82,17 @@ export default function PositionScreen() {
       </ContentContainer>
 
       <BottomSection>
-        <ContinueButton
-          onPress={handleContinue}
-          disabled={!selectedPosition}
-        />
-        <HelperText text="It helps us create a training experience that fits you best." />
+        <ContinueButton onPress={handleContinue} disabled={!selectedPosition} />
+        <HelperText text={t('helperTexts.helperText')} />
       </BottomSection>
 
       <DropdownModal
         visible={showModal}
         onClose={() => setShowModal(false)}
-        title="Select Position"
+        title={t('registration.selectPosition')}
         items={positionOptions}
         onSelect={handlePositionSelect}
-        renderItem={(item) => item}
+        renderItem={(item) => t(`positions.${item}`)}
       />
     </ScreenLayout>
   );

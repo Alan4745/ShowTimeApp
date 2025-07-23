@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 interface PhysicalDataSelectorProps {
   weight: string;
@@ -14,6 +15,8 @@ export default function PhysicalDataSelector({
   onWeightChange,
   onHeightChange,
 }: PhysicalDataSelectorProps) {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       {/* Height Input */}
@@ -22,7 +25,7 @@ export default function PhysicalDataSelector({
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Height"
+              placeholder={t('height')}
               placeholderTextColor="#666"
               value={height}
               onChangeText={onHeightChange}
@@ -31,7 +34,7 @@ export default function PhysicalDataSelector({
             />
           </View>
           <TouchableOpacity style={styles.unitButton}>
-            <Text style={styles.unitText}>cm</Text>
+            <Text style={styles.unitText}>{t('cm')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -42,7 +45,7 @@ export default function PhysicalDataSelector({
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Weight"
+              placeholder={t('weight')}
               placeholderTextColor="#666"
               value={weight}
               onChangeText={onWeightChange}
@@ -51,7 +54,7 @@ export default function PhysicalDataSelector({
             />
           </View>
           <TouchableOpacity style={styles.unitButton}>
-            <Text style={styles.unitText}>kg</Text>
+            <Text style={styles.unitText}>{t('kg')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -101,3 +104,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+

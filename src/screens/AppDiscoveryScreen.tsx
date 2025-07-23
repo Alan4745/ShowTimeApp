@@ -9,23 +9,31 @@ import SelectPicker from '../components/form/SelectPicker';
 import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
+import { useTranslation } from 'react-i18next';
 
-type AppDiscoverySource = 'TikTok' | 'Youtube' | 'Instagram (or Facebook)' | 'Instagram Advertisement' | 'Friends/Family/Coach' | 'App Store Search' | 'Other';
+type AppDiscoverySource =
+  | 'TikTok'
+  | 'Youtube'
+  | 'Instagram (or Facebook)'
+  | 'Instagram Advertisement'
+  | 'Friends/Family/Coach'
+  | 'App Store Search'
+  | 'Other';
 
 export default function AppDiscoveryScreen() {
   const [selectedSource, setSelectedSource] = useState<AppDiscoverySource | null>(null);
   const { updateData } = useRegistration();
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const handleContinue = () => {
     if (!selectedSource) {
-      Alert.alert('Error', 'Please select how you found out about the app');
+      Alert.alert(t('errors.selectAppDiscovery'));
       return;
     }
-
     updateData({ appDiscoverySource: selectedSource } as RegistrationData);
     (navigation as any).navigate('Notifications');
-};
+  };
 
   const discoveryOptions: AppDiscoverySource[] = [
     'TikTok',
@@ -37,6 +45,12 @@ export default function AppDiscoveryScreen() {
     'Other',
   ];
 
+  // Aquí para mostrar las opciones traducidas
+  const translatedOptions = discoveryOptions.map(option => ({
+    value: option,
+    label: t(`appDiscoverySources.${option.toLowerCase().replace(/[ ()]/g, '').replace('/', '')}`) || option,
+  }));
+
   const handleSourceSelect = (source: string) => {
     setSelectedSource(source as AppDiscoverySource);
   };
@@ -44,13 +58,13 @@ export default function AppDiscoveryScreen() {
   return (
     <ScreenLayout currentStep={12} totalSteps={14}>
       <ContentContainer>
-        <ScreenTitle title="How did you find out about the app?" />
+        <ScreenTitle title={t('registration.appDiscovery')} />
 
         <View style={styles.selectorContainer}>
           <SelectPicker
             label=""
-            placeholder="Select discovery source"
-            options={discoveryOptions}
+            placeholder={t('placeholders.selectDiscoverySource')}
+            options={translatedOptions}
             selectedValue={selectedSource}
             onSelect={handleSourceSelect}
           />
@@ -58,11 +72,8 @@ export default function AppDiscoveryScreen() {
       </ContentContainer>
 
       <BottomSection>
-        <ContinueButton
-          onPress={handleContinue}
-          disabled={!selectedSource}
-        />
-        <HelperText text="It helps us create a training experience that fits you best." />
+        <ContinueButton onPress={handleContinue} disabled={!selectedSource} />
+        <HelperText text={t('helperTexts.helperText')} />
       </BottomSection>
     </ScreenLayout>
   );
