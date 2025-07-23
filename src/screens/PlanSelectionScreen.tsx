@@ -17,23 +17,23 @@ export default function PlanSelectionScreen() {
   const trainingCategories = [
     {
       icon: <Image source={require('../../assets/img/icon/learn.png')} style={{ width: 22, height: 28, resizeMode: 'contain' }} />,
-      title: t('planSelection.trainingCategories.roleTraining.title'),
-      description: t('planSelection.trainingCategories.roleTraining.description'),
+      title: t('planSelection.training.cardTitle1'),
+      description: t('planSelection.training.cardDescription1'),
     },
     {
       icon: <Image source={require('../../assets/img/icon/apple.png')} style={{ width: 22, height: 28, resizeMode: 'contain' }} />,
-      title: t('planSelection.trainingCategories.smartFuel.title'),
-      description: t('planSelection.trainingCategories.smartFuel.description'),
+      title: t('planSelection.training.cardTitle2'),
+      description: t('planSelection.training.cardDescription2'),
     },
     {
       icon: <Image source={require('../../assets/img/icon/head.png')} style={{ width: 22, height: 28, resizeMode: 'contain' }} />,
-      title: t('planSelection.trainingCategories.mindsetFocus.title'),
-      description: t('planSelection.trainingCategories.mindsetFocus.description'),
+      title: t('planSelection.training.cardTitle3'),
+      description: t('planSelection.training.cardDescription3'),
     },
     {
       icon: <Image source={require('../../assets/img/icon/points.png')} style={{ width: 22, height: 28, resizeMode: 'contain' }} />,
-      title: t('planSelection.trainingCategories.gameIQ.title'),
-      description: t('planSelection.trainingCategories.gameIQ.description'),
+      title: t('planSelection.training.cardTitle4'),
+      description: t('planSelection.training.cardDescription4'),
     },
   ];
 
@@ -42,25 +42,25 @@ export default function PlanSelectionScreen() {
       id: 1,
       name: 'Mateo Seoane',
       avatar: '#',
-      timeAgo: t('planSelection.testimonials.timeAgo.monthsAgo', { count: 3 }),
+      timeAgo: t('testimonials.cards.timeAgo1'),
       rating: 5,
-      text: t('planSelection.testimonials.mateo.text'),
+      text: t('testimonials.cards.text1'),
     },
     {
       id: 2,
       name: 'Carlos Rodriguez',
       avatar: '#',
-      timeAgo: t('planSelection.testimonials.timeAgo.monthAgo', { count: 1 }),
+      timeAgo: t('testimonials.cards.timeAgo2'),
       rating: 5,
-      text: t('planSelection.testimonials.carlos.text'),
+      text: t('testimonials.cards.text2'),
     },
     {
       id: 3,
       name: 'Sofia Martinez',
       avatar: '#',
-      timeAgo: t('planSelection.testimonials.timeAgo.weeksAgo', { count: 2 }),
+      timeAgo: t('testimonials.cards.timeAgo3'),
       rating: 5,
-      text: t('planSelection.testimonials.sofia.text'),
+      text: t('testimonials.cards.text3'),
     },
   ];
 
@@ -101,11 +101,11 @@ export default function PlanSelectionScreen() {
   };
 
   const featuresList = [
-    t('planSelection.features.previewAllSections'),
-    t('planSelection.features.accessAllContent'),
-    t('planSelection.features.mindsetMotivation'),
-    t('planSelection.features.directChatCoaches'),
-    t('planSelection.features.customPlans'),
+    t('plans.featureList.previewAllSections'),
+    t('plans.featureList.accessAllContent'),
+    t('plans.featureList.mindsetMotivation'),
+    t('plans.featureList.directChatCoaches'),
+    t('plans.featureList.customPlans'),
   ];
 
   return (
@@ -121,18 +121,18 @@ export default function PlanSelectionScreen() {
                     <X color="#fff" size={24} />
                   </TouchableOpacity>
                   <View style={styles.headerTitleContainer}>
-                    <Text style={styles.heroTitle}>{t('planSelection.hero.titleLine1')}</Text>
-                    <Text style={styles.heroTitle}>{t('planSelection.hero.titleLine2')}</Text>
-                    <Text style={styles.heroTitle}>{t('planSelection.hero.titleLine3')}</Text>
+                    <Text style={styles.heroTitle}>{t('planSelection.trainSmarter')}</Text>
+                    <Text style={styles.heroTitle}>{t('planSelection.goFurther')}</Text>
+                    <Text style={styles.heroTitle}>{t('planSelection.showtimeUniversity')}</Text>
                   </View>
                 </LinearGradient>
               </View>
               <View style={styles.middleSpacer} />
               <View style={styles.buttonSection}>
                 <TouchableOpacity style={styles.freeTrialButton} onPress={handleFreeTrialPress}>
-                  <Text style={styles.freeTrialText}>{t('planSelection.buttons.startFreeTrial')}</Text>
+                  <Text style={styles.freeTrialText}>{t('planSelection.btnFreeTrial')}</Text>
                 </TouchableOpacity>
-                <Text style={styles.freeTrialSubtext}>{t('planSelection.texts.basicPlanDescription')}</Text>
+                <Text style={styles.freeTrialSubtext}>{t('planSelection.planTextDescription')}</Text>
                 <View style={styles.scrollIndicator}>
                   <ChevronDown color="rgba(255,255,255,0.7)" size={24} />
                 </View>
@@ -167,29 +167,29 @@ export default function PlanSelectionScreen() {
                 <Image source={require('../../assets/img/icon/Coaches.png')} style={{ position: 'absolute', top: '30%', left: '50%', transform: [{ translateX: 1 }, { translateY: -12 }] }} />
                 <Image source={require('../../assets/img/icon/Elipses.png')} style={{ top: '-17%' }} />
               </View>
-              <Text style={styles.coachesTitle}>{t('planSelection.coaches.title')}</Text>
+              <Text style={styles.coachesTitle}>{t('common.coaches')}</Text>
               <View style={styles.coachesFeatures}>
-                <Text style={styles.coachesFeature}>{t('planSelection.coaches.feature1')}</Text>
-                <Text style={styles.coachesFeature}>{t('planSelection.coaches.feature2')}</Text>
-                <Text style={styles.coachesFeature}>{t('planSelection.coaches.feature3')}</Text>
+                <Text style={styles.coachesFeature}>{t('cardCoaches.feature1')}</Text>
+                <Text style={styles.coachesFeature}>{t('cardCoaches.feature2')}</Text>
+                <Text style={styles.coachesFeature}>{t('cardCoaches.feature3')}</Text>
               </View>
               <TouchableOpacity style={styles.premiumButton} onPress={handlePremiumPress}>
-                <Text style={styles.premiumText}>{t('planSelection.buttons.premiumPlan')}</Text>
+                <Text style={styles.premiumText}>{t('cardCoaches.btnPremiumPlan')}</Text>
               </TouchableOpacity>
-              <Text style={styles.premiumPlanSubtext}>{t('planSelection.texts.coachesSubtext')}</Text>
+              <Text style={styles.premiumPlanSubtext}>{t('cardCoaches.footerText')}</Text>
             </View>
           </View>
 
           <View style={styles.plansSection}>
-            <Text style={styles.plansSectionTitle}>{t('planSelection.plansTitle.line1')}</Text>
-            <Text style={styles.plansSectionTitle}>{t('planSelection.plansTitle.line2')}</Text>
+            <Text style={styles.plansSectionTitle}>{t('plans.titleLine1')}</Text>
+            <Text style={styles.plansSectionTitle}>{t('plans.titleLine2')}</Text>
 
             <View style={styles.featuresTable}>
               <View style={styles.featuresHeader}>
-                <Text style={styles.featuresHeaderTextLeft}>{t('planSelection.featuresTable.featureHeader')}</Text>
-                <Text style={styles.featuresHeaderText}>{t('planSelection.featuresTable.free')}</Text>
-                <Text style={styles.featuresHeaderText}>{t('planSelection.featuresTable.basic')}</Text>
-                <Text style={styles.featuresHeaderText}>{t('planSelection.featuresTable.premium')}</Text>
+                <Text style={styles.featuresHeaderTextLeft}>{t('plans.featuresTable.featureHeader')}</Text>
+                <Text style={styles.featuresHeaderText}>{t('plans.featuresTable.free')}</Text>
+                <Text style={styles.featuresHeaderText}>{t('plans.featuresTable.basic')}</Text>
+                <Text style={styles.featuresHeaderText}>{t('plans.featuresTable.premium')}</Text>
               </View>
 
               {featuresList.map((feature, index) => (
@@ -213,8 +213,8 @@ export default function PlanSelectionScreen() {
           </View>
 
           <View style={styles.testimonialsSection}>
-            <Text style={styles.testimonialsTitle}>{t('planSelection.testimonials.titleLine1')}</Text>
-            <Text style={styles.testimonialsTitle}>{t('planSelection.testimonials.titleLine2')}</Text>
+            <Text style={styles.testimonialsTitle}>{t('testimonials.titleLine1')}</Text>
+            <Text style={styles.testimonialsTitle}>{t('testimonials.titleLine2')}</Text>
 
             <FlatList
               data={testimonials}
@@ -247,12 +247,12 @@ export default function PlanSelectionScreen() {
           </View>
 
           <View style={styles.bottomSection}>
-            <Text style={styles.bottomText}>{t('planSelection.bottomText.line1')}</Text>
-            <Text style={styles.bottomText}>{t('planSelection.bottomText.line2')}</Text>
-            <Text style={styles.bottomText}>{t('planSelection.bottomText.line3')}</Text>
+            <Text style={styles.bottomText}>{t('bottomText.line1')}</Text>
+            <Text style={styles.bottomText}>{t('bottomText.line2')}</Text>
+            <Text style={styles.bottomText}>{t('bottomText.line3')}</Text>
 
             <TouchableOpacity style={styles.finalTrialButton} onPress={handleFreeTrialPress}>
-              <Text style={styles.finalTrialButtonText}>{t('planSelection.buttons.startFreeTrial')}</Text>
+              <Text style={styles.finalTrialButtonText}>{t('planSelection.btnFreeTrial')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -509,7 +509,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 15,
-    padding: 20,
+    padding: 0,
   },
   featuresHeader: {
     flexDirection: 'row',
@@ -537,9 +537,9 @@ const styles = StyleSheet.create({
   featureRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
     borderRadius: 30,
-    padding: 20,
+    padding: 15,
   },
   featureRowColor: {
     flexDirection: 'row',

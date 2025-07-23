@@ -46,13 +46,32 @@
     "trainSmarter": "ENTRENA MÁS INTELIGENTE,",
     "goFurther": "VE MÁS LEJOS CON",
     "showtimePro": "SHOWTIME PRO",
+    "showtimeUniversity": "SHOWTIME UNIVERSITARIO",
     "startFreeTrial": "Comenzar mi prueba gratuita de 10 días",
+    "btnFreeTrial": "Prueba gratuita solo por 7 días",
+    "planTextDescription": "Sólo una vista previa de lo que ofrecemos.",
     "basicPlan": "Plan Básico | Pruébalo sin riesgo — cancela en cualquier momento",
     "recommendedFor": "Recomendado para",
     "playersReady": "jugadores listos para",
     "takeNextStep": "dar el siguiente paso",
     "voicesOfPlayers": "Voces de",
-    "realPlayers": "Jugadores Reales"
+    "realPlayers": "Jugadores Reales",
+
+    "recommended": {
+      "title1": "Hecho por profesionales",
+      "title2": "para jugadores",
+      "title3": "profesionales."
+    },
+    "training": {
+      "cardTitle1": "Entrenamiento por Rol",
+      "cardDescription1": "Fuerza, movilidad y ejercicios adaptados a tu posición en el campo.",
+      "cardTitle2": "Combustible Inteligente",
+      "cardDescription2": "Consejos de nutrición y recuperación para ayudarte a entrenar más duro y recuperarte más rápido.",
+      "cardTitle3": "Enfoque Mental",
+      "cardDescription3": "Hábitos diarios y herramientas mentales para desarrollar resiliencia, disciplina y motivación.",
+      "cardTitle4": "IQ de Juego",
+      "cardDescription4": "Análisis táctico y desgloses de partidos para agudizar tu inteligencia futbolística."
+    }
   },
   "trainingCategories": {
     "roleTraining": "Entrenamiento por Posición",
@@ -64,6 +83,53 @@
     "gameIQ": "IQ del Juego",
     "gameIQDesc": "Análisis táctico y desglose de partidos para agudizar tu inteligencia futbolística."
   },
+  "cardCoaches": {
+    "feature1": "1. Planes de entrenamiento personalizados creados por entrenadores profesionales de verdad.",
+    "feature2": "2. Acceso directo a chat para preguntas, comentarios y seguimiento de progreso.",
+    "feature3": "3. Llamadas de seguimiento mensuales o revisiones por video para apoyar tu crecimiento.",
+    "btnPremiumPlan": "Plan Premium",
+    "footerText": "Conéctate con entrenadores que trabajan con profesionales todos los días."
+  },
+  "plans": {
+    "titleLine1": "Empieza Gratis, Entrena",
+    "titleLine2": "Más Inteligente, Hazte Profesional",
+
+    "featuresTable": {
+      "featureHeader": "Característica",
+      "free": "Gratis",
+      "basic": "Básico",
+      "premium": "Premium"
+    },
+
+    "featureList": {
+      "previewAllSections": "Vista previa de todas las secciones",
+      "accessAllContent": "Acceso a todo el contenido",
+      "mindsetMotivation": "Mentalidad y motivación",
+      "directChatCoaches": "Chat directo con entrenadores",
+      "customPlans": "Planes personalizados"
+    }
+  },
+
+  "testimonials": {
+    "titleLine1": "Voces de",
+    "titleLine2": "Jugadores Reales",
+
+    "cards": {
+      "timeAgo1": "Hace 3 meses",
+      "text1": "Solía dudar mucho de mí mismo. Las lecciones de mentalidad en esta aplicación me ayudaron a mantenerme enfocado, ganar confianza y disfrutar del juego de nuevo 🧠⚽.",
+      "timeAgo2": "Hace 1 mes",
+      "text2": "Solía dudar mucho de mí mismo. Las lecciones de mentalidad en esta aplicación me ayudaron a mantenerme enfocado, ganar confianza y disfrutar del juego de nuevo 🧠⚽.",
+      "timeAgo3": "Hace 2 meses",
+      "text3": "Solía dudar mucho de mí mismo. Las lecciones de mentalidad en esta aplicación me ayudaron a mantenerme enfocado, ganar confianza y disfrutar del juego de nuevo 🧠⚽."
+    }
+  },
+
+    "bottomText": {
+    "line1": "Puedes cancelar",
+    "line2": "cuando quieras. Sin penalizaciones,",
+    "line3": "ni costos adicionales."
+  },
+
   "homeScreen": {
     "trendingVideos": "Videos en tendencia",
     "training": "Entrenamiento",

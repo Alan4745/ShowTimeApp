@@ -46,13 +46,33 @@
     "trainSmarter": "TRAIN SMARTER,",
     "goFurther": "GO FURTHER WITH",
     "showtimePro": "SHOWTIME PRO",
+    "showtimeUniversity": "SHOWTIME UNIVERSITY",
     "startFreeTrial": "Start My 10-Day Free Trial",
+    "btnFreeTrial": "Free trial 7 days only",
+    "planTextDescription": "Just a preview of what we offer.",
     "basicPlan": "Basic Plan | Try it risk-free — cancel anytime",
     "recommendedFor": "Recommended for",
     "playersReady": "players ready to",
     "takeNextStep": "take the next step",
     "voicesOfPlayers": "Voices of",
-    "realPlayers": "Real Players"
+    "realPlayers": "Real Players",
+
+    "recommended": {
+      "title1": "Made by professionals",
+      "title2": "for professional",
+      "title3": "players."
+    },
+
+    "training": {
+      "cardTitle1": "Role Training",
+      "cardDescription1": "Strength, mobility, and drills tailored to your position on the field.",
+      "cardTitle2": "Smart Fuel",
+      "cardDescription2": "Nutrition and recovery tips to help you train harder and bounce back faster.",
+      "cardTitle3": "Mindset Focus",
+      "cardDescription3": "Daily habits and mental tools to build resilience, discipline, and drive.",
+      "cardTitle4": "Game IQ",
+      "cardDescription4": "Tactical analysis and match breakdowns to sharpen your football intelligence."
+    }
   },
   "trainingCategories": {
     "roleTraining": "Role Training",
@@ -63,6 +83,52 @@
     "mindsetFocusDesc": "Daily habits and mental tools to build resilience, discipline, and drive.",
     "gameIQ": "Game IQ",
     "gameIQDesc": "Tactical analysis and match breakdowns to sharpen your football intelligence."
+  },
+  "cardCoaches": {
+    "feature1": "1. Personalized training plans created by real pro-level coaches.",
+    "feature2": "2. Direct chat access for questions, feedback, and progress tracking.",
+    "feature3": "3. Monthly follow-up calls or video reviews to support your growth.",
+    "btnPremiumPlan": "Premium Plan",
+    "footerText": "Connect with coaches that are working with professionals everyday."
+  },
+
+  "plans": {
+    "titleLine1": "Start Free, Train",
+    "titleLine2": "Smarter, Go Pro",
+
+    "featuresTable": {
+      "featureHeader": "Feature",
+      "free": "Free",
+      "basic": "Basic",
+      "premium": "Premium"
+    },
+
+    "featureList": {
+      "previewAllSections": "Preview all sections",
+      "accessAllContent": "Access to all content",
+      "mindsetMotivation": "Mindset & motivation",
+      "directChatCoaches": "Direct chat with coaches",
+      "customPlans": "Custom Plans"
+    }
+  },
+  "testimonials": {
+    "titleLine1": "Voices of",
+    "titleLine2": "Real Players",
+
+    "cards": {
+      "timeAgo1": "3 Months Ago",
+      "text1": "I used to doubt myself a lot. The mindset lessons in this app helped me stay focused, build confidence, and enjoy the game again 🧠⚽.",
+      "timeAgo2": "1 Months Ago",
+      "text2": "I used to doubt myself a lot. The mindset lessons in this app helped me stay focused, build confidence, and enjoy the game again 🧠⚽.",
+      "timeAgo3": "2 Months Ago",
+      "text3": "I used to doubt myself a lot. The mindset lessons in this app helped me stay focused, build confidence, and enjoy the game again 🧠⚽."
+    }
+  },
+
+  "bottomText": {
+    "line1": "You're free to cancel",
+    "line2": "whenever. No penalties, no",
+    "line3": "extra costs."
   },
   "homeScreen": {
     "trendingVideos": "Trending Videos",
@@ -99,7 +165,6 @@
     "selectContentLikes": "Please select at least one content type you like",
     "selectAppDiscovery": "Please select how you found out about the app",
     "fixErrors": "Please fix the errors above before continuing"
-
   },
   "quickSelect": "Quick Select (Demo):",
   "positions": {

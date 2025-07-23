@@ -34,7 +34,7 @@ export default function PhysicalGoalScreen() {
   return (
     <ScreenLayout currentStep={6} totalSteps={9}>
       <ContentContainer>
-        <ScreenTitle title={t('physicalGoal')} />
+        <ScreenTitle title={t('registration.physicalGoal')} />
 
         <View style={styles.optionsContainer}>
           {goalOptions.map((goal) => (
