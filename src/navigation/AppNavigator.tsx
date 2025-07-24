@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import CustomSplashScreen from '../screens/CustomSplashScreen';
 import RegisterMethodScreen from '../screens/RegisterMethodScreen';
 import CreateAccountScreen from '../screens/CreateAccountScreen';
 import UsernameScreen from '../screens/UsernameScreen';
@@ -18,7 +19,6 @@ import AppDiscoveryScreen from '../screens/AppDiscoveryScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import PlanSelectionScreen from '../screens/PlanSelectionScreen';
 import HomeScreen from '../screens/HomeScreen';
-// import CustomSplashScreen from '../screens/CustomSplashScreen';
 
 const Stack = createStackNavigator();
 
@@ -26,10 +26,10 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="RegisterMethod"
+        initialRouteName="CustomSplash"
         screenOptions={{ headerShown: false }}
       >
-        {/* <Stack.Screen name="CustomSplash" component={CustomSplashScreen} /> */}
+        <Stack.Screen name="CustomSplash" component={CustomSplashScreen} />
         <Stack.Screen name="RegisterMethod" component={RegisterMethodScreen} />
         <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
         <Stack.Screen name="Username" component={UsernameScreen} />
