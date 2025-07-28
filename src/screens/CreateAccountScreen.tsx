@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function CreateAccountScreen() {
   const navigation = useNavigation();
+
   const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

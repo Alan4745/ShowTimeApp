@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 export default function SummaryScreen() {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
-  const { data, resetData } = useRegistration();
+  const { data } = useRegistration();
   const navigation = useNavigation();
 
   const handleFinishRegistration = async () => {
@@ -21,7 +21,7 @@ export default function SummaryScreen() {
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Reset registration data after successful registration
-      resetData();
+      // resetData();
 
       // Navigate to home/dashboard
       (navigation as any).navigate('Home');

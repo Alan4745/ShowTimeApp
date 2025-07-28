@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import { LinearGradient } from 'react-native-linear-gradient';
-import {useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
 import { Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function RegisterMethodScreen() {
   const { updateData } = useRegistration();
   const navigation = useNavigation();
@@ -37,8 +38,12 @@ export default function RegisterMethodScreen() {
 
   const handleSignIn = () => {
     console.log('Sign in pressed');
+    (navigation.navigate as any)({ name: 'LoginScreen' });
     // Here would go implement sign in logic
   };
+  useEffect(() => {
+    AsyncStorage.removeItem('token');
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

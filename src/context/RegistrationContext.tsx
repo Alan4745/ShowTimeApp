@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { registrationAPI } from '../services/auth/auth.service';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Definimos los valores internos que usaremos como claves para traducción
 export type Position =
@@ -41,9 +43,14 @@ export interface RegistrationData {
   authMethod?: 'google' | 'apple' | 'email';
 }
 
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
 interface RegistrationContextType {
   data: RegistrationData;
-  updateData: (newData: Partial<RegistrationData>) => void;
+  updateData: (newData: Partial<RegistrationData>, sendData?: boolean) => void;
   resetData: () => void;
 }
 
@@ -52,12 +59,33 @@ const RegistrationContext = createContext<RegistrationContextType | undefined>(u
 export function RegistrationProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<RegistrationData>({});
 
-  const updateData = (newData: Partial<RegistrationData>) => {
+  const updateData = async (newData: Partial<RegistrationData>, sendData?: boolean) => {
     setData(prev => ({ ...prev, ...newData }));
+    if (sendData) {
+      await registerDataApi(newData);
+    }
+  };
+
+  const registerDataApi = async (newData: Partial<RegistrationData>) => {
+    const dataRegistration = {
+      ...data,
+      ...newData,
+      name: data.username,
+      weight: data.physicalData?.weight,
+      height: data.physicalData?.height,
+      birthdate: data.dateOfBirth
+        ? new Date(data.dateOfBirth.year, data.dateOfBirth.month - 1, data.dateOfBirth.day)
+        : undefined,
+    };
+
+    const response = await registrationAPI(dataRegistration);
+    if(response){
+      await AsyncStorage.setItem('token', response.token);
+    }
   };
 
   const resetData = () => {
-    setData({});
+    // setData({});
   };
 
   return (

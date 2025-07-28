@@ -18,6 +18,7 @@ import AppDiscoveryScreen from '../screens/AppDiscoveryScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import PlanSelectionScreen from '../screens/PlanSelectionScreen';
 import HomeScreen from '../screens/HomeScreen';
+import LoginScreen from '../screens/LoginScreen';
 // import CustomSplashScreen from '../screens/CustomSplashScreen';
 
 const Stack = createStackNavigator();
@@ -30,6 +31,7 @@ export default function AppNavigator() {
         screenOptions={{ headerShown: false }}
       >
         {/* <Stack.Screen name="CustomSplash" component={CustomSplashScreen} /> */}
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="RegisterMethod" component={RegisterMethodScreen} />
         <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
         <Stack.Screen name="Username" component={UsernameScreen} />

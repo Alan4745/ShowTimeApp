@@ -18,7 +18,7 @@ export default function NotificationsScreen() {
   const { t } = useTranslation();
 
   const handleContinue = () => {
-    updateData({ notificationsEnabled: notificationsEnabled } as RegistrationData);
+    updateData({ notificationsEnabled: notificationsEnabled } as RegistrationData, true);
     (navigation as any).navigate('PlanSelection');
   };
 

@@ -35,21 +35,47 @@ export default function AppDiscoveryScreen() {
     (navigation as any).navigate('Notifications');
   };
 
-  const discoveryOptions: AppDiscoverySource[] = [
-    'TikTok',
-    'Youtube',
-    'Instagram (or Facebook)',
-    'Instagram Advertisement',
-    'Friends/Family/Coach',
-    'App Store Search',
-    'Other',
-  ];
+  // const discoveryOptions: AppDiscoverySource[] = [
+  //   'TikTok',
+  //   'Youtube',
+  //   'Instagram (or Facebook)',
+  //   'Instagram Advertisement',
+  //   'Friends/Family/Coach',
+  //   'App Store Search',
+  //   'Other',
+  // ];
 
   // Aquí para mostrar las opciones traducidas
-  const translatedOptions = discoveryOptions.map(option => ({
-    value: option,
-    label: t(`appDiscoverySources.${option.toLowerCase().replace(/[ ()]/g, '').replace('/', '')}`) || option,
-  }));
+  const translatedOptions = [
+    {
+      value: 'TikTok',
+      label: t('appDiscoverySources.tiktok'),
+    },
+    {
+      value: 'Youtube',
+      label: t('appDiscoverySources.youtube'),
+    },
+    {
+      value: 'Instagram (or Facebook)',
+      label: t('appDiscoverySources.instagram'),
+    },
+    {
+      value: 'Instagram Advertisement',
+      label: t('appDiscoverySources.instagramAd'),
+    },
+    {
+      value: 'Friends/Family/Coach',
+      label: t('appDiscoverySources.friendsFamily'),
+    },
+    {
+      value: 'App Store Search',
+      label: t('appDiscoverySources.appStore'),
+    },
+    {
+      value: 'Other',
+      label: t('appDiscoverySources.otherSource'),
+    },
+  ];
 
   const handleSourceSelect = (source: string) => {
     setSelectedSource(source as AppDiscoverySource);
