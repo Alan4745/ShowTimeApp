@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, {createContext, useContext, useState, ReactNode} from 'react';
 
 // Definimos los valores internos que usaremos como claves para traducción
 export type Position =
@@ -27,11 +27,26 @@ export interface RegistrationData {
   };
   physicalGoal?: 'Gain muscle' | 'Lose fat' | 'Maintain';
   position?: Position; // ← cambiado aquí
-  experienceLevel?: 'High School' | 'Academy' | 'College' | 'Semi-Pro' | 'Lower division Pro';
-  trainingFrequency?: '3-5 sessions per week' | '5-7 sessions per week' | '+7 sessions per week';
+  experienceLevel?:
+    | 'High School'
+    | 'Academy'
+    | 'College'
+    | 'Semi-Pro'
+    | 'Lower division Pro';
+  trainingFrequency?:
+    | '3-5 sessions per week'
+    | '5-7 sessions per week'
+    | '+7 sessions per week';
   contentLikes?: string[];
   notificationsEnabled?: boolean;
-  appDiscoverySource?: 'TikTok' | 'Youtube' | 'Instagram (or Facebook)' | 'Instagram Advertisement' | 'Friends/Family/Coach' | 'App Store Search' | 'Other';
+  appDiscoverySource?:
+    | 'TikTok'
+    | 'Youtube'
+    | 'Instagram (or Facebook)'
+    | 'Instagram Advertisement'
+    | 'Friends/Family/Coach'
+    | 'App Store Search'
+    | 'Other';
   selectedPlan?: {
     id: string;
     title: string;
@@ -47,13 +62,15 @@ interface RegistrationContextType {
   resetData: () => void;
 }
 
-const RegistrationContext = createContext<RegistrationContextType | undefined>(undefined);
+const RegistrationContext = createContext<RegistrationContextType | undefined>(
+  undefined,
+);
 
-export function RegistrationProvider({ children }: { children: ReactNode }) {
+export function RegistrationProvider({children}: {children: ReactNode}) {
   const [data, setData] = useState<RegistrationData>({});
 
   const updateData = (newData: Partial<RegistrationData>) => {
-    setData(prev => ({ ...prev, ...newData }));
+    setData(prev => ({...prev, ...newData}));
   };
 
   const resetData = () => {
@@ -61,7 +78,7 @@ export function RegistrationProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <RegistrationContext.Provider value={{ data, updateData, resetData }}>
+    <RegistrationContext.Provider value={{data, updateData, resetData}}>
       {children}
     </RegistrationContext.Provider>
   );
@@ -70,7 +87,9 @@ export function RegistrationProvider({ children }: { children: ReactNode }) {
 export function useRegistration() {
   const context = useContext(RegistrationContext);
   if (context === undefined) {
-    throw new Error('useRegistration must be used within a RegistrationProvider');
+    throw new Error(
+      'useRegistration must be used within a RegistrationProvider',
+    );
   }
   return context;
 }
