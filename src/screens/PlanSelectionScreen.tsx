@@ -50,7 +50,7 @@ export default function PlanSelectionScreen() {
       id: 2,
       name: 'Carlos Rodriguez',
       avatar: '#',
-      timeAgo: t('planSelection.testimonials.timeAgo.monthAgo', { count: 1 }),
+      timeAgo: t('planSelection.testimonials.timeAgo.monthsAgo', { count: 1 }),
       rating: 5,
       text: t('planSelection.testimonials.carlos.text'),
     },
@@ -255,7 +255,7 @@ export default function PlanSelectionScreen() {
               <Text style={styles.finalTrialButtonText}>{t('planSelection.buttons.startFreeTrial')}</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </View>        
       </ScrollView>
     </View>
   );

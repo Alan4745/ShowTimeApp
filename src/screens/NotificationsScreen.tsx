@@ -5,10 +5,11 @@ import { RegistrationData, useRegistration } from '../context/RegistrationContex
 import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
 import ScreenTitle from '../components/common/ScreenTitle';
-import ToggleButton from '../components/form/ToggleButton';
+//import ToggleButton from '../components/form/ToggleButton';
 import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
+import DualButtonSelector from '../components/form/DualButtonSelector';
 import { useTranslation } from 'react-i18next';
 
 export default function NotificationsScreen() {
@@ -32,7 +33,7 @@ export default function NotificationsScreen() {
         <ScreenTitle title={t('registration.notifications')} />
 
         <View style={styles.toggleContainer}>
-          <ToggleButton
+          {/* <ToggleButton
             leftOption={t('common.no')}
             rightOption={t('common.yes')}
             selectedOption={
@@ -43,7 +44,19 @@ export default function NotificationsScreen() {
                 : t('common.no')
             }
             onSelect={handleToggleSelect}
-          />
+          /> */}
+          <DualButtonSelector
+            leftOption={t('common.no')}
+            rightOption={t('common.yes')}
+            selectedOption={
+              notificationsEnabled === null
+                ? null
+                : notificationsEnabled
+                ? t('common.yes')
+                : t('common.no')
+            }
+            onSelect={handleToggleSelect}
+          />  
         </View>
       </ContentContainer>
 

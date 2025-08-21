@@ -44,6 +44,7 @@ export default function TabBar({ activeTab, onTabPress }: TabBarProps) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000',
+    marginBottom: 10,
   },
   tabBar: {
     flexDirection: 'row',

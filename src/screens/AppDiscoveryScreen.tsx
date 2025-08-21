@@ -45,11 +45,28 @@ export default function AppDiscoveryScreen() {
     'Other',
   ];
 
-  // Aquí para mostrar las opciones traducidas
-  const translatedOptions = discoveryOptions.map(option => ({
-    value: option,
-    label: t(`appDiscoverySources.${option.toLowerCase().replace(/[ ()]/g, '').replace('/', '')}`) || option,
-  }));
+// Mapeo explícito de cada opción a su clave de traducción
+const discoveryTranslationKeys: Record<AppDiscoverySource, string> = {
+  'TikTok': 'tiktok',
+  'Youtube': 'youtube',
+  'Instagram (or Facebook)': 'instagramOrFacebook',
+  'Instagram Advertisement': 'instagramAdvertisement',
+  'Friends/Family/Coach': 'friendsFamilyCoach',
+  'App Store Search': 'appStoreSearch',
+  'Other': 'otherSource',
+};
+
+// //Aquí para mostrar las opciones traducidas
+// const translatedOptions = discoveryOptions.map(option => ({
+//   value: option,
+//   label: t(`appDiscoverySources.${option.toLowerCase().replace(/[ ()]/g, '').replace('/', '')}`) || option,
+// }));
+
+// Mapeamos a objetos con `value` y `label` traducido
+const translatedOptions = discoveryOptions.map(option => ({
+  value: option,
+  label: t(`appDiscoverySources.${discoveryTranslationKeys[option]}`) || option,
+}));
 
   const handleSourceSelect = (source: string) => {
     setSelectedSource(source as AppDiscoverySource);

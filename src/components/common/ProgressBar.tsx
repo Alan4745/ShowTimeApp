@@ -27,20 +27,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 55,
     paddingHorizontal: 20,
     paddingVertical: 20,
     gap: 8,
   },
   step: {
     flex: 1,
-    height: 4,
-    borderRadius: 2,
+    height: 12,
+    borderRadius: 30,
     maxWidth: 60,
   },
   activeStep: {
-    backgroundColor: '#4A90E2',
+    backgroundColor: '#2B80BE',
   },
   inactiveStep: {
-    backgroundColor: '#333',
+    backgroundColor: '#FFFFFF',
   },
 });

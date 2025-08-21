@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     lineHeight: 26, // 100% line height
     color: '#fff',
     textAlign: 'center',
+    marginTop: 10,
     marginBottom: 60,
   },
 });

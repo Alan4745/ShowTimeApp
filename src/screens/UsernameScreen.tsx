@@ -34,7 +34,7 @@ export default function UsernameScreen() {
 
   return (
     <ScreenLayout currentStep={1} totalSteps={6} style={styles.titleFont}>
-      <ContentContainer>
+      <ContentContainer>        
         <ScreenTitle title={t('registration.username')} />
         <FormInput
           placeholder={t('placeholders.chooseUsername')}
@@ -46,12 +46,12 @@ export default function UsernameScreen() {
         />
       </ContentContainer>
 
-      <BottomSection>
+      <BottomSection >
         <ContinueButton
           onPress={handleContinue}
           disabled={!username.trim()}
         />
-        <HelperText text={t('helperTexts.helperText')} />
+        <HelperText text={t('helperTexts.helperText')}/>
       </BottomSection>
     </ScreenLayout>
   );
@@ -62,6 +62,6 @@ const styles = StyleSheet.create({
     fontFamily: 'AnonymousPro-Regular',
     fontSize: 24,
     lineHeight: 33,
-  },
+  }, 
 });
 

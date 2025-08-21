@@ -10,7 +10,7 @@ interface ContentContainerProps {
 export default function ContentContainer({
   children,
   style,
-  centered = true,
+  centered = false,
 }: ContentContainerProps) {
   return (
     <View style={[
@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 24,
+    marginTop: 20,
   },
   centered: {
     justifyContent: 'center',

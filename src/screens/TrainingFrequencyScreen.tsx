@@ -69,7 +69,7 @@ export default function TrainingFrequencyScreen() {
             >
               {selectedFrequency ? t(`trainingFrequencies.${selectedFrequency}`) : t('placeholders.selectFrequency')}
             </Text>
-            <ChevronDown color={selectedFrequency ? '#4A90E2' : '#666'} size={20} />
+            <ChevronDown color={selectedFrequency ? '#FFFFFF' : '#929292'} size={20} />
           </TouchableOpacity>
         </View>
       </ContentContainer>
@@ -98,8 +98,8 @@ const styles = StyleSheet.create({
   },
   frequencySelector: {
     backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: '#333',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
     borderRadius: 25,
     paddingVertical: 16,
     paddingHorizontal: 20,
@@ -109,19 +109,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   selectedFrequencySelector: {
-    borderColor: '#4A90E2',
-    backgroundColor: 'rgba(74, 144, 226, 0.1)',
+    borderColor: '#2B80BE',
+    backgroundColor: '#2B80BE',
   },
   frequencySelectorText: {
     fontFamily: 'AnonymousPro-Regular',
     fontWeight: '400',
     lineHeight: 20,
-    color: '#666',
+    color: '#929292',
     flex: 1,
     textAlign: 'center',
     fontSize: 20,
   },
   selectedFrequencySelectorText: {
-    color: '#fff',
+    color: '#FFFFFF',
   },
 });

@@ -21,21 +21,21 @@
     "male": "Male",
     "female": "Female",
     "other": "Other",
-    "dateOfBirth": "Enter your Date of birth",
+    "dateOfBirth": "Date of birth",
     "citizenship": "Citizenship",
-    "physicalData": "What is your current Height and Weight?",
-    "physicalGoal": "Physical Goal",
+    "physicalData": "What is your current height and weight?",
+    "physicalGoal": "Physical goal",
     "gainMuscle": "Gain muscle",
     "loseFat": "Lose fat",
     "maintain": "Maintain",
-    "position": "Playing Position",
-    "experienceLevel": "Experience Level",
-    "trainingFrequency": "Training Frequency",
+    "position": "Position",
+    "experienceLevel": "Experience",
+    "trainingFrequency": "Training frequency",
     "contentLikes": "Content You Like",
     "notifications": "Enable notifications",
     "appDiscovery": "How did you find out\nabout the app?",
     "planSelection": "Plan Selection",
-    "readyToPlay": "Ready to Play!",
+    "readyToPlay": "Showtime Student",
     "signUpGoogle": "Sign up with Google",
     "signUpApple": "Sign up with Apple",
     "alreadyHaveAccount": "Already have an account?",
@@ -52,7 +52,85 @@
     "playersReady": "players ready to",
     "takeNextStep": "take the next step",
     "voicesOfPlayers": "Voices of",
-    "realPlayers": "Real Players"
+    "realPlayers": "Real Players",
+    "bottomText":{
+      "line1":"You're free to cancel",
+      "line2":"whenever. No penalties, no",
+      "line3":"extra costs."
+    },
+    "buttons":{
+      "startFreeTrial": "Free 7 day trial",
+      "premiumPlan": "Premium Plan"
+    },
+    "coaches":{
+      "title": "COACHES",
+      "feature1": "Personalized training plans created by real pro-level coaches.",
+      "feature2": "Direct chat access for questions, feedback, and progress tracking",
+      "feature3": "Monthly follow-up calls or video reviews to support your growth"
+    },
+    "features": {
+      "previewAllSections": "Preview all sections",
+      "accessAllContent": "Access all content",
+      "mindsetMotivation": "Mindset & motivation",
+      "directChatCoaches": "Direct chat with coaches",
+      "customPlans": "Custom Plans"
+    },
+    "featuresTable":{
+      "featureHeader": "Feature",
+      "free": "Free",
+      "basic": "Basic",
+      "premium": "Premium"
+    },    
+    "hero":{
+      "titleLine1": "TRAIN SMARTER,",
+      "titleLine2": "GO FURTHER WITH",
+      "titleLine3": "SHOWTIME UNIVERSITY"
+    },
+    "plansTitle":{
+      "line1": "Start free, train",
+      "line2": "smarter, go pro"
+    },  
+    "recommended":{
+      "title1": "Made by professionals",
+      "title2": "for professional",
+      "title3": "players."
+    },
+    "testimonials":{
+      "titleLine1":"Testimonials",
+      "titleLine2":"",
+      "timeAgo":{
+        "monthsAgo_one": "{{count}} month ago",
+        "monthsAgo_other": "{{count}} months ago",
+        "weeksAgo_one": "{{count}} week ago",
+        "weeksAgo_other": "{{count}} weeks ago"
+      },
+      "mateo":{
+        "text": "I used to doubt myself a lot. The mindset lessons in this app helped me stay focused, build confidence, and enjoy the game again 🧠⚽"
+      }
+    },  
+    "texts":{
+      "basicPlanDescription": "Just a preview of what we offer",
+      "coachesSubtext": "Connect with coaches who work with professionals everday."
+    },    
+    "trainingCategories":{
+      "roleTraining":{
+        "title": "Role Train",
+        "description": "Strenght, mobility and drills tailored to your position on the field"
+      },
+      "smartFuel":{
+        "title": "Fuel",
+        "description": "Nutrition and recovery tips to help you train harder and bounce back faster"
+      },
+      "mindsetFocus":{
+        "title": "Focus",
+        "description": "Daily habits and mental tools to build resilience, discipline and drive"
+      },
+      "gameIQ":{
+        "title": "Game IQ",
+        "description": "Tactical analysis and match breakdowns to sharpen your football intelligence"
+      }
+    }
+    
   },
   "trainingCategories": {
     "roleTraining": "Role Training",
@@ -93,8 +171,8 @@
     "validWeight": "Please enter a valid weight (1-500 kg)",
     "validHeight": "Please enter a valid height (1-300 cm)",
     "selectPhysicalGoal": "Please select your physical goal",
-    "selectPosition": "Select your position",
-    "selectExperienceLevel": "Select your experience level",
+    "selectPosition": "Select",
+    "selectExperienceLevel": "Select",
     "selectTrainingFrequency": "Please select your training frequency",
     "selectContentLikes": "Please select at least one content type you like",
     "selectAppDiscovery": "Please select how you found out about the app",
@@ -144,10 +222,10 @@
   "appDiscoverySources": {
     "tiktok": "TikTok",
     "youtube": "Youtube",
-    "instagram": "Instagram (or Facebook)",
-    "instagramAd": "Instagram Advertisement",
-    "friendsFamily": "Friends/Family/Coach",
-    "appStore": "App Store Search",
+    "instagramOrFacebook": "Instagram (or Facebook)",
+    "instagramAdvertisement": "Instagram Advertisement",
+    "friendsFamilyCoach": "Friends/Family/Coach",
+    "appStoreSearch": "App Store Search",
     "otherSource": "Other"
   },
   "summary": {
@@ -159,6 +237,8 @@
   "units": {
     "cm": "cm",
     "kg": "kg",
+    "lb": "lb",
+    "ft": "ft",
     "years": "Years"
   },
   "months": {
@@ -179,12 +259,12 @@
     "enterEmail": "Enter your email",
     "createPassword": "Create a password",
     "confirmYourPassword": "Confirm your password",
-    "chooseUsername": "Choose a username",
-    "selectCitizenshipPlaceholder": "Select your citizenship",
+    "chooseUsername": "Create username",
+    "selectCitizenshipPlaceholder": "Select",
     "selectPosition": "Select your position",
     "selectLevel": "Select your level",
-    "selectFrequency": "Select training frequency",
-    "selectDiscoverySource": "Select discovery source",
+    "selectFrequency": "Select",
+    "selectDiscoverySource": "Select",
     "searchCountries": "Search countries..."
   },
   "modalTitles": {
@@ -192,11 +272,45 @@
     "selectDay": "Select Day",
     "selectYear": "Select Year",
     "selectPositionTitle": "Select Position",
-    "selectExperienceLevelTitle": "Select Experience Level",
-    "selectTrainingFrequencyTitle": "Select Training Frequency",
+    "selectExperienceLevelTitle": "Experience Level",
+    "selectTrainingFrequencyTitle": "Training Frequency",
     "selectCitizenshipTitle": "Select Citizenship"
   },
   "splash": {
     "splashFooter": "© 2025 | Where talent meets opportunity | USA"
-  }
+  },
+  "subscription":{
+    "title": "Subscribe",
+    "basic":{
+      "title": "Basic",
+      "description": "Access the program’s core features and get an inside look at the life of a professional athlete.",
+      "features":[
+        "Chat directly with Darwin and view his posts, workouts and routines.",
+        "Join live calls with guest speakers and connect with current coaches, scouts and agents.",
+        "View member activity on Showtime’s feed."
+      ],
+      "button": "Starting at $49"      
+    },
+    "premium":{
+      "title": "Premium",
+      "description": "Expand your network and receive valuable feedback by engaging with members and coaches on Showtime's feed.\n\nPlan your workouts by saving coache's posts directly on Showtime's feed.\n\n Gain aditional access to:",
+      "features":[
+        "Workouts designed by professional coaches",
+        "In-person events (showcases, ID camps)"        
+      ],
+      "button": "Starting at $99"      
+    },
+    "elite":{
+      "title": "Elite",
+      "description": "Full package:",
+      "features":[
+        "all of basic",
+        "all of premium",
+        "unlock personalized 1:1 guidance" ,
+        "chat with coaches",
+        "opportunity to send highlights to agents if coaches believe you are ready"
+      ],
+      "button": "Starting at $149"      
+    }
+  }  
 }

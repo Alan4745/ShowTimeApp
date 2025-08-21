@@ -53,7 +53,7 @@ export default function SelectPicker({
           {selectedLabel}
         </Text>
         <ChevronDown
-          color={selectedValue ? '#4A90E2' : '#666'}
+          color={selectedValue ? '#FFFFFF' : '#929292'}
           size={20}
         />
       </TouchableOpacity>
@@ -61,7 +61,7 @@ export default function SelectPicker({
       <DropdownModal
         visible={showModal}
         onClose={() => setShowModal(false)}
-        title={`Select ${label}`}
+        title={``}
         items={options.map(opt => opt.label)}
         onSelect={handleSelect}
         renderItem={(item) => item}
@@ -80,14 +80,13 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: '700',
     lineHeight: 26,
-    color: '#fff',
-    marginBottom: 12,
+    color: '#fff',    
     textAlign: 'center',
   },
   selector: {
     backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: '#333',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
     borderRadius: 25,
     paddingVertical: 16,
     paddingHorizontal: 20,
@@ -97,19 +96,19 @@ const styles = StyleSheet.create({
     minHeight: 56,
   },
   selectedSelector: {
-    borderColor: '#4A90E2',
-    backgroundColor: 'rgba(74, 144, 226, 0.1)',
+    borderColor: '#2B80BE',
+    backgroundColor: '#2B80BE',
   },
   selectorText: {
     fontFamily: 'AnonymousPro-Regular',
     fontSize: 20,
     fontWeight: '400',
     lineHeight: 20,
-    color: '#666',
+    color: '#929292',
     flex: 1,
     textAlign: 'center',
   },
   selectedSelectorText: {
-    color: '#fff',
+    color: '#FFFFFF',
   },
 });

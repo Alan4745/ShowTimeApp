@@ -35,7 +35,7 @@
     "notifications": "Habilitar notificaciones",
     "appDiscovery": "¿Cómo te enteraste de la aplicación?",
     "planSelection": "Selección de plan",
-    "readyToPlay": "¡Listo para jugar!",
+    "readyToPlay": "Estudiante de Showtime",
     "signUpGoogle": "Registrarse con Google",
     "signUpApple": "Registrarse con Apple",
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
@@ -52,7 +52,62 @@
     "playersReady": "jugadores listos para",
     "takeNextStep": "dar el siguiente paso",
     "voicesOfPlayers": "Voces de",
-    "realPlayers": "Jugadores Reales"
+    "realPlayers": "Jugadores Reales",
+    "bottomText":{
+      "line1":"Puedes cancelar en cualquier",
+      "line2":"momento. Sin penalidades, sin",
+      "line3":"costos extra."
+    },
+    "buttons":{
+      "startFreeTrial": "Prueba de 7 días gratis",
+      "premiumPlan": "Plan Premium"
+    },
+    "coaches":{
+      "title": "ENTRENADORES",
+      "feature1": "Planes de entrenamiento personalizados creados por entrenadores profesionales.",
+      "feature2": "Acceso directo por chat para preguntas, comentarios y seguimiento del progreso.",
+      "feature3": "Llamadas de seguimiento mensuales o revisiones en video para apoyar tu crecimiento."
+    },
+    "features": {
+      "previewAllSections": "Vista previa de todas las secciones",
+      "accessAllContent": "Acceso a todo el contenido",
+      "mindsetMotivation": "Estado mental & motivación",
+      "directChatCoaches": "Chat directo con los entrenadores.",
+      "customPlans": "Planes personalizados"
+    },
+    "featuresTable":{
+      "featureHeader": "Característica",
+      "free": "Gratis",
+      "basic": "Basico",
+      "premium": "Premium"
+    },    
+    "hero":{
+      "titleLine1": "ENTRENA MÁS INTELIGENTE,",
+      "titleLine2": "VE MÁS LEJOS CON",
+      "titleLine3": "SHOWTIME UNIVERSITY"
+    },
+    "plansTitle":{
+      "line1": "Empieza gratis, entrena",
+      "line2": "más inteligente, hazte profesional"
+    },  
+    "recommended":{
+      "title1": "Hecho por profesionales",
+      "title2": "para jugadores",
+      "title3": "profesionales."
+    },
+    "testimonials":{
+      "titleLine1":"Testimonios",
+      "titleLine2":"",
+      "timeAgo":{
+        "monthsAgo_one": "Hace {{count}} mes",
+        "monthsAgo_other": "Hace {{count}} meses",
+        "weeksAgo_one": "Hace {{count}} semana",
+        "weeksAgo_other": "Hace {{count}} semanas"
+      },
+      "mateo":{
+        "text": "Solía dudar mucho de mí mismo. Las lecciones de estado mental en esta app me ayudaron a mantenerme enfocado, ganar confianza y volver a disfrutar del juego.  🧠⚽"
+      }
+    }
   },
   "trainingCategories": {
     "roleTraining": "Entrenamiento por Posición",
@@ -158,7 +213,9 @@
   "units": {
     "cm": "cm",
     "kg": "kg",
-    "years": "Años"
+    "years": "Años",
+    "lb": "lb",
+    "ft": "ft"
   },
   "months": {
     "january": "Enero",
@@ -197,5 +254,39 @@
   },
   "splash": {
     "splashFooter": "© 2025 | Donde el talento encuentra oportunidad | USA"
+  },
+  "subscription":{
+    "title": "Suscribete",
+    "basic":{
+      "title": "Básico",
+      "description": "Accede a las funciones clave del programa y conoce desde dentro la vida de un atleta profesional.",
+      "features":[
+        "habla directamente con Darwin y accede a sus publicaciones, entrenamientos y rutinas.",
+        "participa en sesiones en vivo con expertos invitados y establece contacto con entrenadores, cazatalentos y representantes.",
+        "visualiza la actividad de los miembros en el feed de Showtime."
+      ],
+      "button": "A partir de $49"      
+    },
+    "premium":{
+      "title": "Premium",
+      "description": "Expande tu red y recibe retroalimentación valiosa interactuando con miembros y entrenadores en el feed de Showtime.\n\nPlanifica tus entrenamientos guardando las publicaciones de los entrenadores directamente en el feed de Showtime.\n\n Obtén acceso adicional a:",
+      "features":[
+        "entrenamientos diseñados por entrenadores profesionales",
+        "eventos presenciales (exhibiciones y campamentos de reclutamiento)"        
+      ],
+      "button": "A partir de $99"      
+    },
+    "elite":{
+      "title": "Élite",
+      "description": "Paquete completo:",
+      "features":[
+        "incluye todo lo básico",
+        "incluye todo lo premium",
+        "accede a orientación personalizada 1:1" ,
+        "chatea con entrenadores",
+        "oportunidad de enviar videos destacados a agentes si los entrenadores consideran que estás listo"
+      ],
+      "button": "A partir de $149"      
+    }
   }
 }

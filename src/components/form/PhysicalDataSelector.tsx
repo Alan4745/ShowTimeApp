@@ -19,27 +19,7 @@ export default function PhysicalDataSelector({
 
   return (
     <View style={styles.container}>
-      {/* Height Input */}
-      <View style={styles.inputGroup}>
-        <View style={styles.inputRow}>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder={t('height')}
-              placeholderTextColor="#666"
-              value={height}
-              onChangeText={onHeightChange}
-              keyboardType="numeric"
-              maxLength={3}
-            />
-          </View>
-          <TouchableOpacity style={styles.unitButton}>
-            <Text style={styles.unitText}>{t('cm')}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Weight Input */}
+{/* Weight Input */}
       <View style={styles.inputGroup}>
         <View style={styles.inputRow}>
           <View style={styles.inputContainer}>
@@ -54,10 +34,30 @@ export default function PhysicalDataSelector({
             />
           </View>
           <TouchableOpacity style={styles.unitButton}>
-            <Text style={styles.unitText}>{t('kg')}</Text>
+            <Text style={styles.unitText}>{t('units.lb')}</Text>
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Height Input */}
+      <View style={styles.inputGroup}>
+        <View style={styles.inputRow}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder={t('height')}
+              placeholderTextColor="#929292"
+              value={height}
+              onChangeText={onHeightChange}
+              keyboardType="numeric"
+              maxLength={3}
+            />
+          </View>
+          <TouchableOpacity style={styles.unitButton}>
+            <Text style={styles.unitText}>{t('units.ft')}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>      
     </View>
   );
 }
@@ -80,28 +80,29 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: '#333',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
     borderRadius: 25,
-    paddingVertical: 16,
+    paddingVertical: 11,
     paddingHorizontal: 20,
-    fontSize: 16,
-    color: '#fff',
-    textAlign: 'left',
+    fontSize: 20,
+    fontWeight: "400",
+    color: '#FFFFFF',
+    textAlign: 'center',
   },
   unitButton: {
-    backgroundColor: '#4A90E2',
+    backgroundColor: '#2B80BE',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 25,
-    minWidth: 60,
+    minWidth: 110,
     alignItems: 'center',
     justifyContent: 'center',
   },
   unitText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: '400',
   },
 });
 

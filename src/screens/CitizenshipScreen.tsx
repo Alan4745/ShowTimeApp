@@ -73,7 +73,7 @@ export default function CitizenshipScreen() {
             ]}>
               {selectedCountry || t('placeholders.selectCitizenshipPlaceholder')}
             </Text>
-            <ChevronDown color={selectedCountry ? '#4A90E2' : '#666'} size={20} />
+            <ChevronDown color={selectedCountry ? '#FFFFFF' : '#FFFFFF'} size={20} />
           </TouchableOpacity>
         </View>
       </ContentContainer>
@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
   },
   countrySelector: {
     backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: '#333',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
     borderRadius: 25,
     paddingVertical: 16,
     paddingHorizontal: 20,
@@ -116,19 +116,20 @@ const styles = StyleSheet.create({
   },
   selectedCountrySelector: {
     borderColor: '#4A90E2',
-    backgroundColor: 'rgba(74, 144, 226, 0.1)',
+    backgroundColor: '#4A90E2',
   },
   countrySelectorText: {
     fontFamily: 'AnonymousPro-Regular',
-    fontWeight: '400',
+    fontWeight: '600',
     lineHeight: 20,
-    color: '#666',
+    color: '#FFFFFF',
     flex: 1,
     textAlign: 'center',
     fontSize: 20,
   },
   selectedCountrySelectorText: {
-    color: '#fff',
+    color: '#FFFFFF',
+    fontWeight: "600",
   },
 });
 

@@ -169,12 +169,12 @@ export default function DateSelector({
       <View style={styles.selectorsContainer}>
         {/* Month Selector */}
         <View style={styles.selectorGroup}>
-          <Text style={styles.selectorLabel}>Month</Text>
+          {/* <Text style={styles.selectorLabel}>Month</Text> */}
           <View style={styles.inputContainer}>
             <TextInput
               style={[styles.textInput, selectedMonth && styles.selectedInput]}
-              placeholder="MM"
-              placeholderTextColor="#666"
+              placeholder="Month"
+              placeholderTextColor="#FFFFFF"
               value={monthInput}
               onChangeText={handleMonthInputChange}
               keyboardType="numeric"
@@ -184,7 +184,7 @@ export default function DateSelector({
               style={styles.dropdownButton}
               onPress={() => setShowMonthModal(true)}
             >
-              <ChevronDown color="#666" size={16} />
+              <ChevronDown color="#FFFFFF" size={16} />
             </TouchableOpacity>
           </View>
           {selectedMonth && (
@@ -194,12 +194,12 @@ export default function DateSelector({
 
         {/* Day Selector */}
         <View style={styles.selectorGroup}>
-          <Text style={styles.selectorLabel}>Day</Text>
+          {/* <Text style={styles.selectorLabel}>Day</Text> */}
           <View style={styles.inputContainer}>
             <TextInput
               style={[styles.textInput, selectedDay && styles.selectedInput]}
-              placeholder="DD"
-              placeholderTextColor="#666"
+              placeholder="Day"
+              placeholderTextColor="#FFFFFF"
               value={dayInput}
               onChangeText={handleDayInputChange}
               keyboardType="numeric"
@@ -209,19 +209,19 @@ export default function DateSelector({
               style={styles.dropdownButton}
               onPress={() => setShowDayModal(true)}
             >
-              <ChevronDown color="#666" size={16} />
+              <ChevronDown color="#FFFFFF" size={16} />
             </TouchableOpacity>
           </View>
         </View>
 
         {/* Year Selector */}
         <View style={styles.selectorGroup}>
-          <Text style={styles.selectorLabel}>Year</Text>
+          {/* <Text style={styles.selectorLabel}>Year</Text> */}
           <View style={styles.inputContainer}>
             <TextInput
               style={[styles.textInput, selectedYear && styles.selectedInput]}
-              placeholder="YYYY"
-              placeholderTextColor="#666"
+              placeholder="Year"
+              placeholderTextColor="#FFFFFF"
               value={yearInput}
               onChangeText={handleYearInputChange}
               keyboardType="numeric"
@@ -231,7 +231,7 @@ export default function DateSelector({
               style={styles.dropdownButton}
               onPress={() => setShowYearModal(true)}
             >
-              <ChevronDown color="#666" size={16} />
+              <ChevronDown color="#FFFFFF" size={16} />
             </TouchableOpacity>
           </View>
         </View>
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
   },
   selectorLabel: {
     fontSize: 14,
-    color: '#666',
+    color: '#FFFFFF',
     marginBottom: 8,
     fontWeight: '500',
   },
@@ -293,20 +293,20 @@ const styles = StyleSheet.create({
   },
   textInput: {
     backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: '#333',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
     borderRadius: 20,
     paddingVertical: 12,
     paddingHorizontal: 16,
     paddingRight: 40,
     fontSize: 16,
-    color: '#fff',
+    color: '#FFFFFF',
     textAlign: 'center',
     minWidth: 80,
   },
   selectedInput: {
-    borderColor: '#4A90E2',
-    backgroundColor: 'rgba(74, 144, 226, 0.1)',
+    borderColor: '#2B80BE',
+    backgroundColor: '#2B80BE',
   },
   dropdownButton: {
     position: 'absolute',
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
   },
   selectedText: {
     fontSize: 12,
-    color: '#4A90E2',
+    color: '#FFFFFF',
     marginTop: 4,
     textAlign: 'center',
   },

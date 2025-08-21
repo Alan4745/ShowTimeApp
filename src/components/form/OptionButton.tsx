@@ -39,25 +39,25 @@ export default function OptionButton({
 const styles = StyleSheet.create({
   button: {
     backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: '#333',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
     borderRadius: 25,
-    paddingVertical: 16,
-    paddingHorizontal: 40,
+    paddingVertical: 14,
+    paddingHorizontal: 15,
     alignItems: 'center',
   },
   selectedButton: {
-    backgroundColor: '#4A90E2',
-    borderColor: '#4A90E2',
+    backgroundColor: '#2B80BE',
+    borderColor: '#2B80be',
   },
   text: {
     fontFamily: 'AnonymousPro-Regular',
     fontSize: 20,
     fontWeight: '400',
     lineHeight: 20,
-    color: '#fff',
+    color: '#929292',
   },
   selectedText: {
-    color: '#fff',
+    color: '#FFFFFF',
   },
 });

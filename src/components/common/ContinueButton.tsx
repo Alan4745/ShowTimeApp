@@ -24,27 +24,28 @@ export default function ContinueButton({
       onPress={onPress}
       disabled={disabled}
     >
-      <Text style={styles.buttonText}>{buttonTitle}</Text>
+      <Text style={[styles.buttonText, disabled && styles.disabledButton]}>{buttonTitle}</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#4A90E2',
+    backgroundColor: '#fff',
     paddingVertical: 16,
     borderRadius: 25,
     width: '100%',
     alignItems: 'center',
   },
   disabledButton: {
-    backgroundColor: '#333',
+    backgroundColor: '#2B80BE',
+    color:"#FFFFFF"
   },
   buttonText: {
     fontFamily: 'AnonymousPro-Regular',
     fontSize: 20,
-    fontWeight: '400',
+    fontWeight: '700',
     lineHeight: 20,
-    color: '#fff',
-  },
+    color: '#2B80BE',  }
+
 });

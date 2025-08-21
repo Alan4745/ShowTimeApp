@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '400',
     lineHeight: 16,
-    color: '#666',
+    color: '#FFFFFF',
     textAlign: 'center',
     paddingHorizontal: 20,
   },

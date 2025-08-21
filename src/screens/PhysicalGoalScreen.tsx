@@ -30,23 +30,38 @@ export default function PhysicalGoalScreen() {
   };
 
   const goalOptions: PhysicalGoal[] = ['Gain muscle', 'Lose fat', 'Maintain'];
+  const firstRowGoals = goalOptions.slice(0, 2); // ['Gain muscle', 'Lose fat']
+  const secondRowGoals = goalOptions.slice(2);   // ['Maintain']
+
 
   return (
     <ScreenLayout currentStep={6} totalSteps={9}>
       <ContentContainer>
-        <ScreenTitle title={t('physicalGoal')} />
-
+        <ScreenTitle title={t('registration.physicalGoal')} />
         <View style={styles.optionsContainer}>
-          {goalOptions.map((goal) => (
+          <View style={styles.row}>
+          {firstRowGoals.map((goal) => (
             <OptionButton
               key={goal}
               title={t(goal)}
               selected={selectedGoal === goal}
               onPress={() => setSelectedGoal(goal)}
-              style={styles.optionButton}
+              style={styles.optionButtonHalf}
             />
           ))}
-        </View>
+          </View>
+          <View style={styles.rowCenter}>
+            {secondRowGoals.map((goal) => (
+              <OptionButton
+                key={goal}
+                title={t(goal)}
+                selected={selectedGoal === goal}
+                onPress={() => setSelectedGoal(goal)}
+                style={styles.optionButtonHalf}
+              />
+            ))}
+          </View>
+        </View>        
       </ContentContainer>
 
       <BottomSection>
@@ -63,10 +78,19 @@ export default function PhysicalGoalScreen() {
 const styles = StyleSheet.create({
   optionsContainer: {
     gap: 16,
-    alignItems: 'center',
   },
-  optionButton: {
-    width: '80%',
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  rowCenter: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  optionButtonHalf: {
+    width: '46%',
   },
 });
+
 

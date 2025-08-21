@@ -76,7 +76,7 @@ export default function PositionScreen() {
                 ? t(`positions.${selectedPosition}`)
                 : t('errors.selectPosition')}
             </Text>
-            <ChevronDown color={selectedPosition ? '#4A90E2' : '#666'} size={20} />
+            <ChevronDown color={selectedPosition ? '#FFFFFF' : '#929292'} size={20} />
           </TouchableOpacity>
         </View>
       </ContentContainer>
@@ -89,7 +89,7 @@ export default function PositionScreen() {
       <DropdownModal
         visible={showModal}
         onClose={() => setShowModal(false)}
-        title={t('registration.selectPosition')}
+        title={t('registration.position')}
         items={positionOptions}
         onSelect={handlePositionSelect}
         renderItem={(item) => t(`positions.${item}`)}
@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
   },
   positionSelector: {
     backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: '#333',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
     borderRadius: 25,
     paddingVertical: 16,
     paddingHorizontal: 20,
@@ -116,19 +116,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   selectedPositionSelector: {
-    borderColor: '#4A90E2',
-    backgroundColor: 'rgba(74, 144, 226, 0.1)',
+    borderColor: '#2B80BE',
+    backgroundColor: '#2B80BE',
   },
   positionSelectorText: {
     fontFamily: 'AnonymousPro-Regular',
     fontWeight: '400',
     lineHeight: 20,
-    color: '#666',
+    color: '#929292',
     flex: 1,
     textAlign: 'center',
     fontSize: 20,
   },
   selectedPositionSelectorText: {
-    color: '#fff',
+    color: '#FFFFFF',
   },
 });
