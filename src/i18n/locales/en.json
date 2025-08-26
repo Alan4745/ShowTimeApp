@@ -279,6 +279,17 @@
   "splash": {
     "splashFooter": "© 2025 | Where talent meets opportunity | USA"
   },
+  "carousel":{
+    "text":{
+      "line1": "Train like a pro.",
+      "line2": "Play like a star."
+    },
+    "buttons":{
+      "getStarted": "Get Started",
+      "accessAccount": "Access Account"
+    },
+    "footerText": "© 2025 | Showtime University | USA"
+  },
   "subscription":{
     "title": "Subscribe",
     "basic":{

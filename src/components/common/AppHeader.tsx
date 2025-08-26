@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 20,
     backgroundColor: '#000',
+    marginTop: 20,
   },
   leftSection: {
     width: 40,

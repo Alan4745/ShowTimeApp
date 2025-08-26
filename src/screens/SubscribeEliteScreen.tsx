@@ -1,5 +1,4 @@
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import SubscriptionLayout from "../components/common/SubscriptionLayout";
@@ -8,29 +7,12 @@ import ContentContainer from "../components/common/ContentContainer";
 import ScreenTitle from "../components/common/ScreenTitle";
 import BottomSection from '../components/common/BottomSection';
 
-import HomeTabScreen from './HomeTabScreen';
-import LearnTabScreen from './LearnTabScreen';
-import CoachesTabScreen from './CoachesTabScreen';
-
-import AppHeader from '../components/common/AppHeader';
-import TabBar from '../components/common/TabBar';
-
 export default function SubscribeEliteScreen() {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState('subscribe');
 
-  const renderActiveTab = () => {
-    switch (activeTab) {
-      case 'home':
-        return <HomeTabScreen />;
-      case 'learn':
-        return <LearnTabScreen />;
-      case 'coaches':
-        return <CoachesTabScreen />;
-      default:
-        return (
-          <>
-            <ContentContainer>
+  return (
+    <ScreenLayout>
+      <ContentContainer>
               <ScreenTitle title={t('subscription.title')} />
               <SubscriptionLayout planKey="subscription.elite" />
             </ContentContainer>
@@ -41,28 +23,7 @@ export default function SubscribeEliteScreen() {
                   {t('subscription.elite.button')}
                 </Text>
               </TouchableOpacity>
-            </BottomSection>
-          </>
-        );
-    }
-  };
-
-  const renderHeader = () => {
-    switch (activeTab) {
-      case 'home':
-        return <AppHeader title={t('common.home')} />;
-      case 'learn':
-        return <AppHeader title={t('common.learn')} />;
-      case 'coaches':
-        return <AppHeader title={t('common.coaches')} />;      
-    }
-  };
-
-  return (
-    <ScreenLayout>
-      {renderHeader()}
-      {renderActiveTab()}
-      <TabBar activeTab={activeTab} onTabPress={setActiveTab} />
+            </BottomSection>          
     </ScreenLayout>
   );
 }
@@ -74,10 +35,12 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 32,
-    alignItems: 'center',   
+    alignItems: 'center',
+    marginBottom: 10,   
   },
   
   subscribeButtonText: {
+    fontFamily: 'AnonymousPro-Regular',
     color: '#2B80BE',
     fontWeight: '700',
     fontSize: 18,

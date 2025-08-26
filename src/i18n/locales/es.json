@@ -255,6 +255,17 @@
   "splash": {
     "splashFooter": "© 2025 | Donde el talento encuentra oportunidad | USA"
   },
+  "carousel":{
+    "text":{
+      "line1": "Entrena como profesional.",
+      "line2": "Juega como una estrella."
+    },
+    "buttons":{
+      "getStarted": "Empezar",
+      "accessAccount": "Iniciar sesión"
+    },
+    "footerText": "© 2025 | Showtime University | USA"
+  },
   "subscription":{
     "title": "Suscribete",
     "basic":{

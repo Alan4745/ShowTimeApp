@@ -12,7 +12,7 @@ export default function CustomSplashScreen() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      (navigation as any).navigate('RegisterMethod');
+      (navigation as any).navigate('Carousel');
     }, 3000);
 
     return () => clearTimeout(timer);

@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "username": "Pedro30",
+    "userType": "Student",
+    "text": "Sharing today's training session with you all.",
+    "commentsCount": 6,
+    "likesCount": 34
+  },
+  {
+    "id": 2,
+    "username": "Pedro30",
+    "userType": "Student",
+    "text": "Feeling strong after leg day 💪",
+    "commentsCount": 2,
+    "likesCount": 24
+  },
+  {
+    "id": 3,
+    "username": "Pedro30",
+    "userType": "Student",
+    "text": "speed and endurance training",
+    "commentsCount": 9,
+    "likesCount": 26
+  }
+]
+

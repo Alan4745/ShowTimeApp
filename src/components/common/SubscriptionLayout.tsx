@@ -54,12 +54,14 @@ const styles = StyleSheet.create({
   },
 
   titleText:{
+    fontFamily: 'AnonymousPro-Regular',
     fontSize: 22,
     fontWeight: "700",
     color: "#FFFFFF"
   },
 
   descText:{
+    fontFamily: 'AnonymousPro-Regular',
     fontSize: 16,
     fontWeight: "400",
     color: "#FFFFFF",
@@ -67,12 +69,13 @@ const styles = StyleSheet.create({
   },
   
   featureItem: {
-  flexDirection: 'row',
-  alignItems: 'flex-start',
-  marginTop: 2,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 2,
   },
 
   bullet: {
+    fontFamily: 'AnonymousPro-Regular',
     fontSize: 16,
     fontWeight: "400",
     lineHeight: 20,
@@ -82,6 +85,7 @@ const styles = StyleSheet.create({
   },
 
   featureText: {
+    fontFamily: 'AnonymousPro-Regular',
     flex: 1,
     fontSize: 16,
     fontWeight: "400",
