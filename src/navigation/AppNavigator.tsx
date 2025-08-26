@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import CustomSplashScreen from '../screens/CustomSplashScreen';
 import RegisterMethodScreen from '../screens/RegisterMethodScreen';
 import CreateAccountScreen from '../screens/CreateAccountScreen';
@@ -19,6 +19,7 @@ import AppDiscoveryScreen from '../screens/AppDiscoveryScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import PlanSelectionScreen from '../screens/PlanSelectionScreen';
 import HomeScreen from '../screens/HomeScreen';
+import PostUnico from '../screens/PostUnico';
 
 const Stack = createStackNavigator();
 
@@ -26,9 +27,8 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="CustomSplash"
-        screenOptions={{ headerShown: false }}
-      >
+        initialRouteName="Home"
+        screenOptions={{headerShown: false}}>
         <Stack.Screen name="CustomSplash" component={CustomSplashScreen} />
         <Stack.Screen name="RegisterMethod" component={RegisterMethodScreen} />
         <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
@@ -39,14 +39,21 @@ export default function AppNavigator() {
         <Stack.Screen name="PhysicalData" component={PhysicalDataScreen} />
         <Stack.Screen name="PhysicalGoal" component={PhysicalGoalScreen} />
         <Stack.Screen name="Position" component={PositionScreen} />
-        <Stack.Screen name="ExperienceLevel" component={ExperienceLevelScreen} />
-        <Stack.Screen name="TrainingFrequency" component={TrainingFrequencyScreen} />
+        <Stack.Screen
+          name="ExperienceLevel"
+          component={ExperienceLevelScreen}
+        />
+        <Stack.Screen
+          name="TrainingFrequency"
+          component={TrainingFrequencyScreen}
+        />
         <Stack.Screen name="ContentLikes" component={ContentLikesScreen} />
         <Stack.Screen name="Notifications" component={NotificationsScreen} />
         <Stack.Screen name="AppDiscovery" component={AppDiscoveryScreen} />
         <Stack.Screen name="Summary" component={SummaryScreen} />
         <Stack.Screen name="PlanSelection" component={PlanSelectionScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Postid" component={PostUnico} />
       </Stack.Navigator>
     </NavigationContainer>
   );

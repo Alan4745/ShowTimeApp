@@ -1,10 +1,16 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { ChevronDown } from 'lucide-react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+} from 'react-native';
+import {ChevronDown} from 'lucide-react-native';
 import VideoPlayer from '../components/common/VideoPlayer';
+import PostAlan from './PostAlan';
 
 export default function HomeTabScreen() {
-
   const handleVideoPlay = () => {
     console.log('Video play pressed');
   };
@@ -14,31 +20,17 @@ export default function HomeTabScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <PostAlan />
+      <PostAlan />
 
-      <View style={styles.content}>
-        {/* Main Video Section */}
-        <View style={styles.videoSection}>
-          <VideoPlayer
-            thumbnailUrl="https://upload.wikimedia.org/wikipedia/commons/2/2d/2019-05-18_Fu%C3%9Fball%2C_Frauen%2C_UEFA_Women%27s_Champions_League%2C_Olympique_Lyonnais_-_FC_Barcelona_StP_1192_LR10_by_Stepro%28Cropped%29.jpg"
-            onPlay={handleVideoPlay}
-            style={styles.mainVideo}
-          />
-
-          {/* Scroll Down Indicator */}
-          <TouchableOpacity style={styles.scrollIndicator} onPress={handleScrollDown}>
-            <View style={styles.scrollButton}>
-              <ChevronDown color="#fff" size={24} />
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* Trending Videos Section */}
-        <View style={styles.trendingSection}>
-          <Text style={styles.sectionTitle}>Trending Videos</Text>
-        </View>
-      </View>
-    </View>
+      <PostAlan />
+      <PostAlan />
+      <PostAlan />
+      <PostAlan />
+      <PostAlan />
+      <PostAlan />
+    </ScrollView>
   );
 }
 
