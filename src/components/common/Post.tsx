@@ -66,16 +66,9 @@ export default function Post({postsData, commentsData}) {
           data={postsData}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <PostCard post={item} />}
-          scrollEnabled={true} // habilita scroll SOLO dentro del área de posts
+          scrollEnabled={true} 
         />
-      </View>
-
-      {/* Comentarios renderizados todos seguidos (sin FlatList para evitar nested VirtualizedList) */}
-      <View style={{ marginTop: 20 }}>
-        {commentsData.map((comment) => (
-          <CommentCard key={comment.id} comment={comment} />
-        ))}
-      </View>
+      </View>     
     </ScrollView>
   );
 }
