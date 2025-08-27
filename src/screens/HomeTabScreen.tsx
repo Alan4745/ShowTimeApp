@@ -1,43 +1,55 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { ChevronDown } from 'lucide-react-native';
-import VideoPlayer from '../components/common/VideoPlayer';
+import React, {useState, useEffect} from 'react';
+import { View, StyleSheet, TouchableOpacity, Text, FlatList} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Post from '../components/common/Post';
+import SearchBar from '../components/form/SearchBar';
 
-export default function HomeTabScreen() {
+//provisional
+import postsData from '../data/posts.json';
 
-  const handleVideoPlay = () => {
-    console.log('Video play pressed');
-  };
+export default function HomeTabScreen() { 
+  const navigation = useNavigation();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredPosts, setFilteredPosts] = useState(postsData);
 
-  const handleScrollDown = () => {
-    console.log('Scroll down pressed');
-  };
+  useEffect(() => {
+    const query = searchQuery.toLowerCase().trim();
+    setFilteredPosts(
+      query === ''
+        ? postsData
+        : postsData.filter(post => post.text.toLowerCase().includes(query))
+    );
+  }, [searchQuery]);
+
+  const renderItem = ({ item }) => (
+    <>
+      <Post post={item} onPressComments={() => navigation.navigate('StudentPost', { postId: item.id })} />     
+    </> 
+  );
 
   return (
     <View style={styles.container}>
+       <SearchBar
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder={"Search"}        
+      />     
+      <FlatList
+        data={filteredPosts}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        scrollEnabled={true} 
+      /> 
 
-      <View style={styles.content}>
-        {/* Main Video Section */}
-        <View style={styles.videoSection}>
-          <VideoPlayer
-            thumbnailUrl="https://upload.wikimedia.org/wikipedia/commons/2/2d/2019-05-18_Fu%C3%9Fball%2C_Frauen%2C_UEFA_Women%27s_Champions_League%2C_Olympique_Lyonnais_-_FC_Barcelona_StP_1192_LR10_by_Stepro%28Cropped%29.jpg"
-            onPlay={handleVideoPlay}
-            style={styles.mainVideo}
-          />
-
-          {/* Scroll Down Indicator */}
-          <TouchableOpacity style={styles.scrollIndicator} onPress={handleScrollDown}>
-            <View style={styles.scrollButton}>
-              <ChevronDown color="#fff" size={24} />
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* Trending Videos Section */}
-        <View style={styles.trendingSection}>
-          <Text style={styles.sectionTitle}>Trending Videos</Text>
-        </View>
-      </View>
+       <TouchableOpacity
+        style={styles.button}
+          onPress={() => {
+            // acción al presionar el botón, ejemplo:
+            console.log("FAB presionado");
+          }}
+       >
+          <Text style={styles.buttonText}>＋</Text>
+       </TouchableOpacity>  
     </View>
   );
 }
@@ -49,40 +61,30 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-  },
-  videoSection: {
-    flex: 1,
-    position: 'relative',
-  },
-  mainVideo: {
-    flex: 1,
-    margin: 0,
-    borderRadius: 0,
-  },
-  scrollIndicator: {
+  }, 
+  button: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-  },
-  scrollButton: {
-    backgroundColor: '#4A90E2',
-    width: 430,
-    height: 30,
-    alignItems: 'center',
+    right: 20,
+    bottom: 10,
+    backgroundColor: '#2B80BE',
+    width: 73,
+    height: 73,
+    borderRadius: 40,
     justifyContent: 'center',
+    alignItems: 'center',    
+    zIndex: 999,
   },
-  trendingSection: {
-    backgroundColor: '#000',
-    padding: 20,
-    minHeight: 200,
+  buttonText: {
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 30,
+    color: '#FFFFFF',
+    lineHeight: 30,
   },
-  sectionTitle: {
-    fontFamily: 'AnonymousPro-Bold',
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#fff',
-    marginBottom: 20,
-  },
+  noResults:{
+    color: '#999',
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 20,  
+  }
 });

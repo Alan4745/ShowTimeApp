@@ -3,25 +3,44 @@
     "id": 1,
     "username": "Pedro30",
     "userType": "Student",
-    "text": "Sharing today's training session with you all.",
-    "commentsCount": 6,
-    "likesCount": 34
+    "text": "",
+    "media":[
+      {"type": "image", "uri": "https://reactjs.org/logo-og.png"}
+    ],    
+    "commentsCount": 3,
+    "likesCount": 12
   },
   {
     "id": 2,
     "username": "Pedro30",
     "userType": "Student",
-    "text": "Feeling strong after leg day 💪",
-    "commentsCount": 2,
-    "likesCount": 24
+    "text": "",
+    "media":[
+      {"type": "video", "uri": "https://www.w3schools.com/html/mov_bbb.mp4"}
+    ],    
+    "commentsCount": 5,
+    "likesCount": 45
   },
   {
     "id": 3,
     "username": "Pedro30",
     "userType": "Student",
-    "text": "speed and endurance training",
-    "commentsCount": 9,
-    "likesCount": 26
+    "text": "Tips para recuperarse después de entrenar 💪",
+    "media":[
+      {"type": "image", "uri": "https://picsum.photos/200/300"},
+      {"type": "video", "uri": "https://www.w3schools.com/html/movie.mp4"},
+      {"type": "image", "uri": "https://reactjs.org/logo-og.png"}
+    ],     
+    "commentsCount": 2,
+    "likesCount": 18
+  },
+  {
+    "id": 4,
+    "username": "Pedro30",
+    "userType": "Student",
+    "text": "Solo texto hoy, ¡mañana entrenamos fuerte!",
+    "commentsCount": 1,
+    "likesCount": 6
   }
 ]
 

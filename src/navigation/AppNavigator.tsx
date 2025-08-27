@@ -19,6 +19,13 @@ import AppDiscoveryScreen from '../screens/AppDiscoveryScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import PlanSelectionScreen from '../screens/PlanSelectionScreen';
 import HomeScreen from '../screens/HomeScreen';
+import CoachesTabScreen from '../screens/CoachesTabScreen';
+import SubscribeBasicScreen from '../screens/SubscribeBasicScreen';
+import SubscribePremiumScreen from '../screens/SubscribePremiumScreen';
+import SubscribeEliteScreen from '../screens/SubscribeEliteScreen';
+import CarouselScreen from '../screens/CarouselScreen';
+import StudentPostScreen from '../screens/StudentPostScreen';
+//import DebugNavigator from './DebugNavigator';
 
 const Stack = createStackNavigator();
 
@@ -29,7 +36,10 @@ export default function AppNavigator() {
         initialRouteName="CustomSplash"
         screenOptions={{ headerShown: false }}
       >
+        {/* <Stack.Screen name="DebugNavigator" component={DebugNavigator} /> */}
+        <Stack.Screen name="CoachesTabScreen" component={CoachesTabScreen} />
         <Stack.Screen name="CustomSplash" component={CustomSplashScreen} />
+        <Stack.Screen name="Carousel" component={CarouselScreen} />
         <Stack.Screen name="RegisterMethod" component={RegisterMethodScreen} />
         <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
         <Stack.Screen name="Username" component={UsernameScreen} />
@@ -42,11 +52,15 @@ export default function AppNavigator() {
         <Stack.Screen name="ExperienceLevel" component={ExperienceLevelScreen} />
         <Stack.Screen name="TrainingFrequency" component={TrainingFrequencyScreen} />
         <Stack.Screen name="ContentLikes" component={ContentLikesScreen} />
-        <Stack.Screen name="Notifications" component={NotificationsScreen} />
         <Stack.Screen name="AppDiscovery" component={AppDiscoveryScreen} />
+        <Stack.Screen name="Notifications" component={NotificationsScreen} />        
         <Stack.Screen name="Summary" component={SummaryScreen} />
         <Stack.Screen name="PlanSelection" component={PlanSelectionScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />        
+        <Stack.Screen name="SubscribeBasic" component={SubscribeBasicScreen} />        
+        <Stack.Screen name="SubscribePremium" component={SubscribePremiumScreen} />        
+        <Stack.Screen name="SubscribeElite" component={SubscribeEliteScreen} />              
+        <Stack.Screen name="StudentPost" component={StudentPostScreen} />              
       </Stack.Navigator>
     </NavigationContainer>
   );
