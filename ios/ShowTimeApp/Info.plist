@@ -54,5 +54,12 @@
 		<string>AnonymousPro-Italic.ttf</string>
 		<string>AnonymousPro-Regular.ttf</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your media galery.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need your permission to save the media you choosed.</string>
+
 </dict>
 </plist>

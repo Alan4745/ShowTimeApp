@@ -274,7 +274,13 @@
     "selectPositionTitle": "Select Position",
     "selectExperienceLevelTitle": "Experience Level",
     "selectTrainingFrequencyTitle": "Training Frequency",
-    "selectCitizenshipTitle": "Select Citizenship"
+    "selectCitizenshipTitle": "Select Citizenship",
+    "selectCategory": "Select a Category",
+    "buttonOptions":{
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "close": "Close"
+    }
   },
   "splash": {
     "splashFooter": "© 2025 | Where talent meets opportunity | USA"
@@ -323,5 +329,71 @@
       ],
       "button": "Starting at $149"      
     }
-  }  
+  },
+  "publishPost":{
+    "buttons":{
+      "post": "Post",
+      "video": "Video.mp4",
+      "image": "Image.jpg",
+      "text": "Text.pdf"
+    }, 
+    "placeholders":{
+      "textInput": "What's happening ?",
+      "category": "Category"
+    },
+    "categories":{
+      "accomplishments": "Accomplishments",
+      "announcements": "Announcements",
+      "dailyMotivation": "Daily motivation",
+      "highlightTape": "Highlight tape",
+      "introduceYourself": "Introduce yourself",
+      "lifeOfAProfessional": "Life of a professional",
+      "nutrition": "Nutrition",
+      "Training": "Training",
+      "Mindset": "Mindset",
+      "Nutrition": "Nutrition",
+      "Tactics": "Tactics",
+      "GameAnalysis": "Game Analysis",
+      "Strength": "Strength",
+      "Power": "Power",
+      "4WeekProgram": "4 Week Program",
+      "ExerciseLibrary": "Darwin's Exercise Library",
+      "Anxiety": "Anxiety",
+      "GrowthMindset": "Growth Mindset",
+      "ConflictResolution": "Conflict Resolution",
+      "TeamDynamics": "Team Dynamics",
+      "Carbohydrates": "Carbohydrates",
+      "Protein": "Protein",
+      "Fat": "Fat",
+      "SupplementsHydration": "Supplements & Hydration",
+      "NutritionProgram": "4 Week Program",
+      "Finishing": "Finishing",
+      "Technical": "Technical",
+      "PassingDribbling": "Passing & Dribbling",
+      "Defenders": "Defenders",
+      "Forwards": "Forwards",
+      "GeneralAnalysis": "General Analysis",
+      "Interactive": "Interactive",
+      "Midfielders": "Midfielders"
+    },
+    "alertPost":{
+      "title": "Post now ?",
+      "message": "Are you sure you want to post this ?"
+    },
+    "removeAlert":{
+      "title": "Remove File ?",
+      "message": "Do you want to remove this file from the post ?",
+      "optionCancel": "Cancel",
+      "optionRemove": "Remove"
+    },
+    "alerts":{
+      "emptyPost": "Looks like your post is empty. Try adding something!",
+      "pdfError": "An unexpected error occurred while selecting the PDF. Please try again.",
+      "thumbnailError": "An error occurred while generating the thumbnail."
+    },
+    "emptyState": "You haven’t added any media files yet.",
+    "loading": "loading ..."
+
+  }
+   
 }

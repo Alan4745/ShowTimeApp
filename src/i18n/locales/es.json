@@ -250,7 +250,13 @@
     "selectPositionTitle": "Seleccionar posición",
     "selectExperienceLevelTitle": "Seleccionar nivel de experiencia",
     "selectTrainingFrequencyTitle": "Seleccionar frecuencia de entrenamiento",
-    "selectCitizenshipTitle": "Seleccionar ciudadanía"
+    "selectCitizenshipTitle": "Seleccionar ciudadanía",
+    "selectCategory": "Selecionar una categoría",
+    "buttonOptions":{
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
+      "close": "Cerrar"
+    }
   },
   "splash": {
     "splashFooter": "© 2025 | Donde el talento encuentra oportunidad | USA"

@@ -6,13 +6,13 @@ import { useNavigation } from '@react-navigation/native';
 const { width, height } = Dimensions.get('window');
 
 const images = [
-    require('../../assets/img/carousel/carousel1.jpg'),
-    require('../../assets/img/carousel/carousel2.jpg'),
-    require('../../assets/img/carousel/carousel3.jpg'),
-    require('../../assets/img/carousel/carousel4.jpg'),
-    require('../../assets/img/carousel/carousel5.jpg'),
-    require('../../assets/img/carousel/carousel6.jpg'),
-    require('../../assets/img/carousel/carousel7.jpg')
+    require('../../assets/img/carousel/carousel1.png'),
+    require('../../assets/img/carousel/carousel2.png'),
+    require('../../assets/img/carousel/carousel3.png'),
+    require('../../assets/img/carousel/carousel4.png'),
+    require('../../assets/img/carousel/carousel5.png'),
+    require('../../assets/img/carousel/carousel6.png'),
+    require('../../assets/img/carousel/carousel7.png')
 ];
 
 export default function CarouselScreen() {

@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 20,
-    marginRight: 12,
+    marginRight: 10,
     marginTop: 10,
   },
   commentAuthor: {

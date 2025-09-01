@@ -1,6 +1,5 @@
 import React from 'react';
 import { FlatList, View, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import Video from 'react-native-video';
 import { Play } from 'lucide-react-native';
 
 const screenWidth = Dimensions.get('window').width;
@@ -32,27 +31,46 @@ export default function MediaGrid({ media, onMediaPress }) {
 
     if (item.type === 'video') {
       return (
+        <View style={[styles.itemContainer, { width: itemSize, height: itemSize }]}>
+          
+          {/* Aquí mostramos la miniatura en lugar del video */}
+          <Image
+            source={{ uri: item.thumbnail || item.uri }}
+            style={styles.media}
+            resizeMode="cover"
+          />  
+
+          {/* Ícono de reproducción */}
+          <View style={styles.playIconWrapper}>
+            <Play size={32} color="#FFF" />
+          </View>
+
+          {/* Capa táctil que cubre todo */}
+          <TouchableOpacity
+            style={StyleSheet.absoluteFill}
+            onPress={handlePress}
+            activeOpacity={0.9}
+          />
+        </View>
+      );
+    }
+
+    if (item.type === 'pdf') {
+      return (
         <TouchableOpacity
           key={item.id || index}
           onPress={handlePress}
           style={[styles.itemContainer, { width: itemSize, height: itemSize }]}
+          activeOpacity={0.8}
         >
-          <Video
-            source={{ uri: item.uri }}
+          <Image
+            source={{ uri: item.thumbnail || item.uri }}
             style={styles.media}
-            resizeMode="cover"
-            controls={false}
-            paused={true}
-            muted={true}
-            repeat={true}
+            resizeMode="contain"
           />
-          <View style={styles.playIconWrapper}>
-            <Play size={32} color="#FFF" />
-          </View>
         </TouchableOpacity>
       );
     }
-
     return null;
   };
 
@@ -89,8 +107,7 @@ const styles = StyleSheet.create({
     left: '40%',
     backgroundColor: 'rgba(0,0,0,0.4)',
     padding: 10,
-    borderRadius: 20,
-    zIndex: 2,
+    borderRadius: 20,    
   },
 });
 
