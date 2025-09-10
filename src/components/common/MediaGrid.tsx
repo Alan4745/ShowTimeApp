@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, View, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { Play } from 'lucide-react-native';
 
-const screenWidth = Dimensions.get('window').width;
+const screenWidth = Dimensions.get('window').width -20;
 const numColumnsMultiple = 2; // columnas cuando hay varios items
 const paddingBetween = 5;
 
@@ -89,6 +89,7 @@ export default function MediaGrid({ media, onMediaPress }) {
 const styles = StyleSheet.create({
   container: {
     padding: paddingBetween,
+    alignItems: "center",
   },
   itemContainer: {
     margin: paddingBetween / 2,

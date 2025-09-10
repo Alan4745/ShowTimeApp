@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import React from 'react';
-import ContentContainer from '../components/common/ContentContainer';
 import ScreenLayout from '../components/common/ScreenLayout';
 import Post from '../components/common/Post';
 
@@ -32,30 +31,37 @@ export default function StudentPostScreen({route}) {
   
   return (
     <ScreenLayout>
-      <ContentContainer style={styles.container}>
+      <View style={styles.container}>
           <FlatList
-          ListHeaderComponent={<Post post={post} />}
+          ListHeaderComponent={
+            <View style={styles.headerWrapper}>
+              <Post post={post} />
+            </View>
+          }
           data={postComments}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <CommentCard comment={item} />}
           showsVerticalScrollIndicator={false}
           />
-      </ContentContainer>    
+      </View>    
     </ScreenLayout>
         
   )
 }
 
 const styles = StyleSheet.create({
-    container:{
-        backgroundColor: "#000000",
-        paddingTop: 35,
-    },
-    commentHeader:{
+  container:{
+    backgroundColor: "#000000",
+    paddingTop: 35,    
+  },
+  headerWrapper:{
+    marginTop:20,
+  },
+  commentHeader:{
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 8,
-    marginTop: 8   
+    marginTop: 8,   
   },
   avatar: {
     width: 80,

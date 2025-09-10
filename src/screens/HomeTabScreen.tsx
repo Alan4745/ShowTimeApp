@@ -91,6 +91,7 @@ export default function HomeTabScreen() {
         keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
         scrollEnabled={true}
+        contentContainerStyle={{paddingBottom: 100 }}
       />
 
       <TouchableOpacity
@@ -104,7 +105,10 @@ export default function HomeTabScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#000' },
+  container: { 
+    flex: 1, 
+    backgroundColor: '#000',     
+  },
   button: {
     position: 'absolute',
     right: 20,

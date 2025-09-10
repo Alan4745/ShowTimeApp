@@ -1,7 +1,8 @@
 [
   {
     "id": 1,
-    "username": "Pedro30",
+    "username": "Mario",
+    "avatar": "https://randomuser.me/api/portraits/men/15.jpg",
     "userType": "Student",
     "text": "",
     "media":[
@@ -12,23 +13,25 @@
   },
   {
     "id": 2,
-    "username": "Pedro30",
+    "username": "Carlos",
+    "avatar": "https://randomuser.me/api/portraits/men/5.jpg",
     "userType": "Student",
     "text": "",
     "media":[
-      {"type": "video", "uri": "https://www.w3schools.com/html/mov_bbb.mp4"}
+      {"type": "video", "uri": "https://cdn.pixabay.com/video/2017/07/23/10827-226624986_large.mp4"}
     ],    
     "commentsCount": 5,
     "likesCount": 45
   },
   {
     "id": 3,
-    "username": "Pedro30",
+    "username": "Laura",
     "userType": "Student",
+    "avatar": "https://randomuser.me/api/portraits/women/25.jpg",
     "text": "Tips para recuperarse después de entrenar 💪",
     "media":[
       {"type": "image", "uri": "https://picsum.photos/200/300"},
-      {"type": "video", "uri": "https://www.w3schools.com/html/movie.mp4"},
+      {"type": "video", "uri": "https://cdn.pixabay.com/video/2023/07/09/170712-843752822_large.mp4"},
       {"type": "image", "uri": "https://reactjs.org/logo-og.png"}
     ],     
     "commentsCount": 2,
@@ -36,8 +39,9 @@
   },
   {
     "id": 4,
-    "username": "Pedro30",
+    "username": "Ramiro",
     "userType": "Student",
+    "avatar": "https://randomuser.me/api/portraits/men/45.jpg",
     "text": "Solo texto hoy, ¡mañana entrenamos fuerte!",
     "commentsCount": 1,
     "likesCount": 6

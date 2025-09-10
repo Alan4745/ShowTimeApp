@@ -4,8 +4,10 @@ import HomeTabScreen from './HomeTabScreen';
 import LearnTabScreen from './LearnTabScreen';
 import CoachesTabScreen from './CoachesTabScreen';
 import TabBar from '../components/common/TabBar';
-import AppHeader from '../components/common/AppHeader';
+//import AppHeader from '../components/common/AppHeader';
+import AppHeaderNew from '../components/common/AppHeaderNew';
 import { useTranslation } from 'react-i18next';
+import userData from '../data/user.json'
 
 export default function HomeScreen() {
   const { t } = useTranslation();
@@ -30,23 +32,30 @@ export default function HomeScreen() {
     }
   };
 
+  // Header anterior, usa componentente AppHeader
+  // const renderHeader = () => {
+  //   switch (activeTab) {
+  //     case 'home':
+  //       return <AppHeader title={t('common.home')} />;
+  //     case 'learn':
+  //       return <AppHeader title={t('common.learn')} />;
+  //     case 'coaches':
+  //       return (
+  //         <AppHeader
+  //           title={t('common.coaches')}
+  //           userAvatar="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?semt=ais_hybrid&w=740"
+  //           onBookmarkPress={handleBookmarkPress}
+  //         />
+  //       );
+  //     default:
+  //       return <AppHeader title={t('common.home')} />;
+  //   }
+  // };
+
+  //Nueva Header
   const renderHeader = () => {
-    switch (activeTab) {
-      case 'home':
-        return <AppHeader title={t('common.home')} />;
-      case 'learn':
-        return <AppHeader title={t('common.learn')} />;
-      case 'coaches':
-        return (
-          <AppHeader
-            title={t('common.coaches')}
-            userAvatar="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?semt=ais_hybrid&w=740"
-            onBookmarkPress={handleBookmarkPress}
-          />
-        );
-      default:
-        return <AppHeader title={t('common.home')} />;
-    }
+    return <AppHeaderNew userAvatar = {userData.avatar}/>;
+    
   };
 
   return (

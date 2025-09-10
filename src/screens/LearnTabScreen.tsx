@@ -1,95 +1,80 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import ContentCard from '../components/common/ContentCard';
 import { useTranslation } from 'react-i18next';
+import LearnContentCard from '../components/common/LearnContentCard';
+import { learnCategories } from '../data/learnCategories';
+import LearnCategoryScreen from './LearnCategoryScreen';
 
 export default function LearnTabScreen() {
   const { t } = useTranslation();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const handleCardPress = (category: string) => {
-    console.log(`${category} card pressed`);
+  const handleCardPress = (categoryTitle: string) => {
+    const normalized = categoryTitle.toLowerCase();    
+    setSelectedCategory(normalized);
   };
 
+  const handleBack = () => {
+    setSelectedCategory(null);
+  }
+
+  // Si hay categoría seleccionada, mostrar la pantalla correspondiente
+  if (selectedCategory) {
+    // Capitalizar la primera letra para el título
+    const capitalizedTitle =
+      selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1);
+
+    return <LearnCategoryScreen title={capitalizedTitle} onBack={handleBack} />;
+  }
+
+  // Pantalla principal (categorías)
   return (
-    <View style={styles.container}>
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Training Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('homeScreen.training')}</Text>
-          <View style={styles.cardGrid}>
-            <ContentCard
-              style={styles.card}
-              onPress={() => handleCardPress('Training')}
-            />
-            <ContentCard
-              style={[styles.card, styles.cardSmall]}
-              onPress={() => handleCardPress('Training 2')}
-            />
-          </View>
-        </View>
+    <ScrollView style={styles.container}>
+      {learnCategories.map((category, categoryIndex) => (
+        <View key={categoryIndex} style={styles.categorySection}>
+          <Text style={styles.categoryTitle}>{category.title}</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {category.subcategories.map((sub, subIndex) => {
+              const COLOR_A = '#252A30';
+              const COLOR_B = '#2B80BE';
 
-        {/* Mindset Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('homeScreen.mindset')}</Text>
-          <View style={styles.cardGrid}>
-            <ContentCard
-              style={styles.card}
-              onPress={() => handleCardPress('Mindset')}
-            />
-            <ContentCard
-              style={[styles.card, styles.cardSmall]}
-              onPress={() => handleCardPress('Mindset 2')}
-            />
-          </View>
-        </View>
+              const isEvenCategory = categoryIndex % 2 === 0;
 
-        {/* Nutrition Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('homeScreen.nutrition')}</Text>
-          <View style={styles.cardGrid}>
-            <ContentCard
-              style={styles.cardWide}
-              onPress={() => handleCardPress('Nutrition')}
-            />
-          </View>
+              const backgroundColor = (isEvenCategory ? subIndex % 2 === 0 : subIndex % 2 !== 0)
+                ? COLOR_A
+                : COLOR_B;
+
+              return (
+                <LearnContentCard
+                  key={subIndex}
+                  title={sub.title}
+                  image={sub.image}
+                  description={sub.description}
+                  backgroundColor={backgroundColor}
+                  onPress={() => handleCardPress(category.title)}
+                />
+              );
+            })}               
+          </ScrollView>
         </View>
-      </ScrollView>
-    </View>
+      ))}
+    </ScrollView>  
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#000',
+    padding: 16,
+    backgroundColor: '#000000',
   },
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
+  categorySection: {
+    marginBottom: 24,
   },
-  section: {
-    marginBottom: 30,
-  },
-  sectionTitle: {
+  categoryTitle: {
     fontFamily: 'AnonymousPro-Bold',
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#fff',
-    marginBottom: 16,
-  },
-  cardGrid: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  card: {
-    flex: 1,
-    height: 200,
-  },
-  cardSmall: {
-    flex: 0.6,
-  },
-  cardWide: {
-    width: '100%',
-    height: 150,
-  },
+    fontWeight: "700",
+    fontSize: 22,
+    color: '#FFFFFF',    
+    marginBottom: 12,
+  }, 
 });

@@ -1,97 +1,35 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
+import React  from 'react';
+import { View, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import CoachCard from '../components/common/CoachCard';
-import ContentCard from '../components/common/ContentCard';
-import { useTranslation } from 'react-i18next';
+import contentData from '../data/contentData.json';
 
-const coaches = [
-  {
-    id: '1',
-    name: 'NAME LAST',
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.",
-    imageUrl:
-      'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400',
-  },
-  {
-    id: '2',
-    name: 'COACH TWO',
-    description:
-      'Professional football coach with 10+ years of experience in developing young talent and tactical analysis.',
-    imageUrl:
-      'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400',
-  },
-];
-
-export default function CoachesTabScreen() {
-  const { t } = useTranslation();
-
-  const handleCoachPress = (coachId: string) => {
-    console.log(`Coach ${coachId} pressed`);
-  };
-
-  const handleLessonPress = () => {
-    console.log('Lesson pressed');
-  };
-
-  const renderCoach = ({ item }: { item: typeof coaches[0] }) => (
+export default function CoachesTabScreen() {   
+  const navigation = useNavigation();
+  const renderContent = ({item} : {item: typeof contentData[0]}) => (
     <CoachCard
+      title={item.title}
       name={item.name}
-      description={item.description}
+      tag={item.tag}
       imageUrl={item.imageUrl}
-      onPress={() => handleCoachPress(item.id)}
-    />
-  );
+      style={{marginHorizontal: 5}}
+      onMorePress={() =>
+        (navigation as any).navigate('CoachDetails', {
+          id: item.id,
+        })
+      }
+    >
+      {item.description}
+    </CoachCard>
+  );  
 
   return (
-    <View style={styles.container}>
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Coaches Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('common.coaches')}</Text>
-          <FlatList
-            data={coaches}
-            renderItem={renderCoach}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.coachesCarousel}
-          />
-        </View>
-
-        {/* Lessons Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('homeScreen.lessons')}</Text>
-          <ContentCard style={styles.lessonCard} onPress={handleLessonPress} />
-        </View>
-      </ScrollView>
-    </View>
+    <FlatList
+      data={contentData}
+      keyExtractor={(item) => String(item.id)}
+      renderItem={renderContent}
+      ItemSeparatorComponent={() => <View style={{ height: 20 }} />}      
+    />    
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  section: {
-    marginBottom: 30,
-  },
-  sectionTitle: {
-    fontFamily: 'AnonymousPro-Bold',
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#fff',
-    marginBottom: 16,
-  },
-  coachesCarousel: {
-    paddingRight: 20,
-  },
-  lessonCard: {
-    height: 200,
-  },
-});

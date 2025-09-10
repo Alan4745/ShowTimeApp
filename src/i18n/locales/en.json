@@ -9,7 +9,10 @@
     "coaches": "Coaches",
     "yes": "Yes",
     "no": "No",
-    "or": "or"
+    "or": "or",
+    "more": "more",
+    "gymflow": "Gymflow",
+    "subscribe": "Subscribe"
   },
   "registration": {
     "createAccount": "Create account",
@@ -152,7 +155,8 @@
   "helperTexts": {
     "helperText": "It helps us create a training experience that fits you best.",
     "passwordRequirement": "Password must be at least 8 characters long",
-    "termsText": "By creating an account, you agree to our Terms of Service and Privacy Policy"
+    "termsText": "By creating an account, you agree to our Terms of Service and Privacy Policy",
+    "coachHelperText": "Connect with coaches who work with professionals everyday."
   },
   "errors": {
     "emailRequired": "Email is required",
@@ -176,8 +180,8 @@
     "selectTrainingFrequency": "Please select your training frequency",
     "selectContentLikes": "Please select at least one content type you like",
     "selectAppDiscovery": "Please select how you found out about the app",
-    "fixErrors": "Please fix the errors above before continuing"
-
+    "fixErrors": "Please fix the errors above before continuing",
+    "coachNotFound": "Coach not found"
   },
   "quickSelect": "Quick Select (Demo):",
   "positions": {
@@ -265,7 +269,8 @@
     "selectLevel": "Select your level",
     "selectFrequency": "Select",
     "selectDiscoverySource": "Select",
-    "searchCountries": "Search countries..."
+    "searchCountries": "Search countries...",
+    "writeMessage": "Write a message"
   },
   "modalTitles": {
     "selectMonth": "Select Month",
@@ -292,7 +297,7 @@
     },
     "buttons":{
       "getStarted": "Get Started",
-      "accessAccount": "Access Account"
+      "accessAccount": "Access Account"      
     },
     "footerText": "© 2025 | Showtime University | USA"
   },
@@ -393,7 +398,27 @@
     },
     "emptyState": "You haven’t added any media files yet.",
     "loading": "loading ..."
-
+  },
+  "coachDetails": {
+    "myAccomplishments": "My Accomplishments",
+    "noAccomplishments": "No accomplishments listed.",
+    "lessons": "Lessons",
+    "noLessons": "No lessons listed.",
+    "testimonials": "Testimonials",
+    "noTestimonials": "No testimonials listed."
+  },
+  "account":{
+    "titles": {
+      "account": "Account",
+      "coachList": "Coach List",
+      "selectAFile": "SELECT A FILE"
+    },
+    "buttons": {
+      "coach": "Coach",
+      "save": "Save",
+      "settings": "Settings",
+      "send" : "Send"
+    }
   }
    
 }

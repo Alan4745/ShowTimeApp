@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image, Text } from 'react-native';
 
 interface TabBarProps {
   activeTab: string;
@@ -8,9 +8,9 @@ interface TabBarProps {
 
 export default function TabBar({ activeTab, onTabPress }: TabBarProps) {
   const tabs = [
-    { id: 'learn', icon: require('../../../assets/img/icon/learn.png') },
-    { id: 'home', icon: require('../../../assets/img/icon/Training.png') },
-    { id: 'coaches', icon: require('../../../assets/img/icon/Coaches.png') },
+    { id: 'learn', icon: require('../../../assets/img/icon/learn.png'), label: 'Learn' },
+    { id: 'home', icon: require('../../../assets/img/icon/Training.png'), label: 'Home' },
+    { id: 'coaches', icon: require('../../../assets/img/icon/Coaches.png'), label: 'Coach'},
   ];
 
   return (
@@ -18,19 +18,24 @@ export default function TabBar({ activeTab, onTabPress }: TabBarProps) {
       <View style={styles.tabBar}>
         {tabs.map((tab, index) => {
           const isActive = activeTab === tab.id;
-          const color = isActive ? '#4A90E2' : '#666';
+          const backgroundColor = isActive ? '#4A90E2' : '#000';
+          const tintColor = '#FFFFFF';
+          const textColor = '#FFFFFF';
 
           return (
             <React.Fragment key={tab.id}>
               <TouchableOpacity
-                style={styles.tab}
+                style={[styles.tab, { backgroundColor }]}
                 onPress={() => onTabPress(tab.id)}
               >
-                <Image
-                  source={tab.icon}
-                  style={{ width: 24, height: 24, tintColor: color }}
-                  resizeMode="contain"
-                />
+                <View style={styles.tabContent}>
+                  <Image
+                    source={tab.icon}
+                    style={[styles.icon, { tintColor }]}
+                    resizeMode="contain"
+                  />
+                  <Text style={[styles.label, { color: textColor }]}>{tab.label}</Text>
+                </View>
               </TouchableOpacity>
               {index < tabs.length - 1 && <View style={styles.verticalDivider} />}
             </React.Fragment>
@@ -38,6 +43,7 @@ export default function TabBar({ activeTab, onTabPress }: TabBarProps) {
         })}
       </View>
     </View>
+
   );
 }
 
@@ -50,7 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: 10,
     paddingHorizontal: 10,
     backgroundColor: '#000',
   },
@@ -58,11 +64,28 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 10,
+    borderRadius: 30,
+    marginHorizontal: 4,
+  },
+  tabContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '600',
+    fontFamily: 'AnonymousPro-Regular', 
   },
   verticalDivider: {
     width: 1,
-    height: '100%',
+    height: '60%',
     backgroundColor: '#FFFFFF',
-    borderWidth: 0.5,
+    opacity: 0.3,
   },
 });

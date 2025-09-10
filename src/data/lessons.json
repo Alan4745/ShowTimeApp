@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Mastering Ball Control",
+    "author": "Coach Diego",
+    "description": "Learn the essential drills to improve your first touch.",
+    "tag1" : "Workout",
+    "tag2" : "Video",
+    "mediaType": "video",
+    "mediaUrl": "https://cdn.pixabay.com/video/2017/07/23/10827-226624986_large.mp4"
+  },
+  {
+    "title": "Tactical Formations Explained",
+    "author": "Coach Ana",
+    "description": "Understand how to read and adapt to different tactics.",
+    "tag1" : "Gymflow",
+    "tag2" : "Image",
+    "mediaType": "image",
+    "mediaUrl": "https://images.pexels.com/photos/47730/the-ball-stadion-football-the-pitch-47730.jpeg"
+  },
+  {
+    "title": "Mindset for Champions",
+    "author": "Coach Luca",
+    "description": "Build the mental strength needed to push through limits.",
+    "tag1" : "Drills",
+    "tag2" : "Voice",
+    "mediaType": "audio",
+    "mediaUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+  }
+]

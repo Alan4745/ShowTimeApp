@@ -27,6 +27,9 @@ import CarouselScreen from '../screens/CarouselScreen';
 import StudentPostScreen from '../screens/StudentPostScreen';
 import DebugNavigator from './DebugNavigator';
 import PublishPostScreen from '../screens/PublishPostScreen';
+import CoachDetailsScreen from '../screens/CoachDetailsScreen';
+import StudentAccountScreen from '../screens/StudentAccountScreen';
+import ChatScreen from '../screens/ChatScreen';
 
 const Stack = createStackNavigator();
 
@@ -34,7 +37,7 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="DebugNavigator"
+        initialRouteName="CustomSplash"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="DebugNavigator" component={DebugNavigator} />
@@ -63,6 +66,9 @@ export default function AppNavigator() {
         <Stack.Screen name="SubscribeElite" component={SubscribeEliteScreen} />              
         <Stack.Screen name="StudentPost" component={StudentPostScreen} /> 
         <Stack.Screen name="PublishPost" component={PublishPostScreen} /> 
+        <Stack.Screen name="CoachDetails" component={CoachDetailsScreen} /> 
+        <Stack.Screen name="StudentAccount" component={StudentAccountScreen} /> 
+        <Stack.Screen name="Chat" component={ChatScreen} /> 
       </Stack.Navigator>
     </NavigationContainer>
   );

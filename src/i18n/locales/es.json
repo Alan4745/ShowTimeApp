@@ -9,7 +9,10 @@
     "coaches": "Entrenadores",
     "yes": "Sí",
     "no": "No",
-    "or": "o"
+    "or": "o",
+    "more": "más",
+    "gymflow": "Gymflow",
+    "subscribe": "Suscribirse"
   },
   "registration": {
     "createAccount": "Crea tu\ncuenta",
@@ -129,7 +132,8 @@
   "helperTexts": {
     "helperText": "Nos ayuda a crear una experiencia de entrenamiento que se adapte mejor a ti.",
     "passwordRequirement": "La contraseña debe tener al menos 8 caracteres",
-    "termsText": "Al crear una cuenta, aceptas nuestros Términos de Servicio y Política de Privacidad"
+    "termsText": "Al crear una cuenta, aceptas nuestros Términos de Servicio y Política de Privacidad",
+    "coachHelperText": "Conectate con entrenadores que trabajan con profesionales todos los días."
   },
   "errors": {
     "emailRequired": "El correo electrónico es requerido",
@@ -153,7 +157,8 @@
     "selectTrainingFrequency": "Por favor selecciona tu frecuencia de entrenamiento",
     "selectContentLikes": "Por favor selecciona al menos un tipo de contenido que te guste",
     "selectAppDiscovery": "Por favor selecciona cómo te enteraste de la aplicación",
-    "fixErrors": "Por favor corrige los errores anteriores antes de continuar"
+    "fixErrors": "Por favor corrige los errores anteriores antes de continuar",
+    "coachNotFound": "Coach no encontrado"
   },
   "quickSelect": "Selección rápida (Demo):",
   "positions": {
@@ -241,7 +246,8 @@
     "selectLevel": "Selecciona tu nivel",
     "selectFrequency": "Selecciona frecuencia de entrenamiento",
     "selectDiscoverySource": "Selecciona fuente de descubrimiento",
-    "searchCountries": "Buscar países..."
+    "searchCountries": "Buscar países...",
+    "writeMessage": "Write a message"
   },
   "modalTitles": {
     "selectMonth": "Seleccionar mes",
@@ -304,6 +310,91 @@
         "oportunidad de enviar videos destacados a agentes si los entrenadores consideran que estás listo"
       ],
       "button": "A partir de $149"      
+    }
+  },  
+  "publishPost":{
+    "buttons":{
+      "post": "Post",
+      "video": "Video.mp4",
+      "image": "Imagen.jpg",
+      "text": "Texto.pdf"
+    }, 
+    "placeholders":{
+      "textInput": "¿Qué hay de nuevo?",
+      "category": "Categoría"
+    },
+    "categories":{
+      "accomplishments": "Logros",
+      "announcements": "Anuncios",
+      "dailyMotivation": "Motivación diaria",
+      "highlightTape": "Historias destacadas",
+      "introduceYourself": "Presentate",
+      "lifeOfAProfessional": "Vida del profesional",
+      "nutrition": "Nutrición",
+      "Training": "Entrenamiento",
+      "Mindset": "Mentalidad",
+      "Nutrition": "Nutrición",
+      "Tactics": "Tacticas",
+      "GameAnalysis": "Análisis del juego",
+      "Strength": "Fuerza",
+      "Power": "Potencia",
+      "4WeekProgram": "Programa de 4 semanas",
+      "ExerciseLibrary": "Libreria de ejercicios de Darwin",
+      "Anxiety": "Ansiedad",
+      "GrowthMindset": "Mentalidad de crecimiento",
+      "ConflictResolution": "Resolución de conflictos",
+      "TeamDynamics": "Dinamica del equipo",
+      "Carbohydrates": "Carbohidratos",
+      "Protein": "Proteinas",
+      "Fat": "Grasa",
+      "SupplementsHydration": "Suplementos e Hidratación",
+      "NutritionProgram": "Programa de 4 Semanas",
+      "Finishing": "Rematar",
+      "Technical": "Técnico",
+      "PassingDribbling": "Pasar y Driblar",
+      "Defenders": "Defensas",
+      "Forwards": "Delanteros",
+      "GeneralAnalysis": "Análisis General",
+      "Interactive": "Interactivo",
+      "Midfielders": "Mediocampistas"
+    },
+    "alertPost":{
+      "title": "¿Enviar el Post?",
+      "message": "¿Estás seguro que quieres enviar el post?"
+    },
+    "removeAlert":{
+      "title": "¿Remover Archivo?",
+      "message": "¿Quieres remover este archivo del post?",
+      "optionCancel": "Cancelar",
+      "optionRemove": "Remover"
+    },
+    "alerts":{
+      "emptyPost": "Parece que tú post está vacío. Intenta añadir algo!",
+      "pdfError": "Un error inesperado ocurrió al seleccionar el PDF. Por favor intenta de nuevo.",
+      "thumbnailError": "Un error ocurrió mientras se generaba el thumbnail."
+    },
+    "emptyState": "No has añadido archivos todavía",
+    "loading": "cargando ..."
+  },
+  "coachDetails": {
+    "myAccomplishments": "Mis Logros",
+    "noAccomplishments": "No se han ingresado logros.",
+    "lessons": "Lecciones",
+    "noLessons": "No se han ingresado lecciones.",
+    "testimonials": "Testimonios",
+    "noTestimonials": "No se han ingresado testimonios."
+  },
+  "account":{
+    "titles": {
+      "account": "Cuenta",
+      "coachList": "Lista de Entrenadores",
+      "selectAFile": "SELECCIONA UN ARCHIVO"
+    },
+    "buttons": {
+      "coach": "Entrenador",
+      "save": "Guardar",
+      "settings": "Ajustes",
+      "send" : "Enviar"
     }
   }
 }

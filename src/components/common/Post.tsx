@@ -11,9 +11,9 @@ export default function Post({post, onPressComments}) {
   const toggleBookmark = () => {setBookmarked(!bookmarked)};  
 
   return (
-    <>      
+    <View style = {styles.container}>      
       <View style={styles.postHeader}>
-        <Image source={require('../../../assets/img/avatarPedro30.png')} style={styles.avatar}/>
+        <Image source={{uri: post.avatar}} style={styles.avatar}/>
         <View style={styles.userInfo}>
           <Text style={styles.username}>{post.username}</Text>
           <Text style={styles.userType}>{post.userType}</Text>          
@@ -50,26 +50,27 @@ export default function Post({post, onPressComments}) {
         media={selectedMedia}
         onClose={() => setSelectedMedia(null)}
       />      
-    </>         
+    </View>         
     
   );
 }
 
 const styles = StyleSheet.create({
   container:{
-    height: "100%",
-    padding: 10,
+    width: "100%",    
+    marginVertical: 10,      
   },  
   postHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,    
+    marginBottom: 25,    
   },
   avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 20,
-    marginRight: 12,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginLeft: 20,
+    marginRight: 15,
     marginTop: 10,
   },
   userInfo: {
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#FFFFFF",
     marginBottom: 15,
+    marginLeft: 10,
   },  
   iconRow: {
   flexDirection: 'row',

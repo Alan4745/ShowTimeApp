@@ -1,0 +1,100 @@
+[
+  {
+    "id": "1",
+    "sender": "coach",
+    "text": "¡Hola Pedro! ¿Cómo te sentiste en el entrenamiento de ayer?",
+    "timestamp": "2025-09-01T09:00:00"
+  },
+  {
+    "id": "2",
+    "sender": "user",
+    "text": "Muy bien, aunque me costó un poco la parte física al final.",
+    "timestamp": "2025-09-01T09:05:00"
+  },
+  {
+    "id": "3",
+    "sender": "coach",
+    "text": "Eso es normal. Estamos subiendo la intensidad. ¿Pudiste completar todos los ejercicios?",
+    "timestamp": "2025-09-01T09:10:00"
+  },
+  {
+    "id": "4",
+    "sender": "user",
+    "text": "Sí, los completé, pero me sentí algo lento en los cambios de ritmo.",
+    "timestamp": "2025-09-01T09:12:00"
+  },
+  {
+    "id": "5",
+    "sender": "coach",
+    "text": "Lo noté también. Vamos a trabajar más en la agilidad y reacción esta semana.",
+    "timestamp": "2025-09-01T09:15:00"
+  },
+  {
+    "id": "6",
+    "sender": "coach",
+    "text": "Por cierto, excelente actitud durante el rondo, fuiste muy activo.",
+    "timestamp": "2025-09-01T09:17:00"
+  },
+  {
+    "id": "7",
+    "sender": "user",
+    "text": "Gracias, me sentí cómodo en esa parte del entrenamiento.",
+    "timestamp": "2025-09-01T09:20:00"
+  },
+  {
+    "id": "8",
+    "sender": "coach",
+    "text": "Recuerda mantener la cabeza levantada cuando conduzcas el balón.",
+    "timestamp": "2025-09-02T08:00:00"
+  },
+  {
+    "id": "9",
+    "sender": "user",
+    "text": "Sí, lo tengo en cuenta. A veces me concentro demasiado en el balón.",
+    "timestamp": "2025-09-02T08:05:00"
+  },
+  {
+    "id": "10",
+    "sender": "coach",
+    "text": "Eso se entrena. Mañana haremos un ejercicio con conos y visión periférica.",
+    "timestamp": "2025-09-02T08:15:00"
+  },
+  {
+    "id": "11",
+    "sender": "user",
+    "text": "Perfecto, me interesa mejorar eso.",
+    "timestamp": "2025-09-02T08:20:00"
+  },
+  {
+    "id": "12",
+    "sender": "coach",
+    "text": "Hoy revisé el video del partido del sábado. Hiciste buenos desmarques.",
+    "timestamp": "2025-09-03T11:30:00"
+  },
+  {
+    "id": "13",
+    "sender": "user",
+    "text": "Gracias. Creo que me faltó un poco de decisión en el área.",
+    "timestamp": "2025-09-03T11:35:00"
+  },
+  {
+    "id": "14",
+    "sender": "coach",
+    "text": "Lo hablaremos en la sesión de análisis. Hay dos jugadas claves que quiero mostrarte.",
+    "timestamp": "2025-09-03T11:40:00"
+  },
+  {
+    "id": "15",
+    "sender": "user",
+    "text": "Genial, me vendrá bien verlas.",
+    "timestamp": "2025-09-03T11:42:00"
+  },
+  {
+    "id": "16",
+    "sender": "coach",
+    "text": "Sigue así, Pedro. Estás progresando rápido.",
+    "timestamp": "2025-09-03T11:45:00"
+  }
+]
+
+

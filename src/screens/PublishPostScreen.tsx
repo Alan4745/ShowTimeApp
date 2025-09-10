@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import ScreenLayout from '../components/common/ScreenLayout';
 import {Globe, ChevronDown, FileVideo, Image as ImageIcon, FileText} from 'lucide-react-native';
@@ -41,7 +41,7 @@ export default function PublishPostScreen() {
     const userType = userData.userType as UserType;
     const isDarwin = userType === 'Darwin';
     const categories = isDarwin? Object.keys(categoriesByUserType.Darwin) : categoriesByUserType[userType] ?? categoriesByUserType['Student'];
-
+    const delayTime = 1500; //para mostrar icono de loading
     
 
     //Sección para manejar el Post
@@ -50,6 +50,7 @@ export default function PublishPostScreen() {
     const handlePressPost = () => {
         const hasText = postContent.trim().length > 0;
         const hasMedia = mediaItems.length > 0;
+        Keyboard.dismiss();
 
         if (!hasText && !hasMedia) {
             setAlertMessage(t('publishPost.alerts.emptyPost'));
@@ -139,9 +140,9 @@ export default function PublishPostScreen() {
                 setAlertMessage(t('publishPost.alerts.thumbnailError'));
                 setAlertVisible(true);
             } finally {
-                // Asegura un mínimo de 2.5 segundos de animación loading
+                // Asegura un mínimo de x segundos de animación loading
                 const elapsed = Date.now() - start;
-                const delay = Math.max(2000 - elapsed, 0);
+                const delay = Math.max(delayTime - elapsed, 0);
                 setTimeout(() => setIsGeneratingThumbnail(false), delay);
             }
         });
@@ -149,56 +150,76 @@ export default function PublishPostScreen() {
 
     // Selección de imagenes desde la galería
     const handleImageSelect = () => {
-        Keyboard.dismiss();
-        const options = {
-            mediaType: 'photo' as const,
-            selectionLimit: 0, // 0 = múltiples
+            Keyboard.dismiss();
+            const options = {
+                mediaType: 'photo' as const,
+                selectionLimit: 0, // 0 = múltiples
+            };
+
+            launchImageLibrary(options, (response) => {
+                if (response.didCancel || !response.assets) return;
+
+                // inicia animación de loading
+                setIsGeneratingThumbnail(true);
+                const start = Date.now();
+
+                const images: MediaItem[] = response.assets.map((asset, index) => ({
+                id: `${Date.now()}-${index}`,
+                type: 'image',
+                uri: asset.uri!,
+                }));
+
+                setMediaItems(prev => [...prev, ...images]);
+
+                // Asegura un mínimo de x segundos de animación loading
+                const elapsed = Date.now() - start;
+                const delay = Math.max(delayTime - elapsed, 0);
+                setTimeout(() => setIsGeneratingThumbnail(false), delay);
+            });
         };
 
-        launchImageLibrary(options, (response) => {
-            if (response.didCancel || !response.assets) return;
+        // Selección de pdf desde la galeria
+        const handlePDFSelect = async () => {
+            Keyboard.dismiss();
 
-            const images: MediaItem[] = response.assets.map((asset, index) => ({
-            id: `${Date.now()}-${index}`,
-            type: 'image',
-            uri: asset.uri!,
-            }));
+            try {
+                const [res] = await pick({ type: [types.pdf] });
 
-            setMediaItems(prev => [...prev, ...images]);
-        });
-    };
+                if (!res) throw new Error("No PDF selected");
 
-    // Selección de pdf desde la galeria
-    const handlePDFSelect = async () => {
-        Keyboard.dismiss();
-        try {
-            const [res] = await pick({
-            type: [types.pdf],
-            });
+                // Empieza el loading al volver del picker
+                setIsGeneratingThumbnail(true);
+                const start = Date.now();
 
-            const pdfItem: MediaItem = {
-            id: `${Date.now()}`,
-            type: 'pdf',
-            uri: res.uri,
-            thumbnail: Image.resolveAssetSource(require('../../assets/img/Adobe.png')).uri,};
-            
+                const pdfItem: MediaItem = {
+                    id: `${Date.now()}`,
+                    type: 'pdf',
+                    uri: res.uri,
+                    thumbnail: Image.resolveAssetSource(require('../../assets/img/Adobe.png')).uri,
+                };
 
-            setMediaItems(prev => [...prev, pdfItem]);
-        } catch (err) {
-            if (isErrorWithCode(err)) {
-                if (err.code === errorCodes.OPERATION_CANCELED) {
-                    // El usuario canceló; no mostramos error                    
+                setMediaItems(prev => [...prev, pdfItem]);
+
+                // Forzar mínimo de duración del loading
+                const elapsed = Date.now() - start;
+                const delay = Math.max(delayTime - elapsed, 0);
+                setTimeout(() => {
+                    setIsGeneratingThumbnail(false);
+                }, delay);
+
+            } catch (err) {
+                if (isErrorWithCode(err)) {
+                    if (err.code !== errorCodes.OPERATION_CANCELED) {
+                        setAlertMessage(t('publishPost.alerts.pdfError'));
+                        setAlertVisible(true);
+                    }
                 } else {
-                setAlertMessage(t('publishPost.alerts.pdfError'));
-                setAlertVisible(true);
+                    setAlertMessage(t('publishPost.alerts.pdfError'));
+                    setAlertVisible(true);
                 }
-            } else {
-                setAlertMessage(t('publishPost.alerts.pdfError'));
-                setAlertVisible(true);                
             }
-        }
-    };
-
+        };      
+    
     // Función para eliminar media del post
     const confirmDeleteMedia = () => {
         if (mediaToDelete) {
@@ -287,15 +308,7 @@ export default function PublishPostScreen() {
                 setDeleteConfirmVisible(true);    
                 }}
             />
-        )}
-
-        {/* <MediaGrid
-            media={mediaItems}
-            onMediaPress={(item: MediaItem) => {
-                setMediaToDelete(item);
-                setDeleteConfirmVisible(true);    
-            }}
-        />*/}
+        )}       
 
         {/* Modal para Main Category */}
         <DropdownModal
@@ -477,13 +490,16 @@ const styles = StyleSheet.create({
         aspectRatio: 1,                       
     },
     successAnimationContainer: {
+        flex: 1,
         position: 'absolute',
-        top: '40%',
-        left: '25%',
-        width: '50%',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         zIndex: 999,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: "#000000" 
     },
     emptyGridContainer: {
         alignItems: 'center',
@@ -503,7 +519,8 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         zIndex: 999,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        //backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        backgroundColor: "#000000",
         alignItems: 'center',
         justifyContent: 'center',
     },
