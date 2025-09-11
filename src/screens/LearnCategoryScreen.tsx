@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { ChevronLeft } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
+import { ChevronLeft, SlidersHorizontal } from 'lucide-react-native';
 import LessonCard from '../components/common/LessonCard';
 import MediaViewerModal from '../components/modals/MediaViewerModal';
+import FilterModal from '../components/modals/filterModal';
 import lessons from '../data/lessons.json';
 
 interface LearnCategoryScreenProps {
@@ -16,22 +18,60 @@ type MediaItem = {
   title?: string;
   author?: string;
   description?: string;
-  primaryLabel?: string;
-  secondaryLabel?: string;
+  subcategory?: string;
+  format?: string;  
+  likes?: number;
+  comments?: number;
 };
 
 export default function LearnCategoryScreen({ title, onBack} : LearnCategoryScreenProps) {
+  const {t} = useTranslation();
   const [mediaViewerVisible, setMediaViewerVisible] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [filteredLessons, setFilteredLessons] = useState(lessons);  
 
   const handleOpenMedia = (media: MediaItem) => {
     setSelectedMedia(media);
-    setMediaViewerVisible(true);
+    setMediaViewerVisible(true);    
   };
 
   const handleCloseMedia = () => {
     setSelectedMedia(null);
     setMediaViewerVisible(false);
+  };
+
+  // Función para aplicar filtros
+  const applyFilters = (filters: {
+    subcategory?: string;
+    format?: string;
+    sortByName?: 'asc' | 'desc';
+  }) => {
+    let updated = [...lessons];
+
+    if (filters.subcategory) {
+      updated = updated.filter(l => l.subcategory === filters.subcategory);
+    }
+
+    if (filters.format) {
+      updated = updated.filter(l => l.format?.toLowerCase() === filters.format!.toLowerCase());
+    }
+
+    if (filters.sortByName) {
+      updated.sort((a, b) => {
+        if (!a.author || !b.author) return 0;
+        return filters.sortByName === 'asc'
+          ? a.author.localeCompare(b.author)
+          : b.author.localeCompare(a.author);
+      });
+    }
+
+    setFilteredLessons(updated);
+  };
+
+  // Función para limpiar filtros
+  const clearFilters = () => {
+    setFilteredLessons(lessons);
   };
 
   return (
@@ -44,22 +84,46 @@ export default function LearnCategoryScreen({ title, onBack} : LearnCategoryScre
         <Text style={styles.title}>{title}</Text>
       </View>
 
+      {/* Filter Button */}
+      <View style={styles.filterContainer}>
+        <TouchableOpacity style={styles.filterButton} onPress={() => setFilterModalVisible(true)}>
+          <Text style={styles.filterText}>{t("learn.filter")}</Text>
+          <SlidersHorizontal size={20} color="#FFFFFF" />
+        </TouchableOpacity>
+      </View>
+
       {/* Media list */}
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {lessons.map((lesson, index) => (
-          <LessonCard
+        {filteredLessons.length === 0 ? (
+          <View style={styles.noResultsContainer}>
+            <Text style={styles.noResultsText}>{t("learn.noLessons")}</Text>
+          </View>
+        ) : (
+          filteredLessons.map((lesson, index) => (
+            <LessonCard
             key={index}
             title={lesson.title}
             author={lesson.author}
             description={lesson.description}
-            primaryLabel={lesson.tag1}
-            secondaryLabel={lesson.tag2}
+            subcategory={lesson.subcategory}
+            format={lesson.format}
             mediaType={lesson.mediaType as any}
             mediaUrl={lesson.mediaUrl}
-            onOpenMedia = {handleOpenMedia}
-            // Puedes agregar labels si los tienes en el JSON
-          />
-        ))}
+            onOpenMedia = {() =>
+              handleOpenMedia({
+                type: lesson.mediaType as 'image' | 'video' | 'audio',
+                uri: lesson.mediaUrl,
+                title: lesson.title,
+                author: lesson.author,
+                description: lesson.description,
+                subcategory: lesson.subcategory,
+                format: lesson.format,
+                likes: lesson.likes,
+                comments: lesson.comments,
+              })}            
+            />  
+          ))
+        )}       
       </ScrollView>
       
       {/* Modal para imagen/video */}
@@ -67,9 +131,18 @@ export default function LearnCategoryScreen({ title, onBack} : LearnCategoryScre
         visible={mediaViewerVisible}
         media={selectedMedia}
         onClose={handleCloseMedia}  
-        showInfo={true}      
-      /> 
+        showInfo={true} 
+        likesCount={selectedMedia?.likes ?? 0}
+        commentsCount={selectedMedia?.comments ?? 0}          
+      />  
 
+      {/* Modal para filtrar */}  
+      <FilterModal
+        visible={filterModalVisible}
+        onClose={() => setFilterModalVisible(false)}
+        onApply={applyFilters}
+        onClear={clearFilters}
+      />     
     </View>
   );
 }
@@ -77,7 +150,7 @@ export default function LearnCategoryScreen({ title, onBack} : LearnCategoryScre
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',    
+    backgroundColor: '#000000',        
   },
   header: {
     position: 'relative',
@@ -100,12 +173,47 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
   scrollContent: {
     paddingHorizontal: 20,
     paddingBottom: 40,
+  },
+  filterContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 20,
+    marginBottom: 20,        
+  },
+  filterButton: {
+    flexDirection: 'row',
+    alignItems: 'center',    
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderWidth: 1,
+    borderColor: "#FFFFFF",
+    borderRadius: 20,
+    minWidth: 110,   
+    justifyContent: "center",
+    textAlignVertical: "center"
+  },
+  filterText: {
+    fontFamily: 'AnonymousPro-Bold',
+    fontWeight: "700",
+    color: '#FFFFFF',
+    fontSize: 16,
+    marginRight: 8,
+  },
+  noResultsContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 100,
+  },
+  noResultsText: {
+    fontFamily: 'AnonymousPro-Bold',
+    fontWeight: "700",
+    color: '#FFFFFF',
+    fontSize: 20,
+    textAlign: 'center',
+    opacity: 0.7,
   },
 });

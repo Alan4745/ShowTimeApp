@@ -26,5 +26,4 @@ const categoriesByUserType = {
 
 export default categoriesByUserType;
 
-// Cambia este tipo también:
 export type UserType = keyof typeof categoriesByUserType;

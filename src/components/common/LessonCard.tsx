@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { PlayCircle, Mic, Lock } from 'lucide-react-native';
 import { createThumbnail } from 'react-native-create-thumbnail';
 
@@ -9,16 +10,16 @@ type MediaItem = {
   title?: string;
   author?: string;
   description?: string;
-  primaryLabel?: string;
-  secondaryLabel?: string;
+  subcategory?: string;
+  format?: string;  
 };
 
 interface LessonCardProps {
   title: string;
   author: string;
   description: string;
-  primaryLabel?: string;
-  secondaryLabel?: string;
+  subcategory?: string;
+  format?: string;
   mediaType: 'image' | 'video' | 'audio';
   mediaUrl: string;
   thumbnailUrl?: string;  
@@ -26,14 +27,15 @@ interface LessonCardProps {
 }
 
 export default function LessonCard(props: LessonCardProps) {
+  const {t} = useTranslation();
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const audioPlaceholder = require('../../../assets/img/audioPlaceholder.png');
   const {
     title,
     author,
     description,
-    primaryLabel,
-    secondaryLabel,
+    subcategory,
+    format,
     mediaType,
     mediaUrl,
     thumbnailUrl,    
@@ -53,7 +55,7 @@ export default function LessonCard(props: LessonCardProps) {
       setThumbnail(mediaUrl);
     } else {
       // audio u otro
-      setThumbnail(undefined);
+      setThumbnail(null);
     }
   }, [mediaType, mediaUrl]);
 
@@ -88,8 +90,8 @@ export default function LessonCard(props: LessonCardProps) {
       title,
       author,
       description,
-      primaryLabel,
-      secondaryLabel,
+      subcategory,
+      format,      
     });
   };
 
@@ -97,15 +99,15 @@ export default function LessonCard(props: LessonCardProps) {
     <View style={styles.card}>
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.author}>by {author}</Text>
+        <Text style={styles.author}>{t("common.by")}{author}</Text>
         <Text style={styles.description} numberOfLines={3}>{description}</Text>
 
         <View style={styles.labelRow}>
           <View style={styles.firstLabel}>
-            <Text style={styles.firstLabelText}>{primaryLabel ?? "GymFlow"}</Text>
+            <Text style={styles.firstLabelText}>{subcategory ?? " "}</Text>
           </View>
           <View style={styles.secondLabel}>
-            <Text style={styles.secondLabelText}>{secondaryLabel ?? "Video"}</Text>
+            <Text style={styles.secondLabelText}>{format ?? " "}</Text>
           </View>
         </View>
       </View>

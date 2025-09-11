@@ -12,7 +12,8 @@
     "or": "or",
     "more": "more",
     "gymflow": "Gymflow",
-    "subscribe": "Subscribe"
+    "subscribe": "Subscribe",
+    "by": "by "
   },
   "registration": {
     "createAccount": "Create account",
@@ -419,6 +420,106 @@
       "settings": "Settings",
       "send" : "Send"
     }
-  }
-   
+  },
+  "learn": {
+    "filter": "Filter",
+    "noLessons": "No lessons matched your filters",
+    "categories": {
+      "training": "Training",
+      "mindset": "Mindset",
+      "nutrition": "Nutrition",
+      "tactics": "Tactics",
+      "gameAnalysis": "Game Analysis"
+    },
+    "subcategories": {
+      "strength": {
+        "title": "Strength",
+        "description": "Build muscle and increase endurance."
+      },
+      "power": {
+        "title": "Power",
+        "description": "Train explosiveness and athletic speed."
+      },
+      "4weekProgram": {
+        "title": "4 Week Program",
+        "description": "Favourite routines picked by Darwin."
+      },
+      "darwinsExerciseLibrary": {
+        "title": "Darwin's Exercise Library",
+        "description": "Favourite excercises picked by Darwin."
+      },
+      "motivation": {
+        "title": "Motivation",
+        "description": "Boost your drive and keep pushing toward your goal."
+      },
+      "selfConfidence": {
+        "title": "Self- Confidence",
+        "description": "Build trust in yourself to perform at your best."
+      },
+      "mindfulness": {
+        "title": "Mindfulness",
+        "description": "Stay present and manage stress with a clear mind."
+      },
+      "focus": {
+        "title": "Focus",
+        "description": "Sharpen your attention to improve performance on the field."
+      },
+      "visualization": {
+        "title": "Visualization",
+        "description": "Picture success and prepare mentally for any challenge."
+      },
+      "carbohydrates": {
+        "title": "Carbohydrates",
+        "description": "What to eat before/during/after training or matches"
+      },
+      "protein": {
+        "title": "Protein",
+        "description": "Efficient hydration based on the type of effort"
+      },
+      "fat": {
+        "title": "Fat",
+        "description": "Basic and safe information about supplements"
+      },
+      "supplementsHydration": {
+        "title": "Supplements & Hydration",
+        "description": "Simple recipes to help you recover better"
+      },
+      "4WeekPlan": {
+        "title": "4 Week Program",
+        "description": "Simple recipes to help you recover better"
+      },
+      "finishing": {
+        "title": "Finishing",
+        "description": "Improve your ability to score with confidence."
+      },
+      "technical": {
+        "title": "Technical",
+        "description": "Master the skills that elevate your overall game."
+      },
+      "passingDribbling": {
+        "title": "Passing & Dribbling",
+        "description": "Develop control to move the ball effectively and outplay opponents."
+      },
+      "defenders": {
+        "title": "Defenders",
+        "description": "Understand defensive strategies and positioning to stop attacks."
+      },
+      "forwards": {
+        "title": "Forwards",
+        "description": "Learn how forwards create chances and finish plays."
+      },
+      "generalAnalysis": {
+        "title": "General Analysis",
+        "description": "Break down full matches to see the bigger picture"
+      },
+      "interactive": {
+        "title": "Interactive",
+        "description": "Engage with dynamic sessions to test your game IQ."
+      },
+      "midfielders": {
+        "title": "Midfielders",
+        "description": "Control tempo and connect the team."
+      }
+    }
+  }   
 }

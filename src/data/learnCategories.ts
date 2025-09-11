@@ -1,121 +1,97 @@
 // data/learnCategories.ts
 export const learnCategories = [
   {
-    title: 'Training',
+    key: 'training',
     subcategories: [
-        { title: 'Strength', 
-            image: require('../../assets/img/learn/training/workout.png'),
-            description: 'Build muscle and increase endurance.'
+        { key: 'strength', 
+            image: require('../../assets/img/learn/training/workout.png'),        
         },
-        { title: 'Power', 
-            image: require('../../assets/img/learn/training/gymflow.png'),
-            description: 'Train explosiveness and athletic speed.'
+        { key: 'power', 
+            image: require('../../assets/img/learn/training/gymflow.png'),            
         },
-        { title: '4 Week Program', 
-            image: require('../../assets/img/learn/training/recovery.png'),
-            description: 'Favourite routines picked by Darwin.'
+        { key: '4weekProgram', 
+            image: require('../../assets/img/learn/training/recovery.png'),            
         },
-        { title: "Darwin's Exercise Library ", 
-            image: require('../../assets/img/learn/training/gymflow.png'),
-            description: 'Favourite excercises picked by Darwin.'
+        { key: "darwinsExerciseLibrary", 
+            image: require('../../assets/img/learn/training/gymflow.png'),            
         },
         
     ],
   },  
   {
-    title: 'Mindset',
+    key: 'mindset',
     subcategories: [
-        { title: 'Motivation', 
-            image: require('../../assets/img/learn/mindset/motivation.png'),
-            description: 'Boost your drive and keep pushing toward your goal.'
+        { key: 'motivation', 
+            image: require('../../assets/img/learn/mindset/motivation.png'),            
         },
-        { title: 'Self- Confidence', 
-            image: require('../../assets/img/learn/mindset/routine_habits.png'),
-            description: 'Build trust in yourself to perform at your best.'
+        { key: 'selfConfidence', 
+            image: require('../../assets/img/learn/mindset/routine_habits.png'),            
         },
-        { title: 'Mindfulness', 
-            image: require('../../assets/img/learn/mindset/focus_discipline.png'),
-            description: 'Stay present and manage stress with a clear mind.'
+        { key: 'mindfulness', 
+            image: require('../../assets/img/learn/mindset/focus_discipline.png'),            
         },
-        { title: 'Focus', 
-            image: require('../../assets/img/learn/mindset/confidence.png'),
-            description: 'Sharpen your attention to improve performance on the field.'
+        { key: 'focus', 
+            image: require('../../assets/img/learn/mindset/confidence.png'),            
         },
-        { title: 'Visualization', 
-            image: require('../../assets/img/learn/mindset/focus_discipline.png'),
-            description: 'Picture success and prepare mentally for any challenge.'
+        { key: 'visualization', 
+            image: require('../../assets/img/learn/mindset/focus_discipline.png'),            
         },
         
     ],
   },  
   {
-    title: 'Nutrition',
+    key: 'nutrition',
     subcategories: [
-        { title: 'Carbohydrates', 
-            image: require('../../assets/img/learn/nutrition/fuel.png'),
-            description: 'What to eat before/during/after training or matches'
+        { key: 'carbohydrates', 
+            image: require('../../assets/img/learn/nutrition/fuel.png'),            
         },
-        { title: 'Protein', 
-            image: require('../../assets/img/learn/nutrition/hydration.png'),
-            description: 'Efficient hydration based on the type of effort'
+        { key: 'protein', 
+            image: require('../../assets/img/learn/nutrition/hydration.png'),            
         },
-        { title: 'Fat', 
-            image: require('../../assets/img/learn/nutrition/supplements.png'),
-            description: 'Basic and safe information about supplements'
+        { key: 'fat', 
+            image: require('../../assets/img/learn/nutrition/supplements.png'),            
         },
-        { title: 'Supplements & Hydration', 
-            image: require('../../assets/img/learn/nutrition/recovery_meals.png'),
-            description: 'Simple recipes to help you recover better'
+        { key: 'supplementsHydration', 
+            image: require('../../assets/img/learn/nutrition/recovery_meals.png'),            
         },
-        { title: '4 Week Program', 
-            image: require('../../assets/img/learn/nutrition/recovery_meals.png'),
-            description: 'Simple recipes to help you recover better'
+        { key: '4WeekPlan', 
+            image: require('../../assets/img/learn/nutrition/recovery_meals.png'),            
         },
         
     ],
   },  
   {
-    title: 'Tactics',
+    key: 'tactics',
     subcategories: [
-        { title: 'Finishing', 
-            image: require('../../assets/img/learn/tactics/game_analysis.png'),
-            description: 'Improve your ability to score with confidence.'
+        { key: 'finishing', 
+            image: require('../../assets/img/learn/tactics/game_analysis.png'),            
         },
-        { title: 'Technical', 
-            image: require('../../assets/img/learn/tactics/positioning.png'),
-            description: 'Master the skills that elevate your overall game.'
+        { key: 'technical', 
+            image: require('../../assets/img/learn/tactics/positioning.png'),            
         },
-        { title: 'Passing & Dribbling', 
-            image: require('../../assets/img/learn/tactics/common_mistakes.png'),
-            description: 'Develop control to move the ball effectively and outplay opponents.'
+        { key: 'passingDribbling', 
+            image: require('../../assets/img/learn/tactics/common_mistakes.png'),            
         }      
-        
     ],
   },  
   {
-    title: 'Game Analysis',
+    key: 'gameAnalysis',
     subcategories: [
-        { title: 'Defenders', 
-            image: require('../../assets/img/learn/tactics/game_analysis.png'),
-            description: 'Understand defensive strategies and positioning to stop attacks.'
+        { key: 'defenders', 
+            image: require('../../assets/img/learn/tactics/game_analysis.png'),            
         },
-        { title: 'Forwards', 
-            image: require('../../assets/img/learn/tactics/positioning.png'),
-            description: 'Learn how forwards create chances and finish plays.'
+        { key: 'forwards', 
+            image: require('../../assets/img/learn/tactics/positioning.png'),            
         },
-        { title: 'General Analysis', 
-            image: require('../../assets/img/learn/tactics/common_mistakes.png'),
-            description: 'Break down full matches to see the bigger picture'
+        { key: 'generalAnalysis', 
+            image: require('../../assets/img/learn/tactics/common_mistakes.png'),            
         },      
-        { title: 'Interactive', 
-            image: require('../../assets/img/learn/nutrition/hydration.png'),
-            description: 'Engage with dynamic sessions to test your game IQ.'
+        { key: 'interactive', 
+            image: require('../../assets/img/learn/nutrition/hydration.png'),            
         },     
-        { title: 'Midfielders', 
-            image: require('../../assets/img/learn/tactics/common_mistakes.png'),
-            description: 'Control tempo and connect the team.'
-        }      
-        
+        { key: 'midfielders', 
+            image: require('../../assets/img/learn/tactics/common_mistakes.png'),            
+        }
     ],
   },  
 ];

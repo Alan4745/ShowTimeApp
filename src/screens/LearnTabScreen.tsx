@@ -10,8 +10,7 @@ export default function LearnTabScreen() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const handleCardPress = (categoryTitle: string) => {
-    const normalized = categoryTitle.toLowerCase();    
-    setSelectedCategory(normalized);
+    setSelectedCategory(categoryTitle);
   };
 
   const handleBack = () => {
@@ -19,12 +18,9 @@ export default function LearnTabScreen() {
   }
 
   // Si hay categoría seleccionada, mostrar la pantalla correspondiente
-  if (selectedCategory) {
-    // Capitalizar la primera letra para el título
-    const capitalizedTitle =
-      selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1);
-
-    return <LearnCategoryScreen title={capitalizedTitle} onBack={handleBack} />;
+  if (selectedCategory) {    
+    const title = t(`learn.categories.${selectedCategory}`);    
+    return <LearnCategoryScreen title={title} onBack={handleBack} />;
   }
 
   // Pantalla principal (categorías)
@@ -32,7 +28,7 @@ export default function LearnTabScreen() {
     <ScrollView style={styles.container}>
       {learnCategories.map((category, categoryIndex) => (
         <View key={categoryIndex} style={styles.categorySection}>
-          <Text style={styles.categoryTitle}>{category.title}</Text>
+          <Text style={styles.categoryTitle}>{t(`learn.categories.${category.key}`)}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {category.subcategories.map((sub, subIndex) => {
               const COLOR_A = '#252A30';
@@ -47,11 +43,11 @@ export default function LearnTabScreen() {
               return (
                 <LearnContentCard
                   key={subIndex}
-                  title={sub.title}
+                  title={t(`learn.subcategories.${sub.key}.title`)}
                   image={sub.image}
-                  description={sub.description}
+                  description={t(`learn.subcategories.${sub.key}.description`)}
                   backgroundColor={backgroundColor}
-                  onPress={() => handleCardPress(category.title)}
+                  onPress={() => handleCardPress(category.key)}
                 />
               );
             })}               

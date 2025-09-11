@@ -12,7 +12,8 @@
     "or": "o",
     "more": "más",
     "gymflow": "Gymflow",
-    "subscribe": "Suscribirse"
+    "subscribe": "Suscribirse",
+    "by": "por "
   },
   "registration": {
     "createAccount": "Crea tu\ncuenta",
@@ -396,5 +397,106 @@
       "settings": "Ajustes",
       "send" : "Enviar"
     }
-  }
+  },
+  "learn": {
+    "filter": "Filtrar",
+    "noLessons": "Ninguna lección coincide con tus filtros",
+    "categories": {
+      "training": "Entrenamiento",
+      "mindset": "Estado Mental",
+      "nutrition": "Nutrición",
+      "tactics": "Táctica",
+      "gameAnalysis": "Análisis de Partidos"
+    },
+    "subcategories": {
+      "strength": {
+        "title": "Fuerza",
+        "description": "Desarrolla músculo y aumenta la resistencia."
+      },
+      "power": {
+        "title": "Potencia",
+        "description": "Desarrolla la explosividad y la velocidad atlética."
+      },
+      "4weekProgram": {
+        "title": "Programa de 4 semanas",
+        "description": "Rutinas favoritas seleccionadas por Darwin."
+      },
+      "darwinsExerciseLibrary": {
+        "title": "Libreria de ejercicios de Darwin",
+        "description": "Ejercicios favoritos de Darwin."
+      },
+      "motivation": {
+        "title": "Motivación",
+        "description": "Impulsa tu motivación y sigue avanzando hacia tu objetivo."
+      },
+      "selfConfidence": {
+        "title": "Autoconfianza",
+        "description": "Desarrolla confianza en ti mismo para rendir al máximo."
+      },
+      "mindfulness": {
+        "title": "Atención plena",
+        "description": "Mantente presente y maneja el estrés con una mente clara."
+      },
+      "focus": {
+        "title": "Concentración",
+        "description": "Agudiza tu atención para mejorar el rendimiento en el campo."
+      },
+      "visualization": {
+        "title": "Visualización",
+        "description": "Visualiza el éxito y preparate mentalmente para cualquier desafío."
+      },
+      "carbohydrates": {
+        "title": "Carbohidratos",
+        "description": "What to eat before/during/after training or matches"
+      },
+      "protein": {
+        "title": "Proteína",
+        "description": "Efficient hydration based on the type of effort"
+      },
+      "fat": {
+        "title": "Grasa",
+        "description": "Basic and safe information about supplements"
+      },
+      "supplementsHydration": {
+        "title": "Suplementos e Hidratación",
+        "description": "Simple recipes to help you recover better"
+      },
+      "4WeekPlan": {
+        "title": "Programa de 4 semanas",
+        "description": "Simple recipes to help you recover better"
+      },
+      "finishing": {
+        "title": "Definición",
+        "description": "Mejora tu habilidad para anotar con confianza."
+      },
+      "technical": {
+        "title": "Técnico",
+        "description": "Perfecciona las habilidades que mejoran tu desempeño global."
+      },
+      "passingDribbling": {
+        "title": "Pasar & Driblar",
+        "description": "Desarrolla el control para mover el balón eficazmente y superar a los oponentes."
+      },
+      "defenders": {
+        "title": "Defensas",
+        "description": "Comprende las estrategias defensivas y el posicionamiento para detener los ataques."
+      },
+      "forwards": {
+        "title": "Delanteros",
+        "description": "Aprende cómo los delanteros crean oportunidades y finalizan las jugadas."
+      },
+      "generalAnalysis": {
+        "title": "Análisis General",
+        "description": "Analiza partidos completos para ver el panorama general."
+      },
+      "interactive": {
+        "title": "Interactivo",
+        "description": "Involúcrate en sesiones dinámicas para evaluar tu inteligencia táctica."
+      },
+      "midfielders": {
+        "title": "Mediocampistas",
+        "description": "Controla el ritmo y conecta al equipo."
+      }
+    }
+  } 
 }

@@ -2,7 +2,7 @@ import React, {useRef, useEffect, useState} from 'react';
 import { Modal, View, Image, TouchableOpacity, StyleSheet, useWindowDimensions, Text } from 'react-native';
 import VideoPlayer from 'react-native-video-controls';
 import Sound from 'react-native-sound';
-import { X, PlayCircle, PauseCircle } from 'lucide-react-native';
+import { X, PlayCircle, PauseCircle, Heart, MessageCircle, Bookmark } from 'lucide-react-native';
 
 interface MediaItem {
   type: 'image' | 'video' | 'audio';
@@ -10,8 +10,8 @@ interface MediaItem {
   title?: string;
   author?: string;
   description?: string;
-  primaryLabel?: string;
-  secondaryLabel?: string;
+  subcategory?: string;
+  format?: string;
 }
 
 interface MediaViewerModalProps {
@@ -19,14 +19,17 @@ interface MediaViewerModalProps {
   media?: MediaItem | null;
   onClose: () => void;
   showInfo?: boolean;
+  likesCount?: number;
+  commentsCount?: number;
 }
 
-export default function MediaViewerModal({ visible, media, onClose, showInfo = false }: MediaViewerModalProps) {
+export default function MediaViewerModal({ visible, media, onClose, showInfo = false, likesCount, commentsCount}: MediaViewerModalProps) {
   const { width, height } = useWindowDimensions();
   const isPortrait = height >= width;
   const soundRef = useRef<Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-
+  const [liked, setLiked] = useState(false);
+  const [localLikes, setLocalLikes] = useState<number | null>(null);  
 
   const dynamicStyles = {
     fullscreenImage: {
@@ -45,29 +48,34 @@ export default function MediaViewerModal({ visible, media, onClose, showInfo = f
     bottom: isPortrait ? 40 : 20,
     width: isPortrait ? '80%' : '60%',
     marginBottom: 10,
-    zIndex: 999,
+    zIndex: 50,
   } as const;
    
   const getAudioBackground = () => {
     return require('../../../assets/img/audioPlaceholder.png');
   };
   
-
   useEffect(() => {
-    console.log("📦 Media recibida:", media);
+    // Reset estado al abrir un nuevo media
+    if (visible && likesCount !== undefined) {
+      setLocalLikes(likesCount);
+      setLiked(false); // o restaurar de algún valor guardado
+    }
+  }, [media, visible, likesCount]);
+  useEffect(() => {
     if (media?.type === 'audio' && visible) {
       // Habilitar reproducción incluso en modo silencioso (solo iOS)
       Sound.setCategory('Playback');
 
       const sound = new Sound(media.uri, undefined, (error) => {
         if (error) {
-          console.log('❌ Error cargando el audio:', error);
+          console.log('Error cargando el audio:', error);
           return;
         }
 
         sound.play((success) => {
           if (!success) {
-            console.log('❌ Error reproduciendo el audio');
+            console.log('Error reproduciendo el audio');
           }
           setIsPlaying(false);
         });
@@ -99,7 +107,7 @@ export default function MediaViewerModal({ visible, media, onClose, showInfo = f
     } else {
       sound.play((success) => {
         if (!success) {
-          console.log('❌ Error reproduciendo el audio');
+          console.log('Error reproduciendo el audio');
         }
       });
       setIsPlaying(true);
@@ -107,7 +115,7 @@ export default function MediaViewerModal({ visible, media, onClose, showInfo = f
   };
   
   if (!media) return null;
-  const shouldShowInfo = showInfo && (media?.title || media?.author || media?.description || media?.primaryLabel || media?.secondaryLabel);
+  const shouldShowInfo = showInfo && (media?.title || media?.author || media?.description || media?.subcategory || media?.format);
 
   return (
     <Modal visible={visible} transparent={true} animationType="fade">
@@ -116,6 +124,24 @@ export default function MediaViewerModal({ visible, media, onClose, showInfo = f
           <X size={30} color="#FFF" />
         </TouchableOpacity>
 
+        {/* Floating Action Icons */}
+        <View style={styles.floatingIcons}>
+          <TouchableOpacity style={styles.iconButton} onPress={() => {
+            setLiked(prev => !prev);
+            setLocalLikes(prev => (prev !== null ? (liked ? prev - 1 : prev + 1) : prev));
+          }}>
+            <Heart color={liked ? "#FF4F4F"  :"#fff"} size={24} strokeWidth={3.5} />
+            <Text style={styles.iconLabel}>{localLikes ?? '–'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconButton} onPress={() => console.log('Comment')}>
+            <MessageCircle color="#fff" size={24} strokeWidth={3.5} />
+            <Text style={styles.iconLabel}>{commentsCount ?? '–'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconButton} onPress={() => console.log('Favorited')}>
+            <Bookmark color="#fff" size={24} strokeWidth={3.5} />
+          </TouchableOpacity>
+        </View>
+
         {/* Mostrar info sólo si showInfo es true */}
         {shouldShowInfo && (
           <View style={infoContainerStyle}>
@@ -123,19 +149,19 @@ export default function MediaViewerModal({ visible, media, onClose, showInfo = f
             {media?.author && <Text style={styles.author}>by {media.author}</Text>}
             {media?.description && <Text style={styles.description}>{media.description}</Text>}
             <View style={styles.labelRow}>
-              {media?.primaryLabel && (
+              {media?.subcategory && (
                 <View style={styles.firstLabel}>
-                  <Text style={styles.firstLabelText}>{media.primaryLabel}</Text>
+                  <Text style={styles.firstLabelText}>{media.subcategory}</Text>
                 </View>
               )}
-              {media?.secondaryLabel && (
+              {media?.format && (
                 <View style={styles.secondLabel}>
-                  <Text style={styles.secondLabelText}>{media.secondaryLabel}</Text>
+                  <Text style={styles.secondLabelText}>{media.format}</Text>
                 </View>
               )}
             </View>
-          </View>
-        )}   
+          </View>        
+        )}       
 
         {/* Renderiza los archivos de media según su tipo */}
         {media.type === 'image' && (
@@ -285,5 +311,26 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     fontSize: 16,
     color: '#FFFFFF',
+  },
+  floatingIcons: {
+    position: 'absolute',
+    right: 20,
+    top: '35%',
+    zIndex: 11,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 30,
+  },
+  iconButton: {
+    marginVertical: 10,    
+    padding: 10,    
+  },  
+  iconLabel:{
+    fontFamily: 'AnonymousPro-Regular',
+    fontWeight: "400",
+    fontSize: 16,
+    color: '#FFFFFF', 
+    alignSelf: "center", 
   }
 });
