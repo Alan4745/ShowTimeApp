@@ -11,42 +11,41 @@ import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
 
-type Gender = 'Male' | 'Female';
+type Role = 'student' | 'coach';
 
-export default function GenderScreen() {
-  const navigation = useNavigation();
+export default function SelectRoleScreen() {
+const navigation = useNavigation();
   const {t} = useTranslation();
-  const [selectedGender, setSelectedGender] = useState<Gender | null>(null);
-  const {data, updateData} = useRegistration();
-  const isCoach = data.role === "coach";
+  const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+  const {updateData} = useRegistration();
+  const isCoach = selectedRole === "coach";
   const totalSteps = isCoach ? 9 : 13;
 
   const handleContinue = () => {
-    if (!selectedGender) {
+    if (!selectedRole) {
       return;
     }
-
-    updateData({gender: selectedGender});
-    (navigation as any).navigate('DateOfBirth');
+    updateData({role: selectedRole});
+    (navigation as any).navigate('Username');
   };
 
   return (
-    <ScreenLayout currentStep={3} totalSteps={totalSteps}>
+    <ScreenLayout currentStep={1} totalSteps={totalSteps}>
       <ContentContainer>
-        <ScreenTitle title={t('registration.gender')} />
+        <ScreenTitle title={t('registration.role')} />
         <View style={styles.optionsContainer}>
           {/* Top row: Female and Male */}
           <View style={styles.topRow}>
             <OptionButton
-              title={t('registration.female')}
-              selected={selectedGender === 'Female'}
-              onPress={() => setSelectedGender('Female')}
+              title={t('registration.coach')}
+              selected={selectedRole === 'coach'}
+              onPress={() => setSelectedRole('coach')}
               style={styles.parallelButton}
             />
             <OptionButton
-              title={t('registration.male')}
-              selected={selectedGender === 'Male'}
-              onPress={() => setSelectedGender('Male')}
+              title={t('registration.student')}
+              selected={selectedRole === 'student'}
+              onPress={() => setSelectedRole('student')}
               style={styles.parallelButton}
             />
           </View>
@@ -56,7 +55,7 @@ export default function GenderScreen() {
       </ContentContainer>
 
       <BottomSection>
-        <ContinueButton onPress={handleContinue} disabled={!selectedGender} />
+        <ContinueButton onPress={handleContinue} disabled={!selectedRole} />
         <HelperText text={t('helperTexts.helperText')} />
       </BottomSection>
     </ScreenLayout>
@@ -79,5 +78,5 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 0, // Allow flex to work properly
   },
-  // centerButton y bottomRow eliminados
+  
 });

@@ -1,6 +1,6 @@
 // src/data/categoriesByUser.ts
 const categoriesByUserType = {
-  Student: [
+  student: [
     'accomplishments',
     'announcements',
     'dailyMotivation',
@@ -9,18 +9,18 @@ const categoriesByUserType = {
     'lifeOfAProfessional',
     'nutrition',
   ],
-  Coach: [
+  coach: [
+    'accomplishments',
+    'questions',
     'announcements',
-    'trainingTips',
-    'playerHighlights',
-    'coachingAdvice',
+    'lifeAsAProfessional',
   ],
-  Darwin: {
-    Training: ['Strength', 'Power', '4WeekProgram', 'ExerciseLibrary'],
-    Mindset: ['Anxiety', 'GrowthMindset', 'ConflictResolution', 'TeamDynamics'],
-    Nutrition: ['Carbohydrates', 'Protein', 'Fat', 'SupplementsHydration', 'NutritionProgram'],
-    Tactics: ['Finishing', 'Technical', 'PassingDribbling'],
-    GameAnalysis: ['Defenders', 'Forwards', 'GeneralAnalysis', 'Interactive', 'Midfielders'],
+  darwin: {
+    training: ['strength', 'power', '4WeekProgram', 'exerciseLibrary'],
+    mindset: ['anxiety', 'growthMindset', 'conflictResolution', 'teamDynamics'],
+    nutrition: ['carbohydrates', 'protein', 'fat', 'supplementsHydration', 'nutritionProgram'],
+    tactics: ['finishing', 'technical', 'passingDribbling'],
+    gameAnalysis: ['defenders', 'forwards', 'generalAnalysis', 'interactive', 'midfielders'],
   },
 };
 

@@ -73,7 +73,7 @@ const translatedOptions = discoveryOptions.map(option => ({
   };
 
   return (
-    <ScreenLayout currentStep={12} totalSteps={14}>
+    <ScreenLayout currentStep={12} totalSteps={13}>
       <ContentContainer>
         <ScreenTitle title={t('registration.appDiscovery')} />
 

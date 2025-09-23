@@ -61,7 +61,7 @@ export default function ExperienceLevelScreen() {
   };
 
   return (
-    <ScreenLayout currentStep={8} totalSteps={12}>
+    <ScreenLayout currentStep={9} totalSteps={13}>
       <ContentContainer>
         <ScreenTitle title={t('registration.experienceLevel')} />
 

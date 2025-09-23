@@ -19,9 +19,16 @@ import { Keyboard } from 'react-native';
 
 type MediaItem = {
   id: string;
-  type: 'image' | 'video' | 'pdf';
+  mediaType: 'image' | 'video' | 'pdf';
   uri: string;
-  thumbnail?: string;
+  thumbnail?: string;   
+  title?: string;
+  author?: string;
+  description?: string;
+  subcategory?: string;
+  format?: string;
+  likes?: number;
+  comments?: number;
 };
 
 export default function PublishPostScreen() {
@@ -39,8 +46,8 @@ export default function PublishPostScreen() {
     const [darwinMainCategory, setDarwinMainCategory] = useState<string | null>(null);
     const [darwinSubcategories, setDarwinSubcategories] = useState<string[]>([]);
     const userType = userData.userType as UserType;
-    const isDarwin = userType === 'Darwin';
-    const categories = isDarwin? Object.keys(categoriesByUserType.Darwin) : categoriesByUserType[userType] ?? categoriesByUserType['Student'];
+    const isDarwin = userType === 'darwin';
+    const categories = isDarwin? Object.keys(categoriesByUserType.darwin) : categoriesByUserType[userType] ?? categoriesByUserType['student'];
     const delayTime = 1500; //para mostrar icono de loading
     
 
@@ -94,7 +101,7 @@ export default function PublishPostScreen() {
         if (isDarwin) {
             // Seleccionó un main category, mostrar segundo modal con subcategorías
             setDarwinMainCategory(categoryKey);
-            const subs = (categoriesByUserType.Darwin as Record<string, string[]>)[categoryKey];
+            const subs = (categoriesByUserType.darwin as Record<string, string[]>)[categoryKey];
             setDarwinSubcategories(subs);
         } else {
             setSelectedCategory(categoryKey);
@@ -130,7 +137,7 @@ export default function PublishPostScreen() {
 
             const newVideo: MediaItem = {
                 id: `${Date.now()}`,
-                type: 'video',
+                mediaType: 'video',
                 uri: video.uri!,
                 thumbnail: thumbnail.path,
             };
@@ -150,75 +157,75 @@ export default function PublishPostScreen() {
 
     // Selección de imagenes desde la galería
     const handleImageSelect = () => {
-            Keyboard.dismiss();
-            const options = {
-                mediaType: 'photo' as const,
-                selectionLimit: 0, // 0 = múltiples
-            };
-
-            launchImageLibrary(options, (response) => {
-                if (response.didCancel || !response.assets) return;
-
-                // inicia animación de loading
-                setIsGeneratingThumbnail(true);
-                const start = Date.now();
-
-                const images: MediaItem[] = response.assets.map((asset, index) => ({
-                id: `${Date.now()}-${index}`,
-                type: 'image',
-                uri: asset.uri!,
-                }));
-
-                setMediaItems(prev => [...prev, ...images]);
-
-                // Asegura un mínimo de x segundos de animación loading
-                const elapsed = Date.now() - start;
-                const delay = Math.max(delayTime - elapsed, 0);
-                setTimeout(() => setIsGeneratingThumbnail(false), delay);
-            });
+        Keyboard.dismiss();
+        const options = {
+            mediaType: 'photo' as const,
+            selectionLimit: 0, // 0 = múltiples
         };
 
-        // Selección de pdf desde la galeria
-        const handlePDFSelect = async () => {
-            Keyboard.dismiss();
+        launchImageLibrary(options, (response) => {
+            if (response.didCancel || !response.assets) return;
 
-            try {
-                const [res] = await pick({ type: [types.pdf] });
+            // inicia animación de loading
+            setIsGeneratingThumbnail(true);
+            const start = Date.now();
 
-                if (!res) throw new Error("No PDF selected");
+            const images: MediaItem[] = response.assets.map((asset, index) => ({
+            id: `${Date.now()}-${index}`,
+            mediaType: 'image',
+            uri: asset.uri!,
+            }));
 
-                // Empieza el loading al volver del picker
-                setIsGeneratingThumbnail(true);
-                const start = Date.now();
+            setMediaItems(prev => [...prev, ...images]);
 
-                const pdfItem: MediaItem = {
-                    id: `${Date.now()}`,
-                    type: 'pdf',
-                    uri: res.uri,
-                    thumbnail: Image.resolveAssetSource(require('../../assets/img/Adobe.png')).uri,
-                };
+            // Asegura un mínimo de x segundos de animación loading
+            const elapsed = Date.now() - start;
+            const delay = Math.max(delayTime - elapsed, 0);
+            setTimeout(() => setIsGeneratingThumbnail(false), delay);
+        });
+    };
 
-                setMediaItems(prev => [...prev, pdfItem]);
+    // Selección de pdf desde la galeria
+    const handlePDFSelect = async () => {
+        Keyboard.dismiss();
 
-                // Forzar mínimo de duración del loading
-                const elapsed = Date.now() - start;
-                const delay = Math.max(delayTime - elapsed, 0);
-                setTimeout(() => {
-                    setIsGeneratingThumbnail(false);
-                }, delay);
+        try {
+            const [res] = await pick({ type: [types.pdf] });
 
-            } catch (err) {
-                if (isErrorWithCode(err)) {
-                    if (err.code !== errorCodes.OPERATION_CANCELED) {
-                        setAlertMessage(t('publishPost.alerts.pdfError'));
-                        setAlertVisible(true);
-                    }
-                } else {
+            if (!res) throw new Error("No PDF selected");
+
+            // Empieza el loading al volver del picker
+            setIsGeneratingThumbnail(true);
+            const start = Date.now();
+
+            const pdfItem: MediaItem = {
+                id: `${Date.now()}`,
+                mediaType: 'pdf',
+                uri: res.uri,
+                thumbnail: Image.resolveAssetSource(require('../../assets/img/Adobe.png')).uri,
+            };
+
+            setMediaItems(prev => [...prev, pdfItem]);
+
+            // Forzar mínimo de duración del loading
+            const elapsed = Date.now() - start;
+            const delay = Math.max(delayTime - elapsed, 0);
+            setTimeout(() => {
+                setIsGeneratingThumbnail(false);
+            }, delay);
+
+        } catch (err) {
+            if (isErrorWithCode(err)) {
+                if (err.code !== errorCodes.OPERATION_CANCELED) {
                     setAlertMessage(t('publishPost.alerts.pdfError'));
                     setAlertVisible(true);
                 }
+            } else {
+                setAlertMessage(t('publishPost.alerts.pdfError'));
+                setAlertVisible(true);
             }
-        };      
+        }
+    };      
     
     // Función para eliminar media del post
     const confirmDeleteMedia = () => {

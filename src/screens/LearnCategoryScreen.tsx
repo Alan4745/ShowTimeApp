@@ -10,9 +10,11 @@ import lessons from '../data/lessons.json';
 interface LearnCategoryScreenProps {
     title: string;
     onBack: () => void;
+    onOpenCalendar: (lessonId: string) => void
 }
 
 type MediaItem = {
+  id: string;
   type: 'image' | 'video' | 'audio';
   uri: string;
   title?: string;
@@ -24,7 +26,7 @@ type MediaItem = {
   comments?: number;
 };
 
-export default function LearnCategoryScreen({ title, onBack} : LearnCategoryScreenProps) {
+export default function LearnCategoryScreen({ title, onBack, onOpenCalendar} : LearnCategoryScreenProps) {
   const {t} = useTranslation();
   const [mediaViewerVisible, setMediaViewerVisible] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
@@ -99,27 +101,29 @@ export default function LearnCategoryScreen({ title, onBack} : LearnCategoryScre
             <Text style={styles.noResultsText}>{t("learn.noLessons")}</Text>
           </View>
         ) : (
-          filteredLessons.map((lesson, index) => (
+          filteredLessons.map((lesson) => (
             <LessonCard
-            key={index}
-            title={lesson.title}
-            author={lesson.author}
-            description={lesson.description}
-            subcategory={lesson.subcategory}
-            format={lesson.format}
-            mediaType={lesson.mediaType as any}
-            mediaUrl={lesson.mediaUrl}
-            onOpenMedia = {() =>
-              handleOpenMedia({
-                type: lesson.mediaType as 'image' | 'video' | 'audio',
-                uri: lesson.mediaUrl,
-                title: lesson.title,
-                author: lesson.author,
-                description: lesson.description,
-                subcategory: lesson.subcategory,
-                format: lesson.format,
-                likes: lesson.likes,
-                comments: lesson.comments,
+              key={lesson.id}
+              id={lesson.id}
+              title={lesson.title}
+              author={lesson.author}
+              description={lesson.description}
+              subcategory={lesson.subcategory}
+              format={lesson.format}
+              mediaType={lesson.mediaType as any}
+              mediaUrl={lesson.mediaUrl}
+              onOpenMedia = {() =>
+                handleOpenMedia({
+                  id: lesson.id,
+                  type: lesson.mediaType as 'image' | 'video' | 'audio',
+                  uri: lesson.mediaUrl,
+                  title: lesson.title,
+                  author: lesson.author,
+                  description: lesson.description,
+                  subcategory: lesson.subcategory,
+                  format: lesson.format,
+                  likes: lesson.likes,
+                  comments: lesson.comments,
               })}            
             />  
           ))
@@ -133,7 +137,13 @@ export default function LearnCategoryScreen({ title, onBack} : LearnCategoryScre
         onClose={handleCloseMedia}  
         showInfo={true} 
         likesCount={selectedMedia?.likes ?? 0}
-        commentsCount={selectedMedia?.comments ?? 0}          
+        commentsCount={selectedMedia?.comments ?? 0} 
+        onBookmarkPress={() => {
+          if (selectedMedia?.id) {
+            setTimeout(()=>handleCloseMedia()); // cerrar el modal
+            onOpenCalendar(selectedMedia.id);            
+          }
+        }}         
       />  
 
       {/* Modal para filtrar */}  

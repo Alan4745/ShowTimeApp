@@ -13,13 +13,18 @@
     "more": "more",
     "gymflow": "Gymflow",
     "subscribe": "Subscribe",
-    "by": "by "
+    "by": "by ",
+    "delete": "Delete",
+    "send": "Send"
   },
   "registration": {
     "createAccount": "Create account",
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm Password",
+    "role": "Role",
+    "coach": "Coach",
+    "student": "Student",
     "username": "Username",
     "gender": "Gender",
     "male": "Male",
@@ -40,11 +45,17 @@
     "appDiscovery": "How did you find out\nabout the app?",
     "planSelection": "Plan Selection",
     "readyToPlay": "Showtime Student",
+    "readyToCoach": "Showtime Coach",
     "signUpGoogle": "Sign up with Google",
     "signUpApple": "Sign up with Apple",
     "alreadyHaveAccount": "Already have an account?",
     "signIn": "Sign in",
-    "termsAgreement": "By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use."
+    "termsAgreement": "By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use.",
+    "coachingRole": "Your coaching role",
+    "chooseRol": "Choose your role",
+    "uploadMedia": "Upload your Media",
+    "writeBio": "Write your bio",
+    "accomplishments": "My accomplishments"   
   },
   "planSelection": {
     "trainSmarter": "TRAIN SMARTER,",
@@ -73,17 +84,30 @@
       "feature3": "Monthly follow-up calls or video reviews to support your growth"
     },
     "features": {
-      "previewAllSections": "Preview all sections",
-      "accessAllContent": "Access all content",
-      "mindsetMotivation": "Mindset & motivation",
-      "directChatCoaches": "Direct chat with coaches",
-      "customPlans": "Custom Plans"
+      "accessToHome": "Access to home (feed)",
+      "accessToDarwinMaterial": "Access to Darwin's material (Learn)",
+      "directMessagesDarwin": "Direct messagges with Darwin",
+      "accessToPost": "Access to Post",
+      "accessToCoachMaterial": "Access to Coaches material (Learn)",  
+      "eventsAccess": "Showtime University events (camps, meetings, trainings)",   
+      "directMessageWithCoach": "Direct message with coaches",
+      "oneOnOneCoachings": "1:1 coachings",
+      "videoCallsWithDarwin": "Video calls with Darwin",
+      "videoCallsWithCoaches": "Video calls with coaches" 
+      
     },
     "featuresTable":{
-      "featureHeader": "Feature",
+      "featureHeader": "Feature / Section",
       "free": "Free",
       "basic": "Basic",
-      "premium": "Premium"
+      "premium": "Premium",
+      "elite": "Elite"
+    },
+    "planPrices":{
+      "freePlan": "Free",
+      "basicPlan": "$49",
+      "premiumPlan": "$99",
+      "elitePlan": "$149"
     },    
     "hero":{
       "titleLine1": "TRAIN SMARTER,",
@@ -157,7 +181,12 @@
     "helperText": "It helps us create a training experience that fits you best.",
     "passwordRequirement": "Password must be at least 8 characters long",
     "termsText": "By creating an account, you agree to our Terms of Service and Privacy Policy",
-    "coachHelperText": "Connect with coaches who work with professionals everyday."
+    "coachHelperText": "Connect with coaches who work with professionals everyday.",
+    "uploadHelperText1": "Use only copyright-free music",
+    "uploadHelperText2": "Do not upload explicit sexual content",
+    "uploadMedia": "Add a short .mp4 video or image of yourself coaching or share your experience. Make sure your media is in landscape format (16:9).",
+    "writeBioHelperText": "Share your experience and specialty. This will appear on your profile (Max. 400 characters)",
+    "accomplishmentsHelperText" : "Max. 80 characters — example:Created personalized recovery method for elite players"
   },
   "errors": {
     "emailRequired": "Email is required",
@@ -260,6 +289,13 @@
     "november": "November",
     "december": "December"
   },
+  "coachingRoles": {
+    "performanceCoach": "Performance Coach",
+    "nutrition": "Nutrition",
+    "gameAnalysis": "Game analysis",
+    "drillTechnical": "Drill / Technical",
+    "mindset": "Mindset" 
+  },
   "placeholders": {
     "enterEmail": "Enter your email",
     "createPassword": "Create a password",
@@ -271,7 +307,11 @@
     "selectFrequency": "Select",
     "selectDiscoverySource": "Select",
     "searchCountries": "Search countries...",
-    "writeMessage": "Write a message"
+    "writeMessage": "Write a message",
+    "selectRole": "Select",
+    "upload": "Upload",
+    "writeBioText": "text",
+    "accomplishmentInput": "Write accomplishment here"
   },
   "modalTitles": {
     "selectMonth": "Select Month",
@@ -286,7 +326,8 @@
       "confirm": "Confirm",
       "cancel": "Cancel",
       "close": "Close"
-    }
+    },
+    "highlights":"Share your highlight link"
   },
   "splash": {
     "splashFooter": "© 2025 | Where talent meets opportunity | USA"
@@ -355,32 +396,34 @@
       "introduceYourself": "Introduce yourself",
       "lifeOfAProfessional": "Life of a professional",
       "nutrition": "Nutrition",
-      "Training": "Training",
-      "Mindset": "Mindset",
-      "Nutrition": "Nutrition",
-      "Tactics": "Tactics",
-      "GameAnalysis": "Game Analysis",
-      "Strength": "Strength",
-      "Power": "Power",
+      "training": "Training",
+      "mindset": "Mindset",      
+      "tactics": "Tactics",
+      "gameAnalysis": "Game Analysis",
+      "strength": "Strength",
+      "power": "Power",
       "4WeekProgram": "4 Week Program",
-      "ExerciseLibrary": "Darwin's Exercise Library",
-      "Anxiety": "Anxiety",
-      "GrowthMindset": "Growth Mindset",
-      "ConflictResolution": "Conflict Resolution",
-      "TeamDynamics": "Team Dynamics",
-      "Carbohydrates": "Carbohydrates",
-      "Protein": "Protein",
-      "Fat": "Fat",
-      "SupplementsHydration": "Supplements & Hydration",
-      "NutritionProgram": "4 Week Program",
-      "Finishing": "Finishing",
-      "Technical": "Technical",
-      "PassingDribbling": "Passing & Dribbling",
-      "Defenders": "Defenders",
-      "Forwards": "Forwards",
-      "GeneralAnalysis": "General Analysis",
-      "Interactive": "Interactive",
-      "Midfielders": "Midfielders"
+      "exerciseLibrary": "Darwin's Exercise Library",
+      "anxiety": "Anxiety",
+      "growthMindset": "Growth Mindset",
+      "conflictResolution": "Conflict Resolution",
+      "teamDynamics": "Team Dynamics",
+      "carbohydrates": "Carbohydrates",
+      "protein": "Protein",
+      "fat": "Fat",
+      "supplementsHydration": "Supplements & Hydration",
+      "nutritionProgram": "4 Week Program",
+      "finishing": "Finishing",
+      "technical": "Technical",
+      "passingDribbling": "Passing & Dribbling",
+      "defenders": "Defenders",
+      "forwards": "Forwards",
+      "generalAnalysis": "General Analysis",
+      "interactive": "Interactive",
+      "midfielders": "Midfielders",
+      "questions": "Questions",
+      "lifeAsAProfessional": "Life as a Professional"
+      
     },
     "alertPost":{
       "title": "Post now ?",
@@ -412,18 +455,47 @@
     "titles": {
       "account": "Account",
       "coachList": "Coach List",
-      "selectAFile": "SELECT A FILE"
+      "studentList": "Student List",
+      "selectAFile": "SELECT A FILE",
+      "noSavedLessons": "No Saved Lessons",
+      "editProfile": "Edit Profile",
+      "uploadContent": "Upload content",
+      "noThumbnail": "No media file selected",
+      "fileFormat" : "File Format",
+      "category": "Category",
+      "selectMainCategory": "Select Main Category",
+      "selectSubcategory": "Select Subcategory"
     },
     "buttons": {
       "coach": "Coach",
       "save": "Save",
       "settings": "Settings",
-      "send" : "Send"
+      "send" : "Send",
+      "students": "Students",
+      "upload": "Upload",
+      "highlight": "HIGHLIGHT",
+      "shareTheApp" : "SHARE THE APP",
+      "signOut": "Sign Out",
+      "uploadContent": "Upload content"
+    },
+    "content": {
+      "notifications": "Notifications",
+      "subscription": "Subscription",
+      "contact": "Contact",
+      "cancelSubscription": "Cancel subscription"
+    },
+    "placeholders":{
+      "inputTitle": "Content Title",
+      "inputDescription": "Content Description",
+      "mainCategory": "Main Category",
+      "subcategory": "Subcategory"        
     }
   },
   "learn": {
     "filter": "Filter",
     "noLessons": "No lessons matched your filters",
+    "calendarText": "Save your training day",
+    "next": "Next",
     "categories": {
       "training": "Training",
       "mindset": "Mindset",

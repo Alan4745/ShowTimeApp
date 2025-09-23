@@ -49,7 +49,7 @@ export default function TrainingFrequencyScreen() {
   };
 
   return (
-    <ScreenLayout currentStep={9} totalSteps={12}>
+    <ScreenLayout currentStep={10} totalSteps={13}>
       <ContentContainer>
         <ScreenTitle title={t('registration.trainingFrequency')} />
 

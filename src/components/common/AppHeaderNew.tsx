@@ -1,15 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+
+type RootStackParamList = {
+  Account: undefined;
+  // otras pantallas si es necesario
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList, 'Account'>;
 
 interface AppHeaderProps {
-  userAvatar: string; // Ahora es requerido
+  userAvatar: string; // Requerido
 }
 
 export default function AppHeaderNew(props: AppHeaderProps) {
+  const navigation = useNavigation<NavigationProp>();
+
   return (
     <View style={styles.header}>      
       <Text style={styles.title}>Showtime University</Text>
-      <Image source={{ uri: props.userAvatar}} style={styles.avatar} />    
+      <TouchableOpacity onPress={() => navigation.navigate('Account')}>
+        <Image source={{ uri: props.userAvatar}} style={styles.avatar} /> 
+      </TouchableOpacity>    
     </View>
   );
 }

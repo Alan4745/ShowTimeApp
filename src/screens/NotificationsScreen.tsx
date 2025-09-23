@@ -28,7 +28,7 @@ export default function NotificationsScreen() {
   };
 
   return (
-    <ScreenLayout currentStep={11} totalSteps={14}>
+    <ScreenLayout currentStep={13} totalSteps={13}>
       <ContentContainer>
         <ScreenTitle title={t('registration.notifications')} />
 

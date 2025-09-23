@@ -7,9 +7,17 @@ import postsData from '../data/posts.json';
 import { createThumbnail } from 'react-native-create-thumbnail';
 
 type MediaItem = {
-  type: 'image' | 'video';
+  id: string;
+  mediaType: 'image' | 'video' | 'audio';
   uri: string;
-  thumbnail?: string;
+  thumbnailUrl: string;
+  title?: string;
+  author?: string;
+  description?: string;
+  subcategory?: string;
+  format?: string;  
+  likes?: number;
+  comments?: number;
 };
 
 type PostType = {
@@ -35,7 +43,7 @@ export default function HomeTabScreen() {
         postsData.map(async post => {
           const enrichedMedia = await Promise.all(
             (post.media ?? []).map(async item => {
-              if (item.type === 'video' && !item.thumbnail) {
+              if (item.mediaType === 'video' && !item.thumbnailUrl) {
                 try {
                   const { path } = await createThumbnail({ url: item.uri });
                   return { ...item, thumbnail: path };
@@ -74,7 +82,7 @@ export default function HomeTabScreen() {
   const renderItem = ({ item }) => (
     <Post
       post={item}
-      onPressComments={() => navigation.navigate('StudentPost', { postId: item.id })}
+      onPressComments={() => (navigation as any).navigate('StudentPost', { postId: item.id })}
     />
   );
 
@@ -96,7 +104,7 @@ export default function HomeTabScreen() {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('PublishPost')}
+        onPress={() => (navigation as any).navigate('PublishPost')}
       >
         <Text style={styles.buttonText}>＋</Text>
       </TouchableOpacity>

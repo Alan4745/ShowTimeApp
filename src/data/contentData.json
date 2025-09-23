@@ -17,30 +17,34 @@
         "id": "l1",
         "title": "Strength Training Basics",
         "author": "Carlos López",
+        "subcategory": "Gymflow",
+        "format": "Image",
         "description": "A full-body approach to basic strength training techniques. This program focuses on building foundational movement patterns, improving core stability, and developing muscle control through compound exercises. Ideal for beginners looking to establish proper form before advancing to heavier loads or more complex routines.",
-        "imageUrl": "https://images.pexels.com/photos/416778/pexels-photo-416778.jpeg?auto=compress&cs=tinysrgb&w=600"
+        "mediaUrl": "https://images.pexels.com/photos/416778/pexels-photo-416778.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       {
         "id": "l2",
         "title": "Nutrition and Performance",
         "author": "Carlos López",
+        "subcategory": "Recovery",
+        "format": "Image",
         "description": "Learn how to eat and recover like a pro athlete.",
-        "imageUrl": "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600"
+        "mediaUrl": "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600"
       }
     ],
     "testimonials": [
       {
         "id": "t1",
-        "imageUrl": "https://randomuser.me/api/portraits/women/65.jpg",
-        "name": "Ana Pérez",
+        "avatar": "https://randomuser.me/api/portraits/women/65.jpg",
+        "username": "Ana Pérez",
         "rating": "5",
         "message": "I used to doubt myself a lot. The mindset lessons in this app helped me stay focused, build confidence, and enjoy the game again 🧠⚽",
         "timeSincePost": "2 weeks ago"
       },
       {
         "id": "t2",
-        "imageUrl": "https://randomuser.me/api/portraits/men/75.jpg",
-        "name": "Luis Mendoza",
+        "avatar": "https://randomuser.me/api/portraits/men/75.jpg",
+        "username": "Luis Mendoza",
         "rating": "4.5",
         "message": "Great sessions, very detailed and encouraging.",
         "timeSincePost": "1 month ago"
@@ -64,28 +68,32 @@
         "id": "l1",
         "title": "Strength Training Basics",
         "description": "A full-body approach to basic strength training techniques.",
-        "imageUrl": "https://images.pexels.com/photos/416778/pexels-photo-416778.jpeg?auto=compress&cs=tinysrgb&w=600"
+        "subcategory": "Gymflow",
+        "format": "Image",
+        "mediaUrl": "https://images.pexels.com/photos/416778/pexels-photo-416778.jpeg?auto=compress&cs=tinysrgb&w=600"
       },
       {
         "id": "l2",
         "title": "Nutrition and Performance",
         "description": "Learn how to eat and recover like a pro athlete.",
-        "imageUrl": "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600"
+        "subcategory": "Recovery",
+        "format": "Image",
+        "mediaUrl": "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600"
       }
     ],
     "testimonials": [
       {
         "id": "t1",
-        "imageUrl": "https://randomuser.me/api/portraits/women/65.jpg",
-        "name": "Ana Pérez",
+        "avatar": "https://randomuser.me/api/portraits/women/65.jpg",
+        "username": "Ana Pérez",
         "rating": "5",
         "message": "I used to doubt myself a lot. The mindset lessons in this app helped me stay focused, build confidence, and enjoy the game again 🧠⚽",
         "timeSincePost": "2 weeks ago"
       },
       {
         "id": "t2",
-        "imageUrl": "https://randomuser.me/api/portraits/men/75.jpg",
-        "name": "Luis Mendoza",
+        "avatar": "https://randomuser.me/api/portraits/men/75.jpg",
+        "username": "Luis Mendoza",
         "rating": "4.5",
         "message": "Great sessions, very detailed and encouraging.",
         "timeSincePost": "1 month ago"

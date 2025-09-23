@@ -13,18 +13,24 @@
     "more": "más",
     "gymflow": "Gymflow",
     "subscribe": "Suscribirse",
-    "by": "por "
+    "by": "por ",
+    "delete": "Borrar",
+    "send": "Enviar"
+
   },
   "registration": {
     "createAccount": "Crea tu\ncuenta",
     "email": "Correo electrónico",
     "password": "Contraseña",
     "confirmPassword": "Confirmar contraseña",
+    "role": "Rol",
+    "coach": "Entrenador",
+    "student": "Estudiante",
     "username": "Nombre de usuario",
-    "gender": "Género",
+    "gender": "Género",    
     "male": "Masculino",
     "female": "Femenino",
-    "other": "Otro",
+    "other": "Otro",    
     "dateOfBirth": "Ingresa tu fecha de nacimiento",
     "citizenship": "Ciudadanía",
     "physicalData": "¿Cuál es tu estatura y peso actual?",
@@ -40,11 +46,17 @@
     "appDiscovery": "¿Cómo te enteraste de la aplicación?",
     "planSelection": "Selección de plan",
     "readyToPlay": "Estudiante de Showtime",
+    "readyToCoach": "Entrenador de Showtime",
     "signUpGoogle": "Registrarse con Google",
     "signUpApple": "Registrarse con Apple",
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
     "signIn": "Iniciar sesión",
-    "termsAgreement": "Al registrarte, aceptas los Términos de Servicio y la Política de Privacidad, incluyendo el Uso de Cookies."
+    "termsAgreement": "Al registrarte, aceptas los Términos de Servicio y la Política de Privacidad, incluyendo el Uso de Cookies.",
+    "coachingRole": "Tu rol como entrenador",
+    "chooseRol": "Selecciona tu rol",
+    "uploadMedia": "Sube tu contenido multimedia",
+    "writeBio": "Write your bio",
+    "accomplishments": "Mis logros" 
   },
   "planSelection": {
     "trainSmarter": "ENTRENA MÁS INTELIGENTE,",
@@ -73,17 +85,29 @@
       "feature3": "Llamadas de seguimiento mensuales o revisiones en video para apoyar tu crecimiento."
     },
     "features": {
-      "previewAllSections": "Vista previa de todas las secciones",
-      "accessAllContent": "Acceso a todo el contenido",
-      "mindsetMotivation": "Estado mental & motivación",
-      "directChatCoaches": "Chat directo con los entrenadores.",
-      "customPlans": "Planes personalizados"
+      "accessToHome": "Acceso a inicio (feed)",
+      "accessToDarwinMaterial": "Acceso al material de Darwin (learn)",
+      "directMessagesDarwin": "Mensajes directos con Darwin",
+      "accessToPost": "Acceso a Publicar",
+      "accessToCoachMaterial": "Acceso al material de los entrenadores (learn)",
+      "eventsAccess": "Eventos de Showtime University (campamentos, reuniones, entrenamientos)",
+      "directMessageWithCoach": "Mensaje directo con entrenadores",
+      "oneOnOneCoachings": "Entrenamientos 1:1",
+      "videoCallsWithDarwin": "Videollamadas con Darwin",
+      "videoCallsWithCoaches": "Videollamadas con entrenadores" 
     },
     "featuresTable":{
-      "featureHeader": "Característica",
+      "featureHeader": "Característica / Sección",
       "free": "Gratis",
-      "basic": "Basico",
-      "premium": "Premium"
+      "basic": "Básico",
+      "premium": "Premium",
+      "elite": "Élite"
+    },
+    "planPrices":{
+      "freePlan": "Gratis",
+      "basicPlan": "$49",
+      "premiumPlan": "$99",
+      "elitePlan": "$149"
     },    
     "hero":{
       "titleLine1": "ENTRENA MÁS INTELIGENTE,",
@@ -134,7 +158,12 @@
     "helperText": "Nos ayuda a crear una experiencia de entrenamiento que se adapte mejor a ti.",
     "passwordRequirement": "La contraseña debe tener al menos 8 caracteres",
     "termsText": "Al crear una cuenta, aceptas nuestros Términos de Servicio y Política de Privacidad",
-    "coachHelperText": "Conectate con entrenadores que trabajan con profesionales todos los días."
+    "coachHelperText": "Conectate con entrenadores que trabajan con profesionales todos los días.",
+    "uploadHelperText1": "Utiliza únicamente música sin derechos de autor",
+    "uploadHelperText2": "No subas contenido sexual explícito",
+    "uploadMedia": "Agrega un video corto en formato .mp4 o una imagen tuya entrenando, o comparte tu experiencia. Asegúrate de que tu contenido esté en formato horizontal (16:9)",
+    "writeBioHelperText": "Comparte tu experiencia y especialidad. Esto aparecerá en tu perfil (Máx. 400 caracteres).",
+    "accomplishmentsHelperText" : "Máx. 80 caracteres — ejemplo: Creé un método de recuperación personalizado para atletas de élite."   
   },
   "errors": {
     "emailRequired": "El correo electrónico es requerido",
@@ -237,6 +266,13 @@
     "november": "Noviembre",
     "december": "Diciembre"
   },
+  "coachingRoles": {
+    "performanceCoach": "Entrenador de rendimiento",
+    "nutrition": "Nutrición",
+    "gameAnalysis": "Análisis de juego",
+    "drillTechnical": "Técnico y ejercicios",
+    "mindset": "Mentalidad ganadora" 
+  },
   "placeholders": {
     "enterEmail": "Ingresa tu correo electrónico",
     "createPassword": "Crea una contraseña",
@@ -248,7 +284,11 @@
     "selectFrequency": "Selecciona frecuencia de entrenamiento",
     "selectDiscoverySource": "Selecciona fuente de descubrimiento",
     "searchCountries": "Buscar países...",
-    "writeMessage": "Write a message"
+    "writeMessage": "Write a message",
+    "selectRole": "Seleccionar",
+    "upload": "Subir",
+    "writeBioText": "texto",
+    "accomplishmentInput": "Escribe un logro aquí"
   },
   "modalTitles": {
     "selectMonth": "Seleccionar mes",
@@ -263,7 +303,8 @@
       "confirm": "Confirmar",
       "cancel": "Cancelar",
       "close": "Cerrar"
-    }
+    },
+    "highlights":"Comparte tu video de highlights"
   },
   "splash": {
     "splashFooter": "© 2025 | Donde el talento encuentra oportunidad | USA"
@@ -332,32 +373,33 @@
       "introduceYourself": "Presentate",
       "lifeOfAProfessional": "Vida del profesional",
       "nutrition": "Nutrición",
-      "Training": "Entrenamiento",
-      "Mindset": "Mentalidad",
-      "Nutrition": "Nutrición",
-      "Tactics": "Tacticas",
-      "GameAnalysis": "Análisis del juego",
+      "training": "Entrenamiento",
+      "mindset": "Mentalidad",      
+      "tactics": "Tacticas",
+      "gameAnalysis": "Análisis del juego",
       "Strength": "Fuerza",
-      "Power": "Potencia",
+      "power": "Potencia",
       "4WeekProgram": "Programa de 4 semanas",
-      "ExerciseLibrary": "Libreria de ejercicios de Darwin",
-      "Anxiety": "Ansiedad",
-      "GrowthMindset": "Mentalidad de crecimiento",
-      "ConflictResolution": "Resolución de conflictos",
-      "TeamDynamics": "Dinamica del equipo",
-      "Carbohydrates": "Carbohidratos",
-      "Protein": "Proteinas",
-      "Fat": "Grasa",
-      "SupplementsHydration": "Suplementos e Hidratación",
-      "NutritionProgram": "Programa de 4 Semanas",
-      "Finishing": "Rematar",
-      "Technical": "Técnico",
-      "PassingDribbling": "Pasar y Driblar",
-      "Defenders": "Defensas",
-      "Forwards": "Delanteros",
-      "GeneralAnalysis": "Análisis General",
-      "Interactive": "Interactivo",
-      "Midfielders": "Mediocampistas"
+      "exerciseLibrary": "Libreria de ejercicios de Darwin",
+      "anxiety": "Ansiedad",
+      "growthMindset": "Mentalidad de crecimiento",
+      "conflictResolution": "Resolución de conflictos",
+      "teamDynamics": "Dinamica del equipo",
+      "carbohydrates": "Carbohidratos",
+      "protein": "Proteinas",
+      "fat": "Grasa",
+      "supplementsHydration": "Suplementos e Hidratación",
+      "nutritionProgram": "Programa de 4 Semanas",
+      "finishing": "Rematar",
+      "technical": "Técnico",
+      "passingDribbling": "Pasar y Driblar",
+      "defenders": "Defensas",
+      "forwards": "Delanteros",
+      "generalAnalysis": "Análisis General",
+      "interactive": "Interactivo",
+      "midfielders": "Mediocampistas",
+      "questions": "Preguntas",
+      "lifeAsAProfessional": "Vida como un Profesional"
     },
     "alertPost":{
       "title": "¿Enviar el Post?",
@@ -389,18 +431,47 @@
     "titles": {
       "account": "Cuenta",
       "coachList": "Lista de Entrenadores",
-      "selectAFile": "SELECCIONA UN ARCHIVO"
+      "studentList": "Lista de Estudiantes",
+      "selectAFile": "SELECCIONA UN ARCHIVO",
+      "noSavedLessons": "No hay lecciones guardadas",
+      "editProfile": "Editar perfil",
+      "uploadContent": "Subir Contenido",
+      "noThumbnail": "No hay archivo seleccionado",
+      "fileFormat" : "Formato del archivo",
+      "category": "Categoría",
+      "selectMainCategory": "Selecciona la Categoría",
+      "selectSubcategory": "Selecciona la Subcategoría"
     },
     "buttons": {
       "coach": "Entrenador",
       "save": "Guardar",
       "settings": "Ajustes",
-      "send" : "Enviar"
+      "send" : "Enviar",
+      "students": "Estudiantes",
+      "upload": "Cargar",
+      "highlight": "DESTACAR",
+      "shareTheApp" : "COMPARTIR LA APP",
+      "signOut": "Cerrar Sesión",
+      "uploadContent": "Subir contenido"
+    },
+    "content": {
+      "notifications": "Notificaciones",
+      "subscription": "Suscripción",
+      "contact": "Contacto",
+      "cancelSubscription": "Cancelar suscripción"
+    },
+    "placeholders":{
+      "inputTitle": "Título del contenido",
+      "inputDescription": "Descripción del contenido",
+      "mainCategory": "Categoría",
+      "subcategory": "Subcategoría"        
     }
   },
   "learn": {
     "filter": "Filtrar",
     "noLessons": "Ninguna lección coincide con tus filtros",
+    "calendarText": "Guarda tu día de entrenamiento",
+    "next": "Siguiente",
     "categories": {
       "training": "Entrenamiento",
       "mindset": "Estado Mental",

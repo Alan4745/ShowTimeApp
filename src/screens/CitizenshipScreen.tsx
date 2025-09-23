@@ -16,8 +16,10 @@ export default function CitizenshipScreen() {
   const { t } = useTranslation();
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [showCountryModal, setShowCountryModal] = useState(false);
-  const { updateData } = useRegistration();
+  const { data, updateData } = useRegistration();
   const navigation = useNavigation();
+  const isCoach = data.role === "coach";
+  const totalSteps = isCoach ? 9 : 13;
 
   const countries = [
     'Afghanistan', 'Albania', 'Algeria', 'Argentina', 'Armenia', 'Australia',
@@ -46,7 +48,11 @@ export default function CitizenshipScreen() {
     }
 
     updateData({ citizenship: selectedCountry });
-    (navigation as any).navigate('PhysicalData');
+    if (data.role === 'coach') {
+      (navigation as any).navigate('CoachingRole');
+    } else {
+      (navigation as any).navigate('PhysicalData');
+    }    
   };
 
   const handleCountrySelect = (country: string) => {
@@ -55,7 +61,7 @@ export default function CitizenshipScreen() {
   };
 
   return (
-    <ScreenLayout currentStep={4} totalSteps={6}>
+    <ScreenLayout currentStep={5} totalSteps={totalSteps}>
       <ContentContainer>
         <ScreenTitle title={t('registration.citizenship')} />
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions, Image, FlatList } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient'; // Corregí importación
+import LinearGradient from 'react-native-linear-gradient'; 
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
 import { X, Check, Star, ChevronDown, Lock } from 'lucide-react-native';
@@ -101,11 +101,16 @@ export default function PlanSelectionScreen() {
   };
 
   const featuresList = [
-    t('planSelection.features.previewAllSections'),
-    t('planSelection.features.accessAllContent'),
-    t('planSelection.features.mindsetMotivation'),
-    t('planSelection.features.directChatCoaches'),
-    t('planSelection.features.customPlans'),
+    t('planSelection.features.accessToHome'),
+    t('planSelection.features.accessToDarwinMaterial'),
+    t('planSelection.features.directMessagesDarwin'),
+    t('planSelection.features.accessToPost'),
+    t('planSelection.features.accessToCoachMaterial'),
+    t('planSelection.features.eventsAccess'),
+    t('planSelection.features.directMessageWithCoach'),
+    t('planSelection.features.oneOnOneCoachings'),
+    t('planSelection.features.videoCallsWithDarwin'),
+    t('planSelection.features.videoCallsWithCoaches'),
   ];
 
   return (
@@ -187,9 +192,15 @@ export default function PlanSelectionScreen() {
             <View style={styles.featuresTable}>
               <View style={styles.featuresHeader}>
                 <Text style={styles.featuresHeaderTextLeft}>{t('planSelection.featuresTable.featureHeader')}</Text>
-                <Text style={styles.featuresHeaderText}>{t('planSelection.featuresTable.free')}</Text>
-                <Text style={styles.featuresHeaderText}>{t('planSelection.featuresTable.basic')}</Text>
-                <Text style={styles.featuresHeaderText}>{t('planSelection.featuresTable.premium')}</Text>
+                <Text style={styles.featuresHeaderText}>
+                  {t('planSelection.featuresTable.basic') + '\n'}<Text style={styles.featuresHeaderText}>{t('planSelection.planPrices.basicPlan')}</Text>
+                </Text>  
+                <Text style={styles.featuresHeaderText}>
+                  {t('planSelection.featuresTable.premium') + '\n'}<Text style={styles.featuresHeaderText}>{t('planSelection.planPrices.premiumPlan')}</Text>
+                </Text>
+                <Text style={styles.featuresHeaderText}>
+                  {t('planSelection.featuresTable.elite') + '\n'}<Text style={styles.featuresHeaderText}>{t('planSelection.planPrices.elitePlan')}</Text>
+                </Text>
               </View>
 
               {featuresList.map((feature, index) => (
@@ -199,10 +210,10 @@ export default function PlanSelectionScreen() {
                 >
                   <Text style={styles.featureText}>{feature}</Text>
                   <View style={styles.featureStatus}>
-                    {index === 0 ? <Check color="#fff" size={16} style={styles.featureAbled} /> : <Lock color="#252A30" size={16} style={styles.featureDisabled} />}
+                    {index <= 2 ? <Check color="#fff" size={16} style={styles.featureAbled} /> : <Lock color="#252A30" size={16} style={styles.featureDisabled} />}
                   </View>
                   <View style={styles.featureStatus}>
-                    {index <= 2 ? <Check color="#fff" size={16} style={styles.featureAbled} /> : <Lock color="#252A30" size={16} style={styles.featureDisabled} />}
+                    {index <=5 ? <Check color="#fff" size={16} style={styles.featureAbled} /> : <Lock color="#252A30" size={16} style={styles.featureDisabled} />}
                   </View>
                   <View style={styles.featureStatus}>
                     <Check color="#fff" size={16} style={styles.featureAbled} />

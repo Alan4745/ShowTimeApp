@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Alert, StyleSheet } from 'react-native';
+import { View, Alert, StyleSheet, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
 import ScreenLayout from '../components/common/ScreenLayout';
@@ -126,7 +126,7 @@ export default function CreateAccountScreen() {
       password: password,
     });
 
-    (navigation.navigate as any)({ name: 'Username' });
+    (navigation.navigate as any)({ name: 'SelectRole' });
   };
 
   const isFormValid =
@@ -139,51 +139,63 @@ export default function CreateAccountScreen() {
 
   return (
     <ScreenLayout currentStep={0} totalSteps={6}>
-      <ContentContainer>
-        <ScreenTitle title={t('registration.createAccount')} />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+          >
+            <ContentContainer>
+              <ScreenTitle title={t('registration.createAccount')} />
 
-        <View style={styles.formContainer}>
-          <FormInput
-            label={t('registration.email')}
-            placeholder={t('placeholders.enterEmail')}
-            value={email}
-            onChangeText={handleEmailChange}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={touched.email ? errors.email : ''}
-          />
+              <View style={styles.formContainer}>
+                <FormInput
+                  label={t('registration.email')}
+                  placeholder={t('placeholders.enterEmail')}
+                  value={email}
+                  onChangeText={handleEmailChange}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  error={touched.email ? errors.email : ''}
+                />
 
-          <PasswordInput
-            label={t('registration.password')}
-            placeholder={t('placeholders.createPassword')}
-            value={password}
-            onChangeText={handlePasswordChange}
-            error={touched.password ? errors.password : ''}
-          />
+                <PasswordInput
+                  label={t('registration.password')}
+                  placeholder={t('placeholders.createPassword')}
+                  value={password}
+                  onChangeText={handlePasswordChange}
+                  error={touched.password ? errors.password : ''}
+                />
 
-          <PasswordInput
-            label={t('registration.confirmPassword')}
-            placeholder={t('placeholders.confirmYourPassword')}
-            value={confirmPassword}
-            onChangeText={handleConfirmPasswordChange}
-            error={touched.confirmPassword ? errors.confirmPassword : ''}
-          />
+                <PasswordInput
+                  label={t('registration.confirmPassword')}
+                  placeholder={t('placeholders.confirmYourPassword')}
+                  value={confirmPassword}
+                  onChangeText={handleConfirmPasswordChange}
+                  error={touched.confirmPassword ? errors.confirmPassword : ''}
+                />
 
-          <HelperText
-            text={t('helperTexts.passwordRequirement')}
-            style={styles.passwordRequirements}
-          />
-        </View>
-      </ContentContainer>
+                <HelperText
+                  text={t('helperTexts.passwordRequirement')}
+                  style={styles.passwordRequirements}
+                />
+              </View>
+            </ContentContainer>
 
-      <BottomSection>
-        <ContinueButton onPress={handleContinue} disabled={!isFormValid} />
+            <BottomSection>
+              <ContinueButton onPress={handleContinue} disabled={!isFormValid} />
 
-        <View style={styles.termsContainer}>
-          <HelperText text={t('helperTexts.termsText')} />
-        </View>
-      </BottomSection>
+              <View style={styles.termsContainer}>
+                <HelperText text={t('helperTexts.termsText')} />
+              </View>
+            </BottomSection>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>      
     </ScreenLayout>
   );
 }

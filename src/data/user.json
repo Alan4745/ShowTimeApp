@@ -1,5 +1,6 @@
 {
+  "id": "user-001",
   "username": "Pedro30",
   "avatar": "https://randomuser.me/api/portraits/men/35.jpg",
-  "userType": "Darwin"
+  "userType": "student" 
 }

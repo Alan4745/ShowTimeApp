@@ -10,9 +10,12 @@ export type Position =
   | 'winger'
   | 'forward';
 
+export type Role = 'student' | 'coach'; 
+
 export interface RegistrationData {
   email?: string;
   password?: string;
+  role?: Role;
   username?: string;
   gender?: 'Male' | 'Female' | 'Other';
   dateOfBirth?: {
@@ -54,6 +57,12 @@ export interface RegistrationData {
     priceValue: number;
   };
   authMethod?: 'google' | 'apple' | 'email';
+  
+  // Coach-specific fields
+  coachingRole?: string; 
+  uploadMedia?: string; // URL o path local de media
+  bio?: string; // descripción del coach
+  accomplishments?: string[]; // lista de logros
 }
 
 interface RegistrationContextType {

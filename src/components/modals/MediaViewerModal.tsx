@@ -5,13 +5,16 @@ import Sound from 'react-native-sound';
 import { X, PlayCircle, PauseCircle, Heart, MessageCircle, Bookmark } from 'lucide-react-native';
 
 interface MediaItem {
-  type: 'image' | 'video' | 'audio';
+  id: string;
+  mediaType: 'image' | 'video' | 'audio';
   uri: string;
   title?: string;
   author?: string;
   description?: string;
   subcategory?: string;
   format?: string;
+  likes?: number;
+  comments?: number;
 }
 
 interface MediaViewerModalProps {
@@ -21,9 +24,10 @@ interface MediaViewerModalProps {
   showInfo?: boolean;
   likesCount?: number;
   commentsCount?: number;
+  onBookmarkPress?: () => void;
 }
 
-export default function MediaViewerModal({ visible, media, onClose, showInfo = false, likesCount, commentsCount}: MediaViewerModalProps) {
+export default function MediaViewerModal({ visible, media, onClose, showInfo = false, likesCount, commentsCount, onBookmarkPress}: MediaViewerModalProps) {
   const { width, height } = useWindowDimensions();
   const isPortrait = height >= width;
   const soundRef = useRef<Sound | null>(null);
@@ -62,8 +66,9 @@ export default function MediaViewerModal({ visible, media, onClose, showInfo = f
       setLiked(false); // o restaurar de algún valor guardado
     }
   }, [media, visible, likesCount]);
+  
   useEffect(() => {
-    if (media?.type === 'audio' && visible) {
+    if (media?.mediaType === 'audio' && visible) {
       // Habilitar reproducción incluso en modo silencioso (solo iOS)
       Sound.setCategory('Playback');
 
@@ -137,7 +142,7 @@ export default function MediaViewerModal({ visible, media, onClose, showInfo = f
             <MessageCircle color="#fff" size={24} strokeWidth={3.5} />
             <Text style={styles.iconLabel}>{commentsCount ?? '–'}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton} onPress={() => console.log('Favorited')}>
+          <TouchableOpacity style={styles.iconButton} onPress={onBookmarkPress}>
             <Bookmark color="#fff" size={24} strokeWidth={3.5} />
           </TouchableOpacity>
         </View>
@@ -164,7 +169,7 @@ export default function MediaViewerModal({ visible, media, onClose, showInfo = f
         )}       
 
         {/* Renderiza los archivos de media según su tipo */}
-        {media.type === 'image' && (
+        {media.mediaType === 'image' && (
           <Image
             source={{ uri: media.uri }}
             style={dynamicStyles.fullscreenImage}
@@ -172,7 +177,7 @@ export default function MediaViewerModal({ visible, media, onClose, showInfo = f
           />
         )}
 
-        {media.type === 'video' && (
+        {media.mediaType === 'video' && (
           <VideoPlayer
             source= {{ uri: media.uri }}
             style={dynamicStyles.fullscreenVideo}
@@ -184,7 +189,7 @@ export default function MediaViewerModal({ visible, media, onClose, showInfo = f
             showOnStart={true}
           />
         )}
-                {media.type === 'audio' && (
+                {media.mediaType === 'audio' && (
           <View style={styles.audioFullScreen}>
             <Image
               source={getAudioBackground()}

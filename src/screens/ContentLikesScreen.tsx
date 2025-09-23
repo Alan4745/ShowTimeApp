@@ -47,7 +47,7 @@ export default function ContentLikesScreen() {
   };
 
   return (
-    <ScreenLayout currentStep={10} totalSteps={14}>
+    <ScreenLayout currentStep={11} totalSteps={13}>
       <ContentContainer centered={false} style={styles.contentContainer}>
         <MultiSelectGrid
           title={t('registration.contentLikes')}

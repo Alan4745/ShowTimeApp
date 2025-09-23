@@ -2,12 +2,23 @@ import React, {useState} from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import LearnContentCard from '../components/common/LearnContentCard';
-import { learnCategories } from '../data/learnCategories';
 import LearnCategoryScreen from './LearnCategoryScreen';
+import CalendarScreen from './CalendarScreen';
+import { learnCategories } from '../data/learnCategories';
 
 export default function LearnTabScreen() {
   const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [calendarLesson, setCalendarLesson] = useState<{
+    lessonId: string;
+    title: string;
+  } | null>(null);
+
+  const handleOpenCalendar = (lessonId: string) => {
+    if (selectedCategory) {
+      setCalendarLesson({ lessonId, title: selectedCategory });
+    }
+  };
 
   const handleCardPress = (categoryTitle: string) => {
     setSelectedCategory(categoryTitle);
@@ -17,11 +28,21 @@ export default function LearnTabScreen() {
     setSelectedCategory(null);
   }
 
+  if (calendarLesson) {
+    return (
+      <CalendarScreen
+        lessonId={calendarLesson.lessonId}
+        title={calendarLesson.title}
+        onBack={() => setCalendarLesson(null)}
+      />
+    );
+  }
+
   // Si hay categoría seleccionada, mostrar la pantalla correspondiente
   if (selectedCategory) {    
     const title = t(`learn.categories.${selectedCategory}`);    
-    return <LearnCategoryScreen title={title} onBack={handleBack} />;
-  }
+    return <LearnCategoryScreen title={title} onBack={handleBack} onOpenCalendar={handleOpenCalendar} />;
+  }  
 
   // Pantalla principal (categorías)
   return (

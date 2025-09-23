@@ -15,9 +15,11 @@ export default function DateOfBirthScreen() {
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const { updateData } = useRegistration();
+  const { data, updateData } = useRegistration();
   const navigation = useNavigation();
   const { t } = useTranslation();
+  const isCoach = data.role === "coach";
+  const totalSteps = isCoach ? 9 : 13;
 
   const handleContinue = () => {
     if (!selectedMonth || !selectedDay || !selectedYear) {
@@ -53,7 +55,7 @@ export default function DateOfBirthScreen() {
   const isFormComplete = selectedMonth && selectedDay && selectedYear;
 
   return (
-    <ScreenLayout currentStep={3} totalSteps={6}>
+    <ScreenLayout currentStep={4} totalSteps={totalSteps}>
       <ContentContainer>
         <ScreenTitle title={t('registration.dateOfBirth')} />
 

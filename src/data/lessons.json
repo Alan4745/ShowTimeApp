@@ -1,5 +1,6 @@
 [
   {
+    "id": "lesson-001",
     "title": "Mastering Ball Control",
     "author": "Coach Diego",
     "description": "Learn the essential drills to improve your first touch.",
@@ -7,10 +8,12 @@
     "format" : "Video",
     "mediaType": "video",
     "mediaUrl": "https://cdn.pixabay.com/video/2017/07/23/10827-226624986_large.mp4",
+    "thumbnailUrl": " ",
     "likes": 24,
     "comments": 12 
   },
   {
+    "id": "lesson-002",
     "title": "Tactical Formations Explained",
     "author": "Coach Ana",
     "description": "Understand how to read and adapt to different tactics.",
@@ -18,10 +21,12 @@
     "format" : "Image",
     "mediaType": "image",
     "mediaUrl": "https://images.pexels.com/photos/47730/the-ball-stadion-football-the-pitch-47730.jpeg",
+    "thumbnailUrl": " ",
     "likes": 24,
     "comments": 12
   },
   {
+    "id": "lesson-003",
     "title": "Mindset for Champions",
     "author": "Coach Luca",
     "description": "Build the mental strength needed to push through limits.",
@@ -29,6 +34,7 @@
     "format" : "Voice",
     "mediaType": "audio",
     "mediaUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    "thumbnailUrl": " ",
     "likes": 24,
     "comments": 12
   }

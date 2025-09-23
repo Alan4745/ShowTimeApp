@@ -15,9 +15,12 @@ export default function UsernameScreen() {
   const navigation = useNavigation();
   const { t } = useTranslation();
   const [username, setUsername] = useState('');
-  const { updateData } = useRegistration();
+  const { data, updateData } = useRegistration();
+  const isCoach = data.role === "coach";
+  const totalSteps = isCoach ? 9 : 13;
 
   const handleContinue = () => {
+
     if (!username.trim()) {
       Alert.alert(t('errors.usernameRequired'));
       return;
@@ -33,7 +36,7 @@ export default function UsernameScreen() {
   };
 
   return (
-    <ScreenLayout currentStep={1} totalSteps={6} style={styles.titleFont}>
+    <ScreenLayout currentStep={2} totalSteps={totalSteps}>
       <ContentContainer>        
         <ScreenTitle title={t('registration.username')} />
         <FormInput
@@ -58,10 +61,6 @@ export default function UsernameScreen() {
 }
 
 const styles = StyleSheet.create({
-  titleFont: {
-    fontFamily: 'AnonymousPro-Regular',
-    fontSize: 24,
-    lineHeight: 33,
-  }, 
+   
 });
 

@@ -1,0 +1,18 @@
+[
+    {
+    "id": "t1",    
+    "name": "Ana Pérez",
+    "avatar": "https://randomuser.me/api/portraits/women/65.jpg",
+    "rating": "5",
+    "message": "I used to doubt myself a lot. The mindset lessons in this app helped me stay focused, build confidence, and enjoy the game again 🧠⚽",
+    "timeSincePost": "2 weeks ago"
+    },
+    {
+    "id": "t2",    
+    "name": "Luis Mendoza",
+    "avatar": "https://randomuser.me/api/portraits/men/75.jpg",
+    "rating": "4.5",
+    "message": "Great sessions, very detailed and encouraging.",
+    "timeSincePost": "1 month ago"
+    }
+]

@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
 
 interface TestimonialCardProps {
-  imageUrl: string;
+  avatar: string;
   name: string;
   rating: string;  
   message: string;
@@ -37,7 +37,7 @@ export default function TestimonialCard(props: TestimonialCardProps) {
       <View style = {styles.header}>
         <View style = {styles.imageContainer}>
         <Image
-        source={{ uri: props.imageUrl }}
+        source={{ uri: props.avatar }}
         style={styles.image}
         resizeMode="cover"
         />        

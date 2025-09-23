@@ -54,7 +54,7 @@ export default function PositionScreen() {
   };
 
   return (
-    <ScreenLayout currentStep={7} totalSteps={12}>
+    <ScreenLayout currentStep={8} totalSteps={13}>
       <ContentContainer>
         <ScreenTitle title={t('registration.position')} />
 

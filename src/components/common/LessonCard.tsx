@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { PlayCircle, Mic, Lock } from 'lucide-react-native';
+import { PlayCircle, Mic } from 'lucide-react-native';
 import { createThumbnail } from 'react-native-create-thumbnail';
 
 type MediaItem = {
+  id: string;
   type: 'image' | 'video' | 'audio';
   uri: string;
   title?: string;
@@ -12,9 +13,12 @@ type MediaItem = {
   description?: string;
   subcategory?: string;
   format?: string;  
+  likes?: number;
+  comments?: number;
 };
 
 interface LessonCardProps {
+  id: string,
   title: string;
   author: string;
   description: string;
@@ -24,13 +28,17 @@ interface LessonCardProps {
   mediaUrl: string;
   thumbnailUrl?: string;  
   onOpenMedia?: (media: MediaItem) => void;
+  cardHeight?: number;
 }
 
 export default function LessonCard(props: LessonCardProps) {
   const {t} = useTranslation();
+  const { cardHeight = 220 } = props;
+  const isCompact = cardHeight < 220;
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const audioPlaceholder = require('../../../assets/img/audioPlaceholder.png');
   const {
+    id,
     title,
     author,
     description,
@@ -85,6 +93,7 @@ export default function LessonCard(props: LessonCardProps) {
     if (!onOpenMedia) return;
 
     onOpenMedia({
+      id,
       type: mediaType,
       uri: mediaUrl,
       title,
@@ -96,23 +105,36 @@ export default function LessonCard(props: LessonCardProps) {
   };
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, {height: cardHeight, maxWidth: isCompact? 350 : "100%"}]}>
       <View style={styles.content}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.author}>{t("common.by")}{author}</Text>
-        <Text style={styles.description} numberOfLines={3}>{description}</Text>
+        <Text style={[styles.title, {fontSize: isCompact? 14: 18}]}>{title}</Text>
+        {!isCompact && (
+          <Text style={styles.author}>
+            {t("common.by")}{author}
+          </Text>
+        )}
+        <ScrollView
+          style={[styles.descriptionScroll, {maxHeight: isCompact? 40: 55}]}
+          contentContainerStyle={styles.descriptionContent}
+          showsVerticalScrollIndicator={false}
+          nestedScrollEnabled={true}  
+        >
+          <Text style={[styles.descriptionText, {fontSize: isCompact? 12: 14}]}>{description}</Text>
+        </ScrollView>        
 
         <View style={styles.labelRow}>
-          <View style={styles.firstLabel}>
-            <Text style={styles.firstLabelText}>{subcategory ?? " "}</Text>
+          <View style={[styles.firstLabel, {width: isCompact? 90: 102}]}>
+            <Text style={[styles.firstLabelText, {fontSize: isCompact? 12: 14}]}>{subcategory ?? " "}</Text>
           </View>
-          <View style={styles.secondLabel}>
-            <Text style={styles.secondLabelText}>{format ?? " "}</Text>
+          <View style={[styles.secondLabel, {width: isCompact? 78: 90}]}>
+            <Text style={[styles.secondLabelText, {fontSize: isCompact? 12: 14}]}>{format ?? " "}</Text>
           </View>
         </View>
       </View>
 
-      <View style={styles.mediaContainer}>
+      <View style={[styles.mediaContainer, { height: isCompact ? 120 : "85%",
+        width: isCompact ? 120 : "45%", marginLeft: isCompact ? 10 : 0
+       }]}>
         <TouchableOpacity
           style={styles.mediaTouch}
           onPress={handleMediaPress}          
@@ -133,13 +155,13 @@ export default function LessonCard(props: LessonCardProps) {
 
 const styles = StyleSheet.create({
   card: {
+    width: "100%",
     flexDirection: "row",
     gap: 20,
     backgroundColor: '#252A30',
     borderRadius: 10,
     overflow: 'hidden',
-    marginBottom: 20,
-    height: 220,
+    marginBottom: 20,    
     alignItems: "center",
     paddingHorizontal: 15,
   },
@@ -152,8 +174,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'AnonymousPro-Bold',
-    fontWeight: "700",
-    fontSize: 18,
+    fontWeight: "700",    
     color: '#FFFFFF',
     marginBottom: 6,
   },
@@ -161,11 +182,17 @@ const styles = StyleSheet.create({
     fontFamily: 'AnonymousPro-Regular',
     fontWeight: "400",
     fontSize: 12,
-    color: '#BCBCBC',
+    color: "#BCBCBC",    
     marginBottom: 6,
   },
-  description: {
-    fontSize: 14,
+  descriptionScroll: {
+    maxHeight: 55, 
+    marginTop: 5,
+  },
+  descriptionContent: {
+    paddingRight: 4, // para no cortar texto si aparece scrollbar
+  },
+  descriptionText: {
     color: '#CCCCCC',
     fontFamily: 'AnonymousPro-Regular',
     fontWeight: "400",
@@ -180,8 +207,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     gap: 7,
   },
-  firstLabel: {
-    width: 95,
+  firstLabel: {    
     backgroundColor: '#2B80BE',
     paddingVertical: 8,
     paddingHorizontal: 20,
@@ -191,11 +217,9 @@ const styles = StyleSheet.create({
   },
   firstLabelText: {
     color: '#FFFFFF',
-    fontFamily: 'AnonymousPro-Regular',
-    fontSize: 14,
+    fontFamily: 'AnonymousPro-Regular',    
   },
-  secondLabel: {
-    width: 95,
+  secondLabel: {    
     borderColor: '#FFFFFF',
     borderWidth: 1.5,
     paddingVertical: 8,
@@ -209,9 +233,7 @@ const styles = StyleSheet.create({
     fontFamily: 'AnonymousPro-Regular',
     fontSize: 14,
   },
-  mediaContainer: {
-    width: "45%",
-    height: "85%",
+  mediaContainer: {    
     borderRadius: 10,
     overflow: "hidden",
   },

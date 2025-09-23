@@ -3,13 +3,13 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import { ChevronUp } from 'lucide-react-native';
 import AppHeaderNew from '../components/common/AppHeaderNew';
-import contentData from '../data/contentData.json';
 import LessonCard from '../components/common/LessonCard';
 import TestimonialCard from '../components/common/TestimonialCard';
 import HelperText from '../components/common/HelperText';
 import PopupAlert from '../components/modals/PopupAlert';
 import { useTranslation } from 'react-i18next';
-import userData from '../data/user.json'
+import userData from '../data/coach.json'
+import contentData from '../data/contentData.json';
 
 interface CoachDetailsScreenProps {
   route: any;
@@ -154,10 +154,13 @@ export default function CoachDetailsScreen({ route }: CoachDetailsScreenProps) {
                                 coach.lessons.map((lesson: any) => (
                                 <LessonCard
                                     key={lesson.id}
+                                    id={lesson.id}
                                     title={lesson.title}
                                     author={lesson.author}
                                     description={lesson.description}
-                                    mediaUrl={lesson.imageUrl}  
+                                    subcategory={lesson.subcategory}
+                                    format={lesson.format}
+                                    mediaUrl={lesson.mediaUrl}  
                                     mediaType={getMediaType(lesson)}                                                         
                                 />
                                 ))
@@ -191,8 +194,8 @@ export default function CoachDetailsScreen({ route }: CoachDetailsScreenProps) {
                                     {coach.testimonials.map((testimonial: any) => (
                                     <View key={testimonial.id} style={{ marginRight: 16 }}>
                                         <TestimonialCard
-                                        imageUrl={testimonial.imageUrl}
-                                        name={testimonial.name}
+                                        avatar={testimonial.avatar}
+                                        name={testimonial.username}
                                         rating={testimonial.rating}
                                         message={testimonial.message}
                                         timeSincePost={testimonial.timeSincePost}

@@ -17,7 +17,7 @@ export default function MediaGrid({ media, onMediaPress }) {
   const renderItem = ({ item, index }) => {
     const handlePress = () => onMediaPress(item);
 
-    if (item.type === 'image') {
+    if (item.mediaType === 'image') {
       return (
         <TouchableOpacity
           key={item.id || index}
@@ -29,7 +29,7 @@ export default function MediaGrid({ media, onMediaPress }) {
       );
     }
 
-    if (item.type === 'video') {
+    if (item.mediaType === 'video') {
       return (
         <View style={[styles.itemContainer, { width: itemSize, height: itemSize }]}>
           
@@ -55,7 +55,7 @@ export default function MediaGrid({ media, onMediaPress }) {
       );
     }
 
-    if (item.type === 'pdf') {
+    if (item.mediaType === 'pdf') {
       return (
         <TouchableOpacity
           key={item.id || index}

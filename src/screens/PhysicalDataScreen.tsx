@@ -47,7 +47,7 @@ export default function PhysicalDataScreen() {
   };
 
   return (
-    <ScreenLayout currentStep={5} totalSteps={6}>
+    <ScreenLayout currentStep={6} totalSteps={13}>
       <ContentContainer>
         <ScreenTitle title={t('registration.physicalData')} />
         <PhysicalDataSelector
