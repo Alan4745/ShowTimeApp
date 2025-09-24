@@ -57,12 +57,14 @@ export interface RegistrationData {
     priceValue: number;
   };
   authMethod?: 'google' | 'apple' | 'email';
+  studentProfileImage?: string;
   
   // Coach-specific fields
   coachingRole?: string; 
   uploadMedia?: string; // URL o path local de media
   bio?: string; // descripción del coach
   accomplishments?: string[]; // lista de logros
+  profileImage?: string; //URI de la imagen para el perfil
 }
 
 interface RegistrationContextType {

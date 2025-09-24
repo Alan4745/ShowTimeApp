@@ -88,13 +88,15 @@
       "accessToHome": "Acceso a inicio (feed)",
       "accessToDarwinMaterial": "Acceso al material de Darwin (learn)",
       "directMessagesDarwin": "Mensajes directos con Darwin",
+      "accessToGuestSpeakers": "Acceso a conferencistas invitados",
       "accessToPost": "Acceso a Publicar",
       "accessToCoachMaterial": "Acceso al material de los entrenadores (learn)",
       "eventsAccess": "Eventos de Showtime University (campamentos, reuniones, entrenamientos)",
       "directMessageWithCoach": "Mensaje directo con entrenadores",
       "oneOnOneCoachings": "Entrenamientos 1:1",
       "videoCallsWithDarwin": "Videollamadas con Darwin",
-      "videoCallsWithCoaches": "Videollamadas con entrenadores" 
+      "videoCallsWithCoaches": "Videollamadas con entrenadores",
+      "connectionWithAgent": "En caso de ser aplicable, conexión con agente o asesor deportivo" 
     },
     "featuresTable":{
       "featureHeader": "Característica / Sección",
@@ -299,12 +301,15 @@
     "selectTrainingFrequencyTitle": "Seleccionar frecuencia de entrenamiento",
     "selectCitizenshipTitle": "Seleccionar ciudadanía",
     "selectCategory": "Selecionar una categoría",
+    "highlights":"Comparte tu video de highlights",
+    "selectImage": "Seleccionar Foto",
     "buttonOptions":{
       "confirm": "Confirmar",
       "cancel": "Cancelar",
-      "close": "Cerrar"
-    },
-    "highlights":"Comparte tu video de highlights"
+      "close": "Cerrar",
+      "useCamera": "Usar cámara",
+      "chooseGalery": "Escoger de la galería"
+    }
   },
   "splash": {
     "splashFooter": "© 2025 | Donde el talento encuentra oportunidad | USA"
@@ -326,32 +331,45 @@
       "title": "Básico",
       "description": "Accede a las funciones clave del programa y conoce desde dentro la vida de un atleta profesional.",
       "features":[
-        "habla directamente con Darwin y accede a sus publicaciones, entrenamientos y rutinas.",
-        "participa en sesiones en vivo con expertos invitados y establece contacto con entrenadores, cazatalentos y representantes.",
-        "visualiza la actividad de los miembros en el feed de Showtime."
+        "Acceso a Home (Feed) contenido de Darwin.",
+        "Acceso al material de Darwin (Sección Learn).",
+        "Mensajes directos con con Darwin.",
+        "Acceso a conferencistas invitados."
       ],
-      "button": "A partir de $49"      
+      "button": "$49/Mensual"      
     },
     "premium":{
       "title": "Premium",
-      "description": "Expande tu red y recibe retroalimentación valiosa interactuando con miembros y entrenadores en el feed de Showtime.\n\nPlanifica tus entrenamientos guardando las publicaciones de los entrenadores directamente en el feed de Showtime.\n\n Obtén acceso adicional a:",
+      "description": "Expande tu red y recibe retroalimentación valiosa interactuando con miembros y entrenadores en el feed de Showtime.\n\nPlanifica tus entrenamientos guardando las publicaciones de los entrenadores directamente en el feed de Showtime.\n",
       "features":[
-        "entrenamientos diseñados por entrenadores profesionales",
-        "eventos presenciales (exhibiciones y campamentos de reclutamiento)"        
+        "Acceso a Home (Feed) contenido de Darwin.",
+        "Acceso a Home (Feed) contenido de Darwin, entrenadores y estudiantes.",
+        "Publicar en Home",
+        "Acceso al material de Darwin (Sección Learn).",
+        "Mensajes directos con Darwin.",
+        "Acceso a eventos presenciales exclusivos de Showtime University (campamentos, reuniones, entrenamientos).",
+        "Acceso a conferencistas invitados."        
       ],
-      "button": "A partir de $99"      
+      "button": "$99/Mensual"      
     },
     "elite":{
       "title": "Élite",
       "description": "Paquete completo:",
       "features":[
-        "incluye todo lo básico",
-        "incluye todo lo premium",
-        "accede a orientación personalizada 1:1" ,
-        "chatea con entrenadores",
-        "oportunidad de enviar videos destacados a agentes si los entrenadores consideran que estás listo"
+        "Acceso a Home (Feed) contenido de Darwin.",
+        "Acceso a Home (Feed) contenido de Darwin, entrenadores y estudiantes.",
+        "Publicar en Home",
+        "Acceso al material de Darwin (Sección Learn).",
+        "Mensajes directos con Darwin.",
+        "Mensajes directos con entrenadores",
+        "accede a orientación personalizada 1:1",
+        "Videollamadas con Darwin",
+        "Videollamadas con entrenadores",
+        "Acceso a eventos presenciales exclusivos de Showtime University (campamentos, reuniones, entrenamientos).",
+        "Acceso a conferencistas invitados.", 
+        "En caso de ser aplicable, conexión con agente o asesor deportivo."              
       ],
-      "button": "A partir de $149"      
+      "button": "$149/Mensual"      
     }
   },  
   "publishPost":{
@@ -518,23 +536,23 @@
       },
       "carbohydrates": {
         "title": "Carbohidratos",
-        "description": "What to eat before/during/after training or matches"
+        "description": "El combustible que necesitas para rendir al máximo."
       },
       "protein": {
-        "title": "Proteína",
-        "description": "Efficient hydration based on the type of effort"
+        "title": "Proteina",
+        "description": "Desarrolla y repara la fuerza muscular."
       },
       "fat": {
         "title": "Grasa",
-        "description": "Basic and safe information about supplements"
+        "description": "Aumenta tu resistencia con grasas saludables."
       },
       "supplementsHydration": {
-        "title": "Suplementos e Hidratación",
-        "description": "Simple recipes to help you recover better"
+        "title": "Suplementos & Hidratación",
+        "description": "Mantente hidratado y mejora tu rendimiento de forma inteligente."
       },
       "4WeekPlan": {
         "title": "Programa de 4 semanas",
-        "description": "Simple recipes to help you recover better"
+        "description": "Plan estructurado para mejores resultados."
       },
       "finishing": {
         "title": "Definición",

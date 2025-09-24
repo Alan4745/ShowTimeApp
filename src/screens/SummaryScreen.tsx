@@ -6,12 +6,18 @@ import { X, Check } from 'lucide-react-native';
 import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
+import ImagePickerModal from '../components/modals/ImagePickerModal';
 
 export default function SummaryScreen() {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
-  const { data, resetData } = useRegistration();
+  const { data, resetData, updateData } = useRegistration();
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleImagePicked = (image: { path: string }) => {
+    updateData({ studentProfileImage: image.path });
+  };
 
   const handleFinishRegistration = async () => {
     setIsLoading(true);
@@ -86,12 +92,25 @@ export default function SummaryScreen() {
           {/* Profile Image */}
           <View style={styles.profileSection}>
             <View style={styles.profileImageContainer}>
-              <View style={styles.profileImageBorder}>
+              <TouchableOpacity style={styles.wrapper} onPress={()=> setModalVisible(true)}>
+                {/* Imagen de perfil */}
+                <View style={styles.profileImageBorder}>
+                  <Image
+                    source={
+                      data.studentProfileImage
+                        ? { uri: data.studentProfileImage }
+                        : require('../../assets/img/userGeneric.png') //imagen local
+                    }
+                    style={styles.profileImage}
+                  />
+                </View>  
+              </TouchableOpacity>
+              {/* <View style={styles.profileImageBorder}>
                 <Image
                   source={{ uri: 'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?semt=ais_hybrid&w=740' }}
                   style={styles.profileImage}
                 />
-              </View>
+              </View> */}
             </View>
 
             <Text style={styles.username}>{data.username || t('registration.username')}</Text>
@@ -157,6 +176,11 @@ export default function SummaryScreen() {
           </TouchableOpacity>
         </LinearGradient>
       </View>
+      <ImagePickerModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onImagePicked={handleImagePicked}
+      />
     </View>
   );
 }
@@ -214,13 +238,19 @@ const styles = StyleSheet.create({
   profileImageContainer: {
     marginBottom: 20,
   },
+  wrapper: {
+    width: 150,
+    height: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   profileImageBorder: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 180,
+    height: 180,
+    borderRadius: 90,
     borderWidth: 4,
     borderColor: 'rgba(255, 255, 255, 0.3)',
-    padding: 4,
+    padding: 10,
   },
   profileImage: {
     width: '100%',

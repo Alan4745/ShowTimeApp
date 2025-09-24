@@ -6,130 +6,146 @@ import { X } from 'lucide-react-native';
 import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
+import ImagePickerModal from '../components/modals/ImagePickerModal';
 
 export default function CoachSummaryScreen() {
-    const { t } = useTranslation();
-    const [isLoading, setIsLoading] = useState(false);
-    const { data, resetData } = useRegistration();
-    const navigation = useNavigation();
+  const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
+  const { data, resetData, updateData } = useRegistration();
+  const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
-    const handleFinishRegistration = async () => {
-        setIsLoading(true);
+  const handleImagePicked = (image: { path: string }) => {
+    updateData({ profileImage: image.path });
+  };
 
-        try {
-        // Simulate registration process
-        await new Promise(resolve => setTimeout(resolve, 2000));
+  const handleFinishRegistration = async () => {
+      setIsLoading(true);
 
-        // Reset registration data after successful registration
-        resetData();
+      try {
+      // Simulate registration process
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
-        // Navigate to home/dashboard
-        (navigation as any).navigate('Home');
+      // Reset registration data after successful registration
+      resetData();
 
-        } catch (error) {
-        console.error('Registration failed:', error);
-        Alert.alert(
-            t('common.registrationFailed'),
-            t('errors.tryAgain'),
-            [{ text: t('common.ok') }]
-        );
-        } finally {
-        setIsLoading(false);
-        }
-    };
+      // Navigate to home/dashboard
+      (navigation as any).navigate('Home');
 
-    const handleClose = () => {
-        (navigation as any).goBack();
-    };
+      } catch (error) {
+      console.error('Registration failed:', error);
+      Alert.alert(
+          t('common.registrationFailed'),
+          t('errors.tryAgain'),
+          [{ text: t('common.ok') }]
+      );
+      } finally {
+      setIsLoading(false);
+      }
+  };
 
-    return (
-        <View style={styles.container}>
-        {/* Header with close button */}
-        <View style={styles.header}>
-            <TouchableOpacity
-            style={styles.closeButton}
-            onPress={handleClose}
-            >
-            <X color="#fff" size={24} />
-            </TouchableOpacity>
-        </View>
+  const handleClose = () => {
+      (navigation as any).goBack();
+  };
 
-        {/* Title */}
-        <Text style={styles.title}>{t('registration.readyToCoach')}</Text>
+  return (
+    <View style={styles.container}>
+      {/* Header with close button */}
+      <View style={styles.header}>
+          <TouchableOpacity
+          style={styles.closeButton}
+          onPress={handleClose}
+          >
+          <X color="#fff" size={24} />
+          </TouchableOpacity>
+      </View>
 
-        {/* Main Card */}
-        <View style={styles.cardContainer}>
-            <LinearGradient
-            colors={['#252A30', '#252A30']}
-            style={styles.card}
-            >
-            {/* Profile Image */}
-            <View style={styles.profileSection}>
-                <View style={styles.wrapper}>
-                    {/* Imagen de perfil */}
-                    <Image
-                        source={{
-                        uri: 'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?semt=ais_hybrid&w=740',
-                        }}
-                        style={styles.profileImage}
-                    />
+      {/* Title */}
+      <Text style={styles.title}>{t('registration.readyToCoach')}</Text>
 
-                    {/* Círculo interior */}
-                    <Image
-                        source={require('../../assets/img/ellipse36.png')}
-                        style={styles.innerCircle}
-                    />
+      {/* Main Card */}
+      <View style={styles.cardContainer}>
+          <LinearGradient
+          colors={['#252A30', '#252A30']}
+          style={styles.card}
+          >
+          {/* Profile Image */}
+          <View style={styles.profileSection}>
+              <TouchableOpacity style={styles.wrapper} onPress={()=> setModalVisible(true)}>
+                {/* Imagen de perfil */}
+                <Image
+                  source={
+                    data.profileImage
+                      ? { uri: data.profileImage }
+                      : require('../../assets/img/userGeneric.png') //imagen local
+                  }
+                  style={styles.profileImage}
+                />
+                
+                
+                {/* Círculo interior */}
+                <Image
+                  source={require('../../assets/img/ellipse36.png')}
+                  style={styles.innerCircle}
+                />
 
-                    {/* Círculo exterior */}
-                    <Image
-                        source={require('../../assets/img/ellipse37.png')}
-                        style={styles.outerCircle}
-                    />
-                </View> 
-                <View style = {styles.nameContainer}>
-                    <Text style={styles.username}>{data.username || t('registration.username')}</Text>
-                    <Text style={styles.coachingRole}>{t(`coachingRoles.${data.coachingRole}`) || "Coaching Role" }</Text>    
-                </View>                           
-            </View>
+                {/* Círculo exterior */}
+                <Image
+                  source={require('../../assets/img/ellipse37.png')}
+                  style={styles.outerCircle}
+                />
+              </TouchableOpacity> 
+              <View style = {styles.nameContainer}>
+                  <Text style={styles.username}>{data.username || t('registration.username')}</Text>
+                  <Text style={styles.coachingRole}>{t(`coachingRoles.${data.coachingRole}`) || "Coaching Role" }</Text>    
+              </View>                           
+          </View>
 
-            <ScrollView>
-                <View>
-                    {/* Bio */}
-                    <View>
-                        <Text style={styles.bioText}>{data.bio || "Coach Bio" }</Text>
-                    </View>
+          <ScrollView>
+              <View>
+                  {/* Bio */}
+                  <View>
+                      <Text style={styles.bioText}>{data.bio || "Coach Bio" }</Text>
+                  </View>
 
-                    {/* Accomplishments */}
-                     <View style={styles.accomplishmentsContainer}>
-                        <Text style = {styles.accomplishmentTitle}>{t('registration.accomplishments')}</Text>
-                        {data.accomplishments && 
-                            data.accomplishments.map((item, index) => (
-                            <Text key={index} style={styles.accomplishmentItem}>
-                                • {item}
-                            </Text>
-                            ))
-                        }
-                    </View> 
-                </View>        
-            </ScrollView>
-            
+                  {/* Accomplishments */}
+                    <View style={styles.accomplishmentsContainer}>
+                      <Text style = {styles.accomplishmentTitle}>{t('registration.accomplishments')}</Text>
+                      {data.accomplishments && 
+                          data.accomplishments.map((item, index) => (                          
+                          <View key={index} style={styles.accomplishmentItem}>
+                            <Text style={styles.bullet}>•</Text>
+                            <Text style={styles.itemText}>{item}</Text>
+                          </View>
+                          ))
+                      }
+                  </View> 
+              </View>        
+          </ScrollView>
+          
 
-            {/* Start Button */}
-            <TouchableOpacity
-                style={styles.startButton}
-                onPress={handleFinishRegistration}
-                disabled={isLoading}
-            >
-                {isLoading ? (
-                <ActivityIndicator color="#4A90E2" size="small" />
-                ) : (
-                <Text style={styles.startButtonText}>{t('common.start')}</Text>
-                )}
-            </TouchableOpacity>
-            </LinearGradient>
-        </View>
-        </View>
-    );
+          {/* Start Button */}
+          <TouchableOpacity
+              style={styles.startButton}
+              onPress={handleFinishRegistration}
+              disabled={isLoading}
+          >
+              {isLoading ? (
+              <ActivityIndicator color="#4A90E2" size="small" />
+              ) : (
+              <Text style={styles.startButtonText}>{t('common.start')}</Text>
+              )}
+          </TouchableOpacity>
+          </LinearGradient>
+      </View>
+      
+      <ImagePickerModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onImagePicked={handleImagePicked}
+      />        
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -243,14 +259,28 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   accomplishmentItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 2,
+  },
+  bullet: {
     fontFamily: 'AnonymousPro-Regular',
-    fontWeight: '400',
+    fontWeight: "400",
     fontSize: 16,
     lineHeight: 20,
-    color: '#fff',
-    textAlign: "justify",
-    marginBottom: 10
+    paddingRight: 6,
+    paddingTop: 2,
+    color: "#FFFFFF",
   },
+  itemText: {
+    flex: 1,
+    fontFamily: 'AnonymousPro-Regular',
+    fontWeight: "400",
+    fontSize: 16,
+    lineHeight: 20,
+    color: "#FFFFFF",
+    marginLeft: 5
+  },  
   allSetButton: {
     flexDirection: 'row',
     alignItems: 'center',

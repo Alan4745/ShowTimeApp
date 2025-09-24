@@ -87,13 +87,15 @@
       "accessToHome": "Access to home (feed)",
       "accessToDarwinMaterial": "Access to Darwin's material (Learn)",
       "directMessagesDarwin": "Direct messagges with Darwin",
+      "accessToGuestSpeakers": "Access to guest speakers",
       "accessToPost": "Access to Post",
       "accessToCoachMaterial": "Access to Coaches material (Learn)",  
       "eventsAccess": "Showtime University events (camps, meetings, trainings)",   
       "directMessageWithCoach": "Direct message with coaches",
       "oneOnOneCoachings": "1:1 coachings",
-      "videoCallsWithDarwin": "Video calls with Darwin",
-      "videoCallsWithCoaches": "Video calls with coaches" 
+      "videoCallsWithDarwin": "Videocalls with Darwin",
+      "videoCallsWithCoaches": "Videocalls with coaches",
+      "connectionWithAgent": "If applicable, connection with agent/sport consultant"
       
     },
     "featuresTable":{
@@ -322,12 +324,15 @@
     "selectTrainingFrequencyTitle": "Training Frequency",
     "selectCitizenshipTitle": "Select Citizenship",
     "selectCategory": "Select a Category",
+    "highlights":"Share your highlight link",
+    "selectImage": "Select Photo",
     "buttonOptions":{
       "confirm": "Confirm",
       "cancel": "Cancel",
-      "close": "Close"
-    },
-    "highlights":"Share your highlight link"
+      "close": "Close",
+      "useCamera": "Use camera",
+      "chooseGalery": "Choose from galery"
+    }
   },
   "splash": {
     "splashFooter": "© 2025 | Where talent meets opportunity | USA"
@@ -349,32 +354,45 @@
       "title": "Basic",
       "description": "Access the program’s core features and get an inside look at the life of a professional athlete.",
       "features":[
-        "Chat directly with Darwin and view his posts, workouts and routines.",
-        "Join live calls with guest speakers and connect with current coaches, scouts and agents.",
-        "View member activity on Showtime’s feed."
+        "Access to Home (Feed) Darwin's Content.",
+        "Access to Darwin's material (Learn Section).",
+        "Direct messages with Darwin.",
+        "Access to guest speakers."
       ],
-      "button": "Starting at $49"      
+      "button": "$49/Month "      
     },
     "premium":{
       "title": "Premium",
-      "description": "Expand your network and receive valuable feedback by engaging with members and coaches on Showtime's feed.\n\nPlan your workouts by saving coache's posts directly on Showtime's feed.\n\n Gain aditional access to:",
+      "description": "Expand your network and receive valuable feedback by engaging with members and coaches on Showtime's feed.\n\nPlan your workouts by saving coache's posts directly on Showtime's feed.\n",
       "features":[
-        "Workouts designed by professional coaches",
-        "In-person events (showcases, ID camps)"        
+        "Access to Home (Feed) Darwin's Content.",
+        "Access to Home (Feed) Darwin, coaches and students content.",
+        "Post in Home",
+        "Access to Darwin's material (Learn Section).",
+        "Direct messages with Darwin.",
+        "Access to exclusive Showtime University presencial events (camps, meetings, trainings).",
+        "Access to guest speakers."        
       ],
-      "button": "Starting at $99"      
+      "button": "$99/Month"      
     },
     "elite":{
       "title": "Elite",
       "description": "Full package:",
       "features":[
-        "all of basic",
-        "all of premium",
-        "unlock personalized 1:1 guidance" ,
-        "chat with coaches",
-        "opportunity to send highlights to agents if coaches believe you are ready"
+        "Access to Home (Feed) Darwin's Content.",
+        "Access to Home (Feed) Darwin, coaches and students content.",
+        "Post in Home",
+        "Access to Darwin's material (Learn Section).",
+        "Direct messages with Darwin.",
+        "Direct messages with coaches.",
+        "1:1 coachings",
+        "Videocalls with Darwin",
+        "Videocalls with coaches",
+        "Access to exclusive Showtime University presencial events (camps, meetings, trainings).",
+        "Access to guest speakers.",
+        "If applicable, connection with agent/sport consultant." 
       ],
-      "button": "Starting at $149"      
+      "button": "$149/Month"      
     }
   },
   "publishPost":{
@@ -542,23 +560,23 @@
       },
       "carbohydrates": {
         "title": "Carbohydrates",
-        "description": "What to eat before/during/after training or matches"
+        "description": "Energy fuel for top performance."
       },
       "protein": {
         "title": "Protein",
-        "description": "Efficient hydration based on the type of effort"
+        "description": "Build and repair muscle strength."
       },
       "fat": {
         "title": "Fat",
-        "description": "Basic and safe information about supplements"
+        "description": "Boost endurance with healthy fats."
       },
       "supplementsHydration": {
-        "title": "Supplements & Hydration",
-        "description": "Simple recipes to help you recover better"
+        "title": "Supplements  & Hydration",
+        "description": "Stay hydrated, enhance performance smartly."
       },
       "4WeekPlan": {
         "title": "4 Week Program",
-        "description": "Simple recipes to help you recover better"
+        "description": "Structured plan for better results."
       },
       "finishing": {
         "title": "Finishing",

@@ -55,7 +55,7 @@ export const learnCategories = [
             image: require('../../assets/img/learn/nutrition/recovery_meals.png'),            
         },
         { key: '4WeekPlan', 
-            image: require('../../assets/img/learn/nutrition/recovery_meals.png'),            
+            image: require('../../assets/img/learn/nutrition/supplements.png'),            
         },
         
     ],

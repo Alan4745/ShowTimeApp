@@ -4,5 +4,6 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "strict": true // opcional pero recomendado
-  }
+  },
+  "include": ["types.d.ts", "src"]
 }

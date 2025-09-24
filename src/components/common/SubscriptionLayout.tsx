@@ -11,8 +11,7 @@ const SubscriptionLayout = ({ planKey }: Props) => {
 
   const title = t(`${planKey}.title`);
   const description = t(`${planKey}.description`);
-  const features: string[] = t(`${planKey}.features`, { returnObjects: true });
-  const buttonLabel = t(`${planKey}.button`);
+  const features: string[] = t(`${planKey}.features`, { returnObjects: true }) as string[];  
 
   return (   
           
@@ -25,8 +24,8 @@ const SubscriptionLayout = ({ planKey }: Props) => {
 
           {features.map((feature, i) => (
               <View key={i} style={styles.featureItem}>
-                  <Text style={styles.bullet}>•</Text>
-                  <Text style={styles.featureText}>{feature}</Text>
+                <Text style={styles.bullet}>•</Text>
+                <Text style={styles.featureText}>{feature}</Text>
               </View>
           ))}            
       </View>    
@@ -46,34 +45,30 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   descBox:{
-    height: 300,    
+    minHeight: 300,    
     paddingVertical: 25,
     paddingHorizontal: 25, 
     backgroundColor: "#252A30", 
     borderRadius: 10, 
   },
-
   titleText:{
     fontFamily: 'AnonymousPro-Regular',
     fontSize: 22,
     fontWeight: "700",
     color: "#FFFFFF"
   },
-
   descText:{
     fontFamily: 'AnonymousPro-Regular',
     fontSize: 16,
     fontWeight: "400",
     color: "#FFFFFF",
     marginBottom: 10,   
-  },
-  
+  },  
   featureItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     marginTop: 2,
   },
-
   bullet: {
     fontFamily: 'AnonymousPro-Regular',
     fontSize: 16,
@@ -83,7 +78,6 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     color: "#FFFFFF",
   },
-
   featureText: {
     fontFamily: 'AnonymousPro-Regular',
     flex: 1,

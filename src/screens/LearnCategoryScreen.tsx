@@ -15,7 +15,7 @@ interface LearnCategoryScreenProps {
 
 type MediaItem = {
   id: string;
-  type: 'image' | 'video' | 'audio';
+  mediaType: 'image' | 'video' | 'audio';
   uri: string;
   title?: string;
   author?: string;
@@ -115,7 +115,7 @@ export default function LearnCategoryScreen({ title, onBack, onOpenCalendar} : L
               onOpenMedia = {() =>
                 handleOpenMedia({
                   id: lesson.id,
-                  type: lesson.mediaType as 'image' | 'video' | 'audio',
+                  mediaType: lesson.mediaType as 'image' | 'video' | 'audio',
                   uri: lesson.mediaUrl,
                   title: lesson.title,
                   author: lesson.author,

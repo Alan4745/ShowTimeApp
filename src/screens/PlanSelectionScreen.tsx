@@ -104,6 +104,7 @@ export default function PlanSelectionScreen() {
     t('planSelection.features.accessToHome'),
     t('planSelection.features.accessToDarwinMaterial'),
     t('planSelection.features.directMessagesDarwin'),
+    t('planSelection.features.accessToGuestSpeakers'),
     t('planSelection.features.accessToPost'),
     t('planSelection.features.accessToCoachMaterial'),
     t('planSelection.features.eventsAccess'),
@@ -111,6 +112,7 @@ export default function PlanSelectionScreen() {
     t('planSelection.features.oneOnOneCoachings'),
     t('planSelection.features.videoCallsWithDarwin'),
     t('planSelection.features.videoCallsWithCoaches'),
+    t('planSelection.features.connectionWithAgent'),
   ];
 
   return (
@@ -210,10 +212,10 @@ export default function PlanSelectionScreen() {
                 >
                   <Text style={styles.featureText}>{feature}</Text>
                   <View style={styles.featureStatus}>
-                    {index <= 2 ? <Check color="#fff" size={16} style={styles.featureAbled} /> : <Lock color="#252A30" size={16} style={styles.featureDisabled} />}
+                    {index <= 3 ? <Check color="#fff" size={16} style={styles.featureAbled} /> : <Lock color="#252A30" size={16} style={styles.featureDisabled} />}
                   </View>
                   <View style={styles.featureStatus}>
-                    {index <=5 ? <Check color="#fff" size={16} style={styles.featureAbled} /> : <Lock color="#252A30" size={16} style={styles.featureDisabled} />}
+                    {index <=6 ? <Check color="#fff" size={16} style={styles.featureAbled} /> : <Lock color="#252A30" size={16} style={styles.featureDisabled} />}
                   </View>
                   <View style={styles.featureStatus}>
                     <Check color="#fff" size={16} style={styles.featureAbled} />
