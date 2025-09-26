@@ -27,7 +27,7 @@ type SavedLesson = Lesson & {
 
 type MediaItem = {
   id: string;
-  type: 'image' | 'video' | 'audio';
+  mediaType: 'image' | 'video' | 'audio';
   uri: string;
   title?: string;
   author?: string;
@@ -124,6 +124,7 @@ export default function SavedExercisesCalendar() {
       <Calendar markedDates={markedDates} />
       {savedLessons.length > 0 ? (
         <ScrollView
+          style = {{flex: 1}}
           contentContainerStyle={styles.lessonScroll}
           showsHorizontalScrollIndicator={false}
         >
@@ -143,7 +144,7 @@ export default function SavedExercisesCalendar() {
                     onOpenMedia={(media) => {
                       setSelectedMedia({
                         id: lesson.id,
-                        type: lesson.mediaType,    
+                        mediaType: lesson.mediaType,    
                         uri: lesson.mediaUrl,
                         title: lesson.title,
                         author: lesson.author,
@@ -201,12 +202,14 @@ export default function SavedExercisesCalendar() {
 
 const styles = StyleSheet.create({
   container: {
+    flex:1,
     paddingHorizontal: 16,
   },
   lessonScroll: {
     gap: 15,
     alignItems: "center",
     marginTop: 20,
+    paddingBottom: 60
   },
   lessonRow: {
     flexDirection: "row",            

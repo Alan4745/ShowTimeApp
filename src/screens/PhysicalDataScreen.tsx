@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Alert} from 'react-native';
+import {Alert, ScrollView} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useRegistration } from '../context/RegistrationContext';
@@ -14,6 +14,8 @@ import HelperText from '../components/common/HelperText';
 export default function PhysicalDataScreen() {
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
+  const [unitWeight, setUnitWeight] = useState('');
+  const [unitHeight, setUnitHeight] = useState('');
   const { updateData } = useRegistration();
   const navigation = useNavigation();
   const { t } = useTranslation();
@@ -40,7 +42,9 @@ export default function PhysicalDataScreen() {
     updateData({
       physicalData: {
         weight: weightNum,
+        weightUnit: unitWeight,
         height: heightNum,
+        heightUnit: unitHeight,
       },
     });
     (navigation as any).navigate('PhysicalGoal');
@@ -48,6 +52,7 @@ export default function PhysicalDataScreen() {
 
   return (
     <ScreenLayout currentStep={6} totalSteps={13}>
+      <ScrollView>
       <ContentContainer>
         <ScreenTitle title={t('registration.physicalData')} />
         <PhysicalDataSelector
@@ -55,9 +60,11 @@ export default function PhysicalDataScreen() {
           height={height}
           onWeightChange={setWeight}
           onHeightChange={setHeight}
+          onUnitWeightChange={setUnitWeight}
+          onUnitHeightChange={setUnitHeight}
         />
       </ContentContainer>
-
+      </ScrollView>
       <BottomSection>
         <ContinueButton
           onPress={handleContinue}
@@ -65,6 +72,7 @@ export default function PhysicalDataScreen() {
         />
         <HelperText text={t('helperTexts.helperText')} />
       </BottomSection>
+      
     </ScreenLayout>
   );
 }

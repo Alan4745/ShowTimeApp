@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingVertical: 14,
     paddingHorizontal: 15,
-    alignItems: 'center',
+    alignItems: 'center',    
   },
   selectedButton: {
     backgroundColor: '#2B80BE',
@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '400',
     lineHeight: 20,
-    color: '#929292',
+    color: '#929292', 
+    textAlign: "center"   
   },
   selectedText: {
     color: '#FFFFFF',

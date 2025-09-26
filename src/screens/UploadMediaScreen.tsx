@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, useWindowDimensions} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRegistration } from '../context/RegistrationContext';
 import { useNavigation } from '@react-navigation/native';
@@ -21,9 +21,19 @@ type MediaItem = {
 
 export default function UploadMediaScreen() {
     const {t} = useTranslation();
+    const {width} = useWindowDimensions();
     const {updateData} = useRegistration();
     const navigation = useNavigation();
     const [mediaItem, setMediaItem] = useState<MediaItem | null>(null);
+
+    let thumbnailSize;
+    if (width <= 360) {
+        thumbnailSize = 140; // Teléfonos pequeños
+    } else if (width <= 420) {
+        thumbnailSize = 200; // Teléfonos medianos
+    } else {
+        thumbnailSize = 300; // Teléfonos grandes
+    }
     
     const handleMediaSelect = () => {
         launchImageLibrary(
@@ -82,7 +92,10 @@ export default function UploadMediaScreen() {
                         <View style={styles.thumbnailContainer}>
                             <Image
                                 source={{ uri: mediaItem.thumbnail || mediaItem.uri }}
-                                style={styles.thumbnail}
+                                style={[
+                                    styles.thumbnail, 
+                                    {width: thumbnailSize, height: thumbnailSize
+                                }]}
                                 resizeMode="cover"
                             />
                         </View>
@@ -133,12 +146,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     thumbnailContainer: {
-        marginTop: 50,
+        marginTop: 25,
         alignItems: 'center',
     },
     thumbnail: {
-        width: 250,
-        height: 250,
+        //width: 250,
+        //height: 250,
         borderRadius: 10,
     },    
 })

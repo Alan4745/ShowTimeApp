@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 interface CoachCardProps {
@@ -34,13 +34,19 @@ export default function CoachCard(props: CoachCardProps) {
             {props.title && <Text style={styles.title}>{props.title}</Text>}
             {props.name && <Text style={styles.name}>{props.name}</Text>}
             {props.children && (
-              <Text style={styles.children}>
-                {props.children}
-                {' '}
-                <Text style={styles.more} onPress={props.onMorePress}>
-                  {t('common.more')}
+              <ScrollView
+                style={{ maxHeight: "65%" }} 
+                nestedScrollEnabled
+                showsVerticalScrollIndicator={false}
+              >
+                <Text style={styles.children}>
+                  {props.children}
+                  {' '}
+                  <Text style={styles.more} onPress={props.onMorePress}>
+                    {t('common.more')}
+                  </Text>
                 </Text>
-              </Text>
+              </ScrollView>  
             )}
 
           </View>          
@@ -51,6 +57,11 @@ export default function CoachCard(props: CoachCardProps) {
           {props.title && <Text style={styles.title}>{props.title}</Text>}
           {props.name && <Text style={styles.name}>{props.name}</Text>}
           {props.children && (
+            <ScrollView
+              style={{ maxHeight: "90%" }} 
+              nestedScrollEnabled
+              showsVerticalScrollIndicator={false}
+            >
               <Text style={styles.children}>
                 {props.children}
                 {' '}
@@ -58,6 +69,7 @@ export default function CoachCard(props: CoachCardProps) {
                   {t('common.more')}
                 </Text>
               </Text>
+            </ScrollView>  
             )}          
         </View>
       )}
@@ -70,8 +82,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     backgroundColor: '#252A30',
-    height: 434,
-    maxHeight: 434,       
+    height: 450,
+    maxHeight: 450,       
   },
   imageContainer: {
     position: 'relative',

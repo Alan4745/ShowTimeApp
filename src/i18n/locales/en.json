@@ -271,10 +271,10 @@
     "allSet": "All set"
   },
   "units": {
-    "cm": "cm",
-    "kg": "kg",
     "lb": "lb",
     "ft": "ft",
+    "kg": "kg",
+    "cm": "cm",
     "years": "Years"
   },
   "months": {
@@ -313,7 +313,10 @@
     "selectRole": "Select",
     "upload": "Upload",
     "writeBioText": "text",
-    "accomplishmentInput": "Write accomplishment here"
+    "accomplishmentInput": "Write accomplishment here",
+    "month": "Month",
+    "day": "Day",
+    "year": "Year"
   },
   "modalTitles": {
     "selectMonth": "Select Month",

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 interface PhysicalDataSelectorProps {
@@ -7,6 +7,8 @@ interface PhysicalDataSelectorProps {
   height: string;
   onWeightChange: (weight: string) => void;
   onHeightChange: (height: string) => void;
+  onUnitWeightChange: (unit: string) => void;
+  onUnitHeightChange: (unit: string) => void;
 }
 
 export default function PhysicalDataSelector({
@@ -14,18 +16,37 @@ export default function PhysicalDataSelector({
   height,
   onWeightChange,
   onHeightChange,
+  onUnitWeightChange,
+  onUnitHeightChange,
 }: PhysicalDataSelectorProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [unitWeight, setUnitWeight] = useState('');
+  const [unitHeight, setUnitHeight] = useState('');
+
+    // Detectar idioma y asignar unidades correspondientes
+  useEffect(() => {
+    if (i18n.language === 'es') {
+      setUnitWeight('kg');
+      setUnitHeight('cm');
+      onUnitWeightChange('kg');
+      onUnitHeightChange('cm');
+    } else {
+      setUnitWeight('lb');
+      setUnitHeight('ft');
+      onUnitWeightChange('lb');
+      onUnitHeightChange('ft');
+    }
+  }, [i18n.language]);
 
   return (
     <View style={styles.container}>
-{/* Weight Input */}
+      {/* Weight Input */}
       <View style={styles.inputGroup}>
         <View style={styles.inputRow}>
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder={t('weight')}
+              placeholder={t('summary.weight')}
               placeholderTextColor="#666"
               value={weight}
               onChangeText={onWeightChange}
@@ -34,7 +55,7 @@ export default function PhysicalDataSelector({
             />
           </View>
           <TouchableOpacity style={styles.unitButton}>
-            <Text style={styles.unitText}>{t('units.lb')}</Text>
+            <Text style={styles.unitText}>{t(`units.${unitWeight}`)}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -45,7 +66,7 @@ export default function PhysicalDataSelector({
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder={t('height')}
+              placeholder={t('summary.height')}
               placeholderTextColor="#929292"
               value={height}
               onChangeText={onHeightChange}
@@ -54,7 +75,7 @@ export default function PhysicalDataSelector({
             />
           </View>
           <TouchableOpacity style={styles.unitButton}>
-            <Text style={styles.unitText}>{t('units.ft')}</Text>
+            <Text style={styles.unitText}>{t(`units.${unitHeight}`)}</Text>
           </TouchableOpacity>
         </View>
       </View>      

@@ -11,7 +11,7 @@ import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
 
-type PhysicalGoal = 'Gain muscle' | 'Lose fat' | 'Maintain';
+type PhysicalGoal = 'gainMuscle' | 'loseFat' | 'maintain';
 
 export default function PhysicalGoalScreen() {
   const { t } = useTranslation();
@@ -19,17 +19,23 @@ export default function PhysicalGoalScreen() {
   const { updateData } = useRegistration();
   const navigation = useNavigation();
 
+  const goalTranslationMap: Record<PhysicalGoal, string> = {
+    gainMuscle: 'Gain muscle',
+    loseFat: 'Lose fat',
+    maintain: 'Maintain',
+  };
+
   const handleContinue = () => {
     if (!selectedGoal) {
       Alert.alert(t('error'), t('pleaseSelectYourPhysicalGoal'));
       return;
     }
 
-    updateData({ physicalGoal: selectedGoal });
+    updateData({ physicalGoal: goalTranslationMap[selectedGoal] as 'Gain muscle' | 'Lose fat' | 'Maintain',});
     (navigation as any).navigate('Position');
   };
 
-  const goalOptions: PhysicalGoal[] = ['Gain muscle', 'Lose fat', 'Maintain'];
+  const goalOptions: PhysicalGoal[] = ['gainMuscle', 'loseFat', 'maintain'];
   const firstRowGoals = goalOptions.slice(0, 2); // ['Gain muscle', 'Lose fat']
   const secondRowGoals = goalOptions.slice(2);   // ['Maintain']
 
@@ -43,7 +49,7 @@ export default function PhysicalGoalScreen() {
           {firstRowGoals.map((goal) => (
             <OptionButton
               key={goal}
-              title={t(goal)}
+              title={t(`registration.${goal}`)}
               selected={selectedGoal === goal}
               onPress={() => setSelectedGoal(goal)}
               style={styles.optionButtonHalf}
@@ -54,7 +60,7 @@ export default function PhysicalGoalScreen() {
             {secondRowGoals.map((goal) => (
               <OptionButton
                 key={goal}
-                title={t(goal)}
+                title={t(`registration.${goal}`)}
                 selected={selectedGoal === goal}
                 onPress={() => setSelectedGoal(goal)}
                 style={styles.optionButtonHalf}
@@ -89,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   optionButtonHalf: {
-    width: '46%',
+    width: '48%',
   },
 });
 

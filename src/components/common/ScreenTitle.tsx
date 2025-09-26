@@ -15,7 +15,7 @@ export default function ScreenTitle({ title, style }: ScreenTitleProps) {
 }
 
 const styles = StyleSheet.create({
-  title: {
+  title: {    
     fontFamily: 'AnonymousPro-Bold',
     fontSize: 26,
     fontWeight: '400',
@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     marginTop: 10,
-    marginBottom: 60,
+    marginBottom: 50,
   },
 });

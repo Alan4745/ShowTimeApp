@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   scrollContent: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingBottom: 40,
   },
   filterContainer: {

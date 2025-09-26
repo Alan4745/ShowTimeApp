@@ -107,14 +107,14 @@ export default function LessonCard(props: LessonCardProps) {
   return (
     <View style={[styles.card, {height: cardHeight, maxWidth: isCompact? 350 : "100%"}]}>
       <View style={styles.content}>
-        <Text style={[styles.title, {fontSize: isCompact? 14: 18}]}>{title}</Text>
+        <Text style={[styles.title, {fontSize: isCompact? 12: 14}]}>{title}</Text>
         {!isCompact && (
           <Text style={styles.author}>
             {t("common.by")}{author}
           </Text>
         )}
         <ScrollView
-          style={[styles.descriptionScroll, {maxHeight: isCompact? 40: 55}]}
+          style={[styles.descriptionScroll, {maxHeight: isCompact? 60: 65}]}
           contentContainerStyle={styles.descriptionContent}
           showsVerticalScrollIndicator={false}
           nestedScrollEnabled={true}  
@@ -123,17 +123,17 @@ export default function LessonCard(props: LessonCardProps) {
         </ScrollView>        
 
         <View style={styles.labelRow}>
-          <View style={[styles.firstLabel, {width: isCompact? 90: 102}]}>
-            <Text style={[styles.firstLabelText, {fontSize: isCompact? 12: 14}]}>{subcategory ?? " "}</Text>
+          <View style={[styles.firstLabel, {width: isCompact? 85: 85}]}>
+            <Text style={[styles.firstLabelText, {fontSize: isCompact? 10: 10}]}>{subcategory ?? " "}</Text>
           </View>
-          <View style={[styles.secondLabel, {width: isCompact? 78: 90}]}>
-            <Text style={[styles.secondLabelText, {fontSize: isCompact? 12: 14}]}>{format ?? " "}</Text>
+          <View style={[styles.secondLabel, {width: isCompact? 78: 85}]}>
+            <Text style={[styles.secondLabelText, {fontSize: isCompact? 10: 10}]}>{format ?? " "}</Text>
           </View>
         </View>
       </View>
 
       <View style={[styles.mediaContainer, { height: isCompact ? 120 : "85%",
-        width: isCompact ? 120 : "45%", marginLeft: isCompact ? 10 : 0
+        width: isCompact ? 120 : "40%", marginLeft: isCompact ? 10 : 0
        }]}>
         <TouchableOpacity
           style={styles.mediaTouch}
@@ -157,16 +157,16 @@ const styles = StyleSheet.create({
   card: {
     width: "100%",
     flexDirection: "row",
-    gap: 20,
+    gap: 50,
     backgroundColor: '#252A30',
     borderRadius: 10,
     overflow: 'hidden',
     marginBottom: 20,    
     alignItems: "center",
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
   },
   content: {
-    width: "50%",
+    width: "45%",
     height: "100%",
     paddingTop: 20,
     paddingRight: 5,
@@ -174,14 +174,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'AnonymousPro-Bold',
-    fontWeight: "700",    
+    fontWeight: "700",   
     color: '#FFFFFF',
     marginBottom: 6,
   },
   author: {
     fontFamily: 'AnonymousPro-Regular',
-    fontWeight: "400",
-    fontSize: 12,
+    fontWeight: "400",   
     color: "#BCBCBC",    
     marginBottom: 6,
   },
@@ -197,7 +196,7 @@ const styles = StyleSheet.create({
     fontFamily: 'AnonymousPro-Regular',
     fontWeight: "400",
     marginBottom: 12,
-    lineHeight: 20,
+    lineHeight: 16,
   },
   labelRow: {
     position: "absolute",
@@ -210,20 +209,20 @@ const styles = StyleSheet.create({
   firstLabel: {    
     backgroundColor: '#2B80BE',
     paddingVertical: 8,
-    paddingHorizontal: 20,
+    paddingHorizontal: 5,
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
   },
   firstLabelText: {
     color: '#FFFFFF',
-    fontFamily: 'AnonymousPro-Regular',    
+    fontFamily: 'AnonymousPro-Regular',       
   },
   secondLabel: {    
     borderColor: '#FFFFFF',
     borderWidth: 1.5,
     paddingVertical: 8,
-    paddingHorizontal: 20,
+    paddingHorizontal: 5,
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
@@ -231,7 +230,7 @@ const styles = StyleSheet.create({
   secondLabelText: {
     color: '#FFFFFF',
     fontFamily: 'AnonymousPro-Regular',
-    fontSize: 14,
+    fontSize: 8,
   },
   mediaContainer: {    
     borderRadius: 10,

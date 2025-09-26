@@ -470,20 +470,21 @@ const styles = StyleSheet.create({
     },    
     fileButtonsContainer: {
         flexDirection: 'row',
+        flexWrap:"nowrap",
         justifyContent: 'space-around',
         marginTop: 20,
         marginBottom: 20,
-        paddingHorizontal: 10,
+        
     },
     fileButton: {
         flexDirection: 'row',
         alignItems: 'center',
-        minWidth: 125,
+        maxWidth: 120,
         borderWidth: 1,
         borderColor: '#929292',
         borderRadius: 12,
         paddingVertical: 8,
-        paddingHorizontal: 15,
+        paddingHorizontal: 10,
         gap: 6,
     },
     fileButtonText: {

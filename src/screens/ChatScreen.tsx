@@ -307,7 +307,7 @@ export default function ChatScreen() {
                     onClose={() => setMediaToView(null)}
                     media={{
                         uri: mediaToView.fileUrl!,
-                        type: mediaToView.fileType!,
+                        mediaType: mediaToView.fileType!,
                         name: mediaToView.fileName!,
                     }}
                 />
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
         marginRight: 13,
     },
     messageBubble: {
-        width: 350,
+        maxWidth: "80%",
         minHeight: 45,
         borderRadius: 12,
         paddingHorizontal: 16,

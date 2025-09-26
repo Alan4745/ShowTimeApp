@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, useWindowDimensions } from 'react-native';
 import {Bell, Star, CircleHelp, X, Power} from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -30,6 +30,7 @@ const SettingItem = ({ icon: Icon, label, onPress }: SettingOption) => (
 
 export default function SettingsSection({ userType }: SettingsSectionProps ) {
     const {t} = useTranslation();
+    const {height} = useWindowDimensions();
     const navigation = useNavigation<ChatNavigationProp>(); 
     const [showHighlightModal, setShowHighlightModal] = useState(false);
     const settings: SettingOption[] = [
@@ -51,7 +52,7 @@ export default function SettingsSection({ userType }: SettingsSectionProps ) {
         <View style = {styles.container}>
 
             {/* HEADER SECTION*/}
-            <View style = {styles.headerContainer}>
+            <View style = {[styles.headerContainer, {marginTop: height *0.008}]}>
                 <Image source={{ uri: user.avatar}} style={styles.avatar}/>
                 <View style = {styles.nameContainer}>
                     <Text style = {styles.nameText}>{user.username}</Text>
@@ -62,7 +63,7 @@ export default function SettingsSection({ userType }: SettingsSectionProps ) {
             </View> 
 
             {/* BUTTON SECTION */}
-            <View style = {styles.buttonContainer}>
+            <View style = {[styles.buttonContainer, {marginTop: height *0.04}]}>
                 {userType !== 'coach' && (
                     <TouchableOpacity 
                         style = {[styles.button, styles.highlightButton]}
@@ -78,14 +79,15 @@ export default function SettingsSection({ userType }: SettingsSectionProps ) {
             </View>
 
             {/* MAIN SECTION */}
-            <View style = {styles.mainSectionContainer}>
+            <View style = {[styles.mainSectionContainer, 
+                {marginTop: height*0.06, gap: height*0.03}]}>
                 {settings.map((setting, idx) => (
                     <SettingItem key={idx} {...setting} />
                 ))}               
             </View>
 
             {/* FOOTER */}
-            <View style = {styles.signOutButtonContainer}>
+            <View style = {[styles.signOutButtonContainer, {bottom: height*0.04}]}>
                 <TouchableOpacity style = {[styles.button, styles.signOutButton]}>
                     <View style = {styles.signOutButtonContent}>
                         <Power size={18} style={styles.icon}/>
@@ -110,8 +112,7 @@ const styles = StyleSheet.create({
     headerContainer:{
         flexDirection: "row",
         alignItems: "center",
-        gap: 20,
-        marginTop: 10
+        gap: 20,        
     },
     avatar: {
         width: 80,
@@ -135,8 +136,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flexDirection: "column",
-        width: "100%",
-        marginTop: 40,
+        width: "100%",        
         gap: 25
     },
     button: {
@@ -165,9 +165,7 @@ const styles = StyleSheet.create({
         color: "#FFFFFF"    
     },
     mainSectionContainer:{
-        flexDirection: "column",
-        gap: 40,
-        marginTop: 60,
+        flexDirection: "column",        
         paddingHorizontal: 10
     },
     mainSectionLine:{
@@ -186,8 +184,7 @@ const styles = StyleSheet.create({
     },
     signOutButtonContainer: {
         position: "absolute",
-        width: "100%",
-        bottom: 55,
+        width: "100%",        
         alignSelf: "center"            
     },
     signOutButtonContent: {

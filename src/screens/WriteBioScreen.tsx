@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, TextInput, Keyboard} from 'react-native';
+import { View, Text, StyleSheet, TextInput, Keyboard, 
+    useWindowDimensions, KeyboardAvoidingView, Platform} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
@@ -12,9 +13,23 @@ import HelperText from '../components/common/HelperText';
 
 export default function WriteBioScreen() {
     const {t} = useTranslation();
+    const {width} = useWindowDimensions();
     const {updateData} = useRegistration();
     const navigation = useNavigation();
     const [bio, setBio] = useState("");
+    const [inputHeight, setInputHeight] = useState(0);
+
+    const isSmallScreen = width <= 360;
+    const maxInputHeight = isSmallScreen ? 105 : 150;    
+
+    const handleContentSizeChange = (event: any) => {
+        const newHeight = event.nativeEvent.contentSize.height;
+        if (newHeight < maxInputHeight) {
+            setInputHeight(newHeight);
+        } else {
+            setInputHeight(maxInputHeight);
+        }
+    };
 
     const handleTextChange = (text: string) => {
         if (text.length <= 400) {
@@ -29,20 +44,25 @@ export default function WriteBioScreen() {
     }
     
     return (
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={{ flex: 1 }}
+        >
         <ScreenLayout currentStep={7} totalSteps={8}>
             <ContentContainer>
                 <ScreenTitle title={t('registration.writeBio')}/>
 
                 <View style = {styles.selectorContainer}>
                     <TextInput
-                        style={styles.textInput}
+                        style={[styles.textInput, {maxHeight: maxInputHeight}]}
                         placeholder={t('placeholders.writeBioText')}
                         placeholderTextColor="#FFFFFF"
-                        multiline
+                        multiline                        
                         value={bio}
                         onChangeText={handleTextChange}
+                        onContentSizeChange={handleContentSizeChange}
                         maxLength={400} 
-                        scrollEnabled={true} 
+                        scrollEnabled={inputHeight >= maxInputHeight} 
                         textAlignVertical="top"
                         
                     />
@@ -69,6 +89,7 @@ export default function WriteBioScreen() {
             </BottomSection>
                 
         </ScreenLayout>
+        </KeyboardAvoidingView>
     )
 }
 
@@ -92,7 +113,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 20,
         color: "#FFFFFF",
-        minHeight: 20,
+        minHeight: 30,
         maxHeight: 150
     },
     charCount: {

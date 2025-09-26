@@ -184,17 +184,15 @@ export default function CreateAccountScreen() {
                   style={styles.passwordRequirements}
                 />
               </View>
-            </ContentContainer>
-
-            <BottomSection>
-              <ContinueButton onPress={handleContinue} disabled={!isFormValid} />
-
-              <View style={styles.termsContainer}>
-                <HelperText text={t('helperTexts.termsText')} />
-              </View>
-            </BottomSection>
-          </ScrollView>
+            </ContentContainer>            
+          </ScrollView>          
         </TouchableWithoutFeedback>
+        <BottomSection>
+          <ContinueButton onPress={handleContinue} disabled={!isFormValid} />
+          <View style={styles.termsContainer}>
+            <HelperText text={t('helperTexts.termsText')} />
+          </View>
+        </BottomSection>
       </KeyboardAvoidingView>      
     </ScreenLayout>
   );
@@ -202,10 +200,11 @@ export default function CreateAccountScreen() {
 
 const styles = StyleSheet.create({
   formContainer: {
-    gap: 24,
+    gap: 20,
+    paddingBottom: 10
   },
   passwordRequirements: {
-    marginTop: -8,
+    marginTop: -5,
     textAlign: 'left',
     paddingHorizontal: 4,
   },
