@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react-native';
 import DropdownModal from '../modals/DropdownModal';
 
@@ -20,6 +21,7 @@ export default function DateSelector({
   onDayChange,
   onYearChange,
 }: DateSelectorProps) {
+  const {t} = useTranslation();
   const [showMonthModal, setShowMonthModal] = useState(false);
   const [showDayModal, setShowDayModal] = useState(false);
   const [showYearModal, setShowYearModal] = useState(false);
@@ -29,8 +31,18 @@ export default function DateSelector({
   const [yearInput, setYearInput] = useState('');
 
   const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December',
+    t('months.january'),
+    t('months.february'),
+    t('months.march'),
+    t('months.april'),
+    t('months.may'),
+    t('months.june'),
+    t('months.july'),
+    t('months.august'),
+    t('months.september'),
+    t('months.october'),
+    t('months.november'),
+    t('months.december'),
   ];
 
   // Sync input values with selected values
@@ -173,7 +185,7 @@ export default function DateSelector({
           <View style={styles.inputContainer}>
             <TextInput
               style={[styles.textInput, selectedMonth && styles.selectedInput]}
-              placeholder="Month"
+              placeholder={t('placeholders.month')}
               placeholderTextColor="#FFFFFF"
               value={monthInput}
               onChangeText={handleMonthInputChange}
@@ -198,7 +210,7 @@ export default function DateSelector({
           <View style={styles.inputContainer}>
             <TextInput
               style={[styles.textInput, selectedDay && styles.selectedInput]}
-              placeholder="Day"
+              placeholder={t('placeholders.day')}
               placeholderTextColor="#FFFFFF"
               value={dayInput}
               onChangeText={handleDayInputChange}
@@ -220,7 +232,7 @@ export default function DateSelector({
           <View style={styles.inputContainer}>
             <TextInput
               style={[styles.textInput, selectedYear && styles.selectedInput]}
-              placeholder="Year"
+              placeholder={t('placeholders.year')}
               placeholderTextColor="#FFFFFF"
               value={yearInput}
               onChangeText={handleYearInputChange}
@@ -241,7 +253,7 @@ export default function DateSelector({
       <DropdownModal
         visible={showMonthModal}
         onClose={() => setShowMonthModal(false)}
-        title="Select Month"
+        title={t('modalTitles.selectMonth')}
         items={months}
         onSelect={handleMonthSelect}
         renderItem={(month) => month}
@@ -250,7 +262,7 @@ export default function DateSelector({
       <DropdownModal
         visible={showDayModal}
         onClose={() => setShowDayModal(false)}
-        title="Select Day"
+        title={t('modalTitles.selectDay')}
         items={generateDays()}
         onSelect={handleDaySelect}
         renderItem={(day) => day.toString()}
@@ -259,7 +271,7 @@ export default function DateSelector({
       <DropdownModal
         visible={showYearModal}
         onClose={() => setShowYearModal(false)}
-        title="Select Year"
+        title={t('modalTitles.selectYear')}
         items={generateYears()}
         onSelect={handleYearSelect}
         renderItem={(year) => year.toString()}

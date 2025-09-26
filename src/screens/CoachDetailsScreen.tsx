@@ -161,7 +161,9 @@ export default function CoachDetailsScreen({ route }: CoachDetailsScreenProps) {
                                     subcategory={lesson.subcategory}
                                     format={lesson.format}
                                     mediaUrl={lesson.mediaUrl}  
-                                    mediaType={getMediaType(lesson)}                                                         
+                                    mediaType={getMediaType(lesson)} 
+                                    cardHeight={165}
+                                                                                            
                                 />
                                 ))
                                 ) : (

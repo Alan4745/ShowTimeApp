@@ -19,7 +19,7 @@
 
   },
   "registration": {
-    "createAccount": "Crea tu\ncuenta",
+    "createAccount": "Crea tu cuenta",
     "email": "Correo electrónico",
     "password": "Contraseña",
     "confirmPassword": "Confirmar contraseña",
@@ -235,10 +235,10 @@
   "appDiscoverySources": {
     "tiktok": "TikTok",
     "youtube": "Youtube",
-    "instagram": "Instagram (o Facebook)",
-    "instagramAd": "Anuncio de Instagram",
-    "friendsFamily": "Amigos/Familia/Entrenador",
-    "appStore": "Búsqueda en App Store",
+    "instagramOrFacebook": "Instagram (o Facebook)",
+    "instagramAdvertisement": "Anuncio de Instagram",
+    "friendsFamilyCoach": "Amigos/Familia/Entrenador",
+    "appStoreSearch": "Búsqueda en App Store",
     "otherSource": "Otro"
   },
   "summary": {
@@ -248,11 +248,11 @@
     "allSet": "Todo listo"
   },
   "units": {
-    "cm": "cm",
-    "kg": "kg",
     "years": "Años",
     "lb": "lb",
-    "ft": "ft"
+    "ft": "ft",
+    "kg": "kg",
+    "cm": "cm"
   },
   "months": {
     "january": "Enero",
@@ -276,7 +276,7 @@
     "mindset": "Mentalidad ganadora" 
   },
   "placeholders": {
-    "enterEmail": "Ingresa tu correo electrónico",
+    "enterEmail": "Ingresa tu correo",
     "createPassword": "Crea una contraseña",
     "confirmYourPassword": "Confirma tu contraseña",
     "chooseUsername": "Elige un nombre de usuario",
@@ -290,7 +290,10 @@
     "selectRole": "Seleccionar",
     "upload": "Subir",
     "writeBioText": "texto",
-    "accomplishmentInput": "Escribe un logro aquí"
+    "accomplishmentInput": "Escribe un logro aquí",
+    "month": "Mes",
+    "day": "Día",
+    "year": "Año"
   },
   "modalTitles": {
     "selectMonth": "Seleccionar mes",
@@ -547,7 +550,7 @@
         "description": "Aumenta tu resistencia con grasas saludables."
       },
       "supplementsHydration": {
-        "title": "Suplementos & Hidratación",
+        "title": "Suplementos  & Hidratación",
         "description": "Mantente hidratado y mejora tu rendimiento de forma inteligente."
       },
       "4WeekPlan": {

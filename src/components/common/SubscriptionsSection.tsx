@@ -60,8 +60,7 @@ const styles = StyleSheet.create({
   },
   item: {
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
+    alignItems: 'center',    
     paddingVertical: 10,    
   },
   avatar: {

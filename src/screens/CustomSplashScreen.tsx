@@ -22,7 +22,7 @@ export default function CustomSplashScreen() {
     <View style={styles.container}>
       <View style={styles.mainContent}>
         <Image
-          source={require('../../assets/img/LogoShowTime.png')}
+          source={require('../../assets/img/LogoNuevo.png')}
           style={styles.logoImage}
           resizeMode="contain"
         />

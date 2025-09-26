@@ -73,3 +73,38 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# React Native Bundle Outputs
+*.bundle
+*.map
+*.tmp
+index.android.bundle
+index.ios.bundle
+
+# React Native build artifacts
+android/app/build/
+ios/build/
+
+# Metro cache
+.expo/
+.expo-shared/
+.metros/
+
+# Misc
+*.keystore
+*.jks
+*.png
+*.webp
+*.jpeg
+*.jpg
+
+# Ignore any unexpected image assets in node_modules
+node_modules/**/__image_snapshots__/
+node_modules/**/img/
+node_modules/**/__mocks__/
+
+# Ignore macOS indexing files
+.DS_Store
+
+# VSCode settings (already included, but just to be sure)
+.vscode/

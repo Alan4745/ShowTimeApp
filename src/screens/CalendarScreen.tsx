@@ -118,21 +118,20 @@ const styles = StyleSheet.create({
   header: {
     position: 'relative',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,    
+    justifyContent: 'center',        
   },
   backButton: {
     position: 'absolute',
-    left: 20,
-    top: 0,
-    padding: 8,
+    left: 5,
+    top: -5,
+    paddingVertical: 8,
     zIndex: 10,
   },
   title: {
     fontFamily: 'AnonymousPro-Bold',
     fontWeight: "700",
-    fontSize: 24,
-    color: '#FFFFFF',
+    fontSize: 22,
+    color: '#FFFFFF',    
   },
   calendarText: {
     fontFamily: 'AnonymousPro-Bold',
@@ -140,7 +139,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFFFFF',
     textAlign: 'center',
-    marginTop: 100,
+    marginTop: "10%",
     marginBottom: 30,
   },
   calendarWrapper: {

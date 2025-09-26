@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import React, {useState, useEffect} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   buttonText:{
     fontFamily: 'AnonymousPro-Regular',
     fontWeight: "400",
-    fontSize: 18,
+    fontSize: 14,
     color: "#FFFFFF"  
   },
   listContainer: {

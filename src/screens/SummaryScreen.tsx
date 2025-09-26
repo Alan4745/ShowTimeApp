@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Alert, StyleSheet, ActivityIndicator, Image } from 'react-native';
+import { View, Text, Alert, StyleSheet, ActivityIndicator, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
 import { X, Check } from 'lucide-react-native';
@@ -18,13 +18,31 @@ export default function SummaryScreen() {
   const handleImagePicked = (image: { path: string }) => {
     updateData({ studentProfileImage: image.path });
   };
-
+  
   const handleFinishRegistration = async () => {
     setIsLoading(true);
+    const API_BASE_URL = 'https://ade805f1-d91d-4621-b28a-b391b1e24304.mock.pstmn.io/register';
+    const endpoint = `${API_BASE_URL}/register`;
+    //No envia campos vacios (asi excluye los del coach)
+    const cleanData = Object.fromEntries(
+      Object.entries(data).filter(([_, v]) => v !== undefined)
+    );
 
     try {
       // Simulate registration process
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      //await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...cleanData, // todos los datos recogidos del registro          
+        }),
+      });
+
+      const result = await response.json();
+      console.log('Respuesta del mock:', result);
 
       // Reset registration data after successful registration
       resetData();
@@ -83,99 +101,100 @@ export default function SummaryScreen() {
       {/* Title */}
       <Text style={styles.title}>{t('registration.readyToPlay')}</Text>
 
+
       {/* Main Card */}
-      <View style={styles.cardContainer}>
-        <LinearGradient
-          colors={['#4A90E2', '#357ABD']}
-          style={styles.card}
-        >
-          {/* Profile Image */}
-          <View style={styles.profileSection}>
-            <View style={styles.profileImageContainer}>
-              <TouchableOpacity style={styles.wrapper} onPress={()=> setModalVisible(true)}>
-                {/* Imagen de perfil */}
-                <View style={styles.profileImageBorder}>
-                  <Image
-                    source={
-                      data.studentProfileImage
-                        ? { uri: data.studentProfileImage }
-                        : require('../../assets/img/userGeneric.png') //imagen local
-                    }
-                    style={styles.profileImage}
-                  />
-                </View>  
-              </TouchableOpacity>
-              {/* <View style={styles.profileImageBorder}>
-                <Image
-                  source={{ uri: 'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?semt=ais_hybrid&w=740' }}
-                  style={styles.profileImage}
-                />
-              </View> */}
-            </View>
-
-            <Text style={styles.username}>{data.username || t('registration.username')}</Text>
-            <Text style={styles.age}>{calculateAge()} {t('units.years')}</Text>
-          </View>
-
-          {/* Info Grid */}
-          <View style={styles.infoGrid}>
-            <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>{t('summary.weight')}</Text>
-              <Text style={styles.infoValue}>
-                {data.physicalData?.height ? `${data.physicalData.height} ${t('units.cm')}` : t('common.na')}
-              </Text>
-            </View>
-
-            <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>{t('summary.height')}</Text>
-              <Text style={styles.infoValue}>
-                {data.physicalData?.weight ? `${data.physicalData.weight} ${t('units.kg')}` : t('common.na')}
-              </Text>
-            </View>
-
-            <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>{t('registration.citizenship')}</Text>
-              <Text style={styles.infoValue}>{data.citizenship || t('common.na')}</Text>
-            </View>
-
-            <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>{t('summary.playingPosition')}</Text>
-              <Text style={styles.infoValue}>{data.position || t('common.na')}</Text>
-            </View>
-
-            <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>{t('registration.experienceLevel')}</Text>
-              <Text style={styles.infoValue}>{data.experienceLevel || t('common.na')}</Text>
-            </View>
-
-            <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>{t('registration.trainingFrequency')}</Text>
-              <Text style={styles.infoValue}>{getTrainingFrequencyShort()}</Text>
-            </View>
-          </View>
-
-          {/* All Set Button */}
-          <View style={styles.allSetButton}>
-            <Text style={styles.allSetText}>{t('summary.allSet')}</Text>
-            <View style={styles.checkIcon}>
-              <Check color="#4A90E2" size={16} strokeWidth={3} />
-            </View>
-          </View>
-
-          {/* Start Button */}
-          <TouchableOpacity
-            style={styles.startButton}
-            onPress={handleFinishRegistration}
-            disabled={isLoading}
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.cardContainer}>
+          <LinearGradient
+            colors={['#4A90E2', '#357ABD']}
+            style={styles.card}
           >
-            {isLoading ? (
-              <ActivityIndicator color="#4A90E2" size="small" />
-            ) : (
-              <Text style={styles.startButtonText}>{t('common.start')}</Text>
-            )}
-          </TouchableOpacity>
-        </LinearGradient>
-      </View>
+            {/* Profile Image */}
+            <View style={styles.profileSection}>
+              <View style={styles.profileImageContainer}>
+                <TouchableOpacity style={styles.wrapper} onPress={()=> setModalVisible(true)}>
+                  {/* Imagen de perfil */}
+                  <View style={styles.profileImageBorder}>
+                    <Image
+                      source={
+                        data.studentProfileImage
+                          ? { uri: data.studentProfileImage }
+                          : require('../../assets/img/userGeneric.png') //imagen local
+                      }
+                      style={styles.profileImage}
+                    />
+                  </View>  
+                </TouchableOpacity>
+              
+              </View>
+
+              <Text style={styles.username}>{data.username || t('registration.username')}</Text>
+              <Text style={styles.age}>{calculateAge()} {t('units.years')}</Text>
+            </View>
+
+            {/* Info Grid */}
+            <View style={styles.infoGrid}>
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>{t('summary.weight')}</Text>
+                <Text style={styles.infoValue}>
+                  {data.physicalData?.height ? `${data.physicalData.height} ${t('units.cm')}` : t('common.na')}
+                </Text>
+              </View>
+
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>{t('summary.height')}</Text>
+                <Text style={styles.infoValue}>
+                  {data.physicalData?.weight ? `${data.physicalData.weight} ${t('units.kg')}` : t('common.na')}
+                </Text>
+              </View>
+
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>{t('registration.citizenship')}</Text>
+                <Text style={styles.infoValue}>{data.citizenship || t('common.na')}</Text>
+              </View>
+
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>{t('summary.playingPosition')}</Text>
+                <Text style={styles.infoValue}>{data.position || t('common.na')}</Text>
+              </View>
+
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>{t('registration.experienceLevel')}</Text>
+                <Text style={styles.infoValue}>{data.experienceLevel || t('common.na')}</Text>
+              </View>
+
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>{t('registration.trainingFrequency')}</Text>
+                <Text style={styles.infoValue}>{getTrainingFrequencyShort()}</Text>
+              </View>
+            </View>
+
+            {/* All Set Button */}
+            <View style={styles.allSetButton}>
+              <Text style={styles.allSetText}>{t('summary.allSet')}</Text>
+              <View style={styles.checkIcon}>
+                <Check color="#4A90E2" size={16} strokeWidth={3} />
+              </View>
+            </View>
+
+            {/* Start Button */}
+            <TouchableOpacity
+              style={styles.startButton}
+              onPress={handleFinishRegistration}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="#4A90E2" size="small" />
+              ) : (
+                <Text style={styles.startButtonText}>{t('common.start')}</Text>
+              )}
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
+      </ScrollView>
       <ImagePickerModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
@@ -189,10 +208,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
-    paddingHorizontal: 20,
+    paddingHorizontal: 20,    
   },
   header: {
-    paddingTop: 20,
+    paddingTop: 25,
+  },
+  scrollContent: {
+    paddingBottom: 30,
+    flexGrow: 1, // para que el ScrollView tome el espacio mínimo necesario
   },
   closeButton: {
     width: 32,
@@ -211,7 +234,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     marginBottom: 50,
-    marginTop: 0,
+    marginTop: 15,
   },
   cardContainer: {
     flex: 1,

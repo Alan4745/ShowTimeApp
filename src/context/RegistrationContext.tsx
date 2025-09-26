@@ -26,7 +26,9 @@ export interface RegistrationData {
   citizenship?: string;
   physicalData?: {
     weight: number;
+    weightUnit: string,
     height: number;
+    heightUnit: string;
   };
   physicalGoal?: 'Gain muscle' | 'Lose fat' | 'Maintain';
   position?: Position; // ← cambiado aquí

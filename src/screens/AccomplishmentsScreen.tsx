@@ -1,5 +1,6 @@
 import React, {useState, useRef} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, Keyboard, TouchableWithoutFeedback} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, 
+    ScrollView, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         textAlign: "center",        
         height: 98,
-        width: "90%",        
+        width: "85%",        
     },    
     deleteButton: {
         marginLeft: 8,

@@ -63,7 +63,7 @@ export default function TestimonialCard(props: TestimonialCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    width: 400,
+    maxWidth: 360,
     height: 238,
     borderRadius: 16,
     backgroundColor: "#252A30"   

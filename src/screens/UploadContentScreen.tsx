@@ -1,15 +1,16 @@
 import React, {useState} from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image} from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, KeyboardAvoidingView,
+    Platform, Keyboard,TouchableWithoutFeedback} from 'react-native'
 import { useTranslation } from 'react-i18next';
 import {ChevronDown, FileVideo, Image as ImageIcon, FileText} from 'lucide-react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { pick, types } from '@react-native-documents/picker';
 import { errorCodes, isErrorWithCode } from '@react-native-documents/picker';
 import { createThumbnail } from 'react-native-create-thumbnail';
-import { Keyboard } from 'react-native';
 import ScreenLayout from '../components/common/ScreenLayout'
 import DropdownModal from '../components/modals/DropdownModal';
 import categoriesByUserType from '../data/categoriesByUser';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type MediaItem = {
   id: string;
@@ -126,13 +127,20 @@ export default function UploadContentScreen() {
         };
 
     const currentMedia = mediaItems[0];
-    return (
+    return (  
         <ScreenLayout>
+            <ScrollView
+                contentContainerStyle={{ 
+                    paddingBottom: 140, // Ajusta según el espacio necesario al final
+                    flexGrow: 1 
+                }}
+                keyboardShouldPersistTaps="handled"
+            >
             {/* HEADER */}
             <View style = {styles.pageTitleContainer}>
                 <Text style = {styles.titleText}>{t('account.titles.uploadContent')}</Text>
             </View>
-
+            
             {/* THUMBNAIL */}
             <Text style = {styles.thumbnailText}>Thumbnail</Text>
             <View style = {styles.imageContainer}>
@@ -148,8 +156,8 @@ export default function UploadContentScreen() {
                 ) : (
                     <Text style={{ color: "gray", alignSelf: "center"}}>{t('account.titles.noThumbnail')}</Text>
                 )}
-            </View>
-            
+            </View>            
+
 
             {/* TITLE AND DESCRIPTION INPUT */}
             <View style = {styles.inputContainer}>
@@ -231,7 +239,7 @@ export default function UploadContentScreen() {
                 <Text style = {styles.helperText}>{t('helperTexts.uploadHelperText1')}</Text>
                 <Text style = {styles.helperText}>{t('helperTexts.uploadHelperText2')}</Text>
             </View>
-
+                    
             {/* MAIN CATEGORY MODAL */}
             <DropdownModal
                 visible={isMainCategoryModalVisible}
@@ -258,7 +266,8 @@ export default function UploadContentScreen() {
                 }}
                 renderItem={(item) => t(`publishPost.categories.${item}`)}
             />
-        </ScreenLayout>
+            </ScrollView>
+        </ScreenLayout>                                            
     )
 }
 
@@ -343,7 +352,9 @@ const styles = StyleSheet.create({
     },
     fileButtonsContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        flexWrap: "wrap",
+        justifyContent: 'center',
+        gap: 15,
         marginTop: 20,
         marginBottom: 20,
         paddingHorizontal: 10,
