@@ -45,7 +45,7 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="CustomSplash"
+        initialRouteName="DebugNavigator"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="DebugNavigator" component={DebugNavigator} />

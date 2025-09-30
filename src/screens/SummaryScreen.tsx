@@ -29,17 +29,36 @@ export default function SummaryScreen() {
     );
 
     try {
-      // Simulate registration process
-      //await new Promise(resolve => setTimeout(resolve, 2000));
+      // Registration process
+      const formData = new FormData();
+      // Añadir campos de texto
+      Object.entries(cleanData).forEach(([key, value]) => {
+        // Si el valor es un objeto, conviértelo a JSON string
+        if (typeof value === 'object' && value !== null) {
+          formData.append(key, JSON.stringify(value));
+        } else if (value !== undefined) {
+          formData.append(key, value as string);
+        }
+      });
+
+      // Añadir imagen si existe
+      if (data.studentProfileImage) {
+        formData.append('studentProfileImage', {
+          uri: data.studentProfileImage,
+          type: 'image/jpeg', // o 'image/png' si aplica
+          name: 'profile.jpg',
+        });
+      }
+
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          // NO pongas 'Content-Type', fetch lo pone automáticamente
+          // y calcula correctamente los límites del multipart/form-data
         },
-        body: JSON.stringify({
-          ...cleanData, // todos los datos recogidos del registro          
-        }),
+        body: formData,
       });
+
 
       const result = await response.json();
       console.log('Respuesta del mock:', result);
