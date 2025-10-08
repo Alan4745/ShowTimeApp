@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { ChatParamList } from '../../types';
 import type { StackNavigationProp } from '@react-navigation/stack';
+import { useAuth } from '../../context/AuthContext';
 import HighlightModal from '../modals/HighlightModal';
-import user from '../../data/user.json';
 import coach from '../../data/coach.json'; //coach para chat en contact
 
 type SettingsSectionProps = {
@@ -30,6 +30,7 @@ const SettingItem = ({ icon: Icon, label, onPress }: SettingOption) => (
 
 export default function SettingsSection({ userType }: SettingsSectionProps ) {
     const {t} = useTranslation();
+    const { user, logout } = useAuth();
     const {height} = useWindowDimensions();
     const navigation = useNavigation<ChatNavigationProp>(); 
     const [showHighlightModal, setShowHighlightModal] = useState(false);
@@ -45,7 +46,12 @@ export default function SettingsSection({ userType }: SettingsSectionProps ) {
             })
         },
         { icon: X, label: t('account.content.cancelSubscription')},
-    ];    
+    ];  
+    
+  const handleSignOut = () => {
+    logout();
+    (navigation as any).navigate("CustomSplash");  
+  }  
     
   return (
         
@@ -53,10 +59,15 @@ export default function SettingsSection({ userType }: SettingsSectionProps ) {
 
             {/* HEADER SECTION*/}
             <View style = {[styles.headerContainer, {marginTop: height *0.008}]}>
-                <Image source={{ uri: user.avatar}} style={styles.avatar}/>
+                <Image source={
+                    user?.studentProfileImage
+                    ? { uri: user?.studentProfileImage}
+                    : require('../../../assets/img/userGeneric.png')
+                } 
+                style={styles.avatar}/>
                 <View style = {styles.nameContainer}>
-                    <Text style = {styles.nameText}>{user.username}</Text>
-                    <TouchableOpacity>
+                    <Text style = {styles.nameText}>{user?.username}</Text>
+                    <TouchableOpacity onPress={() => (navigation as any).navigate('EditProfile')}>
                         <Text style = {styles.editProfileText}>{t('account.titles.editProfile')}</Text>    
                     </TouchableOpacity>
                 </View>
@@ -88,7 +99,10 @@ export default function SettingsSection({ userType }: SettingsSectionProps ) {
 
             {/* FOOTER */}
             <View style = {[styles.signOutButtonContainer, {bottom: height*0.04}]}>
-                <TouchableOpacity style = {[styles.button, styles.signOutButton]}>
+                <TouchableOpacity 
+                    style = {[styles.button, styles.signOutButton]}  
+                    onPress={handleSignOut}                   
+                >
                     <View style = {styles.signOutButtonContent}>
                         <Power size={18} style={styles.icon}/>
                         <Text style = {styles.signOutButtonText}>{t('account.buttons.signOut')}</Text>

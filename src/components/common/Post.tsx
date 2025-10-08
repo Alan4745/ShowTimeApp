@@ -13,7 +13,9 @@ export default function Post({post, onPressComments}) {
   return (
     <View style = {styles.container}>      
       <View style={styles.postHeader}>
-        <Image source={{uri: post.avatar}} style={styles.avatar}/>
+        <Image 
+          source={post.avatar? {uri: post.avatar} : require('../../../assets/img/userGeneric.png')} 
+          style={styles.avatar}/>
         <View style={styles.userInfo}>
           <Text style={styles.username}>{post.username}</Text>
           <Text style={styles.userType}>{post.userType}</Text>          

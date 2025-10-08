@@ -1,15 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import { LinearGradient } from 'react-native-linear-gradient';
-import {useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
 import { Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import LoginModal from '../components/modals/LoginModal';
+
+
 export default function RegisterMethodScreen() {
   const { updateData } = useRegistration();
   const navigation = useNavigation();
   const { t } = useTranslation();
 
+  const [showLoginModal, setShowLoginModal] = useState(false);
+   
 
   const handleGoogleSignUp = () => {
     // Mock Google authentication
@@ -18,7 +23,7 @@ export default function RegisterMethodScreen() {
       email: 'user@gmail.com', // Mock email from Google
       username: 'GoogleUser', // Mock username from Google
     });
-    (navigation.navigate as any)({ name: 'Username' });
+    (navigation.navigate as any)({ name: 'SelectRole' });
   };
 
   const handleAppleSignUp = () => {
@@ -28,17 +33,12 @@ export default function RegisterMethodScreen() {
       email: 'user@privaterelay.appleid.com', // Mock Apple private email
       username: 'AppleUser', // Mock username from Apple
     });
-    (navigation.navigate as any)({ name: 'Username' });
+    (navigation.navigate as any)({ name: 'SelectRole' });
   };
 
   const handleCreateAccount = () => {
     (navigation.navigate as any)({ name: 'CreateAccount' });
-  };
-
-  const handleSignIn = () => {
-    console.log('Sign in pressed');
-    // Here would go implement sign in logic
-  };
+  };  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -87,7 +87,7 @@ export default function RegisterMethodScreen() {
         <View style={styles.bottomSection}>
           <Text style={styles.alreadyHaveText}>{t('registration.alreadyHaveAccount')}</Text>
 
-          <TouchableOpacity style={styles.signInButton} onPress={handleSignIn}>
+          <TouchableOpacity style={styles.signInButton} onPress={() => setShowLoginModal(true)}>
             <Text style={styles.signInText}>{t('registration.signIn')}</Text>
           </TouchableOpacity>
 
@@ -107,7 +107,13 @@ export default function RegisterMethodScreen() {
             </Text> */}
           </View>
         </View>
-      </View>
+        {/* Login Modal*/}
+        <LoginModal
+          visible={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
+          onSuccess={() => (navigation as any).navigate("Home")}
+        /> 
+      </View>    
     </SafeAreaView>
   );
 }

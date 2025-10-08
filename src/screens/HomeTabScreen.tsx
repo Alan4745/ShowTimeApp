@@ -3,8 +3,8 @@ import { View, StyleSheet, TouchableOpacity, Text, FlatList } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 import Post from '../components/common/Post';
 import SearchBar from '../components/form/SearchBar';
-import postsData from '../data/posts.json';
-import { createThumbnail } from 'react-native-create-thumbnail';
+import { useAuth } from '../context/AuthContext';
+import API_BASE_URL from '../config/api';
 
 type MediaItem = {
   id: string;
@@ -32,39 +32,82 @@ type PostType = {
 
 export default function HomeTabScreen() {
   const navigation = useNavigation();
+  const { token } = useAuth();
+  const endpoint = `${API_BASE_URL}/api/posts/`;
   const [searchQuery, setSearchQuery] = useState('');
   const [allPosts, setAllPosts] = useState<PostType[]>([]); // posts con thumbnails
   const [filteredPosts, setFilteredPosts] = useState<PostType[]>([]); // posts filtrados
 
-  // 1. Cargar thumbnails
-  useEffect(() => {
-    const enrichPostsWithThumbnails = async () => {
-      const enriched = await Promise.all(
-        postsData.map(async post => {
-          const enrichedMedia = await Promise.all(
-            (post.media ?? []).map(async item => {
-              if (item.mediaType === 'video' && !item.thumbnailUrl) {
-                try {
-                  const { path } = await createThumbnail({ url: item.uri });
-                  return { ...item, thumbnail: path };
-                } catch (error) {
-                  console.error('Error creando thumbnail', error);
-                  return item;
-                }
-              }
-              return item;
-            })
-          );
-          return { ...post, media: enrichedMedia };
-        })
-      );
 
-      setAllPosts(enriched);
-      setFilteredPosts(enriched); // mostrar todos inicialmente
+  // 1. Carga los posts de la base de datos.
+  useEffect(() => {
+    const buildFullUrl = (path) => {
+      if (!path) return '';
+      if (path.startsWith('http')) return path;
+      return `${API_BASE_URL}${path}`;
     };
 
-    enrichPostsWithThumbnails();
-  }, []);
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch(endpoint, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        });
+
+        const text = await res.text();
+
+        // Chequea si empieza como HTML (probable error)
+        if (text.startsWith('<')) {
+          console.error('⚠️ La respuesta no es JSON, es HTML:', text);
+          return;
+        }
+
+        const json = JSON.parse(text);
+        console.log('Respuesta parseada del backend:', json);
+        const rawPosts = json.results || [];
+
+        const enrichedPosts = rawPosts.map((post) => {
+          const enrichedMedia = post.media.map((item) => {
+            const fullUri = buildFullUrl(item.uri || '');
+            let thumbnailUrl = '';
+
+            if (item.type === 'pdf') {
+              thumbnailUrl = require('../../assets/img/pdfIcon.png');
+            } else if (item.thumbnail) {
+              thumbnailUrl = buildFullUrl(item.thumbnail);
+            }
+
+            return {
+              ...item,
+              uri: fullUri,
+              mediaType: item.type || 'image',
+              thumbnailUrl,
+            };
+          });
+
+          return {
+            id: post.id,
+            username: post.username || 'unknown',
+            userType: post.userType || 'student',
+            avatar: buildFullUrl(post.avatar || ''),
+            text: post.text || '',
+            commentsCount: post.commentsCount || 0,
+            likesCount: post.likesCount || 0,
+            media: enrichedMedia,
+          };
+        });
+
+        setAllPosts(enrichedPosts);
+        setFilteredPosts(enrichedPosts);
+      } catch (err) {
+        console.error('Error al cargar posts:', err);
+      }
+    };
+
+    fetchPosts();
+  }, [token]);
+
 
   // 2. Filtrar por búsqueda
   useEffect(() => {

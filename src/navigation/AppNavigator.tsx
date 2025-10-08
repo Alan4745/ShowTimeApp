@@ -37,6 +37,7 @@ import WriteBioScreen from '../screens/WriteBioScreen';
 import AccomplishmentsScreen from '../screens/AccomplishmentsScreen';
 import SelectRoleScreen from '../screens/SelectRoleScreen';
 import CoachSummaryScreen from '../screens/CoachSummaryScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
  
 
 const Stack = createStackNavigator();
@@ -45,7 +46,7 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="DebugNavigator"
+        initialRouteName="CustomSplash"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="DebugNavigator" component={DebugNavigator} />
@@ -84,6 +85,7 @@ export default function AppNavigator() {
         <Stack.Screen name="UploadMedia" component={UploadMediaScreen}/> 
         <Stack.Screen name="WriteBio" component={WriteBioScreen}/> 
         <Stack.Screen name="Accomplishments" component={AccomplishmentsScreen}/> 
+        <Stack.Screen name="EditProfile" component={EditProfileScreen}/> 
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -60,6 +60,8 @@ export interface RegistrationData {
   };
   authMethod?: 'google' | 'apple' | 'email';
   studentProfileImage?: string;
+  studentProfileImageMime?: string;
+  studentProfileImageName?: string;
   
   // Coach-specific fields
   coachingRole?: string; 

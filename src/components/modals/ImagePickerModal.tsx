@@ -1,13 +1,18 @@
-import React from 'react';
-import {Modal, View, Text, TouchableOpacity, StyleSheet, Alert} from 'react-native';
+import React, {useState} from 'react';
+import {Modal, View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import ImagePicker from 'react-native-image-crop-picker';
+import PopupAlert from './PopupAlert';
 import {X} from 'lucide-react-native'
 
 interface ImagePickerModalProps {
   visible: boolean;
   onClose: () => void;
-  onImagePicked: (image: { path: string; mime: string }) => void;
+  onImagePicked: (image: { path: string; mime: string; filename: string }) => void;
+}
+
+function extractFilenameFromPath(path: string): string {
+  return path.split('/').pop() || `image_${Date.now()}.jpg`;
 }
 
 export default function ImagePickerModal({
@@ -16,6 +21,15 @@ export default function ImagePickerModal({
   onImagePicked,
 }: ImagePickerModalProps) {
   const {t} = useTranslation();  
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const VALID_IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+
+  const showError = (message: string) => {
+    setErrorMessage(message);
+    setErrorModalVisible(true);
+  };
+
   const handlePickFromGallery = async () => {
     try {
       const image = await ImagePicker.openPicker({
@@ -27,12 +41,23 @@ export default function ImagePickerModal({
         compressImageQuality: 0.8,
         mediaType: 'photo',
       });
-      onImagePicked(image);
+
+      if (!VALID_IMAGE_MIME_TYPES.includes(image.mime)) {
+        showError(t('errors.invalidImageType') || 'Only JPEG, JPG or PNG images are allowed');
+        return;
+      }
+
+      const filename = extractFilenameFromPath(image.path)
+      onImagePicked({
+        path: image.path,
+        mime: image.mime,
+        filename,
+      });
       onClose();
     } catch (error: any) {
-      if (error.code !== 'E_PICKER_CANCELLED') {
-        Alert.alert('Error', 'Cannot access galery');
+      if (error.code !== 'E_PICKER_CANCELLED') {        
         console.error(error);
+        showError(t('errors.galleryAccessError') || 'Unable to access the image galery');
       }
     }
   };
@@ -48,15 +73,27 @@ export default function ImagePickerModal({
         compressImageQuality: 0.8,
         mediaType: 'photo'
       });
-      onImagePicked(image);
+
+      if (!VALID_IMAGE_MIME_TYPES.includes(image.mime)) {
+        showError(t('errors.invalidImageType') || 'Only JPEG, JPG or PNG images are allowed');
+        return;
+      }
+
+      const filename = extractFilenameFromPath(image.path);
+      onImagePicked({
+        path: image.path,
+        mime: image.mime,
+        filename,  
+      });
       onClose();
     } catch (error: any) {
       if (error.code !== 'E_PICKER_CANCELLED') {
-        Alert.alert('Error', 'Cannot access the camera.');
         console.error(error);
-      }
+        showError(t('errors.cameraAccessError') || 'Unable to access the camera');
+      }      
     }
   };
+
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -73,7 +110,14 @@ export default function ImagePickerModal({
             <Text style={styles.buttonText}>{t('modalTitles.buttonOptions.chooseGalery')}</Text>
           </TouchableOpacity>          
         </View>
-      </View>
+
+        {/* Error Modal */}
+        <PopupAlert
+        visible={errorModalVisible}
+        message={errorMessage}
+        onClose={() => setErrorModalVisible(false)}
+      />
+      </View>      
     </Modal>
   );
 }

@@ -36,7 +36,8 @@ export default function DebugNavigator() {
     'CoachingRole',
     'UploadMedia',
     'WriteBio',
-    'Accomplishments'    
+    'Accomplishments',
+    'EditProfile'    
   ];
 
   return (

@@ -1,28 +1,39 @@
 import React, { useState } from 'react';
-import { View, Text, Alert, StyleSheet, ActivityIndicator, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
+import { useAuth} from '../context/AuthContext';
 import { X, Check } from 'lucide-react-native';
 import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import ImagePickerModal from '../components/modals/ImagePickerModal';
+import PopupAlert from '../components/modals/PopupAlert';
+import API_BASE_URL from '../config/api';
 
 export default function SummaryScreen() {
   const { t } = useTranslation();
+  const {login} = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const { data, resetData, updateData } = useRegistration();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const endpoint = `${API_BASE_URL}/api/auth/register`; 
+  
 
-  const handleImagePicked = (image: { path: string }) => {
-    updateData({ studentProfileImage: image.path });
+  const handleImagePicked = (image: { path: string; mime: string; filename: string }) => {
+    updateData({
+      studentProfileImage: image.path.startsWith('file://') ? image.path : `file://${image.path}`,
+      studentProfileImageMime: image.mime || 'image/jpeg',
+      studentProfileImageName: image.filename || 'profile.jpg',
+    });
   };
+
   
   const handleFinishRegistration = async () => {
-    setIsLoading(true);
-    const API_BASE_URL = 'https://ade805f1-d91d-4621-b28a-b391b1e24304.mock.pstmn.io/register';
-    const endpoint = `${API_BASE_URL}/register`;
+    setIsLoading(true);    
     //No envia campos vacios (asi excluye los del coach)
     const cleanData = Object.fromEntries(
       Object.entries(data).filter(([_, v]) => v !== undefined)
@@ -45,23 +56,45 @@ export default function SummaryScreen() {
       if (data.studentProfileImage) {
         formData.append('studentProfileImage', {
           uri: data.studentProfileImage,
-          type: 'image/jpeg', // o 'image/png' si aplica
-          name: 'profile.jpg',
+          type: data.studentProfileImageMime || 'image/jpeg',
+          name: data.studentProfileImageName || 'profile.jpg',
         });
       }
 
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
-          // NO pongas 'Content-Type', fetch lo pone automáticamente
+          // NO poner 'Content-Type', fetch lo pone automáticamente
           // y calcula correctamente los límites del multipart/form-data
         },
         body: formData,
       });
 
+      let result;
+      try {
+        result = await response.json();      
+      } catch {
+        throw new Error(`${t('common.registrationFailed')}. ${t('errors.tryAgain')}`);
+      }
 
-      const result = await response.json();
-      console.log('Respuesta del mock:', result);
+      // validar si la respuesta fue exitosa
+      if (!response.ok) {
+        throw new Error(result?.error || `${t('common.registrationFailed')}. ${t('errors.tryAgain')}`);
+      }
+
+      // guarda datos en AuthContext
+      const {token, user} = result;
+      await login(token, {
+        username: user.username,
+        role: user.role,
+        position: user.position,
+        physicalData: user.physicalData,
+        studentProfileImage: user.studentProfileImage
+          ? `${API_BASE_URL}/media/${user.studentProfileImage}`
+          : "",
+      });
+      console.log("STATUS:", response.status);
+      console.log(result);     
 
       // Reset registration data after successful registration
       resetData();
@@ -69,13 +102,15 @@ export default function SummaryScreen() {
       // Navigate to home/dashboard
       (navigation as any).navigate('Home');
 
-    } catch (error) {
-      console.error('Registration failed:', error);
-      Alert.alert(
-        t('common.registrationFailed'),
-        t('errors.tryAgain'),
-        [{ text: t('common.ok') }]
-      );
+    } catch (error: any) {      
+      if (error.message === 'Network request failed') {
+        setErrorMessage(t('errors.networkError') || t('errors.serverConnection'));
+      } else {
+        setErrorMessage(
+          error?.message || `${t('common.registrationFailed')}. ${t('errors.tryAgain')}`
+        );
+      }
+      setErrorModalVisible(true);     
     } finally {
       setIsLoading(false);
     }
@@ -218,6 +253,11 @@ export default function SummaryScreen() {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onImagePicked={handleImagePicked}
+      />
+      <PopupAlert
+        visible={errorModalVisible}
+        message={errorMessage}
+        onClose={() => setErrorModalVisible(false)}
       />
     </View>
   );

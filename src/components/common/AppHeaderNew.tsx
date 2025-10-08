@@ -11,7 +11,7 @@ type RootStackParamList = {
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Account'>;
 
 interface AppHeaderProps {
-  userAvatar: string; // Requerido
+  userAvatar?: string; 
 }
 
 export default function AppHeaderNew(props: AppHeaderProps) {
@@ -21,7 +21,12 @@ export default function AppHeaderNew(props: AppHeaderProps) {
     <View style={styles.header}>      
       <Text style={styles.title}>Showtime University</Text>
       <TouchableOpacity onPress={() => navigation.navigate('Account')}>
-        <Image source={{ uri: props.userAvatar}} style={styles.avatar} /> 
+        <Image source={
+          props.userAvatar
+          ? {uri: props.userAvatar}
+          : require('../../../assets/img/userGeneric.png')
+        }
+        style={styles.avatar} /> 
       </TouchableOpacity>    
     </View>
   );

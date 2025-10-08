@@ -7,16 +7,17 @@ import SubscriptionsSection from '../components/common/SubscriptionsSection'
 import SavedExercisesCalendar from '../components/common/SavedExercisesCalendar'
 import SettingsSection from '../components/common/SettingsSection'
 import UploadSection from '../components/common/UploadSection'
+import { useAuth } from '../context/AuthContext'
 import coachData from '../data/contentData.json'
 import studentData from '../data/studentList.json'
 import coach from '../data/coach.json'
-import userData from '../data/user.json'
 
 type ButtonKey = "coach" | "save" | "settings" | "students" | "upload";
 
 export default function AccountScreen() {
   const {t} = useTranslation();
-  const userType = coach.userType;
+  const { user } = useAuth();
+  const userType = user?.role || "student";
   const navigation = useNavigation();  
   const [activeButton, setActiveButton] = useState<ButtonKey | null>(null);
   const buttons: Array<"coach" | "save" | "settings" | "students" | "upload"> =

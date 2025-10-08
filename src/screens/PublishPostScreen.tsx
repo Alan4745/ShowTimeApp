@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image, Keyboard } from 'react-native';
 import React, {useState} from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 import ScreenLayout from '../components/common/ScreenLayout';
 import {Globe, ChevronDown, FileVideo, Image as ImageIcon, FileText} from 'lucide-react-native';
 import DropdownModal from '../components/modals/DropdownModal';
@@ -12,9 +13,9 @@ import { errorCodes, isErrorWithCode } from '@react-native-documents/picker';
 import PopupConfirm from '../components/modals/PopupConfirm';
 import PopupAlert from '../components/modals/PopupAlert';
 import LottieIcon from '../components/common/LottieIcon';
-import userData from '../data/user.json';
 import categoriesByUserType, {UserType}  from '../data/categoriesByUser';
-import { Keyboard } from 'react-native';
+import { useAuth } from '../context/AuthContext';
+import API_BASE_URL from '../config/api';
 
 
 type MediaItem = {
@@ -32,7 +33,8 @@ type MediaItem = {
 };
 
 export default function PublishPostScreen() {
-    const { t } = useTranslation();     
+    const { t } = useTranslation();  
+    const navigation = useNavigation();   
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);  
     const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
@@ -45,11 +47,12 @@ export default function PublishPostScreen() {
     const [isGeneratingThumbnail, setIsGeneratingThumbnail] = useState(false); 
     const [darwinMainCategory, setDarwinMainCategory] = useState<string | null>(null);
     const [darwinSubcategories, setDarwinSubcategories] = useState<string[]>([]);
-    const userType = userData.userType as UserType;
+    const [isLoading, setIsLoading] = useState(false);
+    const { token, user } = useAuth();
+    const userType = user?.role as UserType;
     const isDarwin = userType === 'darwin';
-    const categories = isDarwin? Object.keys(categoriesByUserType.darwin) : categoriesByUserType[userType] ?? categoriesByUserType['student'];
-    const delayTime = 1500; //para mostrar icono de loading
-    
+    const categories = isDarwin? Object.keys(categoriesByUserType.darwin) : categoriesByUserType[userType] ?? categoriesByUserType['student'];       
+    const endpoint = `${API_BASE_URL}/api/posts/`;
 
     //Sección para manejar el Post
     const [postContent, setPostContent] = useState('');    
@@ -69,32 +72,110 @@ export default function PublishPostScreen() {
         setConfirmVisible(true);
     };
 
-    const confirmPost = () => {
-        const newPost = {
-            id: Date.now(),
-            username: userData.username,
-            userType: userData.userType,
-            text: postContent,
-            category: selectedCategory ?? "",
-            createdAt: new Date().toISOString(),
-            media: mediaItems.map(({ id, ...item }) => item),
-            commentsCount: 0,
-            likesCount: 0,
-        };
-
-        // json para enviar a API
-        console.log('Nuevo JSON de Post:', JSON.stringify(newPost, null, 2));
-
-        // Reset UI        
-        setPostContent('');
-        setSelectedCategory(null);        
-        setMediaItems([]);
-        setConfirmVisible(false); 
+    const confirmPost = async () => {
+        setConfirmVisible(false);
         
-        setPostSuccess(true);
-        setTimeout(() => setPostSuccess(false), 2500); // Se oculta después de 2.5 segundos
+        try {            
+            setIsLoading(true);
 
-    };          
+            const formData = new FormData();            
+            // Texto del post
+            formData.append('text', postContent);
+
+            // Categoría si quieres incluirla (añádelo si tu backend lo maneja)
+            if (selectedCategory) {
+                formData.append('category', selectedCategory);
+            }
+
+            // Archivos multimedia
+            mediaItems.forEach((item, index) => {
+                let mimeType = '';
+                let fileName = `upload_${Date.now()}_${index}`;
+                
+                // Detecta tipo y nombre de archivo
+                switch (item.mediaType) {
+                    case 'video':
+                    mimeType = 'video/mp4';
+                    fileName += '.mp4';
+                    break;
+                    case 'image':
+                    mimeType = 'image/jpeg';
+                    fileName += '.jpg';
+                    break;
+                    case 'pdf':
+                    mimeType = 'application/pdf';
+                    fileName += '.pdf';
+                    break;
+                    default:
+                    mimeType = 'application/octet-stream';
+                }
+                
+                // Usa uri tal como viene
+                formData.append('media', {
+                    uri: item.uri,
+                    type: mimeType,
+                    name: item.title || fileName,
+                } as any);
+
+                // Adjunta thumbnail si es video
+                if (item.mediaType === 'video' && item.thumbnail) {
+                    const thumbExt = 'jpg'; 
+                    const thumbName = `thumb_${Date.now()}_${index}.${thumbExt}`;         
+
+                    formData.append('thumbnails', {
+                    uri: item.thumbnail,
+                    type: 'image/jpg',
+                    name: thumbName,
+                    } as any);
+                }               
+
+            });               
+
+            const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Token ${token}`,
+                // NO pongas 'Content-Type', fetch lo gestiona solo para FormData
+            },
+            body: formData,
+            });
+
+            if (!response.ok) {
+                const contentType = response.headers.get("content-type");
+
+                if (contentType && contentType.includes("application/json")) {
+                    const errorData = await response.json();
+                    console.error("Error al publicar post:", errorData);
+                } else {
+                    const errorText = await response.text(); // podría ser HTML
+                    console.error("Error inesperado al publicar post:", errorText);
+                }
+
+                setAlertMessage(t('publishPost.alerts.serverError'));
+                setAlertVisible(true);
+                return;
+            }
+
+            // Éxito: limpiar formulario
+            setPostContent('');
+            setSelectedCategory(null);
+            setMediaItems([]);  
+            setIsLoading(false);          
+            setPostSuccess(true);
+
+            setTimeout(() => {                
+                setPostSuccess(false);
+                (navigation as any).navigate("Home")}, 2500);
+
+        } catch (error) {
+            console.error("Error de red al publicar:", error);
+            setAlertMessage(t('publishPost.alerts.networkError'));
+            setAlertVisible(true);
+        } finally {
+            if (isLoading) setIsLoading(false);                
+        }
+    };
+          
 
     // Selección de Categoria
     const handleCategorySelect = (categoryKey: string) => {
@@ -127,11 +208,9 @@ export default function PublishPostScreen() {
 
         launchImageLibrary(options, async (response) => {
             if (response.didCancel || !response.assets || response.assets.length === 0) return;
-
             const video = response.assets[0];
             // inicia animación de loading
-            setIsGeneratingThumbnail(true);
-            const start = Date.now();
+            setIsGeneratingThumbnail(true);            
             try {
             const thumbnail = await createThumbnail({ url: video.uri! });
 
@@ -147,10 +226,7 @@ export default function PublishPostScreen() {
                 setAlertMessage(t('publishPost.alerts.thumbnailError'));
                 setAlertVisible(true);
             } finally {
-                // Asegura un mínimo de x segundos de animación loading
-                const elapsed = Date.now() - start;
-                const delay = Math.max(delayTime - elapsed, 0);
-                setTimeout(() => setIsGeneratingThumbnail(false), delay);
+                setIsGeneratingThumbnail(false);
             }
         });
     };    
@@ -167,8 +243,7 @@ export default function PublishPostScreen() {
             if (response.didCancel || !response.assets) return;
 
             // inicia animación de loading
-            setIsGeneratingThumbnail(true);
-            const start = Date.now();
+            setIsGeneratingThumbnail(true);            
 
             const images: MediaItem[] = response.assets.map((asset, index) => ({
             id: `${Date.now()}-${index}`,
@@ -176,12 +251,8 @@ export default function PublishPostScreen() {
             uri: asset.uri!,
             }));
 
-            setMediaItems(prev => [...prev, ...images]);
-
-            // Asegura un mínimo de x segundos de animación loading
-            const elapsed = Date.now() - start;
-            const delay = Math.max(delayTime - elapsed, 0);
-            setTimeout(() => setIsGeneratingThumbnail(false), delay);
+            setMediaItems(prev => [...prev, ...images]);           
+            setIsGeneratingThumbnail(false);
         });
     };
 
@@ -195,8 +266,7 @@ export default function PublishPostScreen() {
             if (!res) throw new Error("No PDF selected");
 
             // Empieza el loading al volver del picker
-            setIsGeneratingThumbnail(true);
-            const start = Date.now();
+            setIsGeneratingThumbnail(true);            
 
             const pdfItem: MediaItem = {
                 id: `${Date.now()}`,
@@ -206,13 +276,8 @@ export default function PublishPostScreen() {
             };
 
             setMediaItems(prev => [...prev, pdfItem]);
-
-            // Forzar mínimo de duración del loading
-            const elapsed = Date.now() - start;
-            const delay = Math.max(delayTime - elapsed, 0);
-            setTimeout(() => {
-                setIsGeneratingThumbnail(false);
-            }, delay);
+            setIsGeneratingThumbnail(false);
+            
 
         } catch (err) {
             if (isErrorWithCode(err)) {
@@ -309,7 +374,10 @@ export default function PublishPostScreen() {
             </View>
             ) : (
             <MediaGrid
-                media={mediaItems}
+                media={mediaItems.map(item => ({
+                    ...item,
+                    thumbnailUrl: item.thumbnail,    
+                }))}
                 onMediaPress={(item: MediaItem) => {
                 setMediaToDelete(item);
                 setDeleteConfirmVisible(true);    
@@ -385,7 +453,7 @@ export default function PublishPostScreen() {
             </View>
         )}
 
-        {isGeneratingThumbnail && (
+        {isGeneratingThumbnail || isLoading && (
         <View style={styles.loadingOverlay}>
             <LottieIcon
                 source={require('../../assets/lottie/loading.json')}
@@ -393,7 +461,7 @@ export default function PublishPostScreen() {
                 loop
             />
                 <Text style={styles.loadingText}>
-                {t('publishPost.loading')}
+                {isGeneratingThumbnail ? t('publishPost.loading') : t('publishPost.sending')}
             </Text>
         </View>
         )}

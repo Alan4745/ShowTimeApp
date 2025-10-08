@@ -15,8 +15,8 @@ export default function MediaGrid({ media, onMediaPress }) {
   const itemSize = isSingle ? screenWidth - paddingBetween * 2 : (screenWidth - paddingBetween * (numColumns + 1)) / numColumns;
 
   const renderItem = ({ item, index }) => {
-    const handlePress = () => onMediaPress(item);
-
+    const handlePress = () => onMediaPress(item);    
+    //console.log('MediaGrid renderItem:', { thumbnail: item.thumbnail, uri: item.uri });
     if (item.mediaType === 'image') {
       return (
         <TouchableOpacity
@@ -35,7 +35,11 @@ export default function MediaGrid({ media, onMediaPress }) {
           
           {/* Aquí mostramos la miniatura en lugar del video */}
           <Image
-            source={{ uri: item.thumbnail || item.uri }}
+            source={
+              item.thumbnailUrl
+              ? { uri: item.thumbnailUrl}
+              : require('../../../assets/img/audioPlaceholder.png')
+            }
             style={styles.media}
             resizeMode="cover"
           />  
@@ -64,7 +68,11 @@ export default function MediaGrid({ media, onMediaPress }) {
           activeOpacity={0.8}
         >
           <Image
-            source={{ uri: item.thumbnail || item.uri }}
+            source={
+              item.thumbnailUrl
+              ? { uri: item.thumbnailUrl}
+              : require('../../../assets/img/pdfIcon.png')
+            }
             style={styles.media}
             resizeMode="contain"
           />

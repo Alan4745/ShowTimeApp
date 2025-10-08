@@ -7,11 +7,11 @@ import TabBar from '../components/common/TabBar';
 //import AppHeader from '../components/common/AppHeader';
 import AppHeaderNew from '../components/common/AppHeaderNew';
 import { useTranslation } from 'react-i18next';
-import userData from '../data/user.json'
+import { useAuth } from '../context/AuthContext';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
-
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('home');
   const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -54,7 +54,7 @@ export default function HomeScreen() {
 
   //Nueva Header
   const renderHeader = () => {
-    return <AppHeaderNew userAvatar = {userData.avatar}/>;
+    return <AppHeaderNew userAvatar = {user?.studentProfileImage}/>;
     
   };
 

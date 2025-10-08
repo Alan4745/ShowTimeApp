@@ -15,7 +15,9 @@
     "subscribe": "Suscribirse",
     "by": "por ",
     "delete": "Borrar",
-    "send": "Enviar"
+    "send": "Enviar",
+    "registrationFailed": "Registro Fallido",
+    "na": "No disponible"
 
   },
   "registration": {
@@ -176,6 +178,7 @@
     "passwordsNotMatch": "Las contraseñas no coinciden",
     "usernameRequired": "Por favor ingresa un nombre de usuario",
     "usernameTooShort": "El nombre de usuario debe tener al menos 3 caracteres",
+    "usernameTaken": "Este nombre de usuario ya está en uso",
     "selectGender": "Por favor selecciona tu género",
     "selectDateOfBirth": "Por favor selecciona tu fecha de nacimiento completa",
     "ageRestriction": "Debes tener al menos 13 años para registrarte",
@@ -190,7 +193,14 @@
     "selectContentLikes": "Por favor selecciona al menos un tipo de contenido que te guste",
     "selectAppDiscovery": "Por favor selecciona cómo te enteraste de la aplicación",
     "fixErrors": "Por favor corrige los errores anteriores antes de continuar",
-    "coachNotFound": "Coach no encontrado"
+    "coachNotFound": "Coach no encontrado",
+    "tryAgain": "Intenta de nuevo más tarde.",
+    "networkError": "Error de la red, verifica tu conexión",
+    "serverConnection": "No se pudo conectar con el servidor",
+    "galleryAccessError": "No se pudo acceder a la galería.",
+    "cameraAccessError": "No se pudo acceder a la cámara.",
+    "invalidImageType": "Solo se permiten imágenes JPEG, JPG o PNG",
+    "emailTaken": "Este correo ya está registrado" 
   },
   "quickSelect": "Selección rápida (Demo):",
   "positions": {
@@ -438,7 +448,8 @@
       "thumbnailError": "Un error ocurrió mientras se generaba el thumbnail."
     },
     "emptyState": "No has añadido archivos todavía",
-    "loading": "cargando ..."
+    "loading": "cargando ...",
+    "sending": "enviando ..."
   },
   "coachDetails": {
     "myAccomplishments": "Mis Logros",

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Alert, StyleSheet, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
+import {View, Alert, StyleSheet, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback,
+  Keyboard, Platform} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
 import ScreenLayout from '../components/common/ScreenLayout';
@@ -11,69 +12,51 @@ import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
 import { useTranslation } from 'react-i18next';
+import API_BASE_URL from '../config/api';
+import LottieIcon from '../components/common/LottieIcon';
+import PopupAlert from '../components/modals/PopupAlert';
+import loadingAnimation from '../../assets/lottie/loading.json'; 
 
 export default function CreateAccountScreen() {
   const navigation = useNavigation();
   const { t } = useTranslation();
+  const { updateData } = useRegistration();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [touched, setTouched] = useState({
-    email: false,
-    password: false,
-    confirmPassword: false,
-  });
-  const { updateData } = useRegistration();
+  const [errors, setErrors] = useState({ email: '', password: '', confirmPassword: '' });
+  const [touched, setTouched] = useState({ email: false, password: false, confirmPassword: false });
 
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  const [loading, setLoading] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
-  const validatePassword = (password: string) => {
-    return password.length >= 8;
-  };
+  const endpoint = `${API_BASE_URL}/api/auth/check-availability`;
 
-  // Real-time validation
+  const validateEmail = (email: string) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+  const validatePassword = (password: string) => password.length >= 8;
+
+  // Validate fields on change
   useEffect(() => {
     const newErrors = { ...errors };
 
-    // Email validation
     if (touched.email) {
-      if (!email.trim()) {
-        newErrors.email = t('errors.emailRequired');
-      } else if (!validateEmail(email)) {
-        newErrors.email = t('errors.invalidEmail');
-      } else {
-        newErrors.email = '';
-      }
+      if (!email.trim()) newErrors.email = t('errors.emailRequired');
+      else if (!validateEmail(email)) newErrors.email = t('errors.invalidEmail');
+      else newErrors.email = '';
     }
 
-    // Password validation
     if (touched.password) {
-      if (!password.trim()) {
-        newErrors.password = t('errors.passwordRequired');
-      } else if (!validatePassword(password)) {
-        newErrors.password = t('errors.passwordTooShort');
-      } else {
-        newErrors.password = '';
-      }
+      if (!password.trim()) newErrors.password = t('errors.passwordRequired');
+      else if (!validatePassword(password)) newErrors.password = t('errors.passwordTooShort');
+      else newErrors.password = '';
     }
 
-    // Confirm password validation
     if (touched.confirmPassword) {
-      if (!confirmPassword.trim()) {
-        newErrors.confirmPassword = t('errors.confirmPasswordRequired');
-      } else if (password !== confirmPassword) {
-        newErrors.confirmPassword = t('errors.passwordsNotMatch');
-      } else {
-        newErrors.confirmPassword = '';
-      }
+      if (!confirmPassword.trim()) newErrors.confirmPassword = t('errors.confirmPasswordRequired');
+      else if (password !== confirmPassword) newErrors.confirmPassword = t('errors.passwordsNotMatch');
+      else newErrors.confirmPassword = '';
     }
 
     setErrors(newErrors);
@@ -81,34 +64,23 @@ export default function CreateAccountScreen() {
 
   const handleEmailChange = (text: string) => {
     setEmail(text);
-    if (!touched.email) {
-      setTouched(prev => ({ ...prev, email: true }));
-    }
+    if (!touched.email) setTouched(prev => ({ ...prev, email: true }));
   };
 
   const handlePasswordChange = (text: string) => {
     setPassword(text);
-    if (!touched.password) {
-      setTouched(prev => ({ ...prev, password: true }));
-    }
+    if (!touched.password) setTouched(prev => ({ ...prev, password: true }));
   };
 
   const handleConfirmPasswordChange = (text: string) => {
     setConfirmPassword(text);
-    if (!touched.confirmPassword) {
-      setTouched(prev => ({ ...prev, confirmPassword: true }));
-    }
+    if (!touched.confirmPassword) setTouched(prev => ({ ...prev, confirmPassword: true }));
   };
 
-  const handleContinue = () => {
-    // Mark all fields as touched to show any remaining errors
-    setTouched({
-      email: true,
-      password: true,
-      confirmPassword: true,
-    });
+  const handleContinue = async () => {
+    Keyboard.dismiss();
+    setTouched({ email: true, password: true, confirmPassword: true });
 
-    // Check if there are any errors or empty fields
     const hasErrors =
       Object.values(errors).some(error => error !== '') ||
       !email.trim() ||
@@ -116,17 +88,42 @@ export default function CreateAccountScreen() {
       !confirmPassword.trim();
 
     if (hasErrors) {
-      Alert.alert(t('common.error') || 'Error', t('errors.fixErrors') || 'Please fix the errors above before continuing');
+      Alert.alert(t('common.error'), t('errors.fixErrors'));
       return;
     }
 
-    updateData({
-      authMethod: 'email',
-      email: email.trim(),
-      password: password,
-    });
+    setLoading(true);
 
-    (navigation.navigate as any)({ name: 'SelectRole' });
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+      });
+
+      const data = await response.json();
+
+      if (!data.emailAvailable) {
+        setErrors(prev => ({ ...prev, email: t('errors.emailTaken') }));
+        setLoading(false);
+        return;
+      }
+
+      // Save registration data
+      updateData({
+        authMethod: 'email',
+        email: email.trim(),
+        password: password,
+      });
+
+      (navigation.navigate as any)({ name: 'SelectRole' });
+    } catch (error) {
+      console.error('Email availability check failed:', error);
+      setAlertMessage(t('errors.networkError') || 'Network error. Please try again.');
+      setAlertVisible(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const isFormValid =
@@ -139,15 +136,9 @@ export default function CreateAccountScreen() {
 
   return (
     <ScreenLayout currentStep={0} totalSteps={6}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-      >
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyboardShouldPersistTaps="handled"
-          >
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
             <ContentContainer>
               <ScreenTitle title={t('registration.createAccount')} />
 
@@ -184,31 +175,41 @@ export default function CreateAccountScreen() {
                   style={styles.passwordRequirements}
                 />
               </View>
-            </ContentContainer>            
-          </ScrollView>          
+            </ContentContainer>
+          </ScrollView>
         </TouchableWithoutFeedback>
+
         <BottomSection>
-          <ContinueButton onPress={handleContinue} disabled={!isFormValid} />
+          {loading ? (
+            <LottieIcon source={loadingAnimation} size={48} loop />
+          ) : (
+            <ContinueButton onPress={handleContinue} disabled={!isFormValid} />
+          )}
+
           <View style={styles.termsContainer}>
             <HelperText text={t('helperTexts.termsText')} />
           </View>
         </BottomSection>
-      </KeyboardAvoidingView>      
+
+        <PopupAlert
+          visible={alertVisible}
+          message={alertMessage}
+          onClose={() => setAlertVisible(false)}
+        />
+      </KeyboardAvoidingView>
     </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
   formContainer: {
-    gap: 20,
-    paddingBottom: 10
+    gap: 16,
+    marginTop: 16,
   },
   passwordRequirements: {
-    marginTop: -5,
-    textAlign: 'left',
-    paddingHorizontal: 4,
+    marginTop: 8,
   },
   termsContainer: {
-    paddingHorizontal: 20,
+    marginTop: 12,
   },
 });

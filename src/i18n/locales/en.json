@@ -15,7 +15,9 @@
     "subscribe": "Subscribe",
     "by": "by ",
     "delete": "Delete",
-    "send": "Send"
+    "send": "Send", 
+    "registrationFailed": "Registration Failed",
+    "na": "Not available"
   },
   "registration": {
     "createAccount": "Create account",
@@ -199,6 +201,7 @@
     "passwordsNotMatch": "Passwords do not match",
     "usernameRequired": "Please enter a username",
     "usernameTooShort": "Username must be at least 3 characters long",
+    "usernameTaken": "The username is already in use",
     "selectGender": "Please select your gender",
     "selectDateOfBirth": "Please select your complete date of birth",
     "ageRestriction": "You must be at least 13 years old to register",
@@ -213,7 +216,14 @@
     "selectContentLikes": "Please select at least one content type you like",
     "selectAppDiscovery": "Please select how you found out about the app",
     "fixErrors": "Please fix the errors above before continuing",
-    "coachNotFound": "Coach not found"
+    "coachNotFound": "Coach not found",
+    "tryAgain": "Try again later",
+    "networkError": "Networt Error, check your connection",
+    "serverConnection": "Couldn't connect to the server",
+    "galleryAccessError": "Unable to access the image galery",
+    "cameraAccessError": "Unable to access the camera",
+    "invalidImageType": "Only JPEG, JPG or PNG images are allowed",
+    "emailTaken": "This email is already in use"  
   },
   "quickSelect": "Quick Select (Demo):",
   "positions": {
@@ -403,7 +413,7 @@
       "post": "Post",
       "video": "Video.mp4",
       "image": "Image.jpg",
-      "text": "Text.pdf"
+      "text": "Text.pdf",      
     }, 
     "placeholders":{
       "textInput": "What's happening ?",
@@ -462,7 +472,8 @@
       "thumbnailError": "An error occurred while generating the thumbnail."
     },
     "emptyState": "You haven’t added any media files yet.",
-    "loading": "loading ..."
+    "loading": "loading ...",
+    "sending": "sending ..."
   },
   "coachDetails": {
     "myAccomplishments": "My Accomplishments",
