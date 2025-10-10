@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, SafeAreaView, StyleSheet } from 'react-native';
+import { View, SafeAreaView, StyleSheet, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { ChevronLeft } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -34,37 +34,53 @@ export default function ScreenLayout(
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {(showBackButton || (currentStep !== undefined && totalSteps !== undefined)) && (
-        <View style={styles.header}>
-          {showBackButton && (
-            <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-              <ChevronLeft color="#fff" size={24} />
-            </TouchableOpacity>
-          )}
-          {currentStep !== undefined && totalSteps !== undefined && (
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        {/* Botón de retroceso fijo en la parte superior */}
+        {showBackButton && (
+          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+            <ChevronLeft color="#fff" size={24} />
+          </TouchableOpacity>
+        )}
+
+        {/* Barra de progreso opcional */}
+        {(currentStep !== undefined && totalSteps !== undefined) && (
+          <View style={styles.progressWrapper}>
             <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />
-          )}
+          </View>
+        )}
+
+        {/* Contenido principal con paddingTop para dejar espacio al botón */}
+        <View style={styles.content}>
+          {children}
         </View>
-      )}
-      {children}
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: '#000',
   },
-  header: {
-    paddingTop: 10,
+  container: {
+    flex: 1,
+    position: 'relative',
   },
   backButton: {
     position: 'absolute',
+    top: Platform.OS === 'ios' ? 50 : 30,
     left: 20,
-    top: 30,
-    zIndex: 1,
+    zIndex: 10,
     padding: 8,
+  },
+  progressWrapper: {
+    marginTop: Platform.OS === 'ios' ? 5 : 5,
+    paddingHorizontal: 20,
+  },
+  content: {
+    flex: 1,
+    paddingTop: Platform.OS === 'ios' ? 70 : 70, // Deja espacio al botón
   },
 });

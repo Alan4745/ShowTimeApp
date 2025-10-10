@@ -85,6 +85,7 @@ export default function SummaryScreen() {
       // guarda datos en AuthContext
       const {token, user} = result;
       await login(token, {
+        id: user.id,
         username: user.username,
         role: user.role,
         position: user.position,

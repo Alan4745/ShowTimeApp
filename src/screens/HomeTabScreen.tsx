@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, FlatList } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, FlatList, Image, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Post from '../components/common/Post';
 import SearchBar from '../components/form/SearchBar';
+import LottieIcon from '../components/common/LottieIcon';
 import { useAuth } from '../context/AuthContext';
+import loadingAnimation from '../../assets/lottie/loading.json'
 import API_BASE_URL from '../config/api';
 
 type MediaItem = {
   id: string;
-  mediaType: 'image' | 'video' | 'audio';
+  mediaType: 'image' | 'video' | 'audio' | 'pdf';
   uri: string;
   thumbnailUrl: string;
   title?: string;
@@ -21,95 +23,181 @@ type MediaItem = {
 };
 
 type PostType = {
-  id: number;
+  id: string;
   username: string;
   userType: string;
+  avatar: string;
   text: string;
   commentsCount: number;
   likesCount: number;
   media: MediaItem[];
+  likedByMe: boolean;
+};
+
+type RawMediaItem = {
+  type: string;
+  uri: string;
+  thumbnail: string;
+};
+
+type RawPost = {
+  id: string;
+  username: string;
+  userType: string;
+  avatar: string;
+  text: string;
+  media: RawMediaItem[];
+  commentsCount: number;
+  likesCount: number;
+  likedByMe: boolean;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export default function HomeTabScreen() {
   const navigation = useNavigation();
-  const { token } = useAuth();
-  const endpoint = `${API_BASE_URL}/api/posts/`;
+  const { token } = useAuth();  
   const [searchQuery, setSearchQuery] = useState('');
-  const [allPosts, setAllPosts] = useState<PostType[]>([]); // posts con thumbnails
-  const [filteredPosts, setFilteredPosts] = useState<PostType[]>([]); // posts filtrados
+  const [allPosts, setAllPosts] = useState<PostType[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostType[]>([]);
+  const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [likingPostId, setLikingPostId] = useState<string | null>(null);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const defaultAvatar = require('../../assets/img/userGeneric.png');
+  const defaultPdfIcon = require('../../assets/img/pdfIcon.png');  
+  const endpoint = `${API_BASE_URL}/api/posts/`; 
 
 
-  // 1. Carga los posts de la base de datos.
-  useEffect(() => {
-    const buildFullUrl = (path) => {
-      if (!path) return '';
-      if (path.startsWith('http')) return path;
-      return `${API_BASE_URL}${path}`;
-    };
+  // Función para transformar uris relativas
+  const buildFullUrl = (path: string | undefined): string => {
+    if (!path) return '';
+    if (path.startsWith('http')) return path;
+    path = path.replace(/^\/?media\/?/, '').replace(/^\/?/, '');
+    return `${API_BASE_URL}/media/${path}`;
+  };
 
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch(endpoint, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
+  // Función para el toggle de like
+  const handleToggleLike = async (postId: string, likedByMe: boolean) => {
+    if (likingPostId === postId) return; // previene doble click
+    setLikingPostId(postId);
+    
+    try {
+      const method = likedByMe ? 'DELETE' : 'POST';
+      const response = await fetch(`${API_BASE_URL}/api/posts/${postId}/like/`, {
+        method,
+        headers: {
+          Authorization: `Token ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-        const text = await res.text();
+      const data = await response.json();
+      if (data.ok) {
+        setAllPosts(prev =>
+          prev.map(post =>
+            post.id === postId
+              ? {
+                  ...post,
+                  likedByMe: !likedByMe,
+                  likesCount: post.likesCount + (likedByMe ? -1 : 1),
+                }
+              : post
+          )
+        );
 
-        // Chequea si empieza como HTML (probable error)
-        if (text.startsWith('<')) {
-          console.error('⚠️ La respuesta no es JSON, es HTML:', text);
-          return;
-        }
+        setFilteredPosts(prev =>
+          prev.map(post =>
+            post.id === postId
+              ? {
+                  ...post,
+                  likedByMe: !likedByMe,
+                  likesCount: post.likesCount + (likedByMe ? -1 : 1),
+                }
+              : post
+          )
+        );
+      }
+    } catch (err) {
+      console.error('Error al hacer toggle de like:', err);
+    } finally {
+      setLikingPostId(null);
+    }
+  };
 
-        const json = JSON.parse(text);
-        console.log('Respuesta parseada del backend:', json);
-        const rawPosts = json.results || [];
+  // Función para cargar posts, puede cargar inicial o paginados
+  const fetchPosts = async (url: string, append = false) => {
+    if (!append) setIsInitialLoading(true);
+    try {
+      const res = await fetch(url, {
+        headers: { Authorization: `Token ${token}` },
+      });
 
-        const enrichedPosts = rawPosts.map((post) => {
-          const enrichedMedia = post.media.map((item) => {
-            const fullUri = buildFullUrl(item.uri || '');
-            let thumbnailUrl = '';
+      const text = await res.text();
 
-            if (item.type === 'pdf') {
-              thumbnailUrl = require('../../assets/img/pdfIcon.png');
-            } else if (item.thumbnail) {
-              thumbnailUrl = buildFullUrl(item.thumbnail);
-            }
+      if (text.startsWith('<')) {
+        console.error('La respuesta no es JSON, es HTML:', text);
+        return;
+      }
 
-            return {
-              ...item,
-              uri: fullUri,
-              mediaType: item.type || 'image',
-              thumbnailUrl,
-            };
-          });
+      const json = JSON.parse(text);
+      const rawPosts = json.results || [];
+
+      const enrichedPosts = rawPosts.map((post: RawPost) => {
+        const enrichedMedia = post.media.map((item: RawMediaItem) => {
+          const fullUri = buildFullUrl(item.uri);
+          let thumbnailUrl = '';
+
+          if (item.type === 'pdf') {
+            thumbnailUrl = Image.resolveAssetSource(defaultPdfIcon).uri;
+          } else if (item.thumbnail) {
+            thumbnailUrl = buildFullUrl(item.thumbnail);
+          }
 
           return {
-            id: post.id,
-            username: post.username || 'unknown',
-            userType: post.userType || 'student',
-            avatar: buildFullUrl(post.avatar || ''),
-            text: post.text || '',
-            commentsCount: post.commentsCount || 0,
-            likesCount: post.likesCount || 0,
-            media: enrichedMedia,
+            ...item,
+            uri: fullUri,
+            mediaType: item.type || 'image',
+            thumbnailUrl,
           };
         });
 
+        return {
+          id: post.id,
+          username: post.username || 'unknown',
+          userType: post.userType || 'student',
+          avatar: post.avatar
+            ? buildFullUrl(post.avatar)
+            : Image.resolveAssetSource(defaultAvatar).uri,
+          text: post.text || '',
+          commentsCount: post.commentsCount || 0,
+          likesCount: post.likesCount || 0,
+          media: enrichedMedia,
+          likedByMe: post.likedByMe || false,
+        };
+      });
+
+      if (append) {
+        setAllPosts(prev => [...prev, ...enrichedPosts]);
+        setFilteredPosts(prev => [...prev, ...enrichedPosts]);
+      } else {
         setAllPosts(enrichedPosts);
         setFilteredPosts(enrichedPosts);
-      } catch (err) {
-        console.error('Error al cargar posts:', err);
       }
-    };
 
-    fetchPosts();
+      setNextPageUrl(json.next || null);
+    } catch (err) {
+      console.error('Error al cargar posts:', err);
+    } finally{
+      if (!append) setIsInitialLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts(endpoint);
   }, [token]);
 
-
-  // 2. Filtrar por búsqueda
+  // Filtrar búsqueda
   useEffect(() => {
     const query = searchQuery.toLowerCase().trim();
     if (query === '') {
@@ -122,27 +210,59 @@ export default function HomeTabScreen() {
     }
   }, [searchQuery, allPosts]);
 
-  const renderItem = ({ item }) => (
+  // Scroll infinito
+  const handleLoadMore = async () => {
+    if (loadingMore || !nextPageUrl) return;
+    setLoadingMore(true);
+    await fetchPosts(nextPageUrl, true);
+    setLoadingMore(false);
+  };
+
+  const renderItem = ({ item }: { item: PostType }) => (
     <Post
       post={item}
-      onPressComments={() => (navigation as any).navigate('StudentPost', { postId: item.id })}
+      onPressComments={() =>
+        (navigation as any).navigate('StudentPost', { postId: item.id })
+      }
+      onToggleLike = {() => handleToggleLike(item.id, item.likedByMe)}
+      liking = {likingPostId === item.id}
     />
   );
+
+  if (isInitialLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <LottieIcon
+          source={loadingAnimation}
+          size={100}
+          loop={true}
+          autoPlay={true}
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <SearchBar
         value={searchQuery}
         onChangeText={setSearchQuery}
-        placeholder={'Search'}
-      />
-
+        placeholder="Search"
+      />   
+   
       <FlatList
-        data={filteredPosts}
+        data={filteredPosts.filter(p => !!p && !!p.id)}
         keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
         scrollEnabled={true}
-        contentContainerStyle={{paddingBottom: 100 }}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          loadingMore ? (
+            <ActivityIndicator size="small" color="#fff" style={{ marginVertical: 20 }} />
+          ) : null
+        }
+        contentContainerStyle={{ paddingBottom: 100 }}
       />
 
       <TouchableOpacity
@@ -159,6 +279,12 @@ const styles = StyleSheet.create({
   container: { 
     flex: 1, 
     backgroundColor: '#000',     
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000', // o el fondo que uses
   },
   button: {
     position: 'absolute',

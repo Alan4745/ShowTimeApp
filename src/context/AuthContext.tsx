@@ -9,6 +9,7 @@ interface PhysicalData {
 }
 
 interface User {
+  id: number;
   username: string;
   role: 'student' | 'coach';
   physicalData?: PhysicalData;

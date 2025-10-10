@@ -4,8 +4,43 @@ import { MessageCircle, Heart, Bookmark, BookmarkCheck } from 'lucide-react-nati
 import MediaGrid from './MediaGrid';
 import MediaViewerModal from '../modals/MediaViewerModal';
 
+type MediaItem = {
+  id?: string;
+  mediaType: 'image' | 'video' | 'audio' | 'pdf';
+  uri: string;
+  thumbnailUrl: string;
+  title?: string;
+  author?: string;
+  description?: string;
+  subcategory?: string;
+  format?: string;
+  likes?: number;
+  comments?: number;
+};
 
-export default function Post({post, onPressComments}) {
+type PostType = {
+  id: string;
+  username: string;
+  userType: string;
+  avatar: string;
+  text: string;
+  commentsCount: number;
+  likesCount: number;
+  media: MediaItem[];
+  likedByMe: boolean;
+};
+
+type PostProps = {
+  post: PostType;
+  onPressComments: () => void;
+  onAddComment?: () => void;
+  showCommentButton?: boolean;
+  onToggleLike: () => void;
+  liking?: boolean; // <-- desactiva el botón mientras se hace la petición, evita doble click
+};
+
+export default function Post({post, onPressComments, onAddComment, showCommentButton = false, onToggleLike, liking}: PostProps) {
+  if (!post) return null; // <-- Protección contra undefined
   const [bookmarked, setBookmarked] = React.useState(false);
   const [selectedMedia, setSelectedMedia] = useState(null);
   const toggleBookmark = () => {setBookmarked(!bookmarked)};  
@@ -13,13 +48,22 @@ export default function Post({post, onPressComments}) {
   return (
     <View style = {styles.container}>      
       <View style={styles.postHeader}>
-        <Image 
-          source={post.avatar? {uri: post.avatar} : require('../../../assets/img/userGeneric.png')} 
-          style={styles.avatar}/>
-        <View style={styles.userInfo}>
-          <Text style={styles.username}>{post.username}</Text>
-          <Text style={styles.userType}>{post.userType}</Text>          
-        </View>                
+        <View style={styles.infoContainer}>
+          <Image 
+            source={post.avatar? {uri: post.avatar} : require('../../../assets/img/userGeneric.png')} 
+            style={styles.avatar}
+          />
+          <View style={styles.userInfo}>
+            <Text style={styles.username}>{post.username}</Text>
+            <Text style={styles.userType}>{post.userType}</Text>          
+          </View>  
+        </View>
+        {/* Botón si showCommentButton está activado */}
+        {showCommentButton && (
+          <TouchableOpacity style={styles.commentButton} onPress={onAddComment}>
+            <Text style={styles.commentText}>Comment</Text>
+          </TouchableOpacity>
+        )}              
       </View>
       <View style={styles.postContent}>
         {/* Texto */}
@@ -35,10 +79,14 @@ export default function Post({post, onPressComments}) {
             <MessageCircle size={20} color="#FFFFFF" />
             <Text style={styles.iconText}>{post.commentsCount}</Text>
           </TouchableOpacity>
-          <View style={styles.iconItem}>
-            <Heart size={20} color="#FFFFFF" />
+          <TouchableOpacity style={styles.iconItem} onPress={onToggleLike} disabled={liking}>
+            <Heart 
+              size={20} 
+              color= "#FFFFFF" 
+              fill = {post.likedByMe ? "#FFFFFF" : "none"}
+            />
             <Text style={styles.iconText}>{post.likesCount}</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.iconItem}>
             <TouchableOpacity onPress={toggleBookmark}>
               {bookmarked ? (<BookmarkCheck size={20} color="#FFFFFF" />) : (<Bookmark size={20} color="#FFFFFF"/>
@@ -65,22 +113,27 @@ const styles = StyleSheet.create({
   postHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: "space-between",  
+    paddingHorizontal: 20,  
     marginBottom: 25,    
+  },
+  infoContainer:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 15
   },
   avatar: {
     width: 60,
     height: 60,
-    borderRadius: 30,
-    marginLeft: 20,
-    marginRight: 15,
+    borderRadius: 30,    
     marginTop: 10,
   },
   userInfo: {
     flexDirection: 'column',    
   },
   username: {
-    fontFamily: 'AnonymousPro-Regular',
-    fontWeight: '400',
+    fontFamily: 'AnonymousPro-Bold',
+    fontWeight: '700',
     fontSize: 16,
     color: "#FFFFFF",
   },
@@ -89,6 +142,21 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: 14,
     color: "#FFFFFF",    
+  },
+  commentButton: {
+    width: "30%",
+    backgroundColor: "#2B80BE",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 15,
+    paddingVertical: 5
+  },
+  commentText: {
+    fontFamily: 'AnonymousPro-Regular',
+    fontWeight: "400",
+    fontSize: 18,
+    lineHeight: 24,
+    color: "#FFFFFF",  
   },
   postContent: {
     paddingHorizontal: 10,
@@ -107,18 +175,18 @@ const styles = StyleSheet.create({
   justifyContent: 'space-around',
   alignItems: 'center',
   marginTop: 10,
-},
-iconItem: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  gap: 5, 
-},
-iconText: {
-  color: '#FFFFFF',
-  fontSize: 14,
-  marginLeft: 4,
-  fontFamily: 'AnonymousPro-Regular',
-},
+  },
+  iconItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5, 
+  },
+  iconText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    marginLeft: 4,
+    fontFamily: 'AnonymousPro-Regular',
+  },
 });
 
 
