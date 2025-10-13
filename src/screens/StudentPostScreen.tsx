@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image} from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import ScreenLayout from '../components/common/ScreenLayout';

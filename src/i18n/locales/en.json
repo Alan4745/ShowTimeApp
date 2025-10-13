@@ -411,6 +411,7 @@
   "publishPost":{
     "buttons":{
       "post": "Post",
+      "update": "Update",
       "video": "Video.mp4",
       "image": "Image.jpg",
       "text": "Text.pdf",      

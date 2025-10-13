@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { MessageCircle, Heart, Bookmark, BookmarkCheck } from 'lucide-react-native';
+import { MessageCircle, Heart, Bookmark, BookmarkCheck, Edit, Trash2 } from 'lucide-react-native';
 import MediaGrid from './MediaGrid';
 import MediaViewerModal from '../modals/MediaViewerModal';
+import PopupConfirm from '../modals/PopupConfirm';
 
 type MediaItem = {
   id?: string;
@@ -20,6 +21,7 @@ type MediaItem = {
 
 type PostType = {
   id: string;
+  userId: number;
   username: string;
   userType: string;
   avatar: string;
@@ -37,13 +39,22 @@ type PostProps = {
   showCommentButton?: boolean;
   onToggleLike: () => void;
   liking?: boolean; // <-- desactiva el botón mientras se hace la petición, evita doble click
+  currentUserId?: number
+  onEdit?: () => void;
+  onDelete?: () => void;
+  showActions?: boolean; //muestra editar y borrar solo en HomeTabScreen
 };
 
-export default function Post({post, onPressComments, onAddComment, showCommentButton = false, onToggleLike, liking}: PostProps) {
+export default function Post({post, onPressComments, onAddComment, showCommentButton = false, onToggleLike, liking, currentUserId, onEdit, onDelete, showActions = false}: PostProps) {
   if (!post) return null; // <-- Protección contra undefined
   const [bookmarked, setBookmarked] = React.useState(false);
   const [selectedMedia, setSelectedMedia] = useState(null);
-  const toggleBookmark = () => {setBookmarked(!bookmarked)};  
+  const toggleBookmark = () => {setBookmarked(!bookmarked)};   
+  const [isModalVisible, setModalVisible] = useState(false); 
+
+  const handleDelete = () => {
+    setModalVisible(true); // Mostrar el modal al hacer clic en "Borrar"
+  };
 
   return (
     <View style = {styles.container}>      
@@ -58,6 +69,19 @@ export default function Post({post, onPressComments, onAddComment, showCommentBu
             <Text style={styles.userType}>{post.userType}</Text>          
           </View>  
         </View>
+
+        {/* Botones para editar y borrar post solo si es el post del usuario */}
+        {showActions && currentUserId === post.userId && (
+          <View style={styles.actionsContainer}>
+            <TouchableOpacity onPress={onEdit} style={styles.actionButton}>
+              <Edit size={22} color="#fff" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleDelete} style={styles.actionButton}>
+              <Trash2 size={22} color="#ff4d4d" />
+            </TouchableOpacity>
+          </View>
+        )}
+
         {/* Botón si showCommentButton está activado */}
         {showCommentButton && (
           <TouchableOpacity style={styles.commentButton} onPress={onAddComment}>
@@ -95,13 +119,28 @@ export default function Post({post, onPressComments, onAddComment, showCommentBu
           </View>
         </View>
       </View>
+
+      {/* Modal para reproducir media */}        
       <MediaViewerModal
         visible={!!selectedMedia}
         media={selectedMedia}
         onClose={() => setSelectedMedia(null)}
-      />      
-    </View>         
-    
+      />  
+
+      {/* Modal de confirmación */}
+      <PopupConfirm
+        visible={isModalVisible}
+        title="Confirm Deletion"
+        message="Are you sure you want to delete this post?"
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={() => {
+          setModalVisible(false);
+          if (onDelete) onDelete(); // Llamamos a la función para borrar
+        }}
+        onCancel={() => setModalVisible(false)}
+      />
+    </View>        
   );
 }
 
@@ -116,6 +155,25 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",  
     paddingHorizontal: 20,  
     marginBottom: 25,    
+  },
+  actionsContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    flexDirection: 'row',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    zIndex: 10,
+  },
+  actionButton: {
+    marginLeft: 8,
+  },
+  actionText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   infoContainer:{
     flexDirection: 'row',

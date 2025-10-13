@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Modal,
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
 
 type Props = {
@@ -24,6 +24,9 @@ export default function CommentModal({ visible, onClose, onSubmit }: Props) {
       setComment('');
     }
   }, [visible]);
+
+  if (!visible) return null; // 👈 Reemplazo del <Modal>
+
   const handleSend = () => {
     if (comment.trim().length > 0) {
       onSubmit(comment.trim());
@@ -38,66 +41,68 @@ export default function CommentModal({ visible, onClose, onSubmit }: Props) {
   };
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="fade"
-    >
-      <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
+    <View style={styles.overlay}>
+      <View style={styles.modalContainer}>
 
-          {/* Botón de cerrar */}
-          <TouchableOpacity onPress={handleCancel} style={styles.closeButton}>
-            <Text style={styles.closeText}>×</Text>
-          </TouchableOpacity>
+        {/* Botón de cerrar */}
+        <TouchableOpacity onPress={handleCancel} style={styles.closeButton}>
+          <Text style={styles.closeText}>×</Text>
+        </TouchableOpacity>
 
-          {/* Campo de texto */}
-          <TextInput
-            style={styles.input}
-            multiline
-            maxLength={MAX_LENGTH}
-            placeholder="Write your comment..."
-            placeholderTextColor="#999"
-            value={comment}
-            onChangeText={setComment}            
-          />
+        {/* Campo de texto */}
+        <TextInput
+          style={styles.input}
+          multiline
+          maxLength={MAX_LENGTH}
+          placeholder="Write your comment..."
+          placeholderTextColor="#999"
+          value={comment}
+          onChangeText={setComment} 
+          autoCorrect={false}
+          autoComplete='off'      
+          autoCapitalize='none'     
+        />
 
-          {/* Contador */}
-          <Text style={styles.counter}>
-            {comment.length} / {MAX_LENGTH}
-          </Text>
+        {/* Contador */}
+        <Text style={styles.counter}>
+          {comment.length} / {MAX_LENGTH}
+        </Text>
 
-          {/* Botón de enviar */}
-          <TouchableOpacity
-            style={[styles.sendButton, comment.trim().length === 0 && styles.disabled]}
-            onPress={handleSend}
-            disabled={comment.trim().length === 0}
-          >
-            <Text style={[styles.sendText, comment.trim().length === 0 && styles.disabledText]}>Send</Text>
-          </TouchableOpacity>
+        {/* Botón de enviar */}
+        <TouchableOpacity
+          style={[styles.sendButton, comment.trim().length === 0 && styles.disabled]}
+          onPress={handleSend}
+          disabled={comment.trim().length === 0}
+        >
+          <Text style={[styles.sendText, comment.trim().length === 0 && styles.disabledText]}>Send</Text>
+        </TouchableOpacity>
 
-        </View>
       </View>
-    </Modal>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   overlay: {
-    flex: 1,
-    backgroundColor: '#000000',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)', // Semitransparente
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    zIndex: 9999,
   },
   modalContainer: {
     backgroundColor: '#121212',
     borderRadius: 12,
     padding: 20,
     width: '100%',
-    minHeight: "30%",
+    minHeight: '30%',
     position: 'relative',
-    justifyContent:"center"
+    justifyContent: "center"
   },
   closeButton: {
     position: 'absolute',
@@ -119,7 +124,7 @@ const styles = StyleSheet.create({
     padding: 10,
     color: '#fff',
     minHeight: 130,
-    marginTop: 30,    
+    marginTop: 30,
   },
   counter: {
     alignSelf: 'flex-end',
@@ -142,9 +147,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   disabled: {
-     backgroundColor: '#2B80BE',
+    backgroundColor: '#2B80BE',
   },
   disabledText: {
-     color: '#FFFFFF',
+    color: '#FFFFFF',
   },
 });

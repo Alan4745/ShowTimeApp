@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, FlatList, Image, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import Post from '../components/common/Post';
 import SearchBar from '../components/form/SearchBar';
 import LottieIcon from '../components/common/LottieIcon';
@@ -24,6 +25,7 @@ type MediaItem = {
 
 type PostType = {
   id: string;
+  userId: number;
   username: string;
   userType: string;
   avatar: string;
@@ -42,6 +44,7 @@ type RawMediaItem = {
 
 type RawPost = {
   id: string;
+  author_id: number;
   username: string;
   userType: string;
   avatar: string;
@@ -56,7 +59,7 @@ type RawPost = {
 
 export default function HomeTabScreen() {
   const navigation = useNavigation();
-  const { token } = useAuth();  
+  const { token, user} = useAuth();  
   const [searchQuery, setSearchQuery] = useState('');
   const [allPosts, setAllPosts] = useState<PostType[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<PostType[]>([]);
@@ -68,6 +71,12 @@ export default function HomeTabScreen() {
   const defaultPdfIcon = require('../../assets/img/pdfIcon.png');  
   const endpoint = `${API_BASE_URL}/api/posts/`; 
 
+  // Para que refresque el contenido de HomeTabScreen y se muestren las actualizaciones
+  useFocusEffect(
+    useCallback(() => {
+      fetchPosts(endpoint); // ← Re-fetch cuando la pantalla recupera el foco
+    }, [token])
+  );
 
   // Función para transformar uris relativas
   const buildFullUrl = (path: string | undefined): string => {
@@ -155,7 +164,7 @@ export default function HomeTabScreen() {
           }
 
           return {
-            ...item,
+            ...item,            
             uri: fullUri,
             mediaType: item.type || 'image',
             thumbnailUrl,
@@ -164,6 +173,7 @@ export default function HomeTabScreen() {
 
         return {
           id: post.id,
+          userId: post.author_id,
           username: post.username || 'unknown',
           userType: post.userType || 'student',
           avatar: post.avatar
@@ -218,14 +228,42 @@ export default function HomeTabScreen() {
     setLoadingMore(false);
   };
 
+  //Elimina el Post, solo los que pertencen al usuario logeado
+  const handleDeletePost = async (postId: string) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/posts/${postId}/`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Token ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        // Filtra el post eliminado del estado
+        setAllPosts(prev => prev.filter(post => post.id !== postId));
+        setFilteredPosts(prev => prev.filter(post => post.id !== postId));
+      } else {
+        const errorText = await response.text();
+        console.error('Error al eliminar el post:', errorText);
+      }
+    } catch (err) {
+      console.error('Error de red al eliminar el post:', err);
+    }
+  };
+  // Renderiza los posts
   const renderItem = ({ item }: { item: PostType }) => (
     <Post
       post={item}
+      currentUserId={user?.id}
+      onEdit={() => (navigation as any).navigate('PublishPost', { postToEdit: item })}
+      onDelete={() => handleDeletePost(item.id)}
       onPressComments={() =>
         (navigation as any).navigate('StudentPost', { postId: item.id })
       }
       onToggleLike = {() => handleToggleLike(item.id, item.likedByMe)}
       liking = {likingPostId === item.id}
+      showActions = {true}
     />
   );
 

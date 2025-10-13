@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image, Keyboard } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import ScreenLayout from '../components/common/ScreenLayout';
@@ -32,9 +32,10 @@ type MediaItem = {
   comments?: number;
 };
 
-export default function PublishPostScreen() {
+export default function PublishPostScreen({route}) {
     const { t } = useTranslation();  
     const navigation = useNavigation();   
+    const postToEdit = route?.params?.postToEdit ?? null;
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);  
     const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
@@ -51,12 +52,30 @@ export default function PublishPostScreen() {
     const { token, user } = useAuth();
     const userType = user?.role as UserType;
     const isDarwin = userType === 'darwin';
-    const categories = isDarwin? Object.keys(categoriesByUserType.darwin) : categoriesByUserType[userType] ?? categoriesByUserType['student'];       
-    const endpoint = `${API_BASE_URL}/api/posts/`;
+    const categories = isDarwin? Object.keys(categoriesByUserType.darwin) : categoriesByUserType[userType] ?? categoriesByUserType['student'];           
 
     //Sección para manejar el Post
     const [postContent, setPostContent] = useState('');    
 
+
+    //Función para precargar texto y media en modo edición
+    useEffect(() => {
+        if (postToEdit) {
+            setPostContent(postToEdit.text || '');
+
+            const convertedMedia = (postToEdit.media || []).map((m, index) => ({
+                id: `${Date.now()}-${index}`,
+                mediaType: m.type,
+                uri: m.uri.startsWith('/') ? `${API_BASE_URL}${m.uri}` : m.uri,
+                thumbnail: m.thumbnail || '',
+            }));
+
+            setMediaItems(convertedMedia);
+        }
+    }, [postToEdit]);
+
+
+    // Función al presionar post no permite enviar post vacio
     const handlePressPost = () => {
         const hasText = postContent.trim().length > 0;
         const hasMedia = mediaItems.length > 0;
@@ -72,6 +91,7 @@ export default function PublishPostScreen() {
         setConfirmVisible(true);
     };
 
+    // Envia el post
     const confirmPost = async () => {
         setConfirmVisible(false);
         
@@ -129,10 +149,16 @@ export default function PublishPostScreen() {
                     } as any);
                 }               
 
-            });               
+            });  
+            
+            const url = postToEdit
+            ? `${API_BASE_URL}/api/posts/${postToEdit.id}/`
+            : `${API_BASE_URL}/api/posts/`;
 
-            const response = await fetch(endpoint, {
-            method: 'POST',
+            const method = postToEdit ? 'PATCH' : 'POST';
+
+            const response = await fetch(url, {
+            method,
             headers: {
                 'Authorization': `Token ${token}`,
                 // NO pongas 'Content-Type', fetch lo gestiona solo para FormData
@@ -142,15 +168,11 @@ export default function PublishPostScreen() {
 
             if (!response.ok) {
                 const contentType = response.headers.get("content-type");
+                const errorData = contentType?.includes('application/json')
+                    ? await response.json()
+                    : await response.text();
 
-                if (contentType && contentType.includes("application/json")) {
-                    const errorData = await response.json();
-                    console.error("Error al publicar post:", errorData);
-                } else {
-                    const errorText = await response.text(); // podría ser HTML
-                    console.error("Error inesperado al publicar post:", errorText);
-                }
-
+                console.error('Error al enviar post:', errorData);
                 setAlertMessage(t('publishPost.alerts.serverError'));
                 setAlertVisible(true);
                 return;
@@ -165,7 +187,7 @@ export default function PublishPostScreen() {
 
             setTimeout(() => {                
                 setPostSuccess(false);
-                (navigation as any).navigate("Home")}, 2500);
+                (navigation as any).navigate("Home")}, 1);
 
         } catch (error) {
             console.error("Error de red al publicar:", error);
@@ -308,7 +330,9 @@ export default function PublishPostScreen() {
         {/* "Post" button */}
         <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.postButton} onPress={handlePressPost}>
-                <Text style={styles.postButtonText}>{t('publishPost.buttons.post')}</Text>
+                <Text style={styles.postButtonText}>
+                    {postToEdit ? t('publishPost.buttons.update') : t('publishPost.buttons.post')}      
+                </Text>
             </TouchableOpacity>
         </View>
 

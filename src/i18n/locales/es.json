@@ -387,7 +387,8 @@
   },  
   "publishPost":{
     "buttons":{
-      "post": "Post",
+      "post": "Publicar",
+      "update": "Actualizar",
       "video": "Video.mp4",
       "image": "Imagen.jpg",
       "text": "Texto.pdf"
