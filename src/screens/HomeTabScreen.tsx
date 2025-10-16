@@ -7,6 +7,7 @@ import SearchBar from '../components/form/SearchBar';
 import LottieIcon from '../components/common/LottieIcon';
 import { useAuth } from '../context/AuthContext';
 import loadingAnimation from '../../assets/lottie/loading.json'
+import { buildMediaUrl } from '../utils/urlHelpers';
 import API_BASE_URL from '../config/api';
 
 type MediaItem = {
@@ -78,14 +79,6 @@ export default function HomeTabScreen() {
     }, [token])
   );
 
-  // Función para transformar uris relativas
-  const buildFullUrl = (path: string | undefined): string => {
-    if (!path) return '';
-    if (path.startsWith('http')) return path;
-    path = path.replace(/^\/?media\/?/, '').replace(/^\/?/, '');
-    return `${API_BASE_URL}/media/${path}`;
-  };
-
   // Función para el toggle de like
   const handleToggleLike = async (postId: string, likedByMe: boolean) => {
     if (likingPostId === postId) return; // previene doble click
@@ -154,13 +147,13 @@ export default function HomeTabScreen() {
 
       const enrichedPosts = rawPosts.map((post: RawPost) => {
         const enrichedMedia = post.media.map((item: RawMediaItem) => {
-          const fullUri = buildFullUrl(item.uri);
+          const fullUri = buildMediaUrl(item.uri);
           let thumbnailUrl = '';
 
           if (item.type === 'pdf') {
             thumbnailUrl = Image.resolveAssetSource(defaultPdfIcon).uri;
           } else if (item.thumbnail) {
-            thumbnailUrl = buildFullUrl(item.thumbnail);
+            thumbnailUrl = buildMediaUrl(item.thumbnail);
           }
 
           return {
@@ -177,7 +170,7 @@ export default function HomeTabScreen() {
           username: post.username || 'unknown',
           userType: post.userType || 'student',
           avatar: post.avatar
-            ? buildFullUrl(post.avatar)
+            ? buildMediaUrl(post.avatar)
             : Image.resolveAssetSource(defaultAvatar).uri,
           text: post.text || '',
           commentsCount: post.commentsCount || 0,

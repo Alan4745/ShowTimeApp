@@ -51,8 +51,8 @@ export default function PublishPostScreen({route}) {
     const [isLoading, setIsLoading] = useState(false);
     const { token, user } = useAuth();
     const userType = user?.role as UserType;
-    const isDarwin = userType === 'darwin';
-    const categories = isDarwin? Object.keys(categoriesByUserType.darwin) : categoriesByUserType[userType] ?? categoriesByUserType['student'];           
+    const isDarwin  = userType === 'admin';
+    const categories = isDarwin? Object.keys(categoriesByUserType.admin) : categoriesByUserType[userType] ?? categoriesByUserType['student'];           
 
     //Sección para manejar el Post
     const [postContent, setPostContent] = useState('');    
@@ -204,7 +204,7 @@ export default function PublishPostScreen({route}) {
         if (isDarwin) {
             // Seleccionó un main category, mostrar segundo modal con subcategorías
             setDarwinMainCategory(categoryKey);
-            const subs = (categoriesByUserType.darwin as Record<string, string[]>)[categoryKey];
+            const subs = (categoriesByUserType.admin as Record<string, string[]>)[categoryKey];
             setDarwinSubcategories(subs);
         } else {
             setSelectedCategory(categoryKey);

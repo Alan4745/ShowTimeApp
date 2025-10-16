@@ -37,7 +37,7 @@ type PostProps = {
   onPressComments: () => void;
   onAddComment?: () => void;
   showCommentButton?: boolean;
-  onToggleLike: () => void;
+  onToggleLike?: () => void;
   liking?: boolean; // <-- desactiva el botón mientras se hace la petición, evita doble click
   currentUserId?: number
   onEdit?: () => void;
@@ -125,6 +125,8 @@ export default function Post({post, onPressComments, onAddComment, showCommentBu
         visible={!!selectedMedia}
         media={selectedMedia}
         onClose={() => setSelectedMedia(null)}
+        likesCount={post.commentsCount}
+        commentsCount={post.commentsCount}
       />  
 
       {/* Modal de confirmación */}

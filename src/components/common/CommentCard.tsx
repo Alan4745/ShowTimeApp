@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import { Trash2 } from 'lucide-react-native';
 import PopupConfirm from '../modals/PopupConfirm';
 
@@ -22,6 +23,7 @@ type CommentCardProps = {
 
 export default function CommentCard({ comment, onDelete }: CommentCardProps) {
     const { user } = useAuth();
+    const { t } = useTranslation();
     const isOwnComment = user?.id === comment.userId;
     const defaultAvatar = require('../../../assets/img/userGeneric.png');  
     const [showConfirm, setShowConfirm] = useState(false);
@@ -57,10 +59,10 @@ export default function CommentCard({ comment, onDelete }: CommentCardProps) {
             {/* PopupConfirm modal */}
             <PopupConfirm
                 visible={showConfirm}
-                title="Confirm Deletion"
-                message="Are you sure you want to delete this comment?"
-                confirmText="Delete"
-                cancelText="Cancel"
+                title={t("modalTitles.confirmDelete")}
+                message={t("placeholders.deleteComment")}
+                confirmText={t("modalTitles.buttonOptions.delete")}
+                cancelText={t("modalTitles.buttonOptions.cancel")}
                 onConfirm={handleConfirmDelete}
                 onCancel={() => setShowConfirm(false)}
             />

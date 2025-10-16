@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   visible: boolean;
@@ -17,6 +11,7 @@ type Props = {
 const MAX_LENGTH = 200;
 
 export default function CommentModal({ visible, onClose, onSubmit }: Props) {
+  const { t } = useTranslation();
   const [comment, setComment] = useState('');
 
   useEffect(() => {
@@ -25,7 +20,7 @@ export default function CommentModal({ visible, onClose, onSubmit }: Props) {
     }
   }, [visible]);
 
-  if (!visible) return null; // 👈 Reemplazo del <Modal>
+  if (!visible) return null; 
 
   const handleSend = () => {
     if (comment.trim().length > 0) {
@@ -54,7 +49,7 @@ export default function CommentModal({ visible, onClose, onSubmit }: Props) {
           style={styles.input}
           multiline
           maxLength={MAX_LENGTH}
-          placeholder="Write your comment..."
+          placeholder={t('placeholders.writeComment')}
           placeholderTextColor="#999"
           value={comment}
           onChangeText={setComment} 
@@ -74,7 +69,11 @@ export default function CommentModal({ visible, onClose, onSubmit }: Props) {
           onPress={handleSend}
           disabled={comment.trim().length === 0}
         >
-          <Text style={[styles.sendText, comment.trim().length === 0 && styles.disabledText]}>Send</Text>
+          <Text style={
+            [styles.sendText, 
+            comment.trim().length === 0 && styles.disabledText
+            ]}
+          >{t('common.send')}</Text>
         </TouchableOpacity>
 
       </View>
@@ -83,17 +82,20 @@ export default function CommentModal({ visible, onClose, onSubmit }: Props) {
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)', // Semitransparente
+  overlay: {  
+    ...StyleSheet.absoluteFillObject,  
+    //position: 'absolute',
+    //top: 0,
+    //left: 0,
+    //right: 0,
+    //bottom: 0,
+    backgroundColor: "#000000",
+    //backgroundColor: 'rgba(0, 0, 0, 0.8)', // Semitransparente
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
     zIndex: 9999,
+    elevation: 10,
   },
   modalContainer: {
     backgroundColor: '#121212',

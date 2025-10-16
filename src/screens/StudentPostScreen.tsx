@@ -8,6 +8,7 @@ import CommentCard from '../components/common/CommentCard';
 import LottieIcon from '../components/common/LottieIcon';
 import CommentModal from '../components/modals/CommentModal';
 import loadingAnimation from '../../assets/lottie/loading.json';
+import { buildMediaUrl } from '../utils/urlHelpers';
 import API_BASE_URL from '../config/api';
 
 type CommentType = {
@@ -35,19 +36,7 @@ export default function StudentPostScreen({route}) {
   const [loadingMore, setLoadingMore] = useState(false); 
   const endpointPost = `${API_BASE_URL}/api/posts/${postId}/`;
   const endpointComments = `${API_BASE_URL}/api/posts/${postId}/comments/`; 
-  
 
-  // Función para cambiar urls relativas a completas
-  const buildFullUrl = (path) => {
-    if (!path) return '';
-    if (path.startsWith('http')) return path;
-
-    // Normaliza la ruta para evitar duplicados
-    path = path.replace(/^\/?media\/?/, '');  // elimina media/ del inicio si existe
-     path = path.replace(/^\/?/, '');          // elimina barra inicial (si existe)
-  
-    return `${API_BASE_URL}/media/${path}`;
-  };
 
   // Función para eliminar comentarios
   const handleDeleteComment = async (commentId: string) => {
@@ -83,7 +72,7 @@ export default function StudentPostScreen({route}) {
       const newComments = Array.isArray(data.results) ? data.results : [];
       const processedComments = newComments.map((comment) => ({
         ...comment,
-        avatar: comment.avatar ? buildFullUrl(comment.avatar) : '',
+        avatar: comment.avatar ? buildMediaUrl(comment.avatar) : '',
       }));
 
       if (append) {
@@ -120,13 +109,13 @@ export default function StudentPostScreen({route}) {
         const postData = await postRes.json();
 
         const enrichedMedia = (postData.media || []).map((item) => {
-          const fullUri = buildFullUrl(item.uri || '');
+          const fullUri = buildMediaUrl(item.uri || '');
           let thumbnailUrl = '';
 
           if (item.type === 'pdf') {
             thumbnailUrl = Image.resolveAssetSource(defaultPdfIcon).uri;
           } else if (item.thumbnail) {
-            thumbnailUrl = buildFullUrl(item.thumbnail);
+            thumbnailUrl = buildMediaUrl(item.thumbnail);
           }
 
           return {
@@ -140,7 +129,7 @@ export default function StudentPostScreen({route}) {
         setPost({
           ...postData,
           avatar: postData.avatar
-            ? buildFullUrl(postData.avatar)
+            ? buildMediaUrl(postData.avatar)
             : Image.resolveAssetSource(defaultAvatar).uri,
           media: enrichedMedia,
         });
@@ -176,7 +165,7 @@ export default function StudentPostScreen({route}) {
 
       const processedComment = {
         ...newComment,
-        avatar: newComment.avatar ? buildFullUrl(newComment.avatar) : '',
+        avatar: newComment.avatar ? buildMediaUrl(newComment.avatar) : '',
       };
 
       setComments((prev) => [processedComment, ...(Array.isArray(prev) ? prev : [])]);
@@ -209,8 +198,9 @@ export default function StudentPostScreen({route}) {
   }
   
   return (
-    <ScreenLayout>
-      <View style={styles.container}>
+    <>
+      <ScreenLayout>
+        <View style={styles.container}>
           <FlatList
             ListHeaderComponent={
             <View style={styles.headerWrapper}>
@@ -232,14 +222,15 @@ export default function StudentPostScreen({route}) {
           showsVerticalScrollIndicator={false}
           onEndReached={loadMoreComments}
           onEndReachedThreshold={0.5}          
-          /> 
-          <CommentModal
-            visible={showCommentModal}
-            onClose={() => setShowCommentModal(false)}
-            onSubmit={handleSubmitComment}
-          />          
-      </View>              
-    </ScreenLayout>        
+          />                      
+        </View>              
+      </ScreenLayout>
+      <CommentModal
+        visible={showCommentModal}
+        onClose={() => setShowCommentModal(false)}
+        onSubmit={handleSubmitComment}
+      />   
+    </>      
   )
 }
 

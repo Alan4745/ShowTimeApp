@@ -6,26 +6,31 @@ import React from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Mail } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
+import { buildMediaUrl } from '../../utils/urlHelpers';
 
 interface SubscriptionsSectionProps {
-  userType: 'student' | 'coach' | 'darwin';
+  userType: 'student' | 'coach' | 'admin';
   data: Array<any>;
   onMessagePress: (item: any) => void;
 }
 
 export default function SubscriptionsSection({ userType, data, onMessagePress }: SubscriptionsSectionProps) {
   const { t } = useTranslation();
-
   const title = userType === 'student'
     ? t('account.titles.coachList')
-    : t('account.titles.studentList');
+    : t('account.titles.studentList');    
 
   const renderItem = ({ item }: { item: any }) => (
     <View style={styles.item}>      
-    <Image source={{ uri: item.avatar }} style={styles.avatar} />
+    <Image source={
+        item.avatar
+          ? { uri: buildMediaUrl(item.avatar) }
+          : require('../../../assets/img/userGeneric.png')
+        } style={styles.avatar} 
+      />
     <View style={{ flex: 1 }}>
-        <Text style={styles.coachName}>{item.name}</Text>
-        <Text style={styles.coachSubtitle}>{item.title || item.tag}</Text>
+        <Text style={styles.coachName}>{item.username}</Text>
+        <Text style={styles.coachSubtitle}>{userType === "student" ? "Coach" : "Student"}</Text>
     </View>
     <TouchableOpacity onPress={() => onMessagePress(item)} style={styles.iconButton}>
         <Mail color="#929292" width={26} height={26} />

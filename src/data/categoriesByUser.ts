@@ -15,7 +15,7 @@ const categoriesByUserType = {
     'announcements',
     'lifeAsAProfessional',
   ],
-  darwin: {
+  admin: {
     training: ['strength', 'power', '4WeekProgram', 'exerciseLibrary'],
     mindset: ['anxiety', 'growthMindset', 'conflictResolution', 'teamDynamics'],
     nutrition: ['carbohydrates', 'protein', 'fat', 'supplementsHydration', 'nutritionProgram'],

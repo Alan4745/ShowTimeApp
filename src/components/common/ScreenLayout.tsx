@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, SafeAreaView, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native';
 import { ChevronLeft } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -21,7 +22,7 @@ export default function ScreenLayout(
   showBackButton = true,
   onBack,
 }: ScreenLayoutProps) {
-
+  const insets = useSafeAreaInsets();
   const router = useNavigation();
 
   const handleBack = () => {
@@ -34,7 +35,7 @@ export default function ScreenLayout(
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, {paddingTop: Math.max(insets.top - 45, 0)}]}>
       <View style={styles.container}>
         {/* Botón de retroceso fijo en la parte superior */}
         {showBackButton && (
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 50 : 30,
+    top: 10,
     left: 20,
     zIndex: 10,
     padding: 8,
@@ -81,6 +82,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingTop: Platform.OS === 'ios' ? 70 : 70, // Deja espacio al botón
+    paddingTop: 25
   },
 });

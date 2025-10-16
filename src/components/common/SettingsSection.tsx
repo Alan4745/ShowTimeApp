@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, useWindowDimensions, Alert } from 'react-native';
 import {Bell, Star, CircleHelp, X, Power} from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -7,7 +7,8 @@ import { ChatParamList } from '../../types';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import { useAuth } from '../../context/AuthContext';
 import HighlightModal from '../modals/HighlightModal';
-import coach from '../../data/coach.json'; //coach para chat en contact
+import API_BASE_URL from '../../config/api';
+import { buildMediaUrl } from '../../utils/urlHelpers';
 
 type SettingsSectionProps = {
   userType: 'student' | 'coach' | 'darwin';
@@ -40,10 +41,27 @@ export default function SettingsSection({ userType }: SettingsSectionProps ) {
         { 
             icon: CircleHelp, 
             label: t('account.content.contact'),
-            onPress: () => navigation.navigate("Chat", {
-                name: coach.username,
-                avatar: coach.avatar 
-            })
+            onPress: async () => {
+                try {
+                const response = await fetch(`${API_BASE_URL}/api/v1/chat/messages/support`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                const supportUser = data.supportUser;
+
+                navigation.navigate("Chat", {
+                    id: supportUser.id,
+                    name: supportUser.username,
+                    avatar: buildMediaUrl(supportUser.avatar),
+                    role: supportUser.role,
+                });
+                } catch (error) {
+                console.error("Error fetching support user:", error);
+                // Aquí puedes mostrar un alert si quieres
+                    Alert.alert("Error", "No se pudo contactar con soporte.");
+                }
+            }
         },
         { icon: X, label: t('account.content.cancelSubscription')},
     ];  

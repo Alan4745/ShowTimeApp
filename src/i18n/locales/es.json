@@ -296,11 +296,13 @@
     "selectFrequency": "Selecciona frecuencia de entrenamiento",
     "selectDiscoverySource": "Selecciona fuente de descubrimiento",
     "searchCountries": "Buscar países...",
-    "writeMessage": "Write a message",
+    "writeMessage": "Escribe un mensaje",
+    "writeComment": "Escribe tu comentario...",
     "selectRole": "Seleccionar",
     "upload": "Subir",
     "writeBioText": "texto",
     "accomplishmentInput": "Escribe un logro aquí",
+    "deleteComment": "¿Seguro que quieres eliminar este comentario?",
     "month": "Mes",
     "day": "Día",
     "year": "Año"
@@ -316,10 +318,12 @@
     "selectCategory": "Selecionar una categoría",
     "highlights":"Comparte tu video de highlights",
     "selectImage": "Seleccionar Foto",
+    "confirmDelete": "Confirmar Eliminación",
     "buttonOptions":{
       "confirm": "Confirmar",
       "cancel": "Cancelar",
       "close": "Cerrar",
+      "delete": "Eliminar",
       "useCamera": "Usar cámara",
       "chooseGalery": "Escoger de la galería"
     }

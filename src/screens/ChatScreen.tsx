@@ -3,17 +3,26 @@ import {View, Text, StyleSheet, TextInput, FlatList, Image, KeyboardAvoidingView
 import React, { useState, useRef, useEffect } from 'react';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { Image as ImageIcon, ArrowDownCircle, Key } from 'lucide-react-native';
+import { useAuth } from '../context/AuthContext';
+import { Image as ImageIcon, ArrowDownCircle, Send } from 'lucide-react-native';
 import ScreenLayout from '../components/common/ScreenLayout';
 import AttachmentModal from '../components/modals/AttachmentModal';
 import MediaViewerModal from '../components/modals/MediaViewerModal';
+import LottieIcon from '../components/common/LottieIcon';
 import dayjs from 'dayjs';
-import userData from '../data/user.json';
-import initialMessages from '../data/chat.json';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone'
+import { buildMediaUrl } from '../utils/urlHelpers';
+import { generateLocalThumbnail } from '../utils/generateLocalThumbnail';
+import API_BASE_URL from '../config/api';
+
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 type Message = {
     id: string;
-    sender: 'user' | 'coach';
+    sender: 'user' | 'coach' | `admin`;
     text: string;
     timestamp: string;
     fileUrl?: string;
@@ -31,20 +40,145 @@ type DateSeparator = {
 type ChatItem = Message | DateSeparator;
 
 type ChatScreenRouteProp = RouteProp<
-    { Chat: { name: string; avatar: string } },
+    { Chat: { 
+        id: number; 
+        name: string; 
+        avatar: string; 
+        role: 'student' | 'coach' | 'admin' } },
     'Chat'
 >;
 
 export default function ChatScreen() {
     const route = useRoute<ChatScreenRouteProp>();
     const { t } = useTranslation();
-    const { name, avatar } = route.params;
+    const { id, name, avatar, role: recipientRole } = route.params;
+    const { token, user } = useAuth();
     const [inputText, setInputText] = useState('');
     const [showScrollButton, setShowScrollButton] = useState(false);
     const [showAttachmentModal, setShowAttachmentModal] = useState(false);
     const [mediaToView, setMediaToView] = useState<null | Message>(null);
     const [initialAttachmentCaption, setInitialAttachmentCaption] = useState("");
-    const flatListRef = useRef<FlatList>(null);
+    const flatListRef = useRef<FlatList>(null);    
+    const [messages, setMessages] = useState<ChatItem[]>([]);
+    const [sendingAttachment, setSendingAttachment] = useState(false);   
+
+    // Scroll hasta el final
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            flatListRef.current?.scrollToEnd({ animated: false });
+        }, 100);
+        return () => clearTimeout(timeout);
+    }, []);
+    
+    // Utilidad para obtener los endpoints
+    const getChatEndpoints = () => {
+        const userRole = user?.role;       
+        
+        if (!userRole || !recipientRole || !id) return { fetchUrl: '', sendUrl: '' };
+
+        if (userRole === 'student') {
+            if (recipientRole === 'coach') {
+            return {
+                fetchUrl: `${API_BASE_URL}/api/v1/chat/messages/coach/${id}/`,
+                sendUrl: `${API_BASE_URL}/api/v1/chat/messages/coach/${id}/send/`
+            };
+            }
+            if (recipientRole === 'admin') {
+            return {
+                fetchUrl: `${API_BASE_URL}/api/v1/chat/messages/support/`,
+                sendUrl: `${API_BASE_URL}/api/v1/chat/messages/support/send/`
+            };
+            }
+        }
+
+        if (userRole === 'coach' || userRole === 'admin') {
+            if (recipientRole === 'student') {
+            return {
+                fetchUrl: `${API_BASE_URL}/api/v1/chat/messages/student/${id}/`,
+                sendUrl: `${API_BASE_URL}/api/v1/chat/messages/student/${id}/send/`
+            };
+            }
+        }
+
+        return { fetchUrl: '', sendUrl: '' };
+    };
+
+    // Usa fetchMessages para hacer una carga inicial de mensajes, luego cada minuto
+    useEffect(() => {
+        // Llamada inicial        
+        fetchMessages();        
+
+        // Intervalo cada 60 segundos
+        const interval = setInterval(() => {
+            fetchMessages();
+        }, 60000); // 60,000 ms = 1 minuto
+
+        // Limpiar el intervalo al desmontar el componente
+        return () => clearInterval(interval);
+    }, [id, recipientRole]);
+
+    const fetchMessages = async () => {
+        const { fetchUrl } = getChatEndpoints();
+        console.log("Fetching messages from:", fetchUrl);    
+            
+        if (!fetchUrl) return;
+
+        try {
+            const res = await fetch(fetchUrl, {
+            headers: {
+                Authorization: `Token ${token}`,
+                'Content-Type': 'application/json',
+            },
+            });
+
+            if (!res.ok) {
+            console.error("Error fetching messages", await res.text());
+            return;
+            }
+
+            const json = await res.json();
+            const rawMessages = Array.isArray(json) ? json : json.messages;
+
+            // Paso 1: construir los mensaje base
+            let backendMessages: Message[] = rawMessages.map((msg: any) => ({
+                id: msg.id?.toString(),
+                sender: msg.sender,
+                text: msg.text,
+                timestamp: msg.timestamp,
+                fileUrl: buildMediaUrl(msg.url) || null,
+                fileName: null,
+                fileType: msg.type || 'text',
+            }));
+
+            // Paso 2: generar thumbnails para los que lo necesitan
+            backendMessages = await Promise.all(
+                backendMessages.map((msg) => generateLocalThumbnail(msg))
+            );
+
+            // Paso 3 fusionar con los mensajes actuales
+            setMessages((prevMessages) => {
+                // Filtrar solo mensajes (quitar separadores de fecha)
+                const existingMessages = prevMessages.filter((item): item is Message => 'timestamp' in item);
+
+                // Crear mapa único por ID
+                const messageMap = new Map<string, Message>();
+
+                for (const msg of [...existingMessages, ...backendMessages]) {
+                    messageMap.set(msg.id, msg); // Si hay duplicado, se sobreescribe con el último
+                }
+
+                // Convertir a array y ordenar por fecha
+                const merged = Array.from(messageMap.values()).sort(
+                    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+                );
+
+                // Agregar separadores
+                return insertDateSeparators(merged);
+            });
+        } catch (error) {
+            console.error("Error loading messages:", error);
+        }
+    };    
 
     // Para insertar separadores con la fecha
     const insertDateSeparators = (messages: Message[]): ChatItem[] => {
@@ -52,7 +186,8 @@ export default function ChatScreen() {
         let lastDate = '';
 
         messages.forEach(msg => {
-            const msgDate = dayjs(msg.timestamp).format('DD/MM/YYYY');
+            const msgDate = dayjs.utc(msg.timestamp).local().format('DD/MM/YYYY');            
+
             if (msgDate !== lastDate) {
                 lastDate = msgDate;
                 result.push({
@@ -65,26 +200,14 @@ export default function ChatScreen() {
         });
 
         return result;
-    };
-
-    const [messages, setMessages] = useState<ChatItem[]>(
-        insertDateSeparators(initialMessages as Message[])
-    );
-
-    // Scroll hasta el final
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            flatListRef.current?.scrollToEnd({ animated: false });
-        }, 100);
-        return () => clearTimeout(timeout);
-    }, []);
+    };  
 
     // Utilidad para agregar mensaje al chat (usa separadores si cambia el día)
     const addMessage = (newMessage: Message) => {
-        const now = dayjs(newMessage.timestamp);
+        const now = dayjs.utc(newMessage.timestamp).local();
         setMessages(prev => {
             const lastMessage = [...prev].reverse().find(item => 'timestamp' in item) as Message | undefined;
-            const lastDate = lastMessage ? dayjs(lastMessage.timestamp).format('DD/MM/YYYY') : '';
+            const lastDate = lastMessage ? dayjs.utc(lastMessage.timestamp).local().format('DD/MM/YYYY') : '';
             const currentDate = now.format('DD/MM/YYYY');
 
             const newItems: ChatItem[] = [];
@@ -107,20 +230,50 @@ export default function ChatScreen() {
     };
 
     // Envia mesaje simple solo texto
-    const handleSend = () => {
-        if (!inputText.trim()) return;
+    const handleSend = async () => {
+        const trimmed = inputText.trim();
+        if (!trimmed) return;    
 
-        const now = dayjs();
-        const newMessage: Message = {
-            id: Date.now().toString(),
-            sender: 'user',
-            text: inputText.trim(),
-            timestamp: now.toISOString(),
-        };
+        const { sendUrl } = getChatEndpoints();
 
-        addMessage(newMessage);
-        setInputText('');
-    };   
+        if (!sendUrl) {
+            console.error("Missing send URL for current user and recipient roles.");
+            return;
+        }
+
+        try {
+            const res = await fetch(sendUrl, {
+            method: 'POST',
+            headers: {
+                Authorization: `Token ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text: trimmed }),
+            });
+
+            if (!res.ok) {
+            console.error("Error sending message", await res.text());
+            return;
+            }
+
+            const newMsg = await res.json();            
+
+            const newMessage: Message = {
+            id: newMsg.id.toString(),
+            sender: newMsg.sender,
+            text: newMsg.text,
+            timestamp: newMsg.timestamp,
+            fileUrl: newMsg.url || null,
+            fileName: undefined,
+            fileType: newMsg.type || "text",
+            };
+
+            addMessage(newMessage);
+            setInputText('');
+        } catch (error) {
+            console.error("Failed to send message:", error);
+        }
+    };
 
     const onScroll = (event: any) => {
         const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
@@ -134,6 +287,20 @@ export default function ChatScreen() {
         flatListRef.current?.scrollToEnd({ animated: true });
     };
 
+    //Determinar quién es el sender del mensaje
+    const isMessageFromCurrentUser = (message: Message): boolean => {
+        if (!user?.role) return false;
+
+        // Mapeo explícito: qué valor de "sender" corresponde al usuario actual
+        const senderMap: Record<string, string> = {
+            student: 'user',
+            coach: 'coach',
+            admin: 'admin',
+        };
+
+        return message.sender === senderMap[user.role];
+    };
+
     const renderItem = ({ item }: { item: ChatItem }) => {
         if ('type' in item && item.type === 'date') {
             return (
@@ -144,9 +311,11 @@ export default function ChatScreen() {
         }
 
         const message = item as Message;
-        const isUser = message.sender === 'user';
-        const displayName = isUser ? userData.username : name;
-        const displayAvatar = isUser ? userData.avatar : avatar;
+        const isUser = isMessageFromCurrentUser(message);
+        const displayName = isUser ? user?.username : name;
+        const displayAvatar = isUser 
+            ? user?.studentProfileImage 
+            : avatar;
 
         return (
             <View
@@ -171,7 +340,12 @@ export default function ChatScreen() {
                     ]}
                 >
                     {!isUser && (
-                        <Image source={{ uri: displayAvatar }} style={styles.avatar} />
+                        <Image source={
+                            avatar && avatar.startsWith('http')
+                            ? { uri: avatar }
+                            : require('../../assets/img/userGeneric.png')
+                            } 
+                        style={styles.avatar} />
                     )}
 
                     <View
@@ -196,7 +370,14 @@ export default function ChatScreen() {
                                 activeOpacity={0.8}
                                 style={{ marginTop: 10 }}
                             >
-                                {message.fileThumbnail ? (
+                                {/* Si es PDF, mostramos placeholder local */}
+                                {message.fileType === 'pdf' ? (
+                                    <Image
+                                        source={require('../../assets/img/pdfIcon.png')}
+                                        style={{ width: 150, height: 150, borderRadius: 8 }}
+                                        resizeMode="cover"
+                                    />
+                                ) : message.fileThumbnail ? (
                                     <Image
                                         source={{ uri: message.fileThumbnail }}
                                         style={{ width: 150, height: 150, borderRadius: 8 }}
@@ -224,7 +405,12 @@ export default function ChatScreen() {
                     </View>
 
                     {isUser && (
-                        <Image source={{ uri: displayAvatar }} style={styles.avatar} />
+                        <Image source={
+                            displayAvatar && displayAvatar.startsWith('http')
+                            ? { uri: displayAvatar }
+                            : require('../../assets/img/userGeneric.png')       
+                        } 
+                        style={styles.avatar} />
                     )}
                 </View>
             </View>
@@ -237,7 +423,7 @@ export default function ChatScreen() {
                 <Text style={styles.titleText}>{t('account.titles.account')}</Text>
             </View>
 
-            <KeyboardAvoidingView
+            <KeyboardAvoidingView            
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                 style={styles.container}
             >
@@ -267,12 +453,24 @@ export default function ChatScreen() {
                             onChangeText={setInputText}
                             onSubmitEditing={handleSend}
                             returnKeyType="send"
+                            multiline
+                            scrollEnabled
+                            textAlignVertical='top'                            
                         />
-                        <TouchableOpacity onPress={() => {  
-                            setInitialAttachmentCaption(inputText);                            
-                            setShowAttachmentModal(true)}}>
-                            <ImageIcon color="#929292" size={22} />
-                        </TouchableOpacity>
+                        <View style={styles.iconContainer}>
+                            <TouchableOpacity onPress={() => {  
+                                setInitialAttachmentCaption(inputText);                            
+                                setShowAttachmentModal(true)}}>
+                                <ImageIcon color="#929292" size={22} />
+                            </TouchableOpacity>
+                            {/* Ícono de enviar */}
+                            <TouchableOpacity
+                                onPress={handleSend}
+                                style={{ marginLeft: 8 }}
+                            >
+                                <Send color="#2B80BE" size={26} />                            
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </KeyboardAvoidingView>
@@ -280,24 +478,125 @@ export default function ChatScreen() {
             <AttachmentModal
                 visible={showAttachmentModal}
                 onClose={() => setShowAttachmentModal(false)}
-                onSend={(file, caption) => {
-                    const now = dayjs();
-                    const newMessage: Message = {
-                        id: Date.now().toString(),
-                        sender: 'user',
-                        text: caption || '',
-                        timestamp: now.toISOString(),
-                        fileUrl: file.uri,
-                        fileName: file.name,
-                        fileType: file.type || "image",
-                        fileThumbnail: file.thumbnail || file.uri,
-                    };
+                onSend={async (file, caption) => {
+                    setSendingAttachment(true);
+                    const { sendUrl } = getChatEndpoints();
 
-                    addMessage(newMessage);
-                    setShowAttachmentModal(false);
-                    setInputText("");
-                    Keyboard.dismiss();
-                }}
+                    if (!sendUrl) {
+                        console.error("Missing send URL");
+                        setSendingAttachment(false);
+                        return;
+                    }
+
+                    try {
+                        // Determinar mimeType y extensión según el tipo del archivo
+                        let mimeType = '';
+                        let fileName = file.name || `file-${Date.now()}`;
+
+                        switch (file.type) {
+                        case 'image':
+                        case 'image/jpeg':
+                        case 'image/jpg':
+                            mimeType = 'image/jpeg';
+                            if (!fileName.toLowerCase().endsWith('.jpg') && !fileName.toLowerCase().endsWith('.jpeg')) {
+                            fileName += '.jpg';
+                            }
+                            break;
+                        case 'video':
+                        case 'video/mp4':
+                            mimeType = 'video/mp4';
+                            if (!fileName.toLowerCase().endsWith('.mp4')) {
+                            fileName += '.mp4';
+                            }
+                            break;
+                        case 'pdf':
+                        case 'application/pdf':
+                            mimeType = 'application/pdf';
+                            if (!fileName.toLowerCase().endsWith('.pdf')) {
+                            fileName += '.pdf';
+                            }
+                            break;
+                        default:
+                            mimeType = file.type || 'application/octet-stream';
+                        }
+
+                        // Construir FormData
+                        const formData = new FormData();
+                        formData.append('file', {
+                        uri: file.uri,
+                        name: fileName,
+                        type: mimeType,
+                        } as any);
+
+                        // Subir archivo
+                        const uploadResponse = await fetch(`${API_BASE_URL}/api/v1/chat/upload/`, {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Token ${token}`,
+                            // NO Content-Type aquí!
+                        },
+                        body: formData,
+                        });
+
+                        if (!uploadResponse.ok) {
+                        const err = await uploadResponse.text();
+                        console.error("Error uploading file:", err);
+                        setSendingAttachment(false);
+                        return;
+                        }
+
+                        const uploaded = await uploadResponse.json(); // { url, type, filename, size }
+                        
+                        // Enviar mensaje con la info del archivo subida
+                        const messagePayload = {
+                        type: uploaded.type,
+                        text: caption || '',
+                        url: uploaded.url,
+                        filename: uploaded.filename,
+                        size: uploaded.size,
+                        };
+
+                        const messageResponse = await fetch(sendUrl, {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Token ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(messagePayload),
+                        });
+
+                        if (!messageResponse.ok) {
+                        const err = await messageResponse.text();
+                        console.error("Error sending message with file:", err);
+                        setSendingAttachment(false);
+                        return;
+                        }
+
+                        const newMsg = await messageResponse.json();
+
+                        let newMessage: Message = {
+                        id: newMsg.id.toString(),
+                        sender: newMsg.sender,
+                        text: newMsg.text,
+                        timestamp: newMsg.timestamp,
+                        fileUrl: buildMediaUrl(newMsg.url),
+                        fileName: newMsg.filename,
+                        fileType: newMsg.type,
+                        };  
+                        
+                        // Generar thumbnail si aplica
+                        newMessage = await generateLocalThumbnail(newMessage);                        
+                        addMessage(newMessage);
+                        setInputText("");
+                        setShowAttachmentModal(false);
+                        Keyboard.dismiss();
+                    } catch (err) {
+                        console.error("Attachment message error:", err);
+                    } finally {
+                        setSendingAttachment(false);
+                    }
+                    }}
+
                 initialCaption={initialAttachmentCaption}
             />
 
@@ -312,6 +611,24 @@ export default function ChatScreen() {
                     }}
                 />
             )}
+
+            {sendingAttachment && (
+                <View style={{
+                    position: 'absolute',
+                    bottom: 90,
+                    left: 0,
+                    right: 0,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                <LottieIcon
+                    source={require('../../assets/lottie/loading.json')}
+                    size={50}
+                    loop
+                    autoPlay
+                    />
+                </View>
+                )}
         </ScreenLayout>
     );
 }
@@ -380,7 +697,7 @@ const styles = StyleSheet.create({
         marginRight: 13,
     },
     messageBubble: {
-        maxWidth: "80%",
+        width: "80%",
         minHeight: 45,
         borderRadius: 12,
         paddingHorizontal: 16,
@@ -432,6 +749,16 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         color: '#929292',
         paddingRight: 8,
+        minHeight: 40,
+        maxHeight: 120
+    },
+    iconContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
+    },
+    iconButton: {
+        padding: 4,
     },
     scrollButton: {
         position: 'absolute',

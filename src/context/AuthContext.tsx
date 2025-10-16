@@ -11,7 +11,7 @@ interface PhysicalData {
 interface User {
   id: number;
   username: string;
-  role: 'student' | 'coach';
+  role: 'student' | 'coach' | 'admin';
   physicalData?: PhysicalData;
   position?: string;
   studentProfileImage? : string;

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 
@@ -18,21 +19,26 @@ export default function AppHeaderNew(props: AppHeaderProps) {
   const navigation = useNavigation<NavigationProp>();
 
   return (
-    <View style={styles.header}>      
-      <Text style={styles.title}>Showtime University</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('Account')}>
-        <Image source={
-          props.userAvatar
-          ? {uri: props.userAvatar}
-          : require('../../../assets/img/userGeneric.png')
-        }
-        style={styles.avatar} /> 
-      </TouchableOpacity>    
-    </View>
+    <SafeAreaView style = {styles.safeArea}>
+      <View style={styles.header}>      
+        <Text style={styles.title}>Showtime University</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Account')}>
+          <Image source={
+            props.userAvatar
+            ? {uri: props.userAvatar}
+            : require('../../../assets/img/userGeneric.png')
+          }
+          style={styles.avatar} /> 
+        </TouchableOpacity>    
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+    backgroundColor: '#000000', // o el color que quieras de fondo
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',    

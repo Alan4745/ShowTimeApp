@@ -1,38 +1,102 @@
-import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image} from 'react-native'
 import React, {useState, useEffect} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
+import { useAuth } from '../context/AuthContext'
 import ScreenLayout from '../components/common/ScreenLayout'
 import SubscriptionsSection from '../components/common/SubscriptionsSection'
 import SavedExercisesCalendar from '../components/common/SavedExercisesCalendar'
 import SettingsSection from '../components/common/SettingsSection'
 import UploadSection from '../components/common/UploadSection'
-import { useAuth } from '../context/AuthContext'
-import coachData from '../data/contentData.json'
-import studentData from '../data/studentList.json'
-import coach from '../data/coach.json'
+import { buildMediaUrl } from '../utils/urlHelpers'
+import API_BASE_URL from '../config/api'
 
 type ButtonKey = "coach" | "save" | "settings" | "students" | "upload";
 
 export default function AccountScreen() {
   const {t} = useTranslation();
-  const { user } = useAuth();
+  const { token, user } = useAuth();
   const userType = user?.role || "student";
   const navigation = useNavigation();  
+  const [dataList, setDataList] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
   const [activeButton, setActiveButton] = useState<ButtonKey | null>(null);
-  const buttons: Array<"coach" | "save" | "settings" | "students" | "upload"> =
-  userType === "student" ? ["coach", "save", "settings"] : ["students", "upload", "settings"];
+  
+  // Define qué botones mostrar según tipo de usuario
+  const buttons: ButtonKey[] = 
+    userType === "student" ? ["coach", "save", "settings"] : ["students", "upload", "settings"];
+      
 
   useEffect(() => {
     const initial = userType === "student" ? "coach" : "students";
     setActiveButton(initial);
   }, [userType]);  
 
-  const handleMessagePress = (coach: typeof coachData[0]) => {
-      (navigation as any).navigate('Chat', {
-        name: coach.name,
-        avatar: coach.avatar
-      })
+  // Obtener datos desde el endpoint correcto
+  useEffect(() => {
+    if (!activeButton || !token) return;
+
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        let endpoint: string | null = null;
+
+        if (userType === "student" && activeButton === "coach") {
+          endpoint = `${API_BASE_URL}/api/v1/chat/coaches/active/`;
+        } else if ((userType === "coach" || userType === "admin") && activeButton === "students") {
+          endpoint = `${API_BASE_URL}/api/v1/chat/students/active/`;
+        }
+
+        if (!endpoint) {
+          setDataList([]);
+          setLoading(false);
+          return;
+        }
+
+        const res = await fetch(endpoint, {
+          headers: {
+            Authorization: `Token ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!res.ok) {
+          console.error("Error fetching list", await res.text());
+          setDataList([]);
+        } else {
+          const json = await res.json();
+          setDataList(json.results || []);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+        setDataList([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [activeButton, userType, token]); 
+
+  // Cuando se selecciona a alguien para chatear
+  const handleMessagePress = (person: any) => {     
+    // Deducimos el recipiente, según el rol del usuario
+    let recipientRole: 'coach' | 'student' | 'admin' = 'student';
+
+    if (userType === 'student') {
+      // Si el usuario es estudiante y hace clic en alguien,
+      // es un coach (o si agregas chat con admin, podrías validarlo distinto)
+      recipientRole = 'coach';
+    } else if (userType === 'coach' || userType === 'admin') {
+      recipientRole = 'student';
+    }    
+    
+    (navigation as any).navigate('Chat', {
+      id: person.id,
+      name: person.username || person.fullName,
+      avatar: buildMediaUrl(person.avatar),
+      role: recipientRole,     
+    })
   }
 
   return (
@@ -58,16 +122,22 @@ export default function AccountScreen() {
         </View>
       )}
 
-      {/* Coach List Section */}
+      {/* LISTA DE CONVERSACIÓN */}
       <View style={styles.listContainer}>        
-        {activeButton === (userType === 'student' ? 'coach' : 'students') && (
-          <SubscriptionsSection
-            userType={userType as 'student' | 'coach' | 'darwin'}
-            data={coachData} // o studentData si los tienes separados
-            onMessagePress={handleMessagePress}
-          />
+        {(activeButton === (userType === "student" ? "coach" : "students")) && (
+          loading ? (
+            <ActivityIndicator size="large" color="#2B80BE" />
+          ) : (
+            <SubscriptionsSection
+              userType={userType as 'student' | 'coach' | 'admin'}
+              data={dataList}
+              onMessagePress={handleMessagePress}
+            />
+          )
         )}
       </View>
+
+      {/* SECCIONES EXTRA */}  
 
       {/* Saved Calendar Section */}  
       {(activeButton === 'save') && (<SavedExercisesCalendar/>)}

@@ -1,16 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import {Modal, View, Text, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView} from 'react-native';
-import { launchImageLibrary} from 'react-native-image-picker';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  ScrollView,
+  Dimensions
+} from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { pick, types, errorCodes, isErrorWithCode } from '@react-native-documents/picker';
 import { createThumbnail } from 'react-native-create-thumbnail';
 import { useTranslation } from 'react-i18next';
 import { X, FileVideo, FileText, Image as ImageIcon, ImageOff } from 'lucide-react-native';
+
+const screenHeight = Dimensions.get('window').height;
 
 type PreviewType = {
   type: 'image' | 'video' | 'pdf';
   uri: string;
   name?: string;
   thumbnail?: string;
+  mime?: string;
 };
 
 type Props = {
@@ -21,19 +33,17 @@ type Props = {
 };
 
 export default function AttachmentModal({ visible, onClose, onSend, initialCaption }: Props) {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [preview, setPreview] = useState<PreviewType | null>(null);
   const [caption, setCaption] = useState(initialCaption);
   const [inputHeight, setInputHeight] = useState(40);
 
-  // colocar mensaje, si ya fue ingresado uno
-    useEffect(() => {
+  useEffect(() => {
     if (visible) {
-      setCaption(initialCaption); 
+      setCaption(initialCaption || '');
     }
   }, [visible, initialCaption]);
 
-  // Seleccionar Video desde galería
   const handleVideoSelect = () => {
     const options = {
       mediaType: 'video' as const,
@@ -42,10 +52,9 @@ export default function AttachmentModal({ visible, onClose, onSend, initialCapti
     };
 
     launchImageLibrary(options, async (response) => {
-      if (response.didCancel || !response.assets || response.assets.length === 0) return;
+      if (response.didCancel || !response.assets?.length) return;
 
       const video = response.assets[0];
-
       try {
         const thumbnail = await createThumbnail({ url: video.uri! });
 
@@ -53,16 +62,15 @@ export default function AttachmentModal({ visible, onClose, onSend, initialCapti
           type: 'video',
           uri: video.uri!,
           name: video.fileName ?? 'video.mp4',
-          thumbnail: thumbnail.path,          
+          thumbnail: thumbnail.path,
+          mime: video.type ?? 'video/mp4',
         });
       } catch (err) {
         console.error('Error generating video thumbnail:', err);
-        // Si tienes alertas visibles, puedes manejarlas aquí también.
       }
     });
-  }; 
-  
-  // Seleccionar Imagen desde galería
+  };
+
   const handleImageSelect = () => {
     const options = {
       mediaType: 'photo' as const,
@@ -70,7 +78,7 @@ export default function AttachmentModal({ visible, onClose, onSend, initialCapti
     };
 
     launchImageLibrary(options, (response) => {
-      if (response.didCancel || !response.assets || response.assets.length === 0) return;
+      if (response.didCancel || !response.assets?.length) return;
 
       const asset = response.assets[0];
 
@@ -79,22 +87,22 @@ export default function AttachmentModal({ visible, onClose, onSend, initialCapti
         uri: asset.uri!,
         name: asset.fileName ?? 'imagen.jpg',
         thumbnail: asset.uri!,
+        mime: asset.type ?? 'image/jpeg',
       });
     });
   };
 
-  // Seleccionar PDF desde galería
   const handlePDFSelect = async () => {
     try {
       const [res] = await pick({ type: [types.pdf] });
-
       if (!res) return;
 
       setPreview({
         type: 'pdf',
         uri: res.uri,
-        name: res.name ?? 'Documento',
+        name: res.name ?? 'document.pdf',
         thumbnail: Image.resolveAssetSource(require('../../../assets/img/Adobe.png')).uri,
+        mime: 'application/pdf',
       });
     } catch (err) {
       if (isErrorWithCode(err) && err.code !== errorCodes.OPERATION_CANCELED) {
@@ -103,11 +111,11 @@ export default function AttachmentModal({ visible, onClose, onSend, initialCapti
         console.error('Error inesperado al seleccionar PDF:', err);
       }
     }
-  }; 
+  };
 
   const handleSend = () => {
     if (!preview) return;
-    onSend(preview, caption);
+    onSend(preview, caption || '');
     resetModal();
   };
 
@@ -117,106 +125,98 @@ export default function AttachmentModal({ visible, onClose, onSend, initialCapti
     onClose();
   };
 
-  return (    
-    <Modal visible={visible} animationType="slide" transparent>
-      <View style={styles.overlay}>
-        <View style={styles.container}>
-          {/* Cerrar modal */}
-          <TouchableOpacity onPress={resetModal} style={styles.closeButton}>
-            <X size={28} color="#FFFFFF" />
-          </TouchableOpacity>
-          
-          <ScrollView contentContainerStyle={styles.scrollContent}>
-            {/* Vista previa */}
-            {preview ? (
-              <View style={styles.previewContainer}>
-                {preview.thumbnail ? (
-                  <Image
-                    source={{ uri: preview.thumbnail }}
-                    style={styles.thumbnail}
-                    resizeMode="cover"
-                  />
-                ) : (
-                  <View style={styles.thumbnailFallback}>
-                    <ImageOff size={64} color="#FFFFFF" />
-                  </View>
-                )}
+  if (!visible) return null;
 
-                <Text style={styles.previewText}>{preview.name}</Text>
-              </View>
-            ) : (
-              <View style={styles.fileSelectContainer}>
-                <Text style={styles.fileSelectTitle}>{t('account.titles.selectAFile')}</Text>             
+  return (
+    <View style={styles.overlay}>
+      <View style={styles.container}>
+        {/* Botón cerrar */}
+        <TouchableOpacity onPress={resetModal} style={styles.closeButton}>
+          <X size={28} color="#FFFFFF" />
+        </TouchableOpacity>
 
-                {/* FILE BUTTONS */}              
-                <View style={styles.fileButtonsContainer}>
-                  {/* VIDEO */}
-                  <TouchableOpacity style={styles.fileButton} onPress={handleVideoSelect}>
-                    <FileVideo size={18} color="#FFFFFF" />                
-                    <Text style={styles.fileButtonText}>{t('publishPost.buttons.video')}</Text>
-                  </TouchableOpacity>
-
-                  {/* IMAGEN */}
-                  <TouchableOpacity style={styles.fileButton} onPress={handleImageSelect}>
-                    <ImageIcon size={18} color="#FFFFFF" />                
-                    <Text style={styles.fileButtonText}>{t('publishPost.buttons.image')}</Text>
-                  </TouchableOpacity>
-
-                  {/* PDF */}
-                  <TouchableOpacity style={styles.fileButton} onPress={handlePDFSelect}>
-                    <FileText size={18} color="#FFFFFF" />
-                    <Text style={styles.fileButtonText}>{t('publishPost.buttons.text')}</Text>
-                  </TouchableOpacity>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          {/* Vista previa del archivo */}
+          {preview ? (
+            <View style={styles.previewContainer}>
+              {preview.thumbnail ? (
+                <Image source={{ uri: preview.thumbnail }} style={styles.thumbnail} resizeMode="cover" />
+              ) : (
+                <View style={styles.thumbnailFallback}>
+                  <ImageOff size={64} color="#FFFFFF" />
                 </View>
+              )}
+              <Text style={styles.previewText}>{preview.name}</Text>
+            </View>
+          ) : (
+            <View style={styles.fileSelectContainer}>
+              <Text style={styles.fileSelectTitle}>{t('account.titles.selectAFile')}</Text>
+
+              <View style={styles.fileButtonsContainer}>
+                <TouchableOpacity style={styles.fileButton} onPress={handleVideoSelect}>
+                  <FileVideo size={18} color="#FFFFFF" />
+                  <Text style={styles.fileButtonText}>{t('publishPost.buttons.video')}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.fileButton} onPress={handleImageSelect}>
+                  <ImageIcon size={18} color="#FFFFFF" />
+                  <Text style={styles.fileButtonText}>{t('publishPost.buttons.image')}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.fileButton} onPress={handlePDFSelect}>
+                  <FileText size={18} color="#FFFFFF" />
+                  <Text style={styles.fileButtonText}>{t('publishPost.buttons.text')}</Text>
+                </TouchableOpacity>
               </View>
-            )}
+            </View>
+          )}
 
-            {/*Mensaje de Texto Opcional */}
-            {preview && (
-              <>
-                <TextInput
-                  placeholder={t('placeholders.writeMessage')}
-                  style={[styles.input, { height: Math.max(40, inputHeight) }]}
-                  placeholderTextColor='#F7FAFC'
-                  multiline
-                  value={caption}
-                  onChangeText={setCaption}
-                  onContentSizeChange={(e) => {setInputHeight(e.nativeEvent.contentSize.height)}}
-                />                
-              </>
-            )}
-          </ScrollView>
-
-          {/* Botón fijo */}
+          {/* Input de mensaje opcional */}
           {preview && (
-            <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-              <Text style={styles.sendButtonText}>{t('account.buttons.send')}</Text>
-            </TouchableOpacity>
-          )} 
+            <TextInput
+              placeholder={t('placeholders.writeMessage')}
+              style={[styles.input, { height: Math.max(40, inputHeight) }]}
+              placeholderTextColor="#F7FAFC"
+              multiline
+              value={caption}
+              onChangeText={setCaption}
+              onContentSizeChange={(e) => setInputHeight(e.nativeEvent.contentSize.height)}
+            />
+          )}
+        </ScrollView>
 
-        </View>
+        {/* Botón enviar */}
+        {preview && (
+          <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+            <Text style={styles.sendButtonText}>{t('account.buttons.send')}</Text>
+          </TouchableOpacity>
+        )}
       </View>
-    </Modal>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   overlay: {
-    flex: 1,
-    backgroundColor: '#000000bb',
-    justifyContent: 'center',
-    padding: 20,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#000000bb', // Fondo negro translúcido
+    justifyContent: 'center',     // Centrado vertical
+    alignItems: 'center',         // Centrado horizontal
+    zIndex: 9999,
   },
   container: {
-    position:"relative",
     backgroundColor: '#000000',
-    borderColor: "#FFFFFF",
+    borderColor: '#FFFFFF',
     borderWidth: 2,
     borderRadius: 12,
     padding: 20,
-    minHeight: 300,
-    maxHeight: "70%",
-    justifyContent: "space-between"  ,  
+    width: '90%',
+    maxHeight: '80%',
+    justifyContent: 'space-between', 
   },
   closeButton: {
     position: 'absolute',

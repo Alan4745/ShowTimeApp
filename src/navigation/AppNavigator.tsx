@@ -49,7 +49,7 @@ export default function AppNavigator() {
         initialRouteName="CustomSplash"
         screenOptions={{ headerShown: false }}
       >
-        {/*<Stack.Screen name="DebugNavigator" component={DebugNavigator} />*/}
+        {/* <Stack.Screen name="DebugNavigator" component={DebugNavigator} /> */}
         <Stack.Screen name="CoachesTabScreen" component={CoachesTabScreen} />
         <Stack.Screen name="CustomSplash" component={CustomSplashScreen} />
         <Stack.Screen name="Carousel" component={CarouselScreen} />
