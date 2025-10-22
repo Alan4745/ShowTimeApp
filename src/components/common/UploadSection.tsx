@@ -1,46 +1,109 @@
-import React from 'react';
+import React, {useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../context/AuthContext';
+import { buildMediaUrl } from '../../utils/urlHelpers';
 import LessonCard from './LessonCard';
-import userData from '../../data/coach.json';
-import lessons from '../../data/lessons.json';
+import MediaViewerModal from '../modals/MediaViewerModal';
+import API_BASE_URL from '../../config/api';
 
 
 export default function UploadSection() {
   const { t } = useTranslation();
+  const { user, token } = useAuth();
   const navigation = useNavigation();  
+  const [lessons, setLessons] = useState<any[]>([]);
+  const [selectedMedia, setSelectedMedia] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleOpenMedia = (media: any) => {
+    setSelectedMedia(media);
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setSelectedMedia(null);
+  };
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const fetchLessons = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${API_BASE_URL}/api/v1/lessons/coach/${user.id}`, {
+          headers: {
+            'Authorization': `Token ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}`);
+        }
+
+        const data = await response.json();
+        setLessons(data.results || []);
+      } catch (err: any) {
+        console.error('Error fetching lessons:', err);
+        setError('No se pudieron cargar las lecciones');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLessons();
+  }, [user?.id]);
 
   return (
     <View style={styles.container}>
       <View style = {styles.headerContainer}>
-        <Image source={{ uri: userData.avatar}} style={styles.avatar}/>
-        <Text style={styles.userNameText}>{userData.username}</Text>
+        <Image source= {
+                user?.studentProfileImage
+                  ? { uri: buildMediaUrl(user?.studentProfileImage)}
+                  : require('../../../assets/img/userGeneric.png')
+                } style={styles.avatar}
+        />
+        <Text style={styles.userNameText}>{user?.username}</Text>
       </View>
       
       <TouchableOpacity style = {styles.uploadButton} onPress={() => (navigation as any).navigate('UploadContent')}>
         <Text style = {styles.uploadButtonText}>{t('account.buttons.uploadContent')}</Text>
       </TouchableOpacity>
       
-          <ScrollView contentContainerStyle={styles.lessonContainer}>
-            {lessons.map((lesson) => (
-                <LessonCard
-                key={lesson.id}
-                id={lesson.id}
-                title={lesson.title}
-                author={lesson.author}
-                description={lesson.description}
-                subcategory={lesson.subcategory}
-                format={lesson.format}
-                mediaType={lesson.mediaType as "audio" | "video" | "image"}
-                mediaUrl={lesson.mediaUrl}                
-                onOpenMedia={() => {
-                    // Aquí puedes navegar o abrir un modal
-                }}
-                />
-            ))}
-            </ScrollView>
+      <ScrollView contentContainerStyle={styles.lessonContainer}>
+        {lessons.map((lesson) => (
+            <LessonCard
+              key={lesson.id}
+              id={lesson.id.toString()}
+              title={lesson.title}
+              author={lesson.author_name}
+              description={lesson.description}
+              subcategory={lesson.subcategory}
+              format={lesson.format}
+              mediaType={lesson.mediaType as "audio" | "video" | "image"}
+              mediaUrl={lesson.mediaUrl} 
+              thumbnailUrl={lesson.thumbnail}               
+              onOpenMedia={handleOpenMedia}
+            />
+        ))}
+      </ScrollView>
       
+      {/* Modal global para visualizar media */}
+      <MediaViewerModal
+        visible={modalVisible}
+        media={selectedMedia}
+        onClose={handleCloseModal}
+        showInfo={true}
+        likesCount={selectedMedia?.likes}
+        commentsCount={selectedMedia?.comments}
+      />
+
     </View>
   );
 }

@@ -14,8 +14,7 @@ interface User {
   role: 'student' | 'coach' | 'admin';
   physicalData?: PhysicalData;
   position?: string;
-  studentProfileImage? : string;
-  // puedes añadir más campos si lo necesitas
+  studentProfileImage?: string;
 }
 
 interface AuthContextType {
@@ -23,25 +22,16 @@ interface AuthContextType {
   user: User | null;
   login: (token: string, user: User) => Promise<void>;
   logout: () => Promise<void>;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export let authInstance: AuthContextType | null = null; // referencia global
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const loadFromStorage = async () => {
-      const storedToken = await AsyncStorage.getItem('authToken');
-      const storedUser = await AsyncStorage.getItem('authUser');
-      if (storedToken && storedUser) {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
-      }
-    };
-    loadFromStorage();
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
 
   const login = async (newToken: string, newUser: User) => {
     setToken(newToken);
@@ -53,12 +43,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     setToken(null);
     setUser(null);
-    await AsyncStorage.removeItem('authToken');
-    await AsyncStorage.removeItem('authUser');
+    await AsyncStorage.multiRemove(['authToken', 'authUser']);
   };
 
+  // Cargar desde almacenamiento al inicio
+  useEffect(() => {
+    const loadFromStorage = async () => {
+      try {
+        const storedToken = await AsyncStorage.getItem('authToken');
+        const storedUser = await AsyncStorage.getItem('authUser');
+        if (storedToken && storedUser) {
+          setToken(storedToken);
+          setUser(JSON.parse(storedUser));
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadFromStorage();
+  }, []);
+
+  // Actualiza la instancia global en cada cambio relevante
+  useEffect(() => {
+    authInstance = { token, user, login, logout, isLoading };
+    return () => {
+      authInstance = null; // limpieza opcional
+    };
+  }, [token, user, isLoading]);
+
   return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
+    <AuthContext.Provider value={{ token, user, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

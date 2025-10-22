@@ -16,7 +16,7 @@ const categoriesByUserType = {
     'lifeAsAProfessional',
   ],
   admin: {
-    training: ['strength', 'power', '4WeekProgram', 'exerciseLibrary'],
+    training: ['strength', 'power', '4WeekProgram', 'exerciseLibrary', 'Workout'],
     mindset: ['anxiety', 'growthMindset', 'conflictResolution', 'teamDynamics'],
     nutrition: ['carbohydrates', 'protein', 'fat', 'supplementsHydration', 'nutritionProgram'],
     tactics: ['finishing', 'technical', 'passingDribbling'],

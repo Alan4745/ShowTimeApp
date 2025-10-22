@@ -58,7 +58,7 @@ export default function MediaViewerModal({ visible, media, onClose, showInfo = f
   const getAudioBackground = () => {
     return require('../../../assets/img/audioPlaceholder.png');
   };
-  
+    
   useEffect(() => {
     // Reset estado al abrir un nuevo media
     if (visible && likesCount !== undefined) {

@@ -33,11 +33,14 @@ declare module 'react-native-video-controls' {
   export default class VideoPlayer extends Component<VideoPlayerProps> {}
 }
 
+// Navegación
 export type ChatParamList = {
   Chat: {
     name: string;
     avatar: string;
   };
 };
+
+
 
 

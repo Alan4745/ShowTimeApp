@@ -12,10 +12,9 @@ import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
 import { useTranslation } from 'react-i18next';
-import API_BASE_URL from '../config/api';
 import LottieIcon from '../components/common/LottieIcon';
-import PopupAlert from '../components/modals/PopupAlert';
 import loadingAnimation from '../../assets/lottie/loading.json'; 
+import { fetchWithTimeout } from '../utils/fetchWithTimeout';
 
 export default function CreateAccountScreen() {
   const navigation = useNavigation();
@@ -32,7 +31,7 @@ export default function CreateAccountScreen() {
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  const endpoint = `${API_BASE_URL}/api/auth/check-availability`;
+  const endpoint = '/api/auth/check-availability';
 
   const validateEmail = (email: string) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
   const validatePassword = (password: string) => password.length >= 8;
@@ -95,9 +94,8 @@ export default function CreateAccountScreen() {
     setLoading(true);
 
     try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetchWithTimeout(endpoint, {
+        method: 'POST',        
         body: JSON.stringify({ email: email.trim().toLowerCase() }),
       });
 
@@ -117,10 +115,6 @@ export default function CreateAccountScreen() {
       });
 
       (navigation.navigate as any)({ name: 'SelectRole' });
-    } catch (error) {
-      console.error('Email availability check failed:', error);
-      setAlertMessage(t('errors.networkError') || 'Network error. Please try again.');
-      setAlertVisible(true);
     } finally {
       setLoading(false);
     }
@@ -189,13 +183,7 @@ export default function CreateAccountScreen() {
           <View style={styles.termsContainer}>
             <HelperText text={t('helperTexts.termsText')} />
           </View>
-        </BottomSection>
-
-        <PopupAlert
-          visible={alertVisible}
-          message={alertMessage}
-          onClose={() => setAlertVisible(false)}
-        />
+        </BottomSection>        
       </KeyboardAvoidingView>
     </ScreenLayout>
   );

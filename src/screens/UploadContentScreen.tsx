@@ -1,16 +1,22 @@
 import React, {useState} from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, KeyboardAvoidingView,
-    Platform, Keyboard,TouchableWithoutFeedback} from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image,
+    Keyboard} from 'react-native'
 import { useTranslation } from 'react-i18next';
-import {ChevronDown, FileVideo, Image as ImageIcon, FileText} from 'lucide-react-native';
+import { useNavigation } from '@react-navigation/native';
+import { ChevronDown, FileVideo, Image as ImageIcon, FileText } from 'lucide-react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { pick, types } from '@react-native-documents/picker';
 import { errorCodes, isErrorWithCode } from '@react-native-documents/picker';
-import { createThumbnail } from 'react-native-create-thumbnail';
+import { generateLocalThumbnail } from '../utils/generateLocalThumbnail'; 
+import { ScrollView } from 'react-native-gesture-handler';
+import { useAuth } from '../context/AuthContext';
 import ScreenLayout from '../components/common/ScreenLayout'
 import DropdownModal from '../components/modals/DropdownModal';
+import LottieIcon from '../components/common/LottieIcon';
+import loadingAnimation from '../../assets/lottie/loading.json';
 import categoriesByUserType from '../data/categoriesByUser';
-import { ScrollView } from 'react-native-gesture-handler';
+import API_BASE_URL from '../config/api';
+
 
 type MediaItem = {
   id: string;
@@ -28,14 +34,20 @@ type MediaItem = {
 
 export default function UploadContentScreen() {
     const {t} = useTranslation();
+    const navigation = useNavigation();
+    const { token, user } = useAuth();
     const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
     const [alertMessage, setAlertMessage] = useState('');
     const [alertVisible, setAlertVisible] = useState(false);
-    const darwinCategories = categoriesByUserType.darwin;
+    const darwinCategories = categoriesByUserType.admin;
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     const [mainCategory, setMainCategory] = useState<string | null>(null);
     const [subCategory, setSubCategory] = useState<string | null>(null);
     const [isMainCategoryModalVisible, setMainCategoryModalVisible] = useState(false);
     const [isSubCategoryModalVisible, setSubCategoryModalVisible] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const courseId = 1; //Reemplazar luego.
 
 
     // Selección de video desde galeria       
@@ -51,17 +63,28 @@ export default function UploadContentScreen() {
             if (response.didCancel || !response.assets || response.assets.length === 0) return;
 
             const video = response.assets[0];
-            try {
-            const thumbnail = await createThumbnail({ url: video.uri! });
-
-            const newVideo: MediaItem = {
+            const baseItem: MediaItem = {
                 id: `${Date.now()}`,
                 type: 'video',
-                uri: video.uri!,
-                thumbnail: thumbnail.path,
+                uri: video.uri!,                
             };
 
-            setMediaItems([newVideo]);
+            try {
+                const message = {
+                    id: baseItem.id,
+                    sender: user?.role,
+                    text: '',
+                    timestamp: new Date().toISOString(),
+                    fileUrl: baseItem.uri,
+                    fileType: 'video' as const,
+                };
+
+                const withThumb = await generateLocalThumbnail(message);              
+                const newVideo: MediaItem = {
+                    ...baseItem,
+                    thumbnail: withThumb.fileThumbnail,
+                };
+                setMediaItems([newVideo]);
 
             } catch (err) {
                 setAlertMessage(t('publishPost.alerts.thumbnailError'));
@@ -126,6 +149,86 @@ export default function UploadContentScreen() {
         }
         };
 
+    const handleUploadLesson = async () => {
+        if (!currentMedia) {
+            setAlertMessage("Selecciona un archivo primero");
+            setAlertVisible(true);
+            return;
+        }
+
+        setIsUploading(true) //Muestra Loader
+
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('subcategory', subCategory || "");
+        formData.append('format', currentMedia.type === 'video' ? 'Video' :
+                                currentMedia.type === 'image' ? 'Image' : 'PDF');
+
+        // Archivo principal
+        formData.append('media', {
+            uri: currentMedia.uri,
+            type: currentMedia.type === 'video' ? 'video/mp4' : 'image/jpeg',
+            name: `lesson_upload_${Date.now()}.${currentMedia.type === 'video' ? 'mp4' : 'jpg'}`,
+        } as any);
+
+        // Thumbnail opcional
+        if (currentMedia.thumbnail) {
+            formData.append('thumbnail', {
+            uri: currentMedia.thumbnail,
+            type: 'image/jpeg',
+            name: `thumbnail_${Date.now()}.jpg`,
+            } as any);
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/v1/courses/${courseId}/lessons/create`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Token ${token}`,
+                // No pongas 'Content-Type' → fetch lo hace solo
+            },
+            body: formData,
+            });
+
+            if (!response.ok) {
+                const errData = await response.text();
+                console.error('Error al subir lección:', errData);
+                setAlertMessage("Error al subir la lección");
+                setAlertVisible(true);
+                return;
+            }
+            // En caso se necesite usar la respuesta
+            //const data = await response.json();
+
+            // Espera 1 segundo para mostrar el loader un momento
+            setTimeout(() => {
+                setIsUploading(false);
+                navigation.goBack(); // volver a la pantalla anterior
+            }, 1000);                       
+        } catch (error) {
+            console.error('Error de red:', error);
+            setAlertMessage("Error de red al subir la lección");
+            setAlertVisible(true);
+            setIsUploading(false);
+        }
+    };
+    
+    // Muestra animación al enviar formulario
+    if (isUploading) {
+        return (
+            <View style={styles.loadingContainer}>
+            <LottieIcon
+                source={loadingAnimation}
+                size={200}
+                loop={true}
+                autoPlay={true}
+            />
+            <Text style={styles.loadingText}>Subiendo contenido...</Text>
+            </View>
+        );
+    }
+    
     const currentMedia = mediaItems[0];
     return (  
         <ScreenLayout>
@@ -166,6 +269,8 @@ export default function UploadContentScreen() {
                         style={[styles.titleInput]}
                         placeholder={t('account.placeholders.inputTitle')}
                         placeholderTextColor="#929292"
+                        value = {title}
+                        onChangeText={setTitle}
                         
                     />
                 </View>   
@@ -175,6 +280,8 @@ export default function UploadContentScreen() {
                         style={[styles.descriptionInput]}
                         placeholder={t('account.placeholders.inputDescription')}
                         placeholderTextColor="#929292"
+                        value = {description}
+                        onChangeText={setDescription}
                         
                     />
                 </View>   
@@ -233,7 +340,7 @@ export default function UploadContentScreen() {
 
             {/* Footer */}
             <View style = {styles.footer}>
-                <TouchableOpacity style={styles.uploadButton} >
+                <TouchableOpacity style={styles.uploadButton} onPress={handleUploadLesson} >
                     <Text style={styles.uploadButtonText}>{t('account.buttons.uploadContent')}</Text>
                 </TouchableOpacity>
                 <Text style = {styles.helperText}>{t('helperTexts.uploadHelperText1')}</Text>
@@ -247,6 +354,7 @@ export default function UploadContentScreen() {
                 title={t('account.titles.selectMainCategory')}
                 items={Object.keys(darwinCategories)}
                 onSelect={(selectedCategory) => {
+                    console.log('📘 Main category seleccionada:', selectedCategory);
                     setMainCategory(selectedCategory);
                     setSubCategory(null); // Reset subcategory when main changes
                     setMainCategoryModalVisible(false);
@@ -261,6 +369,7 @@ export default function UploadContentScreen() {
                 title={t('account.titles.selectSubcategory')}
                 items={mainCategory ? (darwinCategories as any)[mainCategory] : []}
                 onSelect={(selectedSubCategory) => {
+                    console.log('📗 Subcategory seleccionada:', selectedSubCategory);
                     setSubCategory(selectedSubCategory);
                     setSubCategoryModalVisible(false);
                 }}
@@ -432,5 +541,18 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         fontSize: 14,
         color: "#FFFFFF",         
-    }
+    },
+    loadingContainer: {
+        flex: 1,
+        backgroundColor: '#000',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        fontFamily: "AnonymousPro-Regular",
+        fontWeight: "400",
+        color: '#fff',
+        marginTop: 20,
+        fontSize: 18,
+    },
 })

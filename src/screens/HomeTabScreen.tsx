@@ -8,6 +8,7 @@ import LottieIcon from '../components/common/LottieIcon';
 import { useAuth } from '../context/AuthContext';
 import loadingAnimation from '../../assets/lottie/loading.json'
 import { buildMediaUrl } from '../utils/urlHelpers';
+import { fetchWithTimeout } from '../utils/fetchWithTimeout';
 import API_BASE_URL from '../config/api';
 
 type MediaItem = {
@@ -86,12 +87,9 @@ export default function HomeTabScreen() {
     
     try {
       const method = likedByMe ? 'DELETE' : 'POST';
-      const response = await fetch(`${API_BASE_URL}/api/posts/${postId}/like/`, {
-        method,
-        headers: {
-          Authorization: `Token ${token}`,
-          'Content-Type': 'application/json',
-        },
+      //fetchWithTimeout maneja el token y headers
+      const response = await fetchWithTimeout(`/api/posts/${postId}/like/`, {
+        method,        
       });
 
       const data = await response.json();
@@ -121,9 +119,9 @@ export default function HomeTabScreen() {
         );
       }
     } catch (err) {
-      console.error('Error al hacer toggle de like:', err);
+        console.error('Error al hacer toggle de like:', err);
     } finally {
-      setLikingPostId(null);
+        setLikingPostId(null);
     }
   };
 
@@ -131,10 +129,7 @@ export default function HomeTabScreen() {
   const fetchPosts = async (url: string, append = false) => {
     if (!append) setIsInitialLoading(true);
     try {
-      const res = await fetch(url, {
-        headers: { Authorization: `Token ${token}` },
-      });
-
+      const res = await fetchWithTimeout(url.replace(API_BASE_URL, '')); // ← para mantener consistencia con otros endpointsconst res = await fetchWithTimeout(url, {      
       const text = await res.text();
 
       if (text.startsWith('<')) {
@@ -190,9 +185,9 @@ export default function HomeTabScreen() {
 
       setNextPageUrl(json.next || null);
     } catch (err) {
-      console.error('Error al cargar posts:', err);
+        console.error('Error al cargar posts:', err);
     } finally{
-      if (!append) setIsInitialLoading(false);
+        if (!append) setIsInitialLoading(false);
     }
   };
 
@@ -224,12 +219,8 @@ export default function HomeTabScreen() {
   //Elimina el Post, solo los que pertencen al usuario logeado
   const handleDeletePost = async (postId: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/posts/${postId}/`, {
+      const response = await fetchWithTimeout(`/api/posts/${postId}/`, {
         method: 'DELETE',
-        headers: {
-          Authorization: `Token ${token}`,
-          'Content-Type': 'application/json',
-        },
       });
 
       if (response.ok) {

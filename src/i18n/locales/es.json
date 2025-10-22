@@ -172,6 +172,8 @@
   "errors": {
     "emailRequired": "El correo electrónico es requerido",
     "invalidEmail": "Por favor ingresa un correo electrónico válido",
+    "emailPassewordRequired": "Por favor ingres correo y contraseña",
+    "invalidEmailOrPassword": "Correo o contraseña inválidos",
     "passwordRequired": "La contraseña es requerida",
     "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
     "confirmPasswordRequired": "Por favor confirma tu contraseña",
@@ -200,7 +202,11 @@
     "galleryAccessError": "No se pudo acceder a la galería.",
     "cameraAccessError": "No se pudo acceder a la cámara.",
     "invalidImageType": "Solo se permiten imágenes JPEG, JPG o PNG",
-    "emailTaken": "Este correo ya está registrado" 
+    "emailTaken": "Este correo ya está registrado",
+    "loginFailed": "Falló inicio de sesión",
+    "connectionTimedOut": "Tiempo de conexión agotado",
+    "sessionExpired": "Tu sesión ha expirado, Vuelve a iniciar sesión",
+    "unexpectedError": "Error inesperado"
   },
   "quickSelect": "Selección rápida (Demo):",
   "positions": {

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
 import PopupAlert from './PopupAlert';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react-native'
 import LottieIcon from '../common/LottieIcon';
 import loadingAnimation from '../../../assets/lottie/loading.json';
-import API_BASE_URL from '../../config/api';
+import { fetchWithTimeout } from '../../utils/fetchWithTimeout';
+import { buildMediaUrl } from '../../utils/urlHelpers';
+
 
 interface LoginModalProps {
   visible: boolean;
@@ -24,8 +26,8 @@ export default function LoginModal({ visible, onClose, onSuccess }: LoginModalPr
   const [isLoading, setIsLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [touchedEmail, setTouchedEmail] = useState(false);
-  const isFormValid = email.trim() && password.trim() && !emailError;
-  const endpoint = `${API_BASE_URL}/api/auth/login`;
+  const isFormValid = email.trim() && password.trim() && !emailError;  
+  const endpoint = '/api/auth/login';
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -53,37 +55,34 @@ export default function LoginModal({ visible, onClose, onSuccess }: LoginModalPr
     Keyboard.dismiss();
 
     if (!email || !password) {
-      showAlert('Please enter email and password');
+      showAlert(t('errors.emailPassewordRequired'));
       return;
     }
 
     setIsLoading(true);
 
     try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetchWithTimeout(endpoint, {
+        method: 'POST',        
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
-      console.log("Respuesta login usuario:", data.user);
+      const data = await response.json();      
 
       if (!response.ok) {
         if (response.status === 401 && data.error === 'invalid_credentials') {
-          showAlert('Invalid email or password');
+          showAlert(t('errors.invalidEmailOrPassword'));
         } else {
-          showAlert(data.error || 'Login failed');
+          showAlert(t('errors.loginFailed'));
         }
         return;
       }
 
       // Guarda en AuthContext
-      //await login(data.token, data.user);
       await login(data.token, {
         ...data.user,
         studentProfileImage: data.user.studentProfileImage
-          ? `${API_BASE_URL}/media/${data.user.studentProfileImage}`
+          ? buildMediaUrl(data.user.studentProfileImage)
           : '',
       });
 
@@ -94,9 +93,8 @@ export default function LoginModal({ visible, onClose, onSuccess }: LoginModalPr
       setAlertMessage('');
       onClose(); // Cierra el modal
       onSuccess?.(); // Llama a navegación si se pasó
-    } catch (error) {      
-      showAlert('Network error. Please try again later.');
     } finally {
+      // 🔹 No hay catch porque errores globales ya los maneja fetchWithTimeout
       setIsLoading(false);
     }
   };
@@ -108,14 +106,16 @@ export default function LoginModal({ visible, onClose, onSuccess }: LoginModalPr
       setAlertMessage('');
       onClose();  
   }
+  if (!visible) return null; // No renderiza nada si no está visible
+
   return (
-    <Modal visible={visible} animationType="slide" transparent>
+    <View style={styles.fullscreenOverlay}>
       <View style={styles.overlay}>
         <View style={styles.modalBox}>
-          <TouchableOpacity style = {styles.close} onPress={handleClose}>
-            <X size={22} color="#FFFFFF"/>
+          <TouchableOpacity style={styles.close} onPress={handleClose}>
+            <X size={22} color="#FFFFFF" />
           </TouchableOpacity>
-          
+
           <Text style={styles.title}>{t('registration.signIn')}</Text>
 
           <TextInput
@@ -127,7 +127,7 @@ export default function LoginModal({ visible, onClose, onSuccess }: LoginModalPr
             onChangeText={text => {
               setEmail(text);
               if (!touchedEmail) setTouchedEmail(true);
-            }}            
+            }}
           />
           {touchedEmail && emailError ? (
             <Text style={styles.errorText}>{emailError}</Text>
@@ -140,26 +140,27 @@ export default function LoginModal({ visible, onClose, onSuccess }: LoginModalPr
             value={password}
             onChangeText={setPassword}
           />
-            <View style = {styles.buttonContainer}>
-              <TouchableOpacity 
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                styles.loginButton,
+                !isFormValid && styles.disabledButton,
+              ]}
+              onPress={handleLogin}
+              disabled={!isFormValid}
+            >
+              <Text
                 style={[
-                  styles.button, 
-                  styles.loginButton,
-                  !isFormValid && styles.disabledButton
-                ]} 
-                onPress={handleLogin}
-                disabled={!isFormValid}
+                  styles.buttonText,
+                  !isFormValid && { color: '#FFFFFF' },
+                ]}
               >
-                <Text 
-                  style={[
-                    styles.buttonText,
-                    !isFormValid && {color: "#FFFFFF"}
-                  ]}
-                >
-                  {t('registration.signIn')}
-                </Text>
-              </TouchableOpacity>                
-            </View>  
+                {t('registration.signIn')}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {isLoading && (
@@ -169,23 +170,35 @@ export default function LoginModal({ visible, onClose, onSuccess }: LoginModalPr
               size={100}
               loop={true}
               autoPlay={true}
-            />            
+            />
           </View>
         )}
 
-        <PopupAlert 
-          visible={alertVisible} 
-          message={alertMessage} 
-          onClose={() => setAlertVisible(false)} />
+        {/* 🔹 Solo se usa para errores del login, no de red o sesión */}
+        <PopupAlert
+          visible={alertVisible}
+          message={alertMessage}
+          onClose={() => setAlertVisible(false)}
+        />
       </View>
-    </Modal>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
+  fullscreenOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: '#000000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999, // asegúrate que esté por encima del contenido
+  },
+  overlay: {
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
@@ -195,6 +208,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: '100%',
     padding: 24,
+    shadowColor: '#000',
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+    elevation: 10,
   },
   close: {
     alignSelf: "flex-end"

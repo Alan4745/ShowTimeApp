@@ -9,7 +9,7 @@ import SavedExercisesCalendar from '../components/common/SavedExercisesCalendar'
 import SettingsSection from '../components/common/SettingsSection'
 import UploadSection from '../components/common/UploadSection'
 import { buildMediaUrl } from '../utils/urlHelpers'
-import API_BASE_URL from '../config/api'
+import { fetchWithTimeout } from '../utils/fetchWithTimeout'
 
 type ButtonKey = "coach" | "save" | "settings" | "students" | "upload";
 
@@ -20,8 +20,8 @@ export default function AccountScreen() {
   const navigation = useNavigation();  
   const [dataList, setDataList] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [activeButton, setActiveButton] = useState<ButtonKey | null>(null);
-  
+  const [activeButton, setActiveButton] = useState<ButtonKey | null>(null);  
+
   // Define qué botones mostrar según tipo de usuario
   const buttons: ButtonKey[] = 
     userType === "student" ? ["coach", "save", "settings"] : ["students", "upload", "settings"];
@@ -42,9 +42,9 @@ export default function AccountScreen() {
         let endpoint: string | null = null;
 
         if (userType === "student" && activeButton === "coach") {
-          endpoint = `${API_BASE_URL}/api/v1/chat/coaches/active/`;
+          endpoint = `/api/v1/chat/coaches/active/`;
         } else if ((userType === "coach" || userType === "admin") && activeButton === "students") {
-          endpoint = `${API_BASE_URL}/api/v1/chat/students/active/`;
+          endpoint = `/api/v1/chat/students/active/`;
         }
 
         if (!endpoint) {
@@ -53,12 +53,7 @@ export default function AccountScreen() {
           return;
         }
 
-        const res = await fetch(endpoint, {
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const res = await fetchWithTimeout(endpoint);
 
         if (!res.ok) {
           console.error("Error fetching list", await res.text());

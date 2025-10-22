@@ -14,8 +14,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone'
 import { buildMediaUrl } from '../utils/urlHelpers';
 import { generateLocalThumbnail } from '../utils/generateLocalThumbnail';
-import API_BASE_URL from '../config/api';
-
+import { fetchWithTimeout } from '../utils/fetchWithTimeout';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -27,7 +26,7 @@ type Message = {
     timestamp: string;
     fileUrl?: string;
     fileName?: string;
-    fileType?: 'image' | 'video' | 'pdf';
+    fileType?: 'image' | 'video' | 'pdf' | 'audio';
     fileThumbnail?: string;
 };
 
@@ -60,7 +59,8 @@ export default function ChatScreen() {
     const [initialAttachmentCaption, setInitialAttachmentCaption] = useState("");
     const flatListRef = useRef<FlatList>(null);    
     const [messages, setMessages] = useState<ChatItem[]>([]);
-    const [sendingAttachment, setSendingAttachment] = useState(false);   
+    const [sendingAttachment, setSendingAttachment] = useState(false);    
+    
 
     // Scroll hasta el final
     useEffect(() => {
@@ -78,25 +78,34 @@ export default function ChatScreen() {
 
         if (userRole === 'student') {
             if (recipientRole === 'coach') {
-            return {
-                fetchUrl: `${API_BASE_URL}/api/v1/chat/messages/coach/${id}/`,
-                sendUrl: `${API_BASE_URL}/api/v1/chat/messages/coach/${id}/send/`
-            };
+                return {
+                    fetchUrl: `/api/v1/chat/messages/coach/${id}/`,
+                    sendUrl: `/api/v1/chat/messages/coach/${id}/send/`
+                };
             }
             if (recipientRole === 'admin') {
-            return {
-                fetchUrl: `${API_BASE_URL}/api/v1/chat/messages/support/`,
-                sendUrl: `${API_BASE_URL}/api/v1/chat/messages/support/send/`
-            };
+                return {
+                    fetchUrl: `/api/v1/chat/messages/support/`,
+                    sendUrl: `/api/v1/chat/messages/support/send/`
+                };
             }
         }
 
         if (userRole === 'coach' || userRole === 'admin') {
             if (recipientRole === 'student') {
-            return {
-                fetchUrl: `${API_BASE_URL}/api/v1/chat/messages/student/${id}/`,
-                sendUrl: `${API_BASE_URL}/api/v1/chat/messages/student/${id}/send/`
-            };
+                return {
+                    fetchUrl: `/api/v1/chat/messages/student/${id}/`,
+                    sendUrl: `/api/v1/chat/messages/student/${id}/send/`
+                };
+            }
+        }
+
+        if (userRole === 'coach') {
+            if (recipientRole === 'admin') {
+                return {
+                    fetchUrl: `/api/v1/chat/messages/support/`,
+                    sendUrl: `/api/v1/chat/messages/support/send/`
+                };
             }
         }
 
@@ -105,7 +114,7 @@ export default function ChatScreen() {
 
     // Usa fetchMessages para hacer una carga inicial de mensajes, luego cada minuto
     useEffect(() => {
-        // Llamada inicial        
+        // Llamada inicial 
         fetchMessages();        
 
         // Intervalo cada 60 segundos
@@ -118,25 +127,19 @@ export default function ChatScreen() {
     }, [id, recipientRole]);
 
     const fetchMessages = async () => {
-        const { fetchUrl } = getChatEndpoints();
-        console.log("Fetching messages from:", fetchUrl);    
+        const { fetchUrl } = getChatEndpoints();        
             
         if (!fetchUrl) return;
 
         try {
-            const res = await fetch(fetchUrl, {
-            headers: {
-                Authorization: `Token ${token}`,
-                'Content-Type': 'application/json',
-            },
-            });
+            const res = await fetchWithTimeout(fetchUrl);
 
             if (!res.ok) {
-            console.error("Error fetching messages", await res.text());
-            return;
+                console.error("Error fetching messages", await res.text());
+                return;
             }
 
-            const json = await res.json();
+            const json = await res.json();            
             const rawMessages = Array.isArray(json) ? json : json.messages;
 
             // Paso 1: construir los mensaje base
@@ -234,7 +237,7 @@ export default function ChatScreen() {
         const trimmed = inputText.trim();
         if (!trimmed) return;    
 
-        const { sendUrl } = getChatEndpoints();
+        const { sendUrl } = getChatEndpoints();        
 
         if (!sendUrl) {
             console.error("Missing send URL for current user and recipient roles.");
@@ -242,14 +245,10 @@ export default function ChatScreen() {
         }
 
         try {
-            const res = await fetch(sendUrl, {
-            method: 'POST',
-            headers: {
-                Authorization: `Token ${token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ text: trimmed }),
-            });
+            const res = await fetchWithTimeout(sendUrl, {
+                method: 'POST',            
+                body: JSON.stringify({ text: trimmed }),
+            }, 30000);
 
             if (!res.ok) {
             console.error("Error sending message", await res.text());
@@ -529,14 +528,10 @@ export default function ChatScreen() {
                         } as any);
 
                         // Subir archivo
-                        const uploadResponse = await fetch(`${API_BASE_URL}/api/v1/chat/upload/`, {
-                        method: 'POST',
-                        headers: {
-                            Authorization: `Token ${token}`,
-                            // NO Content-Type aquí!
-                        },
-                        body: formData,
-                        });
+                        const uploadResponse = await fetchWithTimeout(`/api/v1/chat/upload/`, {
+                            method: 'POST',
+                            body: formData,
+                        }, 120000);
 
                         if (!uploadResponse.ok) {
                         const err = await uploadResponse.text();
@@ -556,19 +551,15 @@ export default function ChatScreen() {
                         size: uploaded.size,
                         };
 
-                        const messageResponse = await fetch(sendUrl, {
-                        method: 'POST',
-                        headers: {
-                            Authorization: `Token ${token}`,
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(messagePayload),
-                        });
+                        const messageResponse = await fetchWithTimeout(sendUrl, {
+                            method: 'POST',
+                            body: JSON.stringify(messagePayload),
+                        }, 30000);
 
                         if (!messageResponse.ok) {
-                        const err = await messageResponse.text();
-                        console.error("Error sending message with file:", err);
-                        setSendingAttachment(false);
+                            const err = await messageResponse.text();
+                            console.error("Error sending message with file:", err);
+                            setSendingAttachment(false);
                         return;
                         }
 
@@ -613,22 +604,27 @@ export default function ChatScreen() {
             )}
 
             {sendingAttachment && (
-                <View style={{
+                <View
+                    style={{
                     position: 'absolute',
-                    bottom: 90,
+                    top: 0,
                     left: 0,
                     right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0, 0, 0, 0.6)', // semitransparente
                     alignItems: 'center',
                     justifyContent: 'center',
-                }}>
-                <LottieIcon
+                    zIndex: 999, 
+                    }}
+                >
+                    <LottieIcon
                     source={require('../../assets/lottie/loading.json')}
-                    size={50}
+                    size={150} 
                     loop
                     autoPlay
                     />
                 </View>
-                )}
+            )}
         </ScreenLayout>
     );
 }

@@ -1,36 +1,21 @@
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image, Keyboard } from 'react-native';
 import React, {useState, useEffect} from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Keyboard } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
-import ScreenLayout from '../components/common/ScreenLayout';
+import { useAuth } from '../context/AuthContext';
 import {Globe, ChevronDown, FileVideo, Image as ImageIcon, FileText} from 'lucide-react-native';
+import { MediaItem } from '../types/media';
+import { selectImages, selectVideo, selectPDF } from '../utils/mediaPicker';
+import { buildMediaUrl } from '../utils/urlHelpers';
 import DropdownModal from '../components/modals/DropdownModal';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { createThumbnail } from 'react-native-create-thumbnail';
+import ScreenLayout from '../components/common/ScreenLayout';
 import MediaGrid from '../components/common/MediaGrid';
-import { pick, types } from '@react-native-documents/picker';
-import { errorCodes, isErrorWithCode } from '@react-native-documents/picker';
 import PopupConfirm from '../components/modals/PopupConfirm';
 import PopupAlert from '../components/modals/PopupAlert';
 import LottieIcon from '../components/common/LottieIcon';
 import categoriesByUserType, {UserType}  from '../data/categoriesByUser';
-import { useAuth } from '../context/AuthContext';
-import API_BASE_URL from '../config/api';
+import { fetchWithTimeout } from '../utils/fetchWithTimeout';
 
-
-type MediaItem = {
-  id: string;
-  mediaType: 'image' | 'video' | 'pdf';
-  uri: string;
-  thumbnail?: string;   
-  title?: string;
-  author?: string;
-  description?: string;
-  subcategory?: string;
-  format?: string;
-  likes?: number;
-  comments?: number;
-};
 
 export default function PublishPostScreen({route}) {
     const { t } = useTranslation();  
@@ -49,7 +34,7 @@ export default function PublishPostScreen({route}) {
     const [darwinMainCategory, setDarwinMainCategory] = useState<string | null>(null);
     const [darwinSubcategories, setDarwinSubcategories] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const { token, user } = useAuth();
+    const { user } = useAuth();
     const userType = user?.role as UserType;
     const isDarwin  = userType === 'admin';
     const categories = isDarwin? Object.keys(categoriesByUserType.admin) : categoriesByUserType[userType] ?? categoriesByUserType['student'];           
@@ -66,8 +51,8 @@ export default function PublishPostScreen({route}) {
             const convertedMedia = (postToEdit.media || []).map((m, index) => ({
                 id: `${Date.now()}-${index}`,
                 mediaType: m.type,
-                uri: m.uri.startsWith('/') ? `${API_BASE_URL}${m.uri}` : m.uri,
-                thumbnail: m.thumbnail || '',
+                uri: buildMediaUrl(m.uri),
+                thumbnail: buildMediaUrl(m.thumbnail) || '',
             }));
 
             setMediaItems(convertedMedia);
@@ -151,20 +136,16 @@ export default function PublishPostScreen({route}) {
 
             });  
             
-            const url = postToEdit
-            ? `${API_BASE_URL}/api/posts/${postToEdit.id}/`
-            : `${API_BASE_URL}/api/posts/`;
+            const endpoint = postToEdit
+            ? `/api/posts/${postToEdit.id}/`
+            : `/api/posts/`;
 
             const method = postToEdit ? 'PATCH' : 'POST';
 
-            const response = await fetch(url, {
-            method,
-            headers: {
-                'Authorization': `Token ${token}`,
-                // NO pongas 'Content-Type', fetch lo gestiona solo para FormData
-            },
-            body: formData,
-            });
+            const response = await fetchWithTimeout(endpoint, {
+                method,
+                body: formData,
+            }, 120000);
 
             if (!response.ok) {
                 const contentType = response.headers.get("content-type");
@@ -190,14 +171,11 @@ export default function PublishPostScreen({route}) {
                 (navigation as any).navigate("Home")}, 1);
 
         } catch (error) {
-            console.error("Error de red al publicar:", error);
-            setAlertMessage(t('publishPost.alerts.networkError'));
-            setAlertVisible(true);
+            console.error("Error de red al publicar:", error);            
         } finally {
-            if (isLoading) setIsLoading(false);                
+            setIsLoading(false);                
         }
-    };
-          
+    };          
 
     // Selección de Categoria
     const handleCategorySelect = (categoryKey: string) => {
@@ -220,99 +198,46 @@ export default function PublishPostScreen({route}) {
 
     
     // Selección de video desde galeria       
-    const handleVideoSelect = () => {
+    const handleVideoSelect = async () => {
         Keyboard.dismiss();
-        const options = {
-            mediaType: 'video' as const,
-            videoQuality: 'high' as const,
-            selectionLimit: 1,
-        };
-
-        launchImageLibrary(options, async (response) => {
-            if (response.didCancel || !response.assets || response.assets.length === 0) return;
-            const video = response.assets[0];
-            // inicia animación de loading
-            setIsGeneratingThumbnail(true);            
-            try {
-            const thumbnail = await createThumbnail({ url: video.uri! });
-
-            const newVideo: MediaItem = {
-                id: `${Date.now()}`,
-                mediaType: 'video',
-                uri: video.uri!,
-                thumbnail: thumbnail.path,
-            };
-
-            setMediaItems(prev => [...prev, newVideo]);
-            } catch (err) {
-                setAlertMessage(t('publishPost.alerts.thumbnailError'));
-                setAlertVisible(true);
-            } finally {
-                setIsGeneratingThumbnail(false);
-            }
-        });
-    };    
+        setIsGeneratingThumbnail(true);
+        try {
+            const videos = await selectVideo();
+            setMediaItems(prev => [...prev, ...videos]);
+        } catch {
+            setAlertMessage(t('publishPost.alerts.thumbnailError'));
+            setAlertVisible(true);
+        } finally {
+            setIsGeneratingThumbnail(false);
+        }
+    };       
 
     // Selección de imagenes desde la galería
-    const handleImageSelect = () => {
+    const handleImageSelect = async () => {
         Keyboard.dismiss();
-        const options = {
-            mediaType: 'photo' as const,
-            selectionLimit: 0, // 0 = múltiples
-        };
-
-        launchImageLibrary(options, (response) => {
-            if (response.didCancel || !response.assets) return;
-
-            // inicia animación de loading
-            setIsGeneratingThumbnail(true);            
-
-            const images: MediaItem[] = response.assets.map((asset, index) => ({
-            id: `${Date.now()}-${index}`,
-            mediaType: 'image',
-            uri: asset.uri!,
-            }));
-
-            setMediaItems(prev => [...prev, ...images]);           
+        setIsGeneratingThumbnail(true);
+        try {
+            const images = await selectImages();
+            setMediaItems(prev => [...prev, ...images]);
+        } finally {
             setIsGeneratingThumbnail(false);
-        });
+        }
     };
 
     // Selección de pdf desde la galeria
     const handlePDFSelect = async () => {
         Keyboard.dismiss();
-
+        setIsGeneratingThumbnail(true);
         try {
-            const [res] = await pick({ type: [types.pdf] });
-
-            if (!res) throw new Error("No PDF selected");
-
-            // Empieza el loading al volver del picker
-            setIsGeneratingThumbnail(true);            
-
-            const pdfItem: MediaItem = {
-                id: `${Date.now()}`,
-                mediaType: 'pdf',
-                uri: res.uri,
-                thumbnail: Image.resolveAssetSource(require('../../assets/img/Adobe.png')).uri,
-            };
-
-            setMediaItems(prev => [...prev, pdfItem]);
+            const pdfs = await selectPDF();
+            setMediaItems(prev => [...prev, ...pdfs]);
+        } catch {
+            setAlertMessage(t('publishPost.alerts.pdfError'));
+            setAlertVisible(true);
+        } finally {
             setIsGeneratingThumbnail(false);
-            
-
-        } catch (err) {
-            if (isErrorWithCode(err)) {
-                if (err.code !== errorCodes.OPERATION_CANCELED) {
-                    setAlertMessage(t('publishPost.alerts.pdfError'));
-                    setAlertVisible(true);
-                }
-            } else {
-                setAlertMessage(t('publishPost.alerts.pdfError'));
-                setAlertVisible(true);
-            }
         }
-    };      
+        };      
     
     // Función para eliminar media del post
     const confirmDeleteMedia = () => {

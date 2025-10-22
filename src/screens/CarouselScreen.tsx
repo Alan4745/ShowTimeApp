@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, Dimensions, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
+import LoginModal from '../components/modals/LoginModal';
 
 const { width, height } = Dimensions.get('window');
 
@@ -19,6 +20,7 @@ export default function CarouselScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const {t} = useTranslation();
   const navigation = useNavigation();
+  const [loginVisible, setLoginVisible] = useState(false);
 
   // Temporizador para carousel
   useEffect(() => {
@@ -37,41 +39,50 @@ export default function CarouselScreen() {
 
   return (
     <ImageBackground
-        source={images[currentIndex]}
-        style={styles.backgroundImage}
-        resizeMode='cover'
+      source={images[currentIndex]}
+      style={styles.backgroundImage}
+      resizeMode='cover'
     >
-        <View style={styles.container}>
-            <View style={styles.headerContainer}>
-                <Image
-                source={require('../../assets/img/LogoNuevo.png')}
-                style={styles.logoImage}
-                resizeMode="contain"
-                />
-            </View>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+            <Image
+            source={require('../../assets/img/LogoNuevo.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+            />
+        </View>
 
-            <View style={styles.bottomContent}>
-                <View style={styles.sloganTextContainer}>
-                    <Text style={styles.sloganText}>{t('carousel.text.line1')}</Text>
-                    <Text style={styles.sloganText}>{t('carousel.text.line2')}</Text>
-                </View>
+        <View style={styles.bottomContent}>
+          <View style={styles.sloganTextContainer}>
+              <Text style={styles.sloganText}>{t('carousel.text.line1')}</Text>
+              <Text style={styles.sloganText}>{t('carousel.text.line2')}</Text>
+          </View>
 
-                <TouchableOpacity style={styles.getStartedButton} onPress={handleGetStarted}>
-                                <Text style={styles.buttonText}>
-                                {t('carousel.buttons.getStarted')}
-                                </Text>
-                </TouchableOpacity>
+          <TouchableOpacity style={styles.getStartedButton} onPress={handleGetStarted}>
+                          <Text style={styles.buttonText}>
+                          {t('carousel.buttons.getStarted')}
+                          </Text>
+          </TouchableOpacity>
 
-                <TouchableOpacity style={styles.accessAccountButton} onPress={() => {}}>
-                                <Text style={styles.buttonText}>
-                                {t('carousel.buttons.accessAccount')}
-                                </Text>
-                </TouchableOpacity>
+          <TouchableOpacity style={styles.accessAccountButton} onPress={() => {setLoginVisible(true)}}>
+                          <Text style={styles.buttonText}>
+                          {t('carousel.buttons.accessAccount')}
+                          </Text>
+          </TouchableOpacity>
 
-                <Text style={styles.footerText}>{t('carousel.footerText')}</Text>
+          <Text style={styles.footerText}>{t('carousel.footerText')}</Text>
 
-            </View>            
-        </View>        
+        </View> 
+      </View> 
+      <LoginModal
+        visible={loginVisible}
+        onClose={() => setLoginVisible(false)}
+        onSuccess={() => {
+          setLoginVisible(false);
+          // si quieres navegar al home, dashboard, etc. después del login:
+          //(navigation.navigate as any)({ name: 'Home' });
+        }}
+      />       
     </ImageBackground>          
   );
 }

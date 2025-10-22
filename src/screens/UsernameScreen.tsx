@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useRegistration } from '../context/RegistrationContext';
@@ -13,87 +13,80 @@ import HelperText from '../components/common/HelperText';
 import PopupAlert from '../components/modals/PopupAlert';
 import LottieIcon from '../components/common/LottieIcon';
 import loadingAnimation from '../../assets/lottie/loading.json';
-import API_BASE_URL from '../config/api';
+import { fetchWithTimeout } from '../utils/fetchWithTimeout';
 
 export default function UsernameScreen() {
-  const endpoint = `${API_BASE_URL}/api/auth/check-availability`;
   const navigation = useNavigation();
   const { t } = useTranslation();
-  const [username, setUsername] = useState('');
   const { data, updateData } = useRegistration();
-  const isCoach = data.role === "coach";
-  const totalSteps = isCoach ? 9 : 13;
+  const isCoach = data.role === 'coach';
+  const totalSteps = isCoach ? 9 : 13;  
+  const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const [checkingAvailability, setCheckingAvailability] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-
+  const endpoint = '/api/auth/check-availability';
+  
   const showAlert = (message: string) => {
     setAlertMessage(message);
     setAlertVisible(true);
   };
 
-  
   const handleUsernameChange = (text: string) => {
     setUsername(text);
-    setError(''); // Limpia errores anteriores
+    setError('');
 
     const trimmed = text.trim();
-
-    // Validación visual de largo mínimo
     if (trimmed.length > 0 && trimmed.length < 3) {
       setError(t('errors.usernameTooShort'));
-    }     
+    }
   };
 
   const handleContinue = async () => {
-    if (!username.trim()) {
-      Alert.alert(t('errors.usernameRequired'));
+    const trimmedUsername = username.trim();
+
+    if (!trimmedUsername) {
+      showAlert(t('errors.usernameRequired'));
       return;
     }
 
-    if (username.length < 3) {
-      Alert.alert(t('errors.usernameTooShort'));
+    if (trimmedUsername.length < 3) {
+      showAlert(t('errors.usernameTooShort'));
       return;
     }
 
-    try {
-      setCheckingAvailability(true);
+    setCheckingAvailability(true);
 
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username.trim() }),
-      });
+    // No necesitas try/catch aquí los maneja fetchWithTimeout
+    const response = await fetchWithTimeout(endpoint, {
+      method: 'POST',
+      body: JSON.stringify({ username: trimmedUsername }),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (!response.ok) {
-        showAlert(t('errors.usernameCheckFailed') || 'Error checking username');
-        return;
-      }
-
-      if (!data.usernameAvailable) {
-        showAlert(t('errors.usernameTaken') || 'Username is already taken');
-        return;
-      }
-
-      // Si todo OK
-      updateData({ username: username.trim() });
-      (navigation as any).navigate('Gender');
-
-    } catch (e) {
-      console.error('Error checking username availability:', e);
-      showAlert(t('errors.networkError') || 'Network error. Please try again.');
-    } finally {
+    if (!response.ok) {
+      showAlert(t('errors.usernameCheckFailed'));
       setCheckingAvailability(false);
+      return;
     }
-  };
 
+    if (!data.usernameAvailable) {
+      showAlert(t('errors.usernameTaken'));
+      setCheckingAvailability(false);
+      return;
+    }
+
+    // Si el username está disponible
+    updateData({ username: trimmedUsername });
+    (navigation as any).navigate('Gender');
+    setCheckingAvailability(false);      
+  };
 
   return (
     <ScreenLayout currentStep={2} totalSteps={totalSteps}>
-      <ContentContainer>        
+      <ContentContainer>
         <ScreenTitle title={t('registration.username')} />
         <FormInput
           placeholder={t('placeholders.chooseUsername')}
@@ -106,14 +99,15 @@ export default function UsernameScreen() {
         />
       </ContentContainer>
 
-      <BottomSection >
+      <BottomSection>
         {checkingAvailability ? (
           <LottieIcon source={loadingAnimation} size={48} loop autoPlay />
         ) : (
           <ContinueButton onPress={handleContinue} disabled={!username.trim()} />
         )}
-        <HelperText text={t('helperTexts.helperText')}/>
+        <HelperText text={t('helperTexts.helperText')} />
       </BottomSection>
+
       <PopupAlert
         visible={alertVisible}
         message={alertMessage}
@@ -123,7 +117,4 @@ export default function UsernameScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-   
-});
-
+const styles = StyleSheet.create({});

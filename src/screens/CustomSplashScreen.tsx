@@ -1,22 +1,12 @@
 // src/screens/CustomSplashScreen.tsx
 import React, { useEffect } from 'react';
 import { View, Image, Text, StyleSheet, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
 const { width, height } = Dimensions.get('window');
 
-export default function CustomSplashScreen() {
-  const navigation = useNavigation();
-  const { t } = useTranslation();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      (navigation as any).navigate('Carousel');
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [navigation]);
+export default function CustomSplashScreen() {  
+  const { t } = useTranslation();  
 
   return (
     <View style={styles.container}>

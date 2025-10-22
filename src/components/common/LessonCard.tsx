@@ -3,10 +3,11 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'rea
 import { useTranslation } from 'react-i18next';
 import { PlayCircle, Mic } from 'lucide-react-native';
 import { createThumbnail } from 'react-native-create-thumbnail';
+import { buildMediaUrl } from '../../utils/urlHelpers';
 
 type MediaItem = {
   id: string;
-  type: 'image' | 'video' | 'audio';
+  mediaType: 'image' | 'video' | 'audio';
   uri: string;
   title?: string;
   author?: string;
@@ -50,22 +51,33 @@ export default function LessonCard(props: LessonCardProps) {
     onOpenMedia,
   } = props;
 
+  // Asegurar URLs absolutas desde el inicio
+  const absoluteMediaUrl = buildMediaUrl(mediaUrl);
+  const absoluteThumbnailUrl = thumbnailUrl ? buildMediaUrl(thumbnailUrl) : null;
+
+ 
+
   // Este effect se encarga de generar el thumbnail según el tipo de media
   useEffect(() => {
     if (mediaType === 'video') {
-      createThumbnail({ url: mediaUrl })
-        .then((response) => setThumbnail(response.path))
-        .catch((err) => {
-          console.warn('Error generating video thumbnail:', err);
-          setThumbnail('https://via.placeholder.com/300x200.png?text=Video');
-        });
+      // Si ya hay thumbnail en backend se usa aquí
+      if (absoluteThumbnailUrl) {
+        setThumbnail(absoluteThumbnailUrl);
+      } else {
+        // Si no, genera localmente
+        createThumbnail({ url: absoluteMediaUrl })
+          .then((response) => setThumbnail(response.path))
+          .catch((err) => {
+            console.warn('Error generating video thumbnail:', err);
+            setThumbnail(Image.resolveAssetSource(audioPlaceholder).uri);
+          });
+      }
     } else if (mediaType === 'image') {
-      setThumbnail(mediaUrl);
+      setThumbnail(absoluteMediaUrl);
     } else {
-      // audio u otro
       setThumbnail(null);
     }
-  }, [mediaType, mediaUrl]);
+  }, [mediaType, absoluteMediaUrl, absoluteThumbnailUrl]);
 
 
   const renderOverlay = () => {    
@@ -94,8 +106,8 @@ export default function LessonCard(props: LessonCardProps) {
 
     onOpenMedia({
       id,
-      type: mediaType,
-      uri: mediaUrl,
+      mediaType,
+      uri: buildMediaUrl(mediaUrl),
       title,
       author,
       description,

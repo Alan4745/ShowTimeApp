@@ -195,6 +195,8 @@
   "errors": {
     "emailRequired": "Email is required",
     "invalidEmail": "Please enter a valid email address",
+    "emailPassewordRequired": "Please enter email and password",
+    "invalidEmailOrPassword": "Invalid email or password",
     "passwordRequired": "Password is required",
     "passwordTooShort": "Password must be at least 8 characters long",
     "confirmPasswordRequired": "Please confirm your password",
@@ -223,7 +225,11 @@
     "galleryAccessError": "Unable to access the image galery",
     "cameraAccessError": "Unable to access the camera",
     "invalidImageType": "Only JPEG, JPG or PNG images are allowed",
-    "emailTaken": "This email is already in use"  
+    "emailTaken": "This email is already in use",
+    "loginFailed": "Login Failed",
+    "connectionTimedOut": "Connection timed out. Please try again",
+    "sessionExpired": "Your session has expired. Please log in again",
+    "unexpectedError": "Unexpected error"
   },
   "quickSelect": "Quick Select (Demo):",
   "positions": {

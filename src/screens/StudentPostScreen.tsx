@@ -9,7 +9,8 @@ import LottieIcon from '../components/common/LottieIcon';
 import CommentModal from '../components/modals/CommentModal';
 import loadingAnimation from '../../assets/lottie/loading.json';
 import { buildMediaUrl } from '../utils/urlHelpers';
-import API_BASE_URL from '../config/api';
+import { fetchWithTimeout } from '../utils/fetchWithTimeout';
+
 
 type CommentType = {
   id: string;
@@ -34,18 +35,15 @@ export default function StudentPostScreen({route}) {
   const defaultPdfIcon = require('../../assets/img/pdfIcon.png')
   const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false); 
-  const endpointPost = `${API_BASE_URL}/api/posts/${postId}/`;
-  const endpointComments = `${API_BASE_URL}/api/posts/${postId}/comments/`; 
+  const endpointPost = `/api/posts/${postId}/`;
+  const endpointComments = `/api/posts/${postId}/comments/`; 
 
 
   // Función para eliminar comentarios
   const handleDeleteComment = async (commentId: string) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/comments/${commentId}/`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Token ${token}`,
-        },
+      const res = await fetchWithTimeout(`/api/comments/${commentId}/`, {
+        method: 'DELETE'        
       });
 
       if (res.ok) {
@@ -62,11 +60,7 @@ export default function StudentPostScreen({route}) {
   // Función para cargar comentarios
   const fetchComments = async (url: string, append = false) => {
     try {
-      const res = await fetch(url, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      });
+      const res = await fetchWithTimeout(url);
 
       const data = await res.json();      
       const newComments = Array.isArray(data.results) ? data.results : [];
@@ -100,11 +94,7 @@ export default function StudentPostScreen({route}) {
     const fetchData = async () => {
       try {
         // Fetch del post
-        const postRes = await fetch(endpointPost, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
+        const postRes = await fetchWithTimeout(endpointPost);
 
         const postData = await postRes.json();
 
@@ -148,14 +138,10 @@ export default function StudentPostScreen({route}) {
 
   const handleSubmitComment = async (text: string) => {
     try {
-      const res = await fetch(endpointComments, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Token ${token}`,
-        },
+      const res = await fetchWithTimeout(endpointComments, {
+        method: 'POST',        
         body: JSON.stringify({ text }),
-      });
+      }, 30000);
 
       if (!res.ok) {
         throw new Error('Error al enviar el comentario');

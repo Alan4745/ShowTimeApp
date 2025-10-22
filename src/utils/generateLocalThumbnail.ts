@@ -1,4 +1,6 @@
 // utils/generateLocalThumbnail.ts
+// ⚠️ Esta utilidad trabaja con objetos Message (chat). 
+// NO modificar el nombre — otros componentes la usan.
 
 import { createThumbnail } from 'react-native-create-thumbnail';
 type Message = {

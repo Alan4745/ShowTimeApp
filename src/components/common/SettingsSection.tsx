@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, useWindowDimensions, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, useWindowDimensions} from 'react-native';
 import {Bell, Star, CircleHelp, X, Power} from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -7,8 +7,8 @@ import { ChatParamList } from '../../types';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import { useAuth } from '../../context/AuthContext';
 import HighlightModal from '../modals/HighlightModal';
-import API_BASE_URL from '../../config/api';
 import { buildMediaUrl } from '../../utils/urlHelpers';
+import { fetchWithTimeout } from '../../utils/fetchWithTimeout';
 
 type SettingsSectionProps = {
   userType: 'student' | 'coach' | 'darwin';
@@ -38,37 +38,41 @@ export default function SettingsSection({ userType }: SettingsSectionProps ) {
     const settings: SettingOption[] = [
         { icon: Bell, label: t('account.content.notifications')},
         { icon: Star, label: t('account.content.subscription')},
-        { 
-            icon: CircleHelp, 
-            label: t('account.content.contact'),
-            onPress: async () => {
-                try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/chat/messages/support`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                const supportUser = data.supportUser;
+        // Si el usuario es el administrador, no muestra el chat con admin
+        ...(user?.role !== 'admin'
+            ? [
+                {
+                icon: CircleHelp,
+                label: t('account.content.contact'),
+                onPress: async () => {
+                    try {
+                    const response = await fetchWithTimeout(`/api/v1/chat/messages/support/`);
 
-                navigation.navigate("Chat", {
-                    id: supportUser.id,
-                    name: supportUser.username,
-                    avatar: buildMediaUrl(supportUser.avatar),
-                    role: supportUser.role,
-                });
-                } catch (error) {
-                console.error("Error fetching support user:", error);
-                // Aquí puedes mostrar un alert si quieres
-                    Alert.alert("Error", "No se pudo contactar con soporte.");
-                }
-            }
-        },
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+                    const supportUser = data.supportUser;
+
+                    navigation.navigate('Chat', {
+                        id: supportUser.id,
+                        name: supportUser.username,
+                        avatar: buildMediaUrl(supportUser.avatar),
+                        role: supportUser.role,
+                    });
+                    } catch (error) {
+                    console.error('Error fetching support user:', error);
+                    }
+                },
+                },
+            ]
+            : []),
         { icon: X, label: t('account.content.cancelSubscription')},
     ];  
     
-  const handleSignOut = () => {
-    logout();
-    (navigation as any).navigate("CustomSplash");  
+  const handleSignOut = async () => {
+    await logout();    
   }  
     
   return (
