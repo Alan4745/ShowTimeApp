@@ -224,7 +224,7 @@ export default function CoachDetailsScreen({ route }: CoachDetailsScreenProps) {
                                     format={lesson.format}
                                     mediaUrl={lesson.mediaUrl}
                                     mediaType={lesson.mediaType}
-                                    cardHeight={165}
+                                    cardHeight={220}
                                     thumbnail={lesson.thumbnail}
                                     likes={lesson.likes}
                                     comments={lesson.comments}
