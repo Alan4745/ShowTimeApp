@@ -72,7 +72,16 @@ export default function UploadMediaScreen() {
     };
 
     const handleContinue = () => {
-        updateData({ uploadMedia: mediaItem.uri});
+        if (!mediaItem) return;
+
+        updateData({
+            coachMedia: mediaItem.uri.startsWith('file://')
+            ? mediaItem.uri
+            : `file://${mediaItem.uri}`,
+            coachMediaFileMime: mediaItem.type === 'video' ? 'video/mp4' : 'image/jpeg',
+            coachMediaFileName: mediaItem.type === 'video' ? 'coach_video.mp4' : 'coach_image.jpg',
+        });
+
         (navigation as any).navigate('WriteBio');
     }
 

@@ -94,8 +94,7 @@ export default function SummaryScreen() {
           ? `${API_BASE_URL}/media/${user.studentProfileImage}`
           : "",
       });
-      console.log("STATUS:", response.status);
-      console.log(result);     
+         
 
       // Reset registration data after successful registration
       resetData();

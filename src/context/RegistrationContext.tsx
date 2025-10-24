@@ -65,7 +65,9 @@ export interface RegistrationData {
   
   // Coach-specific fields
   coachingRole?: string; 
-  uploadMedia?: string; // URL o path local de media
+  coachMedia?: string; // URL o path local de media
+  coachMediaFileMime?: string;
+  coachMediaFileName?: string;
   bio?: string; // descripción del coach
   accomplishments?: string[]; // lista de logros
   profileImage?: string; //URI de la imagen para el perfil

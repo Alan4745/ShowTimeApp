@@ -8,9 +8,11 @@ import FilterModal from '../components/modals/filterModal';
 import lessons from '../data/lessons.json';
 
 interface LearnCategoryScreenProps {
-    title: string;
-    onBack: () => void;
-    onOpenCalendar: (lessonId: string) => void
+  title: string; // nombre visible de la categoría
+  categoryKey: string; // clave interna
+  subcategoryKey: string; // clave de la subcategoría
+  onBack: () => void;
+  onOpenCalendar: (lessonId: string) => void;
 }
 
 type MediaItem = {
@@ -26,12 +28,23 @@ type MediaItem = {
   comments?: number;
 };
 
-export default function LearnCategoryScreen({ title, onBack, onOpenCalendar} : LearnCategoryScreenProps) {
+export default function LearnCategoryScreen({
+  title,
+  categoryKey,
+  subcategoryKey,
+  onBack,
+  onOpenCalendar,
+}: LearnCategoryScreenProps) {
   const {t} = useTranslation();
   const [mediaViewerVisible, setMediaViewerVisible] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
-  const [filteredLessons, setFilteredLessons] = useState(lessons);  
+  const [filteredLessons, setFilteredLessons] = useState(lessons); 
+  
+  // 🔹 Aquí podrías hacer fetch al backend según la subcategoría:
+  // useEffect(() => {
+  //   fetchLessonsBySubcategory(subcategoryKey);
+  // }, [subcategoryKey]);
 
   const handleOpenMedia = (media: MediaItem) => {
     setSelectedMedia(media);

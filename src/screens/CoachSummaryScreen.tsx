@@ -1,152 +1,231 @@
 import React, { useState } from 'react';
-import { View, Text, Alert, StyleSheet, ActivityIndicator, Image, ScrollView} from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Image, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useRegistration } from '../context/RegistrationContext';
+import { useAuth } from '../context/AuthContext';
 import { X } from 'lucide-react-native';
 import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import ImagePickerModal from '../components/modals/ImagePickerModal';
+import PopupAlert from '../components/modals/PopupAlert';
+import API_BASE_URL from '../config/api';
+import { fetchWithTimeout } from '../utils/fetchWithTimeout';
+import { buildMediaUrl } from '../utils/urlHelpers';
 
 export default function CoachSummaryScreen() {
   const { t } = useTranslation();
+  const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const { data, resetData, updateData } = useRegistration();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const endpoint = '/api/auth/register';
 
-  const handleImagePicked = (image: { path: string }) => {
-    updateData({ profileImage: image.path });
+  const handleImagePicked = (image: { path: string; mime?: string; filename?: string }) => {
+    updateData({
+      studentProfileImage: image.path.startsWith('file://') ? image.path : `file://${image.path}`,
+      studentProfileImageMime: image.mime || 'image/jpeg',
+      studentProfileImageName: image.filename || 'profile.jpg',
+    });
   };
 
+
   const handleFinishRegistration = async () => {
-      setIsLoading(true);
+    setIsLoading(true);
+    let success = false;
+    try {    
+      
 
-      try {
-      // Simulate registration process
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Paso 1️⃣ — Registro base
+      const formData = new FormData();
+      const cleanData = Object.fromEntries(Object.entries(data).filter(([_, v]) => v !== undefined));
 
-      // Reset registration data after successful registration
-      resetData();
+      Object.entries(cleanData).forEach(([key, value]) => {
+        if (typeof value === 'object' && value !== null && key !== 'dateOfBirth') {
+          formData.append(key, JSON.stringify(value));
+        } else if (key === 'dateOfBirth' && value) {
+          formData.append('dateOfBirth', JSON.stringify(value));
+        } else {
+          formData.append(key, value as any);
+        }
+      });
 
-      // Navigate to home/dashboard
-      (navigation as any).navigate('Home');
-
-      } catch (error) {
-      console.error('Registration failed:', error);
-      Alert.alert(
-          t('common.registrationFailed'),
-          t('errors.tryAgain'),
-          [{ text: t('common.ok') }]
-      );
-      } finally {
-      setIsLoading(false);
+      // Imagen de perfil opcional
+      if (data.studentProfileImage) {        
+        formData.append('studentProfileImage', {
+          uri: data.studentProfileImage,
+          type: data.studentProfileImageMime || 'image/jpeg',
+          name: data.studentProfileImageName || 'profile.jpg',
+        } as any);
       }
+
+      // Registro principal
+      const response = await fetchWithTimeout('/api/auth/register', {
+        method: 'POST',
+        body: formData,
+      }, 120000);
+
+      const result = await response.json();
+      if (!response.ok) {
+        console.error('❌ Error en registro:', result);
+        throw new Error(result.error || 'Registration failed');
+      }
+
+      // guarda datos en AuthContext
+      const {token, user} = result;
+      await login(token, {
+        id: user.id,
+        username: user.username,
+        role: user.role,        
+        studentProfileImage: user.studentProfileImage
+          ? buildMediaUrl(user.studentProfileImage)
+          : "",
+      });
+
+      // Paso 2️⃣ — Si es coach, actualizar campos específicos
+      if (data.role === 'coach') {
+        const coachForm = new FormData();
+
+        // 🔹 Mapear el coachingRole al formato esperado por el backend
+        const roleMap: Record<string, string> = {
+          performanceCoach: 'Performance Coach',
+          nutrition: 'Nutrition',
+          gameAnalysis: 'Game Analysis',
+          drillTechnical: 'Drill/Technical',
+          mindset: 'Mindset',
+        };
+
+        const mappedRole = data.coachingRole && roleMap[data.coachingRole]
+          ? roleMap[data.coachingRole]
+          : data.coachingRole || '';
+          
+        if (mappedRole) coachForm.append('coachingRole', mappedRole);        
+        if (data.bio) coachForm.append('coachBiography', data.bio);
+        if (data.accomplishments && data.accomplishments.length > 0) {
+          coachForm.append('coachAchievements', JSON.stringify(data.accomplishments));
+        }
+
+        if (data.coachMedia) {
+          coachForm.append('coachMediaFile', {
+            uri: data.coachMedia.startsWith('file://') ? data.coachMedia : `file://${data.coachMedia}`,
+            type: data.coachMediaFileMime || 'video/mp4',
+            name: data.coachMediaFileName || 'coach_media.mp4',
+          } as any);
+        }
+
+        const coachResponse = await fetchWithTimeout('/api/coach/profile', {
+          method: 'PATCH',
+          body: coachForm,
+        }, 500000);
+
+        const coachResult = await coachResponse.json();
+        if (!coachResponse.ok) {
+          console.error('❌ Error al actualizar coach:', coachResult);
+          throw new Error(coachResult.error || 'Coach update failed');
+        }
+
+        success = true;
+      }     
+    } catch (error: any) {
+      console.error('❌ Error en registro de coach:', error);
+      Alert.alert('Error', error.message || 'No se pudo completar el registro');
+    } finally {
+      setIsLoading(false);      
+      if (success) {
+        await new Promise<void>(resolve => setTimeout(resolve, 500)); // pequeña espera opcional
+        resetData();
+        (navigation as any).navigate('Home');
+      }  
+    }
   };
 
   const handleClose = () => {
-      (navigation as any).goBack();
+    (navigation as any).goBack();
   };
 
   return (
     <View style={styles.container}>
-      {/* Header with close button */}
+      {/* Header */}
       <View style={styles.header}>
-          <TouchableOpacity
-          style={styles.closeButton}
-          onPress={handleClose}
-          >
+        <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
           <X color="#fff" size={24} />
-          </TouchableOpacity>
+        </TouchableOpacity>
       </View>
 
-      {/* Title */}
       <Text style={styles.title}>{t('registration.readyToCoach')}</Text>
 
-      {/* Main Card */}
       <View style={styles.cardContainer}>
-          <LinearGradient
-          colors={['#252A30', '#252A30']}
-          style={styles.card}
-          >
-          {/* Profile Image */}
+        <LinearGradient colors={['#252A30', '#252A30']} style={styles.card}>
+          {/* Profile */}
           <View style={styles.profileSection}>
-              <TouchableOpacity style={styles.wrapper} onPress={()=> setModalVisible(true)}>
-                {/* Imagen de perfil */}
-                <Image
-                  source={
-                    data.profileImage
-                      ? { uri: data.profileImage }
-                      : require('../../assets/img/userGeneric.png') //imagen local
-                  }
-                  style={styles.profileImage}
-                />
-                
-                
-                {/* Círculo interior */}
-                <Image
-                  source={require('../../assets/img/ellipse36.png')}
-                  style={styles.innerCircle}
-                />
+            <TouchableOpacity style={styles.wrapper} onPress={() => setModalVisible(true)}>
+              <Image
+                source={data.studentProfileImage ? { uri: data.studentProfileImage } : require('../../assets/img/userGeneric.png')}
+                style={styles.profileImage}
+              />
+              <Image source={require('../../assets/img/ellipse36.png')} style={styles.innerCircle} />
+              <Image source={require('../../assets/img/ellipse37.png')} style={styles.outerCircle} />
+            </TouchableOpacity>
 
-                {/* Círculo exterior */}
-                <Image
-                  source={require('../../assets/img/ellipse37.png')}
-                  style={styles.outerCircle}
-                />
-              </TouchableOpacity> 
-              <View style = {styles.nameContainer}>
-                  <Text style={styles.username}>{data.username || t('registration.username')}</Text>
-                  <Text style={styles.coachingRole}>{t(`coachingRoles.${data.coachingRole}`) || "Coaching Role" }</Text>    
-              </View>                           
+            <View style={styles.nameContainer}>
+              <Text style={styles.username}>{data.username || t('registration.username')}</Text>
+              <Text style={styles.coachingRole}>
+                {t(`coachingRoles.${data.coachingRole}`) || t('registration.coachingRole')}
+              </Text>
+            </View>
           </View>
 
           <ScrollView>
-              <View>
-                  {/* Bio */}
-                  <View>
-                      <Text style={styles.bioText}>{data.bio || "Coach Bio" }</Text>
-                  </View>
+            {/* Bio */}
+            <View>
+              <Text style={styles.bioText}>{data.bio || t('registration.bioPlaceholder')}</Text>
+            </View>
 
-                  {/* Accomplishments */}
-                    <View style={styles.accomplishmentsContainer}>
-                      <Text style = {styles.accomplishmentTitle}>{t('registration.accomplishments')}</Text>
-                      {data.accomplishments && 
-                          data.accomplishments.map((item, index) => (                          
-                          <View key={index} style={styles.accomplishmentItem}>
-                            <Text style={styles.bullet}>•</Text>
-                            <Text style={styles.itemText}>{item}</Text>
-                          </View>
-                          ))
-                      }
-                  </View> 
-              </View>        
+            {/* Accomplishments */}
+            <View style={styles.accomplishmentsContainer}>
+              <Text style={styles.accomplishmentTitle}>{t('registration.accomplishments')}</Text>
+              {data.accomplishments?.map((item, index) => (
+                <View key={index} style={styles.accomplishmentItem}>
+                  <Text style={styles.bullet}>•</Text>
+                  <Text style={styles.itemText}>{item}</Text>
+                </View>
+              ))}
+            </View>
           </ScrollView>
-          
 
-          {/* Start Button */}
+          {/* Start button */}
           <TouchableOpacity
-              style={styles.startButton}
-              onPress={handleFinishRegistration}
-              disabled={isLoading}
+            style={styles.startButton}
+            onPress={handleFinishRegistration}
+            disabled={isLoading}
           >
-              {isLoading ? (
+            {isLoading ? (
               <ActivityIndicator color="#4A90E2" size="small" />
-              ) : (
+            ) : (
               <Text style={styles.startButtonText}>{t('common.start')}</Text>
-              )}
+            )}
           </TouchableOpacity>
-          </LinearGradient>
+        </LinearGradient>
       </View>
-      
+
       <ImagePickerModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onImagePicked={handleImagePicked}
-      />        
+      />
+
+      <PopupAlert
+        visible={errorModalVisible}
+        message={errorMessage}
+        onClose={() => setErrorModalVisible(false)}
+      />
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -320,6 +399,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 5,
+    marginTop: 10,
   },
   startButtonText: {
     fontFamily: 'AnonymousPro-Bold',

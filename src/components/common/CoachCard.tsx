@@ -1,6 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PlayCircle } from 'lucide-react-native';
+import MediaViewerModal from '../modals/MediaViewerModal'; 
 
 interface CoachCardProps {
   title?: string;
@@ -10,72 +12,108 @@ interface CoachCardProps {
   onMorePress?: () => void;
   style?: any;
   children?: React.ReactNode;
+  isVideo?: boolean;
+  mediaUrl?: string; 
+}
+
+function truncateText(text: string, maxLength: number) {
+  if (!text) return '';
+  return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
 }
 
 export default function CoachCard(props: CoachCardProps) {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handlePressMedia = () => {
+    if (props.isVideo) {
+      setModalVisible(true);
+    }
+  };
 
   return (
     <View style={[styles.card, props.style]}>
       {props.imageUrl ? (
-        // Con imagen
-        <View style={{ flex: 1}}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={{ uri: props.imageUrl }}
-              style={styles.imageTop}
-              resizeMode="cover"
-            />
-            <View style={styles.overlayContainer}>
-              <Text style={styles.overlayText}>{props.tag}</Text>
-            </View>            
-          </View>
-          <View style={styles.contentBottom}>
-            {props.title && <Text style={styles.title}>{props.title}</Text>}
-            {props.name && <Text style={styles.name}>{props.name}</Text>}
-            {props.children && (
-              <ScrollView
-                style={{ maxHeight: "65%" }} 
-                nestedScrollEnabled
-                showsVerticalScrollIndicator={false}
-              >
+        <>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={handlePressMedia}
+            style={{ flex: 1 }}
+          >
+            <View style={styles.imageContainer}>
+              <Image
+                source={{ uri: props.imageUrl }}
+                style={styles.imageTop}
+                resizeMode="cover"
+              />
+
+              {props.isVideo && (
+                <View style={styles.playOverlay}>
+                  <PlayCircle size={48} color="#fff" />
+                </View>
+              )}
+
+              {props.tag && (
+                <View style={styles.overlayContainer}>
+                  <Text style={styles.overlayText}>{props.tag}</Text>
+                </View>
+              )}
+            </View>
+
+            <View style={styles.contentBottom}>
+              {props.title && <Text style={styles.title}>{props.title}</Text>}
+              {props.name && <Text style={styles.name}>{props.name}</Text>}
+              {props.children && (
                 <Text style={styles.children}>
-                  {props.children}
-                  {' '}
+                  {truncateText(String(props.children), 110)}{/* corta texto largo */}
                   <Text style={styles.more} onPress={props.onMorePress}>
-                    {t('common.more')}
+                    {' '}... {t('common.more')}
                   </Text>
                 </Text>
-              </ScrollView>  
-            )}
+              )}
+            </View>
+          </TouchableOpacity>
 
-          </View>          
-        </View>       
+          {/* Modal para mostrar el video */}
+          {props.isVideo && props.mediaUrl && (
+            <MediaViewerModal
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
+              media={{
+                id: 'temp',
+                mediaType: 'video',
+                uri: props.mediaUrl,
+                title: props.title || '',
+                author: props.name || '',
+              }}
+              showInfo
+            />
+          )}
+        </>
       ) : (
-        // sin imagen
         <View style={styles.content}>
           {props.title && <Text style={styles.title}>{props.title}</Text>}
           {props.name && <Text style={styles.name}>{props.name}</Text>}
           {props.children && (
             <ScrollView
-              style={{ maxHeight: "90%" }} 
+              style={{ maxHeight: '90%' }}
               nestedScrollEnabled
               showsVerticalScrollIndicator={false}
             >
               <Text style={styles.children}>
-                {props.children}
-                {' '}
+                {props.children}{' '}
                 <Text style={styles.more} onPress={props.onMorePress}>
                   {t('common.more')}
                 </Text>
               </Text>
-            </ScrollView>  
-            )}          
+            </ScrollView>
+          )}
         </View>
       )}
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   card: {
@@ -89,6 +127,14 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: '100%',
     height: '50%',
+  },
+  playOverlay: {
+    position: 'absolute',
+    top: '40%',
+    left: '45%',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    borderRadius: 30,
+    padding: 4,
   },
   overlayContainer:{
     position: 'absolute',

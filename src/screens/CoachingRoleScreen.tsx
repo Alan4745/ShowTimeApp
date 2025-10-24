@@ -26,7 +26,7 @@ export default function CoachingRoleScreen() {
         setShowModal(false);
     }
 
-    const handleContinue = () => {
+    const handleContinue = () => {             
         updateData({ coachingRole: selectedRole as string });
         (navigation as any).navigate('UploadMedia');
     }

@@ -40,8 +40,7 @@ export default function AccomplishmentsScreen() {
     // Aqui agregar lógica para envio de datos
     const handleContinue = () => {
         Keyboard.dismiss();
-        const nonEmpty = inputs.filter(input => input.value.trim() !== '');
-        console.log('Datos enviados:', nonEmpty);  
+        const nonEmpty = inputs.filter(input => input.value.trim() !== '');          
         setInputs([{ id: Date.now().toString(), value: '' }]);  
         updateData({ accomplishments: inputs.map(input => input.value.trim()).filter(Boolean)});    
         (navigation as any).navigate('CoachSummary');

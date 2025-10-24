@@ -4,14 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../context/AuthContext';
 import { buildMediaUrl } from '../../utils/urlHelpers';
+import { fetchWithTimeout } from '../../utils/fetchWithTimeout';
 import LessonCard from './LessonCard';
 import MediaViewerModal from '../modals/MediaViewerModal';
-import API_BASE_URL from '../../config/api';
 
 
 export default function UploadSection() {
   const { t } = useTranslation();
-  const { user, token } = useAuth();
+  const { user } = useAuth();
   const navigation = useNavigation();  
   const [lessons, setLessons] = useState<any[]>([]);
   const [selectedMedia, setSelectedMedia] = useState(null);
@@ -35,20 +35,14 @@ export default function UploadSection() {
     const fetchLessons = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${API_BASE_URL}/api/v1/lessons/coach/${user.id}`, {
-          headers: {
-            'Authorization': `Token ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
+        const response = await fetchWithTimeout(`/api/v1/coaches/${user.id}/lessons`);
 
         if (!response.ok) {
           throw new Error(`Error ${response.status}`);
         }
 
         const data = await response.json();
-        setLessons(data.results || []);
+        setLessons(data.lessons || []);
       } catch (err: any) {
         console.error('Error fetching lessons:', err);
         setError('No se pudieron cargar las lecciones');
@@ -82,7 +76,7 @@ export default function UploadSection() {
               key={lesson.id}
               id={lesson.id.toString()}
               title={lesson.title}
-              author={lesson.author_name}
+              author={lesson.author}
               description={lesson.description}
               subcategory={lesson.subcategory}
               format={lesson.format}

@@ -1,15 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../context/AuthContext';
 import { ChevronUp } from 'lucide-react-native';
+import { createThumbnail } from 'react-native-create-thumbnail';
+import { PlayCircle } from 'lucide-react-native';
+import { buildMediaUrl } from '../utils/urlHelpers';
+import { fetchWithTimeout } from '../utils/fetchWithTimeout';
 import AppHeaderNew from '../components/common/AppHeaderNew';
 import LessonCard from '../components/common/LessonCard';
 import TestimonialCard from '../components/common/TestimonialCard';
 import HelperText from '../components/common/HelperText';
 import PopupAlert from '../components/modals/PopupAlert';
-import { useTranslation } from 'react-i18next';
-import userData from '../data/coach.json'
-import contentData from '../data/contentData.json';
+import MediaViewerModal from '../components/modals/MediaViewerModal';
 
 interface CoachDetailsScreenProps {
   route: any;
@@ -17,28 +21,59 @@ interface CoachDetailsScreenProps {
 
 export default function CoachDetailsScreen({ route }: CoachDetailsScreenProps) {
     const {t} = useTranslation();
-    const [activeTag, setActivTag] = useState<"tag" | "gymflow">("tag");
+    const { user } = useAuth();  
+    const { coach } = route.params;    
     const [showAccomplishments, setShowAccomplishments] = useState(true);    
     const [showLessons, setShowLessons] = useState(true);
     const [showTestimonials, setShowTestimonials] = useState(true);
     const [showCoachError, setShowCoachError] = useState(true);
-    const {id} = route.params;    
+    const [thumbnail, setThumbnail] = useState<string | null>(null);
+    const [showVideoModal, setShowVideoModal] = useState(false); 
+    const [lessons, setLessons] = useState<any[]>([]);
+    const [loadingLessons, setLoadingLessons] = useState(false);
+    const [lessonsError, setLessonsError] = useState<string | null>(null);   
     const navigate = useNavigation();
+    
+    // Descargar las lecciones desde el backend
+    useEffect(() => {
+        const fetchCoachLessons = async () => {
+            if (!coach.id) return;
+                setLoadingLessons(true);
+                setLessonsError(null);
+            try {
+                const response = await fetchWithTimeout(`/api/v1/coaches/${coach.id}/lessons`);
+                if (!response.ok) {
+                    throw new Error('Error al obtener las lecciones');
+                }
+                const data = await response.json();
+                setLessons(data.lessons || []);
+            } catch (error: any) {
+                console.error('Error cargando lecciones:', error);
+                setLessonsError(error.message);
+            } finally {
+                setLoadingLessons(false);
+            }
+        };
 
+        fetchCoachLessons();
+        }, [coach.id]);
+
+    // Genera thumbnail automáticamente
+    useEffect(() => {
+        if (coach?.coachMediaFile && coach.coachMediaFile.endsWith('.mp4')) {
+            const videoUrl = buildMediaUrl(coach.coachMediaFile);
+            createThumbnail({ url: videoUrl })
+            .then(response => setThumbnail(response.path))
+            .catch(err => console.warn('Error generando thumbnail:', err));
+        }
+    }, [coach]);
+    
     const getMediaType = (lesson: any): 'image' | 'video' | 'audio' => {
         if (lesson.videoUrl) return 'video';
         if (lesson.audioUrl) return 'audio';
         if (lesson.imageUrl) return 'image';
         return 'image'; // fallback
-}
-
-    // Verificar si coach existe
-    const coach = contentData.find(c => c.id === id);
-    React.useEffect(() => {
-    if (!coach) {
-        setShowCoachError(true);
-    }
-    }, [coach]); 
+    }       
     
     // Muestra una alerta si coach no existe
     if (!coach) {
@@ -48,8 +83,8 @@ export default function CoachDetailsScreen({ route }: CoachDetailsScreenProps) {
                 visible={showCoachError}
                 message={t("errors.coachNotFound")}
                 onClose={() => {
-                setShowCoachError(false);
-                (navigate as any).goBack(); 
+                    setShowCoachError(false);
+                    (navigate as any).goBack(); 
                 }}
             />
             </View>
@@ -60,44 +95,62 @@ export default function CoachDetailsScreen({ route }: CoachDetailsScreenProps) {
     const handlePlanPress = () => {
         (navigate as any).navigate('SubscribeElite')    
     }
+    
     return (
         <View style={styles.container}>
-            <AppHeaderNew userAvatar = {userData.avatar}/>
+            <AppHeaderNew userAvatar = {buildMediaUrl(user?.studentProfileImage)}/>
             <ScrollView contentContainerStyle={styles.scrollContent}>
                
-                {/*IMAGEN*/}
+                {/* IMAGEN O VIDEO */}
                 <View style={styles.imageContainer}>
-                    <Image
-                        source={{ uri: coach.imageUrl }}
-                        style={styles.imageTop}
-                        resizeMode="cover"
-                    />                        
+                      {coach.coachMediaFile ? (
+                        coach.coachMediaFile.endsWith('.mp4') ? (
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            onPress={() => setShowVideoModal(true)}
+                            style={{ position: 'relative' }}
+                        >
+                            <Image
+                            source={{ uri: thumbnail || buildMediaUrl(coach.coachMediaFile) }}
+                            style={styles.imageTop}
+                            resizeMode="cover"
+                            />
+                            <View style={styles.playButtonOverlay}>
+                            <PlayCircle color="#FFF" size={72} />
+                            </View>
+                        </TouchableOpacity>
+                        ) : (
+                        <Image
+                            source={{ uri: buildMediaUrl(coach.coachMediaFile) }}
+                            style={styles.imageTop}
+                            resizeMode="cover"
+                        />
+                        )
+                    ) : (
+                        <View
+                        style={[
+                            styles.imageTop,
+                            { backgroundColor: '#333', justifyContent: 'center', alignItems: 'center' },
+                        ]}
+                        >
+                        <Text style={{ color: '#aaa' }}>{t('coachDetails.noImage')}</Text>
+                        </View>
+                    )}
                 </View>
 
                 <View style={styles.contentBottom}>
-                    {/*TITULO Y NOMBRE*/}
-                    {coach.title && <Text style={styles.title}>{coach.title}</Text>}
-                    {coach.name && <Text style={styles.name}>{coach.name}</Text>}
+                    {/*TITULO Y NOMBRE*/}                    
+                    {coach.username && <Text style={styles.name}>{coach.username}</Text>}
                     
                     <View style={styles.overlayContainer}>
-                        {/*BOTONES*/}
-                        <View style={styles.overlayButtonContainer}>
-                            <TouchableOpacity 
-                                style={[styles.overlayButton,
-                                    activeTag === "tag" && styles.overlayButtonActive
-                                ]}
-                                onPress={() => setActivTag("tag")}
-                            >
-                                <Text style={styles.overlayText}>{coach.tag}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                                style={[styles.overlayButton,
-                                    activeTag === "gymflow" && styles.overlayButtonActive
-                                ]}
-                                onPress={() => setActivTag("gymflow")}
-                            >
-                                <Text style={styles.overlayText}>{t('common.gymflow')}</Text>
-                            </TouchableOpacity>
+                        {/*ETIQUETAS*/}
+                        <View style={styles.overlayTagContainer}>
+                            <View style={styles.roleTag}>
+                                <Text style={styles.roleText}>{coach.role}</Text>
+                            </View>
+                            <View  style={styles.coachingRoleTag}>
+                                <Text style={styles.coachingRoleText}>{coach.coachingRole}</Text>
+                            </View>
                         </View>                
                         <TouchableOpacity style={styles.subscribeButton}>
                             <Text style={styles.subscribeText}>{t('common.subscribe')}</Text>
@@ -105,7 +158,7 @@ export default function CoachDetailsScreen({ route }: CoachDetailsScreenProps) {
                     </View> 
 
                     {/*DESCRIPCION*/}
-                    {coach.description && <Text style={styles.description}>{coach.description}</Text>}         
+                    {coach.coachBiography && <Text style={styles.description}>{coach.coachBiography}</Text>}         
                     
                     {/*ACCOMPLISHMENTS*/}
                     <TouchableOpacity
@@ -121,9 +174,9 @@ export default function CoachDetailsScreen({ route }: CoachDetailsScreenProps) {
                     {showAccomplishments && (
                         <View style={styles.accompContainer}>
                             <Text style={styles.accompTitle}>{t('coachDetails.myAccomplishments')}</Text>
-                            {coach.accomplishments && coach.accomplishments.length > 0 ? (
+                            {coach.coachAchievements && coach.coachAchievements.length > 0 ? (
                             <View style={styles.accompList}>
-                                {coach.accomplishments.map((item, index) => (
+                                {coach.coachAchievements.map((item, index) => (
                                 <Text key={index} style={styles.accompListItem}>
                                     • {item}
                                 </Text>
@@ -149,9 +202,18 @@ export default function CoachDetailsScreen({ route }: CoachDetailsScreenProps) {
                     {showLessons && (
                         <View style={styles.lessonsContainer}>
                             <Text style={styles.lessonsTitle}>{t('coachDetails.lessons')}</Text>
+
+                            {loadingLessons ? (
+                            <Text style={{ color: '#888', textAlign: 'center', marginTop: 20 }}>
+                                {t('common.loading')}...
+                            </Text>
+                            ) : lessonsError ? (
+                            <Text style={{ color: 'red', textAlign: 'center', marginTop: 20 }}>
+                                {t('errors.loadLessonsError')}
+                            </Text>
+                            ) : lessons.length > 0 ? (
                             <View style={styles.lessonsList}>
-                            {coach.lessons && coach.lessons.length > 0 ? (
-                                coach.lessons.map((lesson: any) => (
+                                {lessons.map((lesson) => (
                                 <LessonCard
                                     key={lesson.id}
                                     id={lesson.id}
@@ -160,16 +222,27 @@ export default function CoachDetailsScreen({ route }: CoachDetailsScreenProps) {
                                     description={lesson.description}
                                     subcategory={lesson.subcategory}
                                     format={lesson.format}
-                                    mediaUrl={lesson.mediaUrl}  
-                                    mediaType={getMediaType(lesson)} 
+                                    mediaUrl={lesson.mediaUrl}
+                                    mediaType={lesson.mediaType}
                                     cardHeight={165}
-                                                                                            
+                                    thumbnail={lesson.thumbnail}
+                                    likes={lesson.likes}
+                                    comments={lesson.comments}
                                 />
-                                ))
-                                ) : (
-                                    <Text style={[styles.lessonItem, {textAlign: "center", marginTop: 15, color: "#2B80BE", fontSize: 18}]}>{t('coachDetails.noLessons')}</Text>
-                                )}
+                                ))}
                             </View>
+                            ) : (
+                            <Text
+                                style={{
+                                textAlign: 'center',
+                                marginTop: 15,
+                                color: '#2B80BE',
+                                fontSize: 18,
+                                }}
+                            >
+                                {t('coachDetails.noLessons')}
+                            </Text>
+                            )}
                         </View>
                     )}
 
@@ -226,7 +299,20 @@ export default function CoachDetailsScreen({ route }: CoachDetailsScreenProps) {
                         ></HelperText>                        
                     </View>                    
                 </View>                               
-            </ScrollView>                       
+            </ScrollView> 
+            {/* Modal de reproducción */}
+            <MediaViewerModal
+                visible={showVideoModal}
+                onClose={() => setShowVideoModal(false)}
+                media={{
+                    id: coach.id.toString(),
+                    mediaType: 'video',
+                    uri: buildMediaUrl(coach.coachMediaFile),
+                    title: coach.name,
+                    description: coach.description,
+                }}
+                showInfo={true}
+            />                      
         </View>    
     );
 }
@@ -248,48 +334,72 @@ const styles = StyleSheet.create({
         width: '100%',
         height: "100%",         
     },
+    playButtonOverlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.25)',
+        borderRadius: 10,
+    },
     contentBottom: {
         padding: 10,    
-    },
-    title: {
-        fontFamily: 'AnonymousPro-Bold',
-        fontSize: 16,
-        fontWeight: '700',
-        color: '#FFFFFF',        
-    },
+    },    
     name: {
         fontFamily: 'AnonymousPro-Bold',
-        fontSize: 20,
+        fontSize: 22,
         fontWeight: '700',
-        color: '#FFFFFF',        
+        color: '#FFFFFF',   
+        marginTop: 10     
     },
     overlayContainer:{
         flexDirection: "row",
+        flexWrap: "wrap",
         height: 35,                
         justifyContent: "space-between",
         alignItems: "center",
         marginVertical: 30,
+        rowGap: 8
     },
-    overlayButtonContainer:{
+    overlayTagContainer:{
         flexDirection: "row",
+        flexWrap: "wrap",
         gap: 10,
+        rowGap: 8
     },
-    overlayButton:{
-        borderColor: "#FFFFFF",
+    roleTag:{
+        backgroundColor: "#2B80BE",
         borderWidth: 1.5,
-        width: 95,
+        minWidth: 80,
         height: 35,
         borderRadius: 38,
         alignItems: "center", 
-        justifyContent: "center"       
+        justifyContent: "center", 
+        paddingHorizontal: 5      
     },
-    overlayButtonActive:{
-        backgroundColor: "#2B80BE",
-        borderColor: "#2B80BE",
+    coachingRoleTag:{
+        borderColor: "#FFFFFF",
+        borderWidth: 1.5,
+        minWidth: 80,
+        height: 35,
+        borderRadius: 38,
+        alignItems: "center", 
+        justifyContent: "center",  
+        paddingHorizontal: 5     
     },
-    overlayText: {
+    roleText: {
         color: '#FFFFFF',
-        fontSize: 16,
+        fontSize: 14,
+        paddingHorizontal: 8,
+        paddingVertical: 4,    
+        fontFamily: 'AnonymousPro-Regular',
+    },
+    coachingRoleText: {
+        color: '#FFFFFF',
+        fontSize: 14,
         paddingHorizontal: 8,
         paddingVertical: 4,    
         fontFamily: 'AnonymousPro-Regular',
@@ -313,7 +423,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '400',
         color: '#FFFFFF',
-        marginBottom: 8,  
+        marginVertical: 8,  
         lineHeight: 22,
     },
     accompContainer:{

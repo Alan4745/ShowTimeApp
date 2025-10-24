@@ -1,29 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Calendar from '../common/Calendar';
 import LessonCard from './LessonCard';
 import MediaViewerModal from '../modals/MediaViewerModal';
-import lessons from '../../data/lessons.json'
-
-type Lesson = {
-  id: string;
-  title: string;
-  author: string;
-  description: string;
-  subcategory?: string;
-  format?: string;
-  mediaType: 'image' | 'video' | 'audio';
-  mediaUrl: string;
-  thumbnailUrl?: string;
-  likes?: number;
-  comments?: number;
-};
-
-type SavedLesson = Lesson & {
-  date: string;
-  time: string;
-}
+import { buildMediaUrl } from '../../utils/urlHelpers';
+import { fetchWithTimeout } from '../../utils/fetchWithTimeout';
 
 type MediaItem = {
   id: string;
@@ -36,7 +18,24 @@ type MediaItem = {
   format?: string;
   likes?: number;
   comments?: number;
-}
+};
+
+type SavedLesson = {
+  id: string;
+  title: string;
+  author: string;
+  description: string;
+  subcategory?: string;
+  format?: string;
+  mediaType: 'image' | 'video' | 'audio';
+  mediaUrl: string;
+  thumbnail?: string;
+  likes?: number;
+  comments?: number;
+  date: string;
+  time: string;
+  eventId: number;
+};
 
 type MarkedDate = {
   selected: boolean;
@@ -48,50 +47,72 @@ type MarkedDates = {
   [date: string]: MarkedDate;
 };
 
-// Simulación de datos guardados
-const savedExercises = [
-  { id: '1', date: '2025-09-05', time: "3:30 PM", lessonId: 'lesson-001' },
-  { id: '2', date: '2025-09-10', time: "10:15 AM", lessonId: 'lesson-003' },  
-];
-
 export default function SavedExercisesCalendar() {
-  const { t, i18n } = useTranslation();  
-  const cardHeight = 150; //comprime el alto de la tarjeta de lecciones
+  const { t, i18n } = useTranslation();
+  const cardHeight = 150;
   const [markedDates, setMarkedDates] = useState<MarkedDates>({});
   const [savedLessons, setSavedLessons] = useState<SavedLesson[]>([]);
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
-  
-  
-  useEffect(() => {
-    // Marcar en calendario fechas guardadas.
-    const marks: any = {};
-    savedExercises.forEach((exercise) => {
-      marks[exercise.date] = {
-        selected: true,
-        selectedColor: '#2B80BE',
-        selectedTextColor: '#FFFFFF',
-      };
-    });
-    setMarkedDates(marks);
 
-    // Obtener las lecciones asociadas a las fechas
-      const filteredLessons: SavedLesson[] = lessons
-        .filter((lesson) => savedExercises.some((e) => e.lessonId === lesson.id))
-        .map((lesson) => {
-          const exercise = savedExercises.find((e) => e.lessonId === lesson.id);
-          return {
-            ...lesson,
-            mediaType: lesson.mediaType as 'image' | 'video' | 'audio',
-            date: exercise?.date ?? '',
-            time: exercise?.time ?? '',
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetchWithTimeout('/api/v1/calendar/events');
+        if (!res.ok) {
+          console.error('Error al cargar eventos');
+          return;
+        }
+        const data = await res.json();
+        const events = data.events;
+
+        // Marcar fechas en calendario
+        const marks: MarkedDates = {};
+        events.forEach(e => {
+          marks[e.event_date] = {
+            selected: true,
+            selectedColor: '#2B80BE',
+            selectedTextColor: '#FFFFFF',
           };
         });
+        setMarkedDates(marks);
 
-      setSavedLessons(filteredLessons);
+        // Traer info completa de cada lección
+        const lessonsWithDetails: SavedLesson[] = [];
+        for (const e of events) {
+          try {
+            const lessonRes = await fetchWithTimeout(`/api/v1/lessons/${e.lesson}`);
+            if (!lessonRes.ok) continue;
+            const lessonData = await lessonRes.json();
+            lessonsWithDetails.push({
+              id: lessonData.id.toString(),
+              title: lessonData.title,
+              author: lessonData.author,
+              description: lessonData.description,
+              subcategory: lessonData.subcategory,
+              format: lessonData.format,
+              mediaType: lessonData.mediaType,
+              mediaUrl: lessonData.media_file || lessonData.mediaUrl,
+              thumbnail: lessonData.thumbnail,
+              likes: lessonData.likes,
+              comments: lessonData.comments,
+              date: e.event_date,
+              time: e.event_time,
+              eventId: e.id,
+            });
+          } catch (err) {
+            console.error('Error al cargar lección', err);
+          }
+        }
+        setSavedLessons(lessonsWithDetails);
+      } catch (err) {
+        console.error('Error al cargar eventos', err);
+      }
+    };
+
+    fetchEvents();
   }, []);
 
-  // Cambia el formato de fecha para mostrarlo
   const getFormattedDateParts = (dateString: string) => {
     const date = new Date(dateString);
     return {
@@ -99,53 +120,61 @@ export default function SavedExercisesCalendar() {
       monthDay: new Intl.DateTimeFormat(i18n.language, {
         month: 'short',
         day: 'numeric',
-      }).format(date), // Ej: "10 oct" o "Oct 10" según idioma
+      }).format(date),
     };
   };
 
-  // Maneja el botón para borrar lecciones
-  const handleDelete = (lessonIdToRemove: string) => {
-    // 1. Buscar la lección a eliminar
-    const lessonToRemove = savedLessons.find(l => l.id === lessonIdToRemove);
-    if (!lessonToRemove) return;
+  const handleDelete = async (eventId: number) => {
+    try {
+      const res = await fetchWithTimeout(`/api/v1/calendar/events/${eventId}/`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) {
+        Alert.alert('Error', 'No se pudo eliminar el evento');
+        return;
+      }
+      // Actualizar estado
+      const lessonToRemove = savedLessons.find(l => l.eventId === eventId);
+      if (!lessonToRemove) return;
 
-    // 2. Filtrar lecciones para quitar la que eliminamos
-    const updatedLessons = savedLessons.filter(lesson => lesson.id !== lessonIdToRemove);
-    setSavedLessons(updatedLessons);
-
-    // 3. Eliminar la fecha del calendario
-    const updatedMarkedDates = { ...markedDates };
-    delete updatedMarkedDates[lessonToRemove.date]; // quitar la marca por la fecha
-    setMarkedDates(updatedMarkedDates);    
+      setSavedLessons(prev => prev.filter(l => l.eventId !== eventId));
+      const updatedMarks = { ...markedDates };
+      delete updatedMarks[lessonToRemove.date];
+      setMarkedDates(updatedMarks);
+    } catch (err) {
+      console.error(err);
+      Alert.alert('Error', 'Ocurrió un error al eliminar el evento');
+    }
   };
 
   return (
-    <View style = {styles.container}>      
+    <View style={styles.container}>
       <Calendar markedDates={markedDates} />
+
       {savedLessons.length > 0 ? (
         <ScrollView
-          style = {{flex: 1}}
+          style={{ flex: 1 }}
           contentContainerStyle={styles.lessonScroll}
           showsHorizontalScrollIndicator={false}
         >
-          {savedLessons.map((lesson) => {
+          {savedLessons.map(lesson => {
             const { year, monthDay } = getFormattedDateParts(lesson.date);
 
             return (
-              <View key={lesson.id} style={[styles.lessonRow, { height: cardHeight }]}>
+              <View key={lesson.eventId} style={[styles.lessonRow, { height: cardHeight }]}>
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={[styles.lessonRow, {paddingRight: 70}]}
+                  contentContainerStyle={[styles.lessonRow, { paddingRight: 70 }]}
                 >
                   <LessonCard
                     {...lesson}
                     cardHeight={cardHeight}
-                    onOpenMedia={(media) => {
+                    onOpenMedia={media => {
                       setSelectedMedia({
                         id: lesson.id,
-                        mediaType: lesson.mediaType,    
-                        uri: lesson.mediaUrl,
+                        mediaType: lesson.mediaType,
+                        uri: buildMediaUrl(lesson.mediaUrl),
                         title: lesson.title,
                         author: lesson.author,
                         description: lesson.description,
@@ -158,7 +187,6 @@ export default function SavedExercisesCalendar() {
                     }}
                   />
 
-                  {/* Fecha y hora formateadas */}
                   <View style={styles.dateTimeContainer}>
                     <View style={styles.dateBox}>
                       <Text style={styles.dateText}>{year}</Text>
@@ -169,11 +197,7 @@ export default function SavedExercisesCalendar() {
                     </View>
                   </View>
 
-                  {/* Botón de eliminar */}
-                  <TouchableOpacity
-                    style={styles.deleteBox}
-                    onPress={() => handleDelete(lesson.id)}
-                  >
+                  <TouchableOpacity style={styles.deleteBox} onPress={() => handleDelete(lesson.eventId)}>
                     <Text style={styles.deleteX}>X</Text>
                     <Text style={styles.deleteLabel}>{t('common.delete')}</Text>
                   </TouchableOpacity>
@@ -181,21 +205,22 @@ export default function SavedExercisesCalendar() {
               </View>
             );
           })}
-        </ScrollView>):(
-          <Text style={styles.noLessonsText}>{t('account.titles.noSavedLessons')}</Text>
+        </ScrollView>
+      ) : (
+        <Text style={styles.noLessonsText}>{t('account.titles.noSavedLessons')}</Text>
       )}
-      
+
       <MediaViewerModal
-          visible={modalVisible}
-          media={selectedMedia}
-          onClose={() => {
-            setModalVisible(false);
-            setSelectedMedia(null);
-          }}
-          showInfo={true}
-          likesCount={selectedMedia?.likes}
-          commentsCount={selectedMedia?.comments}
-        />
+        visible={modalVisible}
+        media={selectedMedia}
+        onClose={() => {
+          setModalVisible(false);
+          setSelectedMedia(null);
+        }}
+        showInfo
+        likesCount={selectedMedia?.likes}
+        commentsCount={selectedMedia?.comments}
+      />
     </View>
   );
 }

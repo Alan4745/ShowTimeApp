@@ -9,6 +9,7 @@ import { learnCategories } from '../data/learnCategories';
 export default function LearnTabScreen() {
   const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [calendarLesson, setCalendarLesson] = useState<{
     lessonId: string;
     title: string;
@@ -20,8 +21,9 @@ export default function LearnTabScreen() {
     }
   };
 
-  const handleCardPress = (categoryTitle: string) => {
+  const handleCardPress = (categoryTitle: string, subcategoryKey: string) => {
     setSelectedCategory(categoryTitle);
+    setSelectedSubcategory(subcategoryKey);
   };
 
   const handleBack = () => {
@@ -39,9 +41,17 @@ export default function LearnTabScreen() {
   }
 
   // Si hay categoría seleccionada, mostrar la pantalla correspondiente
-  if (selectedCategory) {    
-    const title = t(`learn.categories.${selectedCategory}`);    
-    return <LearnCategoryScreen title={title} onBack={handleBack} onOpenCalendar={handleOpenCalendar} />;
+  if (selectedCategory && selectedSubcategory) {
+    const categoryTitle = t(`learn.categories.${selectedCategory}`);
+    return (
+      <LearnCategoryScreen
+        title={categoryTitle}
+        categoryKey={selectedCategory}
+        subcategoryKey={selectedSubcategory}
+        onBack={handleBack}
+        onOpenCalendar={handleOpenCalendar}
+      />
+    );
   }  
 
   // Pantalla principal (categorías)
@@ -68,7 +78,7 @@ export default function LearnTabScreen() {
                   image={sub.image}
                   description={t(`learn.subcategories.${sub.key}.description`)}
                   backgroundColor={backgroundColor}
-                  onPress={() => handleCardPress(category.key)}
+                  onPress={() => handleCardPress(category.key, sub.key)}
                 />
               );
             })}               
