@@ -56,7 +56,25 @@ export class APILogger {
 
     if (DEBUG_CONFIG.SHOW_REQUEST_BODY && options?.body) {
       if (options.body instanceof FormData) {
+        // Intentar mostrar el contenido de FormData
         logData.body = '[FormData]';
+        try {
+          const formDataEntries: any = {};
+          // @ts-ignore - FormData puede tener _parts en React Native
+          if (options.body._parts) {
+            // @ts-ignore
+            options.body._parts.forEach(([key, value]: [string, any]) => {
+              if (typeof value === 'object' && value.uri) {
+                formDataEntries[key] = `[File: ${value.name || value.uri}]`;
+              } else {
+                formDataEntries[key] = value;
+              }
+            });
+            logData.formDataContent = formDataEntries;
+          }
+        } catch (e) {
+          logData.formDataNote = 'No se pudo inspeccionar FormData';
+        }
       } else {
         try {
           logData.body =

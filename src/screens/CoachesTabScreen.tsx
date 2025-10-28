@@ -1,5 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, FlatList, RefreshControl, ActivityIndicator} from 'react-native';
+import {
+  View,
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+  StyleSheet,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import CoachCard from '../components/common/CoachCard';
 import {fetchWithTimeout} from '../utils/fetchWithTimeout';
@@ -27,18 +33,27 @@ export default function CoachesTabScreen() {
   const fetchCoaches = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetchWithTimeout(`/api/coach/all`, {
+      const response = await fetchWithTimeout('/api/coach/all', {
         method: 'GET',
       });
-      if (!response.ok) throw new Error(`Error ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}`);
+      }
       const data = await response.json();
       const coachesData: Coach[] = data.coaches || [];
       setCoaches(coachesData);
 
       // Generar thumbnails para los videos
       const thumbPromises = coachesData.map(async coach => {
+        // Validar que coachMediaFile exista y sea un string válido
+        if (!coach.coachMediaFile || typeof coach.coachMediaFile !== 'string') {
+          return {id: coach.id, thumbnail: ''};
+        }
+
         const fullUrl = buildMediaUrl(coach.coachMediaFile);
-        if (coach.coachMediaFile?.toLowerCase().endsWith('.mp4')) {
+
+        // Validar que sea un video y que la URL sea válida
+        if (coach.coachMediaFile?.toLowerCase().endsWith('.mp4') && fullUrl) {
           try {
             const thumb = await createThumbnail({url: fullUrl});
             return {id: coach.id, thumbnail: thumb.path};
@@ -56,7 +71,9 @@ export default function CoachesTabScreen() {
       const thumbResults = await Promise.all(thumbPromises);
       const thumbMap: Record<number, string> = {};
       thumbResults.forEach(t => {
-        if (t.thumbnail) thumbMap[t.id] = t.thumbnail;
+        if (t.thumbnail) {
+          thumbMap[t.id] = t.thumbnail;
+        }
       });
       setThumbnails(thumbMap);
     } catch (err) {
@@ -77,31 +94,42 @@ export default function CoachesTabScreen() {
   };
 
   const renderContent = ({item}: {item: Coach}) => {
-    const isVideo = item.coachMediaFile?.toLowerCase().endsWith('.mp4');
-    const mediaUrl = buildMediaUrl(item.coachMediaFile);
+    // 🔹 Procesar la URL directamente del backend
+    let mediaUrl = item.coachMediaFile || '';
+
+    // Si la URL viene codificada por el backend, decodificarla
+    if (mediaUrl.includes('https%3A') || mediaUrl.includes('http%3A')) {
+      // Remover /media/ y decodificar
+      mediaUrl = decodeURIComponent(mediaUrl.replace(/^\/?media\/?/, ''));
+    } else if (mediaUrl && !mediaUrl.startsWith('http')) {
+      // Si es una ruta relativa, usar buildMediaUrl
+      mediaUrl = buildMediaUrl(mediaUrl);
+    }
+
+    const isVideo = mediaUrl?.toLowerCase().endsWith('.mp4');
     const thumbUrl = thumbnails[item.id];
     const displayUrl = isVideo && thumbUrl ? thumbUrl : mediaUrl;
 
     return (
       <CoachCard
-        title={item.coachingRole}
-        name={item.username}
-        tag={item.role}
+        title={item.coachingRole || 'Coach'}
+        name={item.username || 'Unknown'}
+        tag={item.role || 'coach'}
         imageUrl={displayUrl}
         mediaUrl={mediaUrl}
         isVideo={isVideo}
-        style={{marginHorizontal: 5}}
+        style={styles.coachCardWithMargin}
         onMorePress={() =>
           (navigation as any).navigate('CoachDetails', {coach: item})
         }>
-        {item.coachBiography}
+        {item.coachBiography || ''}
       </CoachCard>
     );
   };
 
   if (loading && !refreshing) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -112,11 +140,33 @@ export default function CoachesTabScreen() {
       data={coaches}
       keyExtractor={item => String(item.id)}
       renderItem={renderContent}
-      ItemSeparatorComponent={() => <View style={{height: 20}} />}
-      contentContainerStyle={{paddingBottom: 40}} // espacio al final
+      ItemSeparatorComponent={ItemSeparator}
+      contentContainerStyle={styles.contentContainer} // espacio al final
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     />
   );
 }
+
+const ItemSeparator = () => <View style={styles.itemSeparator} />;
+
+const styles = StyleSheet.create({
+  coachCard: {
+    marginHorizontal: 5,
+  },
+  coachCardWithMargin: {
+    marginHorizontal: 5,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  contentContainer: {
+    paddingBottom: 40,
+  },
+  itemSeparator: {
+    height: 20,
+  },
+});
