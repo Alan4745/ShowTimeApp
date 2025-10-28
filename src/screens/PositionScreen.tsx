@@ -40,7 +40,6 @@ export default function PositionScreen() {
 
   const positionOptions: Position[] = [
     'goalkeeper',
-    'defender',
     'centerBack',
     'fullback',
     'midfielder',

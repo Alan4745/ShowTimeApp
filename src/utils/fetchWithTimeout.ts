@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import API_BASE_URL from '../config/api';
 import { authInstance } from '../context/AuthContext';
 import { globalErrorInstance } from '../context/GlobalErrorSingleton';
+import { APILogger } from '../config/debugConfig';
 
 export async function fetchWithTimeout(
   endpoint: string,
@@ -11,6 +12,8 @@ export async function fetchWithTimeout(
 ) {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
+  const startTime = Date.now();
+  const fullUrl = `${API_BASE_URL}${endpoint}`;
 
   try {
     const token = await AsyncStorage.getItem('authToken');
@@ -18,7 +21,7 @@ export async function fetchWithTimeout(
     // 🔹 Detectamos si el body es FormData
     const isFormData = options.body instanceof FormData;
 
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const requestOptions = {
       ...options,
       headers: {
         // Importante: solo agregamos Content-Type si NO es FormData
@@ -27,9 +30,17 @@ export async function fetchWithTimeout(
         ...options.headers,
       },
       signal: controller.signal,
-    });
+    };
+
+    // 📝 Log de la petición (si está activado)
+    APILogger.logRequest(options.method || 'GET', fullUrl, requestOptions);
+
+    const response = await fetch(fullUrl, requestOptions);
 
     clearTimeout(id);
+
+    // 📝 Log de la respuesta (si está activado)
+    await APILogger.logResponse(response, startTime);
 
     if (response.status === 401) {
       // ⚠️ Solo cerrar sesión si NO estamos en login o register
@@ -47,6 +58,9 @@ export async function fetchWithTimeout(
     return response;
   } catch (error: any) {
     clearTimeout(id);
+
+    // 📝 Log del error (si está activado)
+    APILogger.logError(error, fullUrl);
 
     if (error.name === 'AbortError') {
       globalErrorInstance?.showError('errors.connectionTimedOut');

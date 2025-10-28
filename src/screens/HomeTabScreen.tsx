@@ -1,14 +1,24 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, FlatList, Image, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  FlatList,
+  Image,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import Post from '../components/common/Post';
 import SearchBar from '../components/form/SearchBar';
 import LottieIcon from '../components/common/LottieIcon';
-import { useAuth } from '../context/AuthContext';
-import loadingAnimation from '../../assets/lottie/loading.json'
-import { buildMediaUrl } from '../utils/urlHelpers';
-import { fetchWithTimeout } from '../utils/fetchWithTimeout';
+import CommentModal from '../components/modals/CommentModal';
+import {useAuth} from '../context/AuthContext';
+import loadingAnimation from '../../assets/lottie/loading.json';
+import {buildMediaUrl} from '../utils/urlHelpers';
+import {fetchWithTimeout} from '../utils/fetchWithTimeout';
 import API_BASE_URL from '../config/api';
 
 type MediaItem = {
@@ -20,7 +30,7 @@ type MediaItem = {
   author?: string;
   description?: string;
   subcategory?: string;
-  format?: string;  
+  format?: string;
   likes?: number;
   comments?: number;
 };
@@ -61,7 +71,7 @@ type RawPost = {
 
 export default function HomeTabScreen() {
   const navigation = useNavigation();
-  const { token, user} = useAuth();  
+  const {token, user} = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [allPosts, setAllPosts] = useState<PostType[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<PostType[]>([]);
@@ -69,27 +79,37 @@ export default function HomeTabScreen() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [likingPostId, setLikingPostId] = useState<string | null>(null);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const defaultAvatar = require('../../assets/img/userGeneric.png');
-  const defaultPdfIcon = require('../../assets/img/pdfIcon.png');  
-  const endpoint = `${API_BASE_URL}/api/posts/`; 
+  const defaultPdfIcon = require('../../assets/img/pdfIcon.png');
+  const endpoint = `${API_BASE_URL}/api/posts/`;
+
+  // Función para pull-to-refresh
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchPosts(endpoint);
+    setRefreshing(false);
+  };
 
   // Para que refresque el contenido de HomeTabScreen y se muestren las actualizaciones
   useFocusEffect(
     useCallback(() => {
       fetchPosts(endpoint); // ← Re-fetch cuando la pantalla recupera el foco
-    }, [token])
+    }, [token]),
   );
 
   // Función para el toggle de like
   const handleToggleLike = async (postId: string, likedByMe: boolean) => {
     if (likingPostId === postId) return; // previene doble click
     setLikingPostId(postId);
-    
+
     try {
       const method = likedByMe ? 'DELETE' : 'POST';
       //fetchWithTimeout maneja el token y headers
       const response = await fetchWithTimeout(`/api/posts/${postId}/like/`, {
-        method,        
+        method,
       });
 
       const data = await response.json();
@@ -102,8 +122,8 @@ export default function HomeTabScreen() {
                   likedByMe: !likedByMe,
                   likesCount: post.likesCount + (likedByMe ? -1 : 1),
                 }
-              : post
-          )
+              : post,
+          ),
         );
 
         setFilteredPosts(prev =>
@@ -114,14 +134,14 @@ export default function HomeTabScreen() {
                   likedByMe: !likedByMe,
                   likesCount: post.likesCount + (likedByMe ? -1 : 1),
                 }
-              : post
-          )
+              : post,
+          ),
         );
       }
     } catch (err) {
-        console.error('Error al hacer toggle de like:', err);
+      console.error('Error al hacer toggle de like:', err);
     } finally {
-        setLikingPostId(null);
+      setLikingPostId(null);
     }
   };
 
@@ -129,7 +149,7 @@ export default function HomeTabScreen() {
   const fetchPosts = async (url: string, append = false) => {
     if (!append) setIsInitialLoading(true);
     try {
-      const res = await fetchWithTimeout(url.replace(API_BASE_URL, '')); // ← para mantener consistencia con otros endpointsconst res = await fetchWithTimeout(url, {      
+      const res = await fetchWithTimeout(url.replace(API_BASE_URL, '')); // ← para mantener consistencia con otros endpointsconst res = await fetchWithTimeout(url, {
       const text = await res.text();
 
       if (text.startsWith('<')) {
@@ -152,7 +172,7 @@ export default function HomeTabScreen() {
           }
 
           return {
-            ...item,            
+            ...item,
             uri: fullUri,
             mediaType: item.type || 'image',
             thumbnailUrl,
@@ -185,9 +205,9 @@ export default function HomeTabScreen() {
 
       setNextPageUrl(json.next || null);
     } catch (err) {
-        console.error('Error al cargar posts:', err);
-    } finally{
-        if (!append) setIsInitialLoading(false);
+      console.error('Error al cargar posts:', err);
+    } finally {
+      if (!append) setIsInitialLoading(false);
     }
   };
 
@@ -202,7 +222,7 @@ export default function HomeTabScreen() {
       setFilteredPosts(allPosts);
     } else {
       const filtered = allPosts.filter(post =>
-        post.text?.toLowerCase().includes(query)
+        post.text?.toLowerCase().includes(query),
       );
       setFilteredPosts(filtered);
     }
@@ -235,19 +255,57 @@ export default function HomeTabScreen() {
       console.error('Error de red al eliminar el post:', err);
     }
   };
+
+  // Función para enviar comentario
+  const handleSubmitComment = async (text: string) => {
+    if (!selectedPostId) {
+      return;
+    }
+
+    try {
+      const res = await fetchWithTimeout(
+        `/api/posts/${selectedPostId}/comments/`,
+        {
+          method: 'POST',
+          body: JSON.stringify({text}),
+        },
+        30000,
+      );
+
+      if (!res.ok) {
+        throw new Error('Error al enviar el comentario');
+      }
+
+      // Comentario enviado exitosamente
+      setShowCommentModal(false);
+      setSelectedPostId(null);
+
+      // Navegar a la pantalla del post para ver el comentario
+      (navigation as any).navigate('StudentPost', {postId: selectedPostId});
+    } catch (error) {
+      console.error('Error al enviar comentario:', error);
+    }
+  };
+
   // Renderiza los posts
-  const renderItem = ({ item }: { item: PostType }) => (
+  const renderItem = ({item}: {item: PostType}) => (
     <Post
       post={item}
       currentUserId={user?.id}
-      onEdit={() => (navigation as any).navigate('PublishPost', { postToEdit: item })}
-      onDelete={() => handleDeletePost(item.id)}
-      onPressComments={() =>
-        (navigation as any).navigate('StudentPost', { postId: item.id })
+      onEdit={() =>
+        (navigation as any).navigate('PublishPost', {postToEdit: item})
       }
-      onToggleLike = {() => handleToggleLike(item.id, item.likedByMe)}
-      liking = {likingPostId === item.id}
-      showActions = {true}
+      onDelete={() => handleDeletePost(item.id)}
+      onPressComments={() => {
+        setSelectedPostId(item.id);
+        setShowCommentModal(true);
+      }}
+      onPressPost={() =>
+        (navigation as any).navigate('StudentPost', {postId: item.id})
+      }
+      onToggleLike={() => handleToggleLike(item.id, item.likedByMe)}
+      liking={likingPostId === item.id}
+      showActions={true}
     />
   );
 
@@ -270,8 +328,8 @@ export default function HomeTabScreen() {
         value={searchQuery}
         onChangeText={setSearchQuery}
         placeholder="Search"
-      />   
-   
+      />
+
       <FlatList
         data={filteredPosts.filter(p => !!p && !!p.id)}
         keyExtractor={item => item.id.toString()}
@@ -279,34 +337,60 @@ export default function HomeTabScreen() {
         scrollEnabled={true}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#1DA1F2"
+            colors={['#1DA1F2']}
+          />
+        }
         ListFooterComponent={
           loadingMore ? (
-            <ActivityIndicator size="small" color="#fff" style={{ marginVertical: 20 }} />
+            <ActivityIndicator
+              size="small"
+              color="#fff"
+              style={styles.loadingIndicator}
+            />
           ) : null
         }
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={styles.listContent}
       />
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => (navigation as any).navigate('PublishPost')}
-      >
+        onPress={() => (navigation as any).navigate('PublishPost')}>
         <Text style={styles.buttonText}>＋</Text>
       </TouchableOpacity>
+
+      <CommentModal
+        visible={showCommentModal}
+        onClose={() => {
+          setShowCommentModal(false);
+          setSelectedPostId(null);
+        }}
+        onSubmit={handleSubmitComment}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: '#000',     
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#000', // o el fondo que uses
+  },
+  loadingIndicator: {
+    marginVertical: 20,
+  },
+  listContent: {
+    paddingBottom: 100,
   },
   button: {
     position: 'absolute',
@@ -327,4 +411,3 @@ const styles = StyleSheet.create({
     lineHeight: 30,
   },
 });
-

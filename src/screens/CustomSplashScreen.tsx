@@ -1,18 +1,18 @@
 // src/screens/CustomSplashScreen.tsx
-import React, { useEffect } from 'react';
-import { View, Image, Text, StyleSheet, Dimensions } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import React, {useEffect} from 'react';
+import {View, Image, Text, StyleSheet, Dimensions} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-export default function CustomSplashScreen() {  
-  const { t } = useTranslation();  
+export default function CustomSplashScreen() {
+  const {t} = useTranslation();
 
   return (
     <View style={styles.container}>
       <View style={styles.mainContent}>
         <Image
-          source={require('../../assets/img/LogoNuevo.png')}
+          source={require('../../assets/img/Logo_para_pagina_de_carca_con_fondo_azul.png')}
           style={styles.logoImage}
           resizeMode="contain"
         />
@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   logoImage: {
-    width: width * 0.8,
-    height: height * 0.3,
-    maxWidth: 400,
-    maxHeight: 200,
+    width: width * 0.9,
+    height: height * 0.4,
+    maxWidth: 500,
+    maxHeight: 300,
   },
   footer: {
     justifyContent: 'flex-end',

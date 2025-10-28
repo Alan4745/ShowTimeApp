@@ -21,7 +21,8 @@ const languageDetector: LanguageDetectorAsyncModule = {
     AsyncStorage.getItem(LANGUAGE_KEY)
       .then((language) => {
         if (language) {
-          callback(language);
+          // callback(language);
+          callback('en');
         } else {
           const bestLocale = RNLocalize.getLocales()[0]?.languageCode || 'es';
           callback(bestLocale);

@@ -90,7 +90,9 @@
       "accessToDarwinMaterial": "Access to Darwin's material (Learn)",
       "directMessagesDarwin": "Direct messagges with Darwin",
       "accessToGuestSpeakers": "Access to guest speakers",
-      "accessToPost": "Access to Post",
+      "accessToPost": "Access to Darwin's post",
+      "ableToPost": "Able to post",
+      "accessToStudentsAndCoachesPost": "Access to students and coaches post",
       "accessToCoachMaterial": "Access to Coaches material (Learn)",  
       "eventsAccess": "Showtime University events (camps, meetings, trainings)",   
       "directMessageWithCoach": "Direct message with coaches",
@@ -234,10 +236,9 @@
   "quickSelect": "Quick Select (Demo):",
   "positions": {
     "goalkeeper": "Goalkeeper",
-    "defender": "Defender",
     "centerBack": "Center Back",
     "fullback": "Fullback",
-    "midfielder": "Midfielder",
+    "midfielder": "Center Midfielder",
     "winger": "Winger",
     "forward": "Forward"
   },
@@ -346,6 +347,7 @@
     "selectCitizenshipTitle": "Select Citizenship",
     "selectCategory": "Select a Category",
     "highlights":"Share your highlight link",
+    "highlightsDescription": "This will not be public. It will be for Darwin to see the talent you have on the field & potentially pass on to coaches, scouts, or agents.",
     "selectImage": "Select Photo",
     "confirmDelete": "Confirm Deletion",
     "buttonOptions":{
@@ -353,6 +355,7 @@
       "cancel": "Cancel",
       "close": "Close",
       "delete": "Delete",
+      "save": "Save",
       "useCamera": "Use camera",
       "chooseGalery": "Choose from galery"
     }

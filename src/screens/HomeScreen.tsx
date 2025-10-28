@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, StatusBar} from 'react-native';
 import HomeTabScreen from './HomeTabScreen';
 import LearnTabScreen from './LearnTabScreen';
 import CoachesTabScreen from './CoachesTabScreen';
 import TabBar from '../components/common/TabBar';
 //import AppHeader from '../components/common/AppHeader';
 import AppHeaderNew from '../components/common/AppHeaderNew';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from '../context/AuthContext';
+import {useTranslation} from 'react-i18next';
+import {useAuth} from '../context/AuthContext';
 
 export default function HomeScreen() {
-  const { t } = useTranslation();
-  const { user } = useAuth();
+  const {t} = useTranslation();
+  const {user} = useAuth();
   const [activeTab, setActiveTab] = useState('home');
   const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -54,8 +54,7 @@ export default function HomeScreen() {
 
   //Nueva Header
   const renderHeader = () => {
-    return <AppHeaderNew userAvatar = {user?.studentProfileImage}/>;
-    
+    return <AppHeaderNew userAvatar={user?.studentProfileImage} />;
   };
 
   return (

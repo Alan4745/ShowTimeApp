@@ -1,19 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Dimensions, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {useNavigation} from '@react-navigation/native';
 import LoginModal from '../components/modals/LoginModal';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const images = [
-    require('../../assets/img/carousel/carousel1.png'),
-    require('../../assets/img/carousel/carousel2.png'),
-    require('../../assets/img/carousel/carousel3.png'),
-    require('../../assets/img/carousel/carousel4.png'),
-    require('../../assets/img/carousel/carousel5.png'),
-    require('../../assets/img/carousel/carousel6.png'),
-    require('../../assets/img/carousel/carousel7.png')
+  require('../../assets/img/carousel/carousel1.png'),
+  require('../../assets/img/carousel/carousel2.png'),
+  require('../../assets/img/carousel/carousel3.png'),
+  require('../../assets/img/carousel/carousel4.png'),
+  require('../../assets/img/carousel/carousel5.png'),
+  require('../../assets/img/carousel/carousel6.png'),
+  require('../../assets/img/carousel/carousel7.png'),
 ];
 
 export default function CarouselScreen() {
@@ -25,65 +33,71 @@ export default function CarouselScreen() {
   // Temporizador para carousel
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      setCurrentIndex(prevIndex =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1,
       );
-    }, 3000); 
+    }, 3000);
 
     return () => clearInterval(interval); // Limpia al desmontar
   }, []);
 
   const handleGetStarted = () => {
-    (navigation.navigate as any)({ name: 'RegisterMethod' });
+    (navigation.navigate as any)({name: 'RegisterMethod'});
   };
 
   return (
-    <ImageBackground
-      source={images[currentIndex]}
-      style={styles.backgroundImage}
-      resizeMode='cover'
-    >
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
+    <View style={{flex: 1}}>
+      <ImageBackground
+        source={images[currentIndex]}
+        style={styles.backgroundImage}
+        resizeMode="cover">
+        <View style={styles.container}>
+          <View style={styles.headerContainer}>
             <Image
-            source={require('../../assets/img/LogoNuevo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
+              source={require('../../assets/img/LogoShowTime.png')}
+              style={styles.logoImage}
+              resizeMode="contain"
             />
-        </View>
-
-        <View style={styles.bottomContent}>
-          <View style={styles.sloganTextContainer}>
-              <Text style={styles.sloganText}>{t('carousel.text.line1')}</Text>
-              <Text style={styles.sloganText}>{t('carousel.text.line2')}</Text>
           </View>
 
-          <TouchableOpacity style={styles.getStartedButton} onPress={handleGetStarted}>
-                          <Text style={styles.buttonText}>
-                          {t('carousel.buttons.getStarted')}
-                          </Text>
-          </TouchableOpacity>
+          <View style={styles.bottomContent}>
+            <View style={styles.sloganTextContainer}>
+              <Text style={styles.sloganText}>{t('carousel.text.line1')}</Text>
+              <Text style={styles.sloganText}>{t('carousel.text.line2')}</Text>
+            </View>
 
-          <TouchableOpacity style={styles.accessAccountButton} onPress={() => {setLoginVisible(true)}}>
-                          <Text style={styles.buttonText}>
-                          {t('carousel.buttons.accessAccount')}
-                          </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.getStartedButton}
+              onPress={handleGetStarted}>
+              <Text style={styles.buttonText}>
+                {t('carousel.buttons.getStarted')}
+              </Text>
+            </TouchableOpacity>
 
-          <Text style={styles.footerText}>{t('carousel.footerText')}</Text>
+            <TouchableOpacity
+              style={styles.accessAccountButton}
+              onPress={() => {
+                setLoginVisible(true);
+              }}>
+              <Text style={styles.buttonText}>
+                {t('carousel.buttons.accessAccount')}
+              </Text>
+            </TouchableOpacity>
 
-        </View> 
-      </View> 
-      <LoginModal
-        visible={loginVisible}
-        onClose={() => setLoginVisible(false)}
-        onSuccess={() => {
-          setLoginVisible(false);
-          // si quieres navegar al home, dashboard, etc. después del login:
-          //(navigation.navigate as any)({ name: 'Home' });
-        }}
-      />       
-    </ImageBackground>          
+            <Text style={styles.footerText}>{t('carousel.footerText')}</Text>
+          </View>
+        </View>
+        <LoginModal
+          visible={loginVisible}
+          onClose={() => setLoginVisible(false)}
+          onSuccess={() => {
+            setLoginVisible(false);
+            // si quieres navegar al home, dashboard, etc. después del login:
+            //(navigation.navigate as any)({ name: 'Home' });
+          }}
+        />
+      </ImageBackground>
+    </View>
   );
 }
 
@@ -95,15 +109,15 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.4)', 
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: "space-between",    
+    justifyContent: 'space-between',
   },
-  bottomContent:{
-    alignItems: "center",
+  bottomContent: {
+    alignItems: 'center',
     marginBottom: 30,
     gap: 10,
   },
@@ -117,44 +131,42 @@ const styles = StyleSheet.create({
     maxHeight: 200,
   },
   sloganTextContainer: {
-    marginBottom: 5,    
+    marginBottom: 5,
   },
   sloganText: {
     fontFamily: 'AnonymousPro-Regular',
-    fontWeight: "700",
+    fontWeight: '700',
     fontSize: 25,
-    color:"#FFFFFF",
+    color: '#FFFFFF',
   },
-  getStartedButton:{
+  getStartedButton: {
     width: 340,
     height: 61,
-    backgroundColor: "#2B80BE",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#2B80BE',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 30,
   },
-  accessAccountButton:{
+  accessAccountButton: {
     width: 340,
     height: 61,
-    backgroundColor: "#000000", 
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#000000',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 30,
     borderWidth: 1,
-    borderColor: "#FFFFFF",
+    borderColor: '#FFFFFF',
   },
-  buttonText:{
+  buttonText: {
     fontFamily: 'AnonymousPro-Bold',
-    fontWeight: "700",
+    fontWeight: '700',
     fontSize: 21,
-    color: "#FFFFFF",
+    color: '#FFFFFF',
   },
-  footerText:{
+  footerText: {
     fontFamily: 'AnonymousPro-Regular',
-    fontWeight: "400",
+    fontWeight: '400',
     fontSize: 13,
-    color: "#FFFFFF",  
-  }
+    color: '#FFFFFF',
+  },
 });
-
-

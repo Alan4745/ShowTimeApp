@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
-import { useTranslation } from 'react-i18next';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 type Props = {
   visible: boolean;
@@ -10,8 +16,8 @@ type Props = {
 
 const MAX_LENGTH = 200;
 
-export default function CommentModal({ visible, onClose, onSubmit }: Props) {
-  const { t } = useTranslation();
+export default function CommentModal({visible, onClose, onSubmit}: Props) {
+  const {t} = useTranslation();
   const [comment, setComment] = useState('');
 
   useEffect(() => {
@@ -20,7 +26,7 @@ export default function CommentModal({ visible, onClose, onSubmit }: Props) {
     }
   }, [visible]);
 
-  if (!visible) return null; 
+  if (!visible) return null;
 
   const handleSend = () => {
     if (comment.trim().length > 0) {
@@ -38,7 +44,6 @@ export default function CommentModal({ visible, onClose, onSubmit }: Props) {
   return (
     <View style={styles.overlay}>
       <View style={styles.modalContainer}>
-
         {/* Botón de cerrar */}
         <TouchableOpacity onPress={handleCancel} style={styles.closeButton}>
           <Text style={styles.closeText}>×</Text>
@@ -52,10 +57,10 @@ export default function CommentModal({ visible, onClose, onSubmit }: Props) {
           placeholder={t('placeholders.writeComment')}
           placeholderTextColor="#999"
           value={comment}
-          onChangeText={setComment} 
+          onChangeText={setComment}
           autoCorrect={false}
-          autoComplete='off'      
-          autoCapitalize='none'     
+          autoComplete="off"
+          autoCapitalize="none"
         />
 
         {/* Contador */}
@@ -65,31 +70,34 @@ export default function CommentModal({ visible, onClose, onSubmit }: Props) {
 
         {/* Botón de enviar */}
         <TouchableOpacity
-          style={[styles.sendButton, comment.trim().length === 0 && styles.disabled]}
+          style={[
+            styles.sendButton,
+            comment.trim().length === 0 && styles.disabled,
+          ]}
           onPress={handleSend}
-          disabled={comment.trim().length === 0}
-        >
-          <Text style={
-            [styles.sendText, 
-            comment.trim().length === 0 && styles.disabledText
-            ]}
-          >{t('common.send')}</Text>
+          disabled={comment.trim().length === 0}>
+          <Text
+            style={[
+              styles.sendText,
+              comment.trim().length === 0 && styles.disabledText,
+            ]}>
+            {t('common.send')}
+          </Text>
         </TouchableOpacity>
-
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  overlay: {  
-    ...StyleSheet.absoluteFillObject,  
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
     //position: 'absolute',
     //top: 0,
     //left: 0,
     //right: 0,
     //bottom: 0,
-    backgroundColor: "#000000",
+    backgroundColor: '#000000',
     //backgroundColor: 'rgba(0, 0, 0, 0.8)', // Semitransparente
     justifyContent: 'center',
     alignItems: 'center',
@@ -104,7 +112,7 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: '30%',
     position: 'relative',
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   closeButton: {
     position: 'absolute',
@@ -118,7 +126,7 @@ const styles = StyleSheet.create({
   },
   input: {
     fontFamily: 'AnonymousPro-Regular',
-    fontWeight: "400",
+    fontWeight: '400',
     fontSize: 16,
     borderWidth: 1,
     borderColor: '#FFFFFF',
@@ -135,13 +143,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   sendButton: {
-    width: "50%",
+    width: '50%',
     backgroundColor: '#FFFFFF',
     paddingVertical: 10,
     borderRadius: 20,
     marginTop: 10,
     alignItems: 'center',
-    alignSelf: "center"
+    alignSelf: 'center',
   },
   sendText: {
     color: '#2B80BE',

@@ -91,7 +91,9 @@
       "accessToDarwinMaterial": "Acceso al material de Darwin (learn)",
       "directMessagesDarwin": "Mensajes directos con Darwin",
       "accessToGuestSpeakers": "Acceso a conferencistas invitados",
-      "accessToPost": "Acceso a Publicar",
+      "accessToPost": "Acceso a la publicación de Darwin",
+      "ableToPost": "Puede publicar",
+      "accessToStudentsAndCoachesPost": "Acceso a publicaciones de estudiantes y entrenadores",
       "accessToCoachMaterial": "Acceso al material de los entrenadores (learn)",
       "eventsAccess": "Eventos de Showtime University (campamentos, reuniones, entrenamientos)",
       "directMessageWithCoach": "Mensaje directo con entrenadores",
@@ -211,10 +213,9 @@
   "quickSelect": "Selección rápida (Demo):",
   "positions": {
     "goalkeeper": "Portero",
-    "defender": "Defensor",
     "centerBack": "Defensa central",
     "fullback": "Lateral",
-    "midfielder": "Centrocampista",
+    "midfielder": "Centrocampista central",
     "winger": "Extremo",
     "forward": "Delantero"
   },
@@ -323,6 +324,7 @@
     "selectCitizenshipTitle": "Seleccionar ciudadanía",
     "selectCategory": "Selecionar una categoría",
     "highlights":"Comparte tu video de highlights",
+    "highlightsDescription": "Esto no será público. Será para que Darwin vea el talento que tienes en el campo y potencialmente lo comparta con entrenadores, cazatalentos o agentes.",
     "selectImage": "Seleccionar Foto",
     "confirmDelete": "Confirmar Eliminación",
     "buttonOptions":{
@@ -330,6 +332,7 @@
       "cancel": "Cancelar",
       "close": "Cerrar",
       "delete": "Eliminar",
+      "save": "Guardar",
       "useCamera": "Usar cámara",
       "chooseGalery": "Escoger de la galería"
     }

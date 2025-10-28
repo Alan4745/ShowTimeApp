@@ -1,48 +1,65 @@
 import React from 'react';
-import { FlatList, View, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import { Play } from 'lucide-react-native';
+import {
+  FlatList,
+  View,
+  Image,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
+import {Play} from 'lucide-react-native';
 
-const screenWidth = Dimensions.get('window').width -20;
+const screenWidth = Dimensions.get('window').width - 20;
 const numColumnsMultiple = 2; // columnas cuando hay varios items
 const paddingBetween = 5;
 
-export default function MediaGrid({ media, onMediaPress }) {
+export default function MediaGrid({media, onMediaPress}) {
   if (!media || media.length === 0) return null;
 
   const isSingle = media.length === 1;
   const numColumns = isSingle ? 1 : numColumnsMultiple;
 
-  const itemSize = isSingle ? screenWidth - paddingBetween * 2 : (screenWidth - paddingBetween * (numColumns + 1)) / numColumns;
+  const itemSize = isSingle
+    ? screenWidth - paddingBetween * 2
+    : (screenWidth - paddingBetween * (numColumns + 1)) / numColumns;
 
-  const renderItem = ({ item, index }) => {
-    const handlePress = () => onMediaPress(item);    
+  const renderItem = ({item, index}) => {
+    const handlePress = e => {
+      if (e) {
+        e.stopPropagation?.();
+      }
+      onMediaPress(item);
+    };
     //console.log('MediaGrid renderItem:', { thumbnail: item.thumbnail, uri: item.uri });
     if (item.mediaType === 'image') {
       return (
         <TouchableOpacity
           key={item.id || index}
           onPress={handlePress}
-          style={[styles.itemContainer, { width: itemSize, height: itemSize }]}
-        >
-          <Image source={{ uri: item.uri }} style={styles.media} resizeMode="cover" />
+          style={[styles.itemContainer, {width: itemSize, height: itemSize}]}>
+          <Image
+            source={{uri: item.uri}}
+            style={styles.media}
+            resizeMode="cover"
+          />
         </TouchableOpacity>
       );
     }
 
     if (item.mediaType === 'video') {
       return (
-        <View style={[styles.itemContainer, { width: itemSize, height: itemSize }]}>
-          
+        <View
+          style={[styles.itemContainer, {width: itemSize, height: itemSize}]}>
           {/* Aquí mostramos la miniatura en lugar del video */}
           <Image
             source={
               item.thumbnailUrl
-              ? { uri: item.thumbnailUrl}
-              : require('../../../assets/img/audioPlaceholder.png')
+                ? {uri: item.thumbnailUrl}
+                : require('../../../assets/img/audioPlaceholder.png')
             }
             style={styles.media}
             resizeMode="cover"
-          />  
+          />
 
           {/* Ícono de reproducción */}
           <View style={styles.playIconWrapper}>
@@ -64,14 +81,13 @@ export default function MediaGrid({ media, onMediaPress }) {
         <TouchableOpacity
           key={item.id || index}
           onPress={handlePress}
-          style={[styles.itemContainer, { width: itemSize, height: itemSize }]}
-          activeOpacity={0.8}
-        >
+          style={[styles.itemContainer, {width: itemSize, height: itemSize}]}
+          activeOpacity={0.8}>
           <Image
             source={
               item.thumbnailUrl
-              ? { uri: item.thumbnailUrl}
-              : require('../../../assets/img/pdfIcon.png')
+                ? {uri: item.thumbnailUrl}
+                : require('../../../assets/img/pdfIcon.png')
             }
             style={styles.media}
             resizeMode="contain"
@@ -97,7 +113,7 @@ export default function MediaGrid({ media, onMediaPress }) {
 const styles = StyleSheet.create({
   container: {
     padding: paddingBetween,
-    alignItems: "center",
+    alignItems: 'center',
   },
   itemContainer: {
     margin: paddingBetween / 2,
@@ -116,8 +132,6 @@ const styles = StyleSheet.create({
     left: '40%',
     backgroundColor: 'rgba(0,0,0,0.4)',
     padding: 10,
-    borderRadius: 20,    
+    borderRadius: 20,
   },
 });
-
-
