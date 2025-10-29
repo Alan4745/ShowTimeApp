@@ -73,9 +73,8 @@ export default function LearnCategoryScreen({
     setMediaViewerVisible(false);
   };
 
-  const applyFilters = (filters: { subcategory?: string; format?: string; sortByName?: 'asc' | 'desc' }) => {
+  const applyFilters = (filters: { format?: string; sortByName?: 'asc' | 'desc' }) => {
     let updated = [...lessonsFromCoach];
-    if (filters.subcategory) updated = updated.filter(l => l.subcategory === filters.subcategory);
     if (filters.format) updated = updated.filter(l => l.format?.toLowerCase() === filters.format!.toLowerCase());
     if (filters.sortByName) updated.sort((a, b) => {
       if (!a.author || !b.author) return 0;

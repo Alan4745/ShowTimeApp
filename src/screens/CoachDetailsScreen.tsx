@@ -39,6 +39,8 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
   const [lessons, setLessons] = useState<any[]>([]);
   const [loadingLessons, setLoadingLessons] = useState(false);
   const [lessonsError, setLessonsError] = useState<string | null>(null);
+  const [selectedLesson, setSelectedLesson] = useState<any>(null);
+  const [showLessonModal, setShowLessonModal] = useState(false);
   const navigate = useNavigation();
 
   // Descargar las lecciones desde el backend
@@ -131,6 +133,11 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
     (navigate as any).navigate('SubscribeElite');
   };
 
+  const handleLessonPress = (lesson: any) => {
+    setSelectedLesson(lesson);
+    setShowLessonModal(true);
+  };
+
   return (
     <View style={styles.container}>
       <AppHeaderNew userAvatar={buildMediaUrl(user?.studentProfileImage)} />
@@ -217,9 +224,9 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
                 <View style={styles.accompList}>
                   {coach.coachAchievements.map(
                     (item: string, index: number) => (
-                      <Text key={index} style={styles.accompListItem}>
-                        • {item}
-                      </Text>
+                      <View key={index} style={styles.accomplishmentBox}>
+                        <Text style={styles.accomplishmentText}>{item}</Text>
+                      </View>
                     ),
                   )}
                 </View>
@@ -267,6 +274,7 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
                       mediaType={lesson.mediaType || 'video'}
                       cardHeight={220}
                       thumbnailUrl={lesson.thumbnail || ''}
+                      onOpenMedia={() => handleLessonPress(lesson)}
                     />
                   ))}
                 </View>
@@ -321,10 +329,12 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
           )}
         </View>
 
-        {/*PLAN BUTTON*/}
+        {/*CHAT BUTTON*/}
         <View style={styles.planContainer}>
           <TouchableOpacity style={styles.planButton} onPress={handlePlanPress}>
-            <Text style={styles.planButtonText}>Elite Plan</Text>
+            <Text style={styles.planButtonText}>
+              {t('coachDetails.letsChat')}
+            </Text>
           </TouchableOpacity>
           <View style={styles.helperTextContainer}>
             <HelperText
@@ -334,7 +344,7 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
           </View>
         </View>
       </ScrollView>
-      {/* Modal de reproducción */}
+      {/* Modal de reproducción del coach */}
       <MediaViewerModal
         visible={showVideoModal}
         onClose={() => setShowVideoModal(false)}
@@ -347,6 +357,25 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
         }}
         showInfo={true}
       />
+
+      {/* Modal de reproducción de lecciones */}
+      {selectedLesson && (
+        <MediaViewerModal
+          visible={showLessonModal}
+          onClose={() => {
+            setShowLessonModal(false);
+            setSelectedLesson(null);
+          }}
+          media={{
+            id: selectedLesson.id || '0',
+            mediaType: selectedLesson.mediaType || 'video',
+            uri: selectedLesson.mediaUrl || '',
+            title: selectedLesson.title || 'Lección',
+            description: selectedLesson.description || '',
+          }}
+          showInfo={true}
+        />
+      )}
     </View>
   );
 }
@@ -520,16 +549,25 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   accompList: {
-    paddingLeft: 10,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
     marginTop: 10,
   },
-  accompListItem: {
+  accomplishmentBox: {
+    borderColor: '#FFFFFF',
+    borderWidth: 1.5,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  accomplishmentText: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'AnonymousPro-Regular',
     fontWeight: '400',
-    marginBottom: 6,
-    lineHeight: 20,
   },
   lessonsContainer: {
     marginBottom: 5,

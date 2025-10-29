@@ -471,7 +471,8 @@
     "lessons": "Lecciones",
     "noLessons": "No se han ingresado lecciones.",
     "testimonials": "Testimonios",
-    "noTestimonials": "No se han ingresado testimonios."
+    "noTestimonials": "No se han ingresado testimonios.",
+    "letsChat": "Hablemos"
   },
   "account":{
     "titles": {

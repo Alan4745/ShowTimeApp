@@ -6,23 +6,19 @@ interface FilterModalProps {
   visible: boolean;
   onClose: () => void;
   onApply: (filters: {
-    subcategory?: string;
     format?: string;
     sortByName?: 'asc' | 'desc';
   }) => void;
   onClear: () => void;
 }
 
-const subcategories = ['Workout', 'Gymflow', 'Drills', 'Recovery'];
 const formats = ['Video', 'Image', 'Text', 'Voice'];
 
 export default function FilterModal({ visible, onClose, onApply, onClear }: FilterModalProps) {
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [selectedFormat, setSelectedFormat] = useState<string | null>(null);
   const [sortByName, setSortByName] = useState<'asc' | 'desc' | null>(null);
 
   const handleClear = () => {
-    setSelectedSubcategory(null);
     setSelectedFormat(null);
     setSortByName(null);
     onClear();
@@ -30,7 +26,6 @@ export default function FilterModal({ visible, onClose, onApply, onClear }: Filt
 
   const handleApply = () => {
     onApply({
-      subcategory: selectedSubcategory || undefined,
       format: selectedFormat || undefined,
       sortByName: sortByName || undefined,
     });
@@ -48,25 +43,6 @@ export default function FilterModal({ visible, onClose, onApply, onClear }: Filt
             <TouchableOpacity onPress={onClose}>
               <X size={24} color="#FFFFFF" />
             </TouchableOpacity>
-          </View>
-
-          {/* Subcategory */}
-          <Text style={styles.sectionTitle}>Subcategory</Text>
-          <View style={styles.optionRow}>
-            {subcategories.map((option) => (
-              <TouchableOpacity
-                key={option}
-                style={[
-                  styles.optionButton,
-                  selectedSubcategory === option && styles.optionSelected,
-                ]}
-                onPress={() => setSelectedSubcategory(option)}
-              >
-                <Text style={[
-                    styles.optionText, 
-                    selectedSubcategory === option && styles.optionTextSelected,]}>{option}</Text>
-              </TouchableOpacity>
-            ))}
           </View>
 
           {/* Format */}
