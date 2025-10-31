@@ -7,28 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02915BA2A7324388986C1D5D /* AnonymousPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7E7B32F6F0844029D27E835 /* AnonymousPro-Regular.ttf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-ShowTimeApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-ShowTimeApp.a */; };
+		132D910F532C410798970F42 /* AnonymousPro-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B783A615F6484EC8A70685FE /* AnonymousPro-BoldItalic.ttf */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		348E44247B714895A0E1E154 /* AnonymousPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66A2A3FDBFEF4EC08349508D /* AnonymousPro-Italic.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A4F98DDFA52EDBB6804D857B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		A6EA783D9DF8401F85D0A7B4 /* AnonymousPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EDE931E36E734B79AA301D04 /* AnonymousPro-Bold.ttf */; };
-		132D910F532C410798970F42 /* AnonymousPro-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B783A615F6484EC8A70685FE /* AnonymousPro-BoldItalic.ttf */; };
-		348E44247B714895A0E1E154 /* AnonymousPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66A2A3FDBFEF4EC08349508D /* AnonymousPro-Italic.ttf */; };
-		02915BA2A7324388986C1D5D /* AnonymousPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7E7B32F6F0844029D27E835 /* AnonymousPro-Regular.ttf */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		00E356F41AD99517003FC87E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = ShowTimeApp;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ShowTimeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShowTimeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ShowTimeApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ShowTimeApp/Info.plist; sourceTree = "<group>"; };
@@ -36,13 +26,13 @@
 		3B4392A12AC88292D35C810B /* Pods-ShowTimeApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShowTimeApp.debug.xcconfig"; path = "Target Support Files/Pods-ShowTimeApp/Pods-ShowTimeApp.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-ShowTimeApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShowTimeApp.release.xcconfig"; path = "Target Support Files/Pods-ShowTimeApp/Pods-ShowTimeApp.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-ShowTimeApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShowTimeApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		66A2A3FDBFEF4EC08349508D /* AnonymousPro-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "AnonymousPro-Italic.ttf"; path = "../assets/fonts/AnonymousPro-Italic.ttf"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ShowTimeApp/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ShowTimeApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B783A615F6484EC8A70685FE /* AnonymousPro-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "AnonymousPro-BoldItalic.ttf"; path = "../assets/fonts/AnonymousPro-BoldItalic.ttf"; sourceTree = "<group>"; };
+		E7E7B32F6F0844029D27E835 /* AnonymousPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "AnonymousPro-Regular.ttf"; path = "../assets/fonts/AnonymousPro-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		EDE931E36E734B79AA301D04 /* AnonymousPro-Bold.ttf */ = {isa = PBXFileReference; name = "AnonymousPro-Bold.ttf"; path = "../assets/fonts/AnonymousPro-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		B783A615F6484EC8A70685FE /* AnonymousPro-BoldItalic.ttf */ = {isa = PBXFileReference; name = "AnonymousPro-BoldItalic.ttf"; path = "../assets/fonts/AnonymousPro-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		66A2A3FDBFEF4EC08349508D /* AnonymousPro-Italic.ttf */ = {isa = PBXFileReference; name = "AnonymousPro-Italic.ttf"; path = "../assets/fonts/AnonymousPro-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E7E7B32F6F0844029D27E835 /* AnonymousPro-Regular.ttf */ = {isa = PBXFileReference; name = "AnonymousPro-Regular.ttf"; path = "../assets/fonts/AnonymousPro-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EDE931E36E734B79AA301D04 /* AnonymousPro-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "AnonymousPro-Bold.ttf"; path = "../assets/fonts/AnonymousPro-Bold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,14 +47,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356F01AD99517003FC87E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F11AD99517003FC87E /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* ShowTimeApp */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +98,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A4DC8AE9F40448079BFEE315 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EDE931E36E734B79AA301D04 /* AnonymousPro-Bold.ttf */,
+				B783A615F6484EC8A70685FE /* AnonymousPro-BoldItalic.ttf */,
+				66A2A3FDBFEF4EC08349508D /* AnonymousPro-Italic.ttf */,
+				E7E7B32F6F0844029D27E835 /* AnonymousPro-Regular.ttf */,
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,18 +118,6 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		A4DC8AE9F40448079BFEE315 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				EDE931E36E734B79AA301D04 /* AnonymousPro-Bold.ttf */,
-				B783A615F6484EC8A70685FE /* AnonymousPro-BoldItalic.ttf */,
-				66A2A3FDBFEF4EC08349508D /* AnonymousPro-Italic.ttf */,
-				E7E7B32F6F0844029D27E835 /* AnonymousPro-Regular.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -193,13 +175,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		00E356EC1AD99517003FC87E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		13B07F8E1A680F5B00A75B9A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -210,6 +185,7 @@
 				132D910F532C410798970F42 /* AnonymousPro-BoldItalic.ttf in Resources */,
 				348E44247B714895A0E1E154 /* AnonymousPro-Italic.ttf in Resources */,
 				02915BA2A7324388986C1D5D /* AnonymousPro-Regular.ttf in Resources */,
+				A4F98DDFA52EDBB6804D857B /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,14 +276,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* ShowTimeApp */;
-			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
@@ -433,7 +401,14 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				USE_HERMES = true;
 			};
 			name = Debug;
 		};
@@ -498,7 +473,13 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

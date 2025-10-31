@@ -12,7 +12,7 @@ export default function CustomSplashScreen() {
     <View style={styles.container}>
       <View style={styles.mainContent}>
         <Image
-          source={require('../../assets/img/Logo_para_pagina_de_carca_con_fondo_azul.png')}
+          source={require('../../assets/img/LogoShowTime.png')}
           style={styles.logoImage}
           resizeMode="contain"
         />
