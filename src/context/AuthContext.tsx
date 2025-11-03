@@ -15,6 +15,7 @@ interface User {
   physicalData?: PhysicalData;
   position?: string;
   studentProfileImage?: string;
+  coachingRole?: string;
 }
 
 interface AuthContextType {

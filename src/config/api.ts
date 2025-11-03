@@ -1,5 +1,5 @@
 const API_BASE_URL = __DEV__
-  // ? 'http://192.168.0.168:8000' // Android emulator local backend
+  // ? 'http://localhost:8000' // Android emulator local backend
   ? 'https://backend-showtime.onrender.com'
   : 'https://backend-showtime.onrender.com';
 

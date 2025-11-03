@@ -92,15 +92,20 @@ export default function SummaryScreen() {
         physicalData: user.physicalData,
         studentProfileImage: user.studentProfileImage
           ? `${API_BASE_URL}/media/${user.studentProfileImage}`
-          : "",
+          : '',
       });
-         
 
       // Reset registration data after successful registration
       resetData();
 
-      // Navigate to home/dashboard
-      (navigation as any).navigate('Home');
+      // Pequeño delay para asegurar que el contexto de auth esté actualizado
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 100));
+
+      // Navigate to subscription flow after successful account creation
+      (navigation as any).reset({
+        index: 0,
+        routes: [{name: 'Plans'}],
+      });
 
     } catch (error: any) {      
       if (error.message === 'Network request failed') {
