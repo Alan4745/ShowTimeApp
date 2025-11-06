@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
+  SafeAreaView,
   View,
   ScrollView,
   Text,
@@ -16,11 +17,13 @@ import {useNavigation} from '@react-navigation/native';
 import {useRegistration} from '../context/RegistrationContext';
 import {X, Check, Star, ChevronDown, Lock} from 'lucide-react-native';
 import {useTranslation} from 'react-i18next';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const {height: screenHeight, width: screenWidth} = Dimensions.get('window');
 
 export default function PlanSelectionScreen() {
   const {t} = useTranslation();
+  const insets = useSafeAreaInsets();
   const [selectedPlan, setSelectedPlan] = useState<string>('basic');
   const {updateData} = useRegistration();
   const navigation = useNavigation();
@@ -176,7 +179,7 @@ export default function PlanSelectionScreen() {
   ];
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={[styles.container, {paddingTop: insets.top}]}>
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
@@ -219,7 +222,11 @@ export default function PlanSelectionScreen() {
                 </LinearGradient>
               </View>
               <View style={styles.middleSpacer} />
-              <View style={styles.buttonSection}>
+              <View
+                style={[
+                  styles.buttonSection,
+                  {paddingBottom: 20 + insets.bottom},
+                ]}>
                 <TouchableOpacity
                   style={styles.freeTrialButton}
                   onPress={handleFreeTrialPress}>
@@ -245,7 +252,8 @@ export default function PlanSelectionScreen() {
         </View>
 
         {/* Content Section */}
-        <View style={styles.contentSection}>
+        <View
+          style={[styles.contentSection, {paddingBottom: 40 + insets.bottom}]}>
           <View style={styles.recommendedSection}>
             <Text style={styles.recommendedTitle}>
               {t('planSelection.recommended.title1')}
@@ -448,7 +456,8 @@ export default function PlanSelectionScreen() {
             />
           </View>
 
-          <View style={styles.bottomSection}>
+          <View
+            style={[styles.bottomSection, {paddingBottom: 20 + insets.bottom}]}>
             <Text style={styles.bottomText}>
               {t('planSelection.bottomText.line1')}
             </Text>
@@ -469,7 +478,7 @@ export default function PlanSelectionScreen() {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -171,6 +171,7 @@
     "writeBioHelperText": "Comparte tu experiencia y especialidad. Esto aparecerá en tu perfil (Máx. 400 caracteres).",
     "accomplishmentsHelperText": "Máx. 80 caracteres — ejemplo: Creé un método de recuperación personalizado para atletas de élite."
   },
+  "itHelpsUsCreateATrainingExperienceThatFitsYouBest": "Nos ayuda a crear una experiencia de entrenamiento que se adapte mejor a ti.",
   "errors": {
     "emailRequired": "El correo electrónico es requerido",
     "invalidEmail": "Por favor ingresa un correo electrónico válido",

@@ -1,5 +1,13 @@
 import React from 'react';
-import { Modal, View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import {
+  Modal,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface DropdownModalProps {
   visible: boolean;
@@ -18,31 +26,34 @@ export default function DropdownModal({
   onSelect,
   renderItem,
 }: DropdownModalProps) {
+  const insets = useSafeAreaInsets();
+  const bottomInset = insets.bottom || 0;
   return (
     <Modal
       visible={visible}
       transparent
       animationType="slide"
-      onRequestClose={onClose}
-    >
+      onRequestClose={onClose}>
       <View style={styles.overlay}>
-        <View style={styles.content}>
+        <View style={[styles.content, {paddingBottom: bottomInset + 20}]}>
           <View style={styles.header}>
             <Text style={styles.title}>{title}</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
               <Text style={styles.closeText}>✕</Text>
             </TouchableOpacity>
           </View>
-          <ScrollView style={styles.scrollView}>
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={[
+              styles.scrollContent,
+              {paddingBottom: bottomInset + 40},
+            ]}>
             {items.map((item, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.item}
-                onPress={() => onSelect(item)}
-              >
-                <Text style={styles.itemText}>
-                  {renderItem(item, index)}
-                </Text>
+                onPress={() => onSelect(item)}>
+                <Text style={styles.itemText}>{renderItem(item, index)}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -91,6 +102,9 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     maxHeight: 300,
+  },
+  scrollContent: {
+    paddingBottom: 12,
   },
   item: {
     paddingVertical: 16,

@@ -1,6 +1,18 @@
-import React, { useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, TextInput, ScrollView, StyleSheet } from 'react-native';
-import { Search } from 'lucide-react-native';
+import React, {useState} from 'react';
+import {
+  Modal,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  StyleSheet,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import {Search} from 'lucide-react-native';
 
 interface CountryModalProps {
   visible: boolean;
@@ -20,15 +32,17 @@ export default function CountryModal({
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredCountries = countries.filter(country =>
-    country.toLowerCase().includes(searchQuery.toLowerCase())
+    country.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handleSelect = (country: string) => {
+    Keyboard.dismiss();
     onSelect(country);
     setSearchQuery('');
   };
 
   const handleClose = () => {
+    Keyboard.dismiss();
     onClose();
     setSearchQuery('');
   };
@@ -38,59 +52,74 @@ export default function CountryModal({
       visible={visible}
       transparent
       animationType="slide"
-      onRequestClose={handleClose}
-    >
-      <View style={styles.overlay}>
-        <View style={styles.content}>
-          <View style={styles.header}>
-            <Text style={styles.title}>Select Citizenship</Text>
-            <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
-              <Text style={styles.closeText}>✕</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.searchContainer}>
-            <Search color="#666" size={20} style={styles.searchIcon} />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search countries..."
-              placeholderTextColor="#666"
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          </View>
-
-          <ScrollView style={styles.scrollView}>
-            {filteredCountries.map((country, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.item,
-                  selectedCountry === country && styles.selectedItem,
-                ]}
-                onPress={() => handleSelect(country)}
-              >
-                <Text style={[
-                  styles.itemText,
-                  selectedCountry === country && styles.selectedItemText,
-                ]}>
-                  {country}
-                </Text>
-                {selectedCountry === country && (
-                  <Text style={styles.checkmark}>✓</Text>
-                )}
-              </TouchableOpacity>
-            ))}
-            {filteredCountries.length === 0 && (
-              <View style={styles.noResults}>
-                <Text style={styles.noResultsText}>No countries found</Text>
+      onRequestClose={handleClose}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.overlay}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            // keyboardVerticalOffset={keyboardOffset}
+            style={styles.kav}>
+            <View style={styles.content}>
+              <View style={styles.header}>
+                <Text style={styles.title}>Select Citizenship</Text>
+                <TouchableOpacity
+                  onPress={handleClose}
+                  style={styles.closeButton}>
+                  <Text style={styles.closeText}>✕</Text>
+                </TouchableOpacity>
               </View>
-            )}
-          </ScrollView>
+
+              <View style={styles.searchContainer}>
+                <Search color="#666" size={20} style={styles.searchIcon} />
+                <TextInput
+                  style={styles.searchInput}
+                  placeholder="Search countries..."
+                  placeholderTextColor="#666"
+                  value={searchQuery}
+                  onChangeText={setSearchQuery}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  returnKeyType="done"
+                  blurOnSubmit={true}
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                />
+              </View>
+
+              <ScrollView
+                style={styles.scrollView}
+                keyboardShouldPersistTaps="handled"
+                keyboardDismissMode="interactive"
+                contentContainerStyle={styles.scrollContent}>
+                {filteredCountries.map((country, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.item,
+                      selectedCountry === country && styles.selectedItem,
+                    ]}
+                    onPress={() => handleSelect(country)}>
+                    <Text
+                      style={[
+                        styles.itemText,
+                        selectedCountry === country && styles.selectedItemText,
+                      ]}>
+                      {country}
+                    </Text>
+                    {selectedCountry === country && (
+                      <Text style={styles.checkmark}>✓</Text>
+                    )}
+                  </TouchableOpacity>
+                ))}
+                {filteredCountries.length === 0 && (
+                  <View style={styles.noResults}>
+                    <Text style={styles.noResultsText}>No countries found</Text>
+                  </View>
+                )}
+              </ScrollView>
+            </View>
+          </KeyboardAvoidingView>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }
@@ -105,7 +134,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#1a1a1a',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    maxHeight: '80%',    
+    maxHeight: '72%',
+    marginHorizontal: 12,
+    paddingBottom: 12,
+    paddingTop: 8,
+    paddingHorizontal: 8,
   },
   header: {
     flexDirection: 'row',
@@ -153,7 +186,14 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   scrollView: {
-    maxHeight: 400,
+    maxHeight: 360,
+  },
+  kav: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  scrollContent: {
+    paddingBottom: 40,
   },
   item: {
     flexDirection: 'row',

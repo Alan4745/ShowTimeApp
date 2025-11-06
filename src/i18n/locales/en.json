@@ -193,6 +193,7 @@
     "writeBioHelperText": "Share your experience and specialty. This will appear on your profile (Max. 400 characters)",
     "accomplishmentsHelperText": "Max. 80 characters — example:Created personalized recovery method for elite players"
   },
+  "itHelpsUsCreateATrainingExperienceThatFitsYouBest": "It helps us create a training experience that fits you best.",
   "errors": {
     "emailRequired": "Email is required",
     "invalidEmail": "Please enter a valid email address",
