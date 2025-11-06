@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { ChevronDown } from 'lucide-react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Keyboard,
+} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {ChevronDown} from 'lucide-react-native';
 import DropdownModal from '../modals/DropdownModal';
 
 interface DateSelectorProps {
@@ -63,8 +70,13 @@ export default function DateSelector({
   };
 
   const generateDays = () => {
-    if (!selectedMonth || !selectedYear) {return Array.from({ length: 31 }, (_, i) => i + 1);}
-    return Array.from({ length: getDaysInMonth(selectedMonth, selectedYear) }, (_, i) => i + 1);
+    if (!selectedMonth || !selectedYear) {
+      return Array.from({length: 31}, (_, i) => i + 1);
+    }
+    return Array.from(
+      {length: getDaysInMonth(selectedMonth, selectedYear)},
+      (_, i) => i + 1,
+    );
   };
 
   const generateYears = () => {
@@ -109,7 +121,10 @@ export default function DateSelector({
     }
 
     const day = parseInt(text);
-    const maxDays = selectedMonth && selectedYear ? getDaysInMonth(selectedMonth, selectedYear) : 31;
+    const maxDays =
+      selectedMonth && selectedYear
+        ? getDaysInMonth(selectedMonth, selectedYear)
+        : 31;
 
     if (!isNaN(day) && day >= 1 && day <= maxDays) {
       onDayChange(day);
@@ -184,18 +199,23 @@ export default function DateSelector({
           {/* <Text style={styles.selectorLabel}>Month</Text> */}
           <View style={styles.inputContainer}>
             <TextInput
-              style={[styles.textInput, selectedMonth && styles.selectedInput]}
+              style={[
+                styles.textInput,
+                selectedMonth ? styles.selectedInput : undefined,
+              ]}
               placeholder={t('placeholders.month')}
               placeholderTextColor="#FFFFFF"
               value={monthInput}
               onChangeText={handleMonthInputChange}
               keyboardType="numeric"
               maxLength={2}
+              returnKeyType="done"
+              blurOnSubmit={true}
+              onSubmitEditing={() => Keyboard.dismiss()}
             />
             <TouchableOpacity
               style={styles.dropdownButton}
-              onPress={() => setShowMonthModal(true)}
-            >
+              onPress={() => setShowMonthModal(true)}>
               <ChevronDown color="#FFFFFF" size={16} />
             </TouchableOpacity>
           </View>
@@ -209,18 +229,23 @@ export default function DateSelector({
           {/* <Text style={styles.selectorLabel}>Day</Text> */}
           <View style={styles.inputContainer}>
             <TextInput
-              style={[styles.textInput, selectedDay && styles.selectedInput]}
+              style={[
+                styles.textInput,
+                selectedDay ? styles.selectedInput : undefined,
+              ]}
               placeholder={t('placeholders.day')}
               placeholderTextColor="#FFFFFF"
               value={dayInput}
               onChangeText={handleDayInputChange}
               keyboardType="numeric"
               maxLength={2}
+              returnKeyType="done"
+              blurOnSubmit={true}
+              onSubmitEditing={() => Keyboard.dismiss()}
             />
             <TouchableOpacity
               style={styles.dropdownButton}
-              onPress={() => setShowDayModal(true)}
-            >
+              onPress={() => setShowDayModal(true)}>
               <ChevronDown color="#FFFFFF" size={16} />
             </TouchableOpacity>
           </View>
@@ -231,18 +256,23 @@ export default function DateSelector({
           {/* <Text style={styles.selectorLabel}>Year</Text> */}
           <View style={styles.inputContainer}>
             <TextInput
-              style={[styles.textInput, selectedYear && styles.selectedInput]}
+              style={[
+                styles.textInput,
+                selectedYear ? styles.selectedInput : undefined,
+              ]}
               placeholder={t('placeholders.year')}
               placeholderTextColor="#FFFFFF"
               value={yearInput}
               onChangeText={handleYearInputChange}
               keyboardType="numeric"
               maxLength={4}
+              returnKeyType="done"
+              blurOnSubmit={true}
+              onSubmitEditing={() => Keyboard.dismiss()}
             />
             <TouchableOpacity
               style={styles.dropdownButton}
-              onPress={() => setShowYearModal(true)}
-            >
+              onPress={() => setShowYearModal(true)}>
               <ChevronDown color="#FFFFFF" size={16} />
             </TouchableOpacity>
           </View>
@@ -256,7 +286,7 @@ export default function DateSelector({
         title={t('modalTitles.selectMonth')}
         items={months}
         onSelect={handleMonthSelect}
-        renderItem={(month) => month}
+        renderItem={month => month}
       />
 
       <DropdownModal
@@ -265,7 +295,7 @@ export default function DateSelector({
         title={t('modalTitles.selectDay')}
         items={generateDays()}
         onSelect={handleDaySelect}
-        renderItem={(day) => day.toString()}
+        renderItem={day => day.toString()}
       />
 
       <DropdownModal
@@ -274,7 +304,7 @@ export default function DateSelector({
         title={t('modalTitles.selectYear')}
         items={generateYears()}
         onSelect={handleYearSelect}
-        renderItem={(year) => year.toString()}
+        renderItem={year => year.toString()}
       />
     </View>
   );
@@ -324,7 +354,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 8,
     top: '50%',
-    transform: [{ translateY: -8 }],
+    transform: [{translateY: -8}],
     padding: 4,
   },
   selectedText: {

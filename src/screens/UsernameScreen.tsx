@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import { useRegistration } from '../context/RegistrationContext';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
+import {useRegistration} from '../context/RegistrationContext';
 import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
 import ScreenTitle from '../components/common/ScreenTitle';
@@ -13,21 +21,22 @@ import HelperText from '../components/common/HelperText';
 import PopupAlert from '../components/modals/PopupAlert';
 import LottieIcon from '../components/common/LottieIcon';
 import loadingAnimation from '../../assets/lottie/loading.json';
-import { fetchWithTimeout } from '../utils/fetchWithTimeout';
+import {fetchWithTimeout} from '../utils/fetchWithTimeout';
 
 export default function UsernameScreen() {
   const navigation = useNavigation();
-  const { t } = useTranslation();
-  const { data, updateData } = useRegistration();
+  const {t} = useTranslation();
+  const insets = useSafeAreaInsets();
+  const {data, updateData} = useRegistration();
   const isCoach = data.role === 'coach';
-  const totalSteps = isCoach ? 9 : 13;  
+  const totalSteps = isCoach ? 9 : 13;
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const [checkingAvailability, setCheckingAvailability] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const endpoint = '/api/auth/check-availability';
-  
+
   const showAlert = (message: string) => {
     setAlertMessage(message);
     setAlertVisible(true);
@@ -61,10 +70,10 @@ export default function UsernameScreen() {
     // No necesitas try/catch aquí los maneja fetchWithTimeout
     const response = await fetchWithTimeout(endpoint, {
       method: 'POST',
-      body: JSON.stringify({ username: trimmedUsername }),
+      body: JSON.stringify({username: trimmedUsername}),
     });
 
-    const data = await response.json();
+    const json = await response.json();
 
     if (!response.ok) {
       showAlert(t('errors.usernameCheckFailed'));
@@ -72,41 +81,58 @@ export default function UsernameScreen() {
       return;
     }
 
-    if (!data.usernameAvailable) {
+    if (!json.usernameAvailable) {
       showAlert(t('errors.usernameTaken'));
       setCheckingAvailability(false);
       return;
     }
 
     // Si el username está disponible
-    updateData({ username: trimmedUsername });
+    updateData({username: trimmedUsername});
     (navigation as any).navigate('Gender');
-    setCheckingAvailability(false);      
+    setCheckingAvailability(false);
   };
+
+  const keyboardOffset = Platform.OS === 'ios' ? insets.top + 44 : 0;
 
   return (
     <ScreenLayout currentStep={2} totalSteps={totalSteps}>
-      <ContentContainer>
-        <ScreenTitle title={t('registration.username')} />
-        <FormInput
-          placeholder={t('placeholders.chooseUsername')}
-          value={username}
-          onChangeText={handleUsernameChange}
-          autoCapitalize="none"
-          autoCorrect={false}
-          inputStyle={{ textAlign: 'center' }}
-          error={error}
-        />
-      </ContentContainer>
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoiding}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={keyboardOffset}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            contentContainerStyle={styles.scrollContent}
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="interactive">
+            <ContentContainer>
+              <ScreenTitle title={t('registration.username')} />
+              <FormInput
+                placeholder={t('placeholders.chooseUsername')}
+                value={username}
+                onChangeText={handleUsernameChange}
+                autoCapitalize="none"
+                autoCorrect={false}
+                inputStyle={styles.inputCentered}
+                error={error}
+              />
+            </ContentContainer>
+          </ScrollView>
+        </TouchableWithoutFeedback>
 
-      <BottomSection>
-        {checkingAvailability ? (
-          <LottieIcon source={loadingAnimation} size={48} loop autoPlay />
-        ) : (
-          <ContinueButton onPress={handleContinue} disabled={!username.trim()} />
-        )}
-        <HelperText text={t('helperTexts.helperText')} />
-      </BottomSection>
+        <BottomSection>
+          {checkingAvailability ? (
+            <LottieIcon source={loadingAnimation} size={48} loop autoPlay />
+          ) : (
+            <ContinueButton
+              onPress={handleContinue}
+              disabled={!username.trim()}
+            />
+          )}
+          <HelperText text={t('helperTexts.helperText')} />
+        </BottomSection>
+      </KeyboardAvoidingView>
 
       <PopupAlert
         visible={alertVisible}
@@ -117,4 +143,14 @@ export default function UsernameScreen() {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  keyboardAvoiding: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  inputCentered: {
+    textAlign: 'center',
+  },
+});

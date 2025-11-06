@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
-import { Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import { useRegistration } from '../context/RegistrationContext';
+import React, {useState} from 'react';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
+import {useRegistration} from '../context/RegistrationContext';
 import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
 import ScreenTitle from '../components/common/ScreenTitle';
@@ -12,13 +20,14 @@ import HelperText from '../components/common/HelperText';
 import DateSelector from '../components/form/DateSelector';
 
 export default function DateOfBirthScreen() {
+  const insets = useSafeAreaInsets();
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const { data, updateData } = useRegistration();
+  const {data, updateData} = useRegistration();
   const navigation = useNavigation();
-  const { t } = useTranslation();
-  const isCoach = data.role === "coach";
+  const {t} = useTranslation();
+  const isCoach = data.role === 'coach';
   const totalSteps = isCoach ? 9 : 13;
 
   const handleContinue = () => {
@@ -32,7 +41,10 @@ export default function DateOfBirthScreen() {
     const age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
 
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       if (age - 1 < 13) {
         Alert.alert(t('errors.ageRestriction'));
         return;
@@ -54,29 +66,48 @@ export default function DateOfBirthScreen() {
 
   const isFormComplete = selectedMonth && selectedDay && selectedYear;
 
+  const keyboardOffset = Platform.OS === 'ios' ? insets.top + 44 : 0;
+
   return (
     <ScreenLayout currentStep={4} totalSteps={totalSteps}>
-      <ContentContainer>
-        <ScreenTitle title={t('registration.dateOfBirth')} />
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoiding}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={keyboardOffset}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            contentContainerStyle={styles.scrollContent}
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="interactive">
+            <ContentContainer>
+              <ScreenTitle title={t('registration.dateOfBirth')} />
 
-        <DateSelector
-          selectedMonth={selectedMonth}
-          selectedDay={selectedDay}
-          selectedYear={selectedYear}
-          onMonthChange={setSelectedMonth}
-          onDayChange={setSelectedDay}
-          onYearChange={setSelectedYear}
-        />
-      </ContentContainer>
+              <DateSelector
+                selectedMonth={selectedMonth}
+                selectedDay={selectedDay}
+                selectedYear={selectedYear}
+                onMonthChange={setSelectedMonth}
+                onDayChange={setSelectedDay}
+                onYearChange={setSelectedYear}
+              />
+            </ContentContainer>
+          </ScrollView>
+        </TouchableWithoutFeedback>
 
-      <BottomSection>
-        <ContinueButton
-          onPress={handleContinue}
-          disabled={!isFormComplete}
-        />
-        <HelperText text={t('helperTexts.helperText')} />
-      </BottomSection>
+        <BottomSection>
+          <ContinueButton onPress={handleContinue} disabled={!isFormComplete} />
+          <HelperText text={t('helperTexts.helperText')} />
+        </BottomSection>
+      </KeyboardAvoidingView>
     </ScreenLayout>
   );
 }
 
+const styles = {
+  keyboardAvoiding: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+};

@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Text } from 'react-native';
-import { Eye, EyeOff } from 'lucide-react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  TextInputProps,
+} from 'react-native';
+import {Eye, EyeOff} from 'lucide-react-native';
 
-interface PasswordInputProps {
+interface PasswordInputProps extends TextInputProps {
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
@@ -18,6 +25,7 @@ export default function PasswordInput({
   label,
   error,
   containerStyle,
+  ...props
 }: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -34,11 +42,11 @@ export default function PasswordInput({
           secureTextEntry={!showPassword}
           autoCapitalize="none"
           autoCorrect={false}
+          {...props}
         />
         <TouchableOpacity
           style={styles.eyeButton}
-          onPress={() => setShowPassword(!showPassword)}
-        >
+          onPress={() => setShowPassword(!showPassword)}>
           {showPassword ? (
             <EyeOff color="#666" size={20} />
           ) : (

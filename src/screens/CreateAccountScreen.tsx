@@ -1,8 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import {View, Alert, StyleSheet, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback,
-  Keyboard, Platform} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useRegistration } from '../context/RegistrationContext';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Alert,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {useRegistration} from '../context/RegistrationContext';
 import ScreenLayout from '../components/common/ScreenLayout';
 import ContentContainer from '../components/common/ContentContainer';
 import ScreenTitle from '../components/common/ScreenTitle';
@@ -11,21 +19,29 @@ import PasswordInput from '../components/form/PasswordInput';
 import BottomSection from '../components/common/BottomSection';
 import ContinueButton from '../components/common/ContinueButton';
 import HelperText from '../components/common/HelperText';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import LottieIcon from '../components/common/LottieIcon';
-import loadingAnimation from '../../assets/lottie/loading.json'; 
-import { fetchWithTimeout } from '../utils/fetchWithTimeout';
+import loadingAnimation from '../../assets/lottie/loading.json';
+import {fetchWithTimeout} from '../utils/fetchWithTimeout';
 
 export default function CreateAccountScreen() {
   const navigation = useNavigation();
-  const { t } = useTranslation();
-  const { updateData } = useRegistration();
+  const {t} = useTranslation();
+  const {updateData} = useRegistration();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [errors, setErrors] = useState({ email: '', password: '', confirmPassword: '' });
-  const [touched, setTouched] = useState({ email: false, password: false, confirmPassword: false });
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
 
   const [loading, setLoading] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
@@ -33,28 +49,33 @@ export default function CreateAccountScreen() {
 
   const endpoint = '/api/auth/check-availability';
 
-  const validateEmail = (email: string) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+  const validateEmail = (email: string) =>
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
   const validatePassword = (password: string) => password.length >= 8;
 
   // Validate fields on change
   useEffect(() => {
-    const newErrors = { ...errors };
+    const newErrors = {...errors};
 
     if (touched.email) {
       if (!email.trim()) newErrors.email = t('errors.emailRequired');
-      else if (!validateEmail(email)) newErrors.email = t('errors.invalidEmail');
+      else if (!validateEmail(email))
+        newErrors.email = t('errors.invalidEmail');
       else newErrors.email = '';
     }
 
     if (touched.password) {
       if (!password.trim()) newErrors.password = t('errors.passwordRequired');
-      else if (!validatePassword(password)) newErrors.password = t('errors.passwordTooShort');
+      else if (!validatePassword(password))
+        newErrors.password = t('errors.passwordTooShort');
       else newErrors.password = '';
     }
 
     if (touched.confirmPassword) {
-      if (!confirmPassword.trim()) newErrors.confirmPassword = t('errors.confirmPasswordRequired');
-      else if (password !== confirmPassword) newErrors.confirmPassword = t('errors.passwordsNotMatch');
+      if (!confirmPassword.trim())
+        newErrors.confirmPassword = t('errors.confirmPasswordRequired');
+      else if (password !== confirmPassword)
+        newErrors.confirmPassword = t('errors.passwordsNotMatch');
       else newErrors.confirmPassword = '';
     }
 
@@ -63,22 +84,23 @@ export default function CreateAccountScreen() {
 
   const handleEmailChange = (text: string) => {
     setEmail(text);
-    if (!touched.email) setTouched(prev => ({ ...prev, email: true }));
+    if (!touched.email) setTouched(prev => ({...prev, email: true}));
   };
 
   const handlePasswordChange = (text: string) => {
     setPassword(text);
-    if (!touched.password) setTouched(prev => ({ ...prev, password: true }));
+    if (!touched.password) setTouched(prev => ({...prev, password: true}));
   };
 
   const handleConfirmPasswordChange = (text: string) => {
     setConfirmPassword(text);
-    if (!touched.confirmPassword) setTouched(prev => ({ ...prev, confirmPassword: true }));
+    if (!touched.confirmPassword)
+      setTouched(prev => ({...prev, confirmPassword: true}));
   };
 
   const handleContinue = async () => {
     Keyboard.dismiss();
-    setTouched({ email: true, password: true, confirmPassword: true });
+    setTouched({email: true, password: true, confirmPassword: true});
 
     const hasErrors =
       Object.values(errors).some(error => error !== '') ||
@@ -95,14 +117,14 @@ export default function CreateAccountScreen() {
 
     try {
       const response = await fetchWithTimeout(endpoint, {
-        method: 'POST',        
-        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+        method: 'POST',
+        body: JSON.stringify({email: email.trim().toLowerCase()}),
       });
 
       const data = await response.json();
 
       if (!data.emailAvailable) {
-        setErrors(prev => ({ ...prev, email: t('errors.emailTaken') }));
+        setErrors(prev => ({...prev, email: t('errors.emailTaken')}));
         setLoading(false);
         return;
       }
@@ -114,7 +136,7 @@ export default function CreateAccountScreen() {
         password: password,
       });
 
-      (navigation.navigate as any)({ name: 'SelectRole' });
+      (navigation.navigate as any)({name: 'SelectRole'});
     } finally {
       setLoading(false);
     }
@@ -130,9 +152,17 @@ export default function CreateAccountScreen() {
 
   return (
     <ScreenLayout currentStep={0} totalSteps={6}>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoiding}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        // Ajusta este offset si tu layout tiene header o SafeArea
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+          <ScrollView
+            contentContainerStyle={styles.scrollContent}
+            keyboardShouldPersistTaps="handled"
+            // Permite descartar el teclado mientras se hace scroll (iOS)
+            keyboardDismissMode="interactive">
             <ContentContainer>
               <ScreenTitle title={t('registration.createAccount')} />
 
@@ -145,6 +175,9 @@ export default function CreateAccountScreen() {
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  returnKeyType="done"
+                  blurOnSubmit={true}
+                  onSubmitEditing={() => Keyboard.dismiss()}
                   error={touched.email ? errors.email : ''}
                 />
 
@@ -153,6 +186,9 @@ export default function CreateAccountScreen() {
                   placeholder={t('placeholders.createPassword')}
                   value={password}
                   onChangeText={handlePasswordChange}
+                  returnKeyType="done"
+                  blurOnSubmit={true}
+                  onSubmitEditing={() => Keyboard.dismiss()}
                   error={touched.password ? errors.password : ''}
                 />
 
@@ -161,6 +197,9 @@ export default function CreateAccountScreen() {
                   placeholder={t('placeholders.confirmYourPassword')}
                   value={confirmPassword}
                   onChangeText={handleConfirmPasswordChange}
+                  returnKeyType="done"
+                  blurOnSubmit={true}
+                  onSubmitEditing={() => Keyboard.dismiss()}
                   error={touched.confirmPassword ? errors.confirmPassword : ''}
                 />
 
@@ -183,7 +222,7 @@ export default function CreateAccountScreen() {
           <View style={styles.termsContainer}>
             <HelperText text={t('helperTexts.termsText')} />
           </View>
-        </BottomSection>        
+        </BottomSection>
       </KeyboardAvoidingView>
     </ScreenLayout>
   );
@@ -199,5 +238,11 @@ const styles = StyleSheet.create({
   },
   termsContainer: {
     marginTop: 12,
+  },
+  keyboardAvoiding: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
 });
