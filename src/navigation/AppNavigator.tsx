@@ -30,7 +30,13 @@ import SubscribeEliteScreen from '../screens/SubscribeEliteScreen';
 import WriteBioScreen from '../screens/WriteBioScreen';
 import AccomplishmentsScreen from '../screens/AccomplishmentsScreen';
 import CoachSummaryScreen from '../screens/CoachSummaryScreen';
-import DebugNavigator from './DebugNavigator';
+
+// SUBSCRIPTION FLOW
+import PlansScreen from '../screens/subscription/PlansScreen';
+import CheckoutOptionsScreen from '../screens/subscription/CheckoutOptionsScreen';
+import CheckoutScreen from '../screens/subscription/CheckoutScreen';
+import PaymentSuccessScreen from '../screens/subscription/PaymentSuccessScreen';
+import PaymentErrorScreen from '../screens/subscription/PaymentErrorScreen';
 
 // PRIVADAS
 import HomeScreen from '../screens/HomeScreen';
@@ -62,7 +68,7 @@ export default function AppNavigator() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {token ? (
-          // PRIVADO
+          // PRIVADO - Usuario autenticado
           <>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="StudentPost" component={StudentPostScreen} />
@@ -72,9 +78,18 @@ export default function AppNavigator() {
             <Stack.Screen name="UploadContent" component={UploadContentScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+            {/* Subscription Flow - Disponible después de crear cuenta */}
+            <Stack.Screen name="Plans" component={PlansScreen} />
+            <Stack.Screen name="SubscribeBasic" component={SubscribeBasicScreen} />
+            <Stack.Screen name="SubscribePremium" component={SubscribePremiumScreen} />
+            <Stack.Screen name="SubscribeElite" component={SubscribeEliteScreen} />
+            <Stack.Screen name="CheckoutOptions" component={CheckoutOptionsScreen} />
+            <Stack.Screen name="Checkout" component={CheckoutScreen} />
+            <Stack.Screen name="PaymentSuccess" component={PaymentSuccessScreen} />
+            <Stack.Screen name="PaymentError" component={PaymentErrorScreen} />
           </>
         ) : (
-          // PÚBLICO
+          // PÚBLICO - Sin autenticar
           <>
             <Stack.Screen name="Carousel" component={CarouselScreen} />
             <Stack.Screen name="RegisterMethod" component={RegisterMethodScreen} />
@@ -99,9 +114,6 @@ export default function AppNavigator() {
             <Stack.Screen name="Summary" component={SummaryScreen} />
             <Stack.Screen name="CoachSummary" component={CoachSummaryScreen} />
             <Stack.Screen name="PlanSelection" component={PlanSelectionScreen} />
-            <Stack.Screen name="SubscribeBasic" component={SubscribeBasicScreen} />
-            <Stack.Screen name="SubscribePremium" component={SubscribePremiumScreen} />
-            <Stack.Screen name="SubscribeElite" component={SubscribeEliteScreen} />
           </>
         )}
       </Stack.Navigator>

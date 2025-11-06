@@ -148,7 +148,8 @@ export default function PlanSelectionScreen() {
   };
 
   const handleFreeTrialPress = () => {
-    setSelectedPlan('free');
+    // Primero ir a Summary para crear la cuenta
+    setSelectedPlan('basic');
     handleContinue();
   };
 
