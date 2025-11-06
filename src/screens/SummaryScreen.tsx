@@ -1,42 +1,56 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Image, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useRegistration } from '../context/RegistrationContext';
-import { useAuth} from '../context/AuthContext';
-import { X, Check } from 'lucide-react-native';
-import { TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'react-native-linear-gradient';
-import { useTranslation } from 'react-i18next';
+import React, {useState} from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Image,
+  ScrollView,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {useRegistration} from '../context/RegistrationContext';
+import {useAuth} from '../context/AuthContext';
+import {X, Check} from 'lucide-react-native';
+import {TouchableOpacity} from 'react-native';
+import {LinearGradient} from 'react-native-linear-gradient';
+import {useTranslation} from 'react-i18next';
 import ImagePickerModal from '../components/modals/ImagePickerModal';
 import PopupAlert from '../components/modals/PopupAlert';
 import API_BASE_URL from '../config/api';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export default function SummaryScreen() {
-  const { t } = useTranslation();
+  const {t} = useTranslation();
+  const insets = useSafeAreaInsets();
   const {login} = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const { data, resetData, updateData } = useRegistration();
+  const {data, resetData, updateData} = useRegistration();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [errorModalVisible, setErrorModalVisible] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const endpoint = `${API_BASE_URL}/api/auth/register`; 
-  
+  const [errorMessage, setErrorMessage] = useState('');
+  const endpoint = `${API_BASE_URL}/api/auth/register`;
 
-  const handleImagePicked = (image: { path: string; mime: string; filename: string }) => {
+  const handleImagePicked = (image: {
+    path: string;
+    mime: string;
+    filename: string;
+  }) => {
     updateData({
-      studentProfileImage: image.path.startsWith('file://') ? image.path : `file://${image.path}`,
+      studentProfileImage: image.path.startsWith('file://')
+        ? image.path
+        : `file://${image.path}`,
       studentProfileImageMime: image.mime || 'image/jpeg',
       studentProfileImageName: image.filename || 'profile.jpg',
     });
   };
 
-  
   const handleFinishRegistration = async () => {
-    setIsLoading(true);    
+    setIsLoading(true);
     //No envia campos vacios (asi excluye los del coach)
     const cleanData = Object.fromEntries(
-      Object.entries(data).filter(([_, v]) => v !== undefined)
+      Object.entries(data).filter(([_, v]) => v !== undefined),
     );
 
     try {
@@ -72,14 +86,19 @@ export default function SummaryScreen() {
 
       let result;
       try {
-        result = await response.json();      
+        result = await response.json();
       } catch {
-        throw new Error(`${t('common.registrationFailed')}. ${t('errors.tryAgain')}`);
+        throw new Error(
+          `${t('common.registrationFailed')}. ${t('errors.tryAgain')}`,
+        );
       }
 
       // validar si la respuesta fue exitosa
       if (!response.ok) {
-        throw new Error(result?.error || `${t('common.registrationFailed')}. ${t('errors.tryAgain')}`);
+        throw new Error(
+          result?.error ||
+            `${t('common.registrationFailed')}. ${t('errors.tryAgain')}`,
+        );
       }
 
       // guarda datos en AuthContext
@@ -106,16 +125,18 @@ export default function SummaryScreen() {
         index: 0,
         routes: [{name: 'Plans'}],
       });
-
-    } catch (error: any) {      
+    } catch (error: any) {
       if (error.message === 'Network request failed') {
-        setErrorMessage(t('errors.networkError') || t('errors.serverConnection'));
+        setErrorMessage(
+          t('errors.networkError') || t('errors.serverConnection'),
+        );
       } else {
         setErrorMessage(
-          error?.message || `${t('common.registrationFailed')}. ${t('errors.tryAgain')}`
+          error?.message ||
+            `${t('common.registrationFailed')}. ${t('errors.tryAgain')}`,
         );
       }
-      setErrorModalVisible(true);     
+      setErrorModalVisible(true);
     } finally {
       setIsLoading(false);
     }
@@ -126,72 +147,88 @@ export default function SummaryScreen() {
   };
 
   const calculateAge = () => {
-    if (!data.dateOfBirth) {return t('common.na');}
+    if (!data.dateOfBirth) {
+      return t('common.na');
+    }
     const today = new Date();
-    const birthDate = new Date(data.dateOfBirth.year, data.dateOfBirth.month - 1, data.dateOfBirth.day);
+    const birthDate = new Date(
+      data.dateOfBirth.year,
+      data.dateOfBirth.month - 1,
+      data.dateOfBirth.day,
+    );
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       age--;
     }
     return age;
   };
 
   const getTrainingFrequencyShort = () => {
-    if (!data.trainingFrequency) {return t('common.na');}
-    if (data.trainingFrequency.includes('3-5')) {return '3-5';}
-    if (data.trainingFrequency.includes('5-7')) {return '5-7';}
-    if (data.trainingFrequency.includes('+7')) {return '+7';}
+    if (!data.trainingFrequency) {
+      return t('common.na');
+    }
+    if (data.trainingFrequency.includes('3-5')) {
+      return '3-5';
+    }
+    if (data.trainingFrequency.includes('5-7')) {
+      return '5-7';
+    }
+    if (data.trainingFrequency.includes('+7')) {
+      return '+7';
+    }
     return t('common.na');
   };
 
   return (
-    <View style={styles.container}>
-      {/* Header with close button */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.closeButton}
-          onPress={handleClose}
-        >
-          <X color="#fff" size={24} />
-        </TouchableOpacity>
-      </View>
-
-      {/* Title */}
-      <Text style={styles.title}>{t('registration.readyToPlay')}</Text>
-
-
-      {/* Main Card */}
+    <SafeAreaView style={[styles.container, {paddingTop: insets.top}]}>
+      {/* Main content: unified top bar + card inside the same ScrollView to avoid split sections */}
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
+        contentContainerStyle={[
+          styles.scrollContent,
+          {paddingBottom: insets.bottom + 40},
+        ]}
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.topBar}>
+          <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+            <X color="#fff" size={24} />
+          </TouchableOpacity>
+          <Text style={styles.topBarTitle}>
+            {t('registration.readyToPlay')}
+          </Text>
+        </View>
+
         <View style={styles.cardContainer}>
-          <LinearGradient
-            colors={['#4A90E2', '#357ABD']}
-            style={styles.card}
-          >
+          <LinearGradient colors={['#4A90E2', '#357ABD']} style={styles.card}>
             {/* Profile Image */}
             <View style={styles.profileSection}>
               <View style={styles.profileImageContainer}>
-                <TouchableOpacity style={styles.wrapper} onPress={()=> setModalVisible(true)}>
+                <TouchableOpacity
+                  style={styles.wrapper}
+                  onPress={() => setModalVisible(true)}>
                   {/* Imagen de perfil */}
                   <View style={styles.profileImageBorder}>
                     <Image
                       source={
                         data.studentProfileImage
-                          ? { uri: data.studentProfileImage }
-                          : require('../../assets/img/userGeneric.png') //imagen local
+                          ? {uri: data.studentProfileImage}
+                          : require('../../assets/img/upload_user.png') //imagen local
                       }
                       style={styles.profileImage}
                     />
-                  </View>  
+                  </View>
                 </TouchableOpacity>
-              
               </View>
 
-              <Text style={styles.username}>{data.username || t('registration.username')}</Text>
-              <Text style={styles.age}>{calculateAge()} {t('units.years')}</Text>
+              <Text style={styles.username}>
+                {data.username || t('registration.username')}
+              </Text>
+              <Text style={styles.age}>
+                {calculateAge()} {t('units.years')}
+              </Text>
             </View>
 
             {/* Info Grid */}
@@ -199,35 +236,55 @@ export default function SummaryScreen() {
               <View style={styles.infoRow}>
                 <Text style={styles.infoLabel}>{t('summary.weight')}</Text>
                 <Text style={styles.infoValue}>
-                  {data.physicalData?.height ? `${data.physicalData.height} ${t('units.cm')}` : t('common.na')}
+                  {data.physicalData?.height
+                    ? `${data.physicalData.height} ${t('units.cm')}`
+                    : t('common.na')}
                 </Text>
               </View>
 
               <View style={styles.infoRow}>
                 <Text style={styles.infoLabel}>{t('summary.height')}</Text>
                 <Text style={styles.infoValue}>
-                  {data.physicalData?.weight ? `${data.physicalData.weight} ${t('units.kg')}` : t('common.na')}
+                  {data.physicalData?.weight
+                    ? `${data.physicalData.weight} ${t('units.kg')}`
+                    : t('common.na')}
                 </Text>
               </View>
 
               <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>{t('registration.citizenship')}</Text>
-                <Text style={styles.infoValue}>{data.citizenship || t('common.na')}</Text>
+                <Text style={styles.infoLabel}>
+                  {t('registration.citizenship')}
+                </Text>
+                <Text style={styles.infoValue}>
+                  {data.citizenship || t('common.na')}
+                </Text>
               </View>
 
               <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>{t('summary.playingPosition')}</Text>
-                <Text style={styles.infoValue}>{data.position || t('common.na')}</Text>
+                <Text style={styles.infoLabel}>
+                  {t('summary.playingPosition')}
+                </Text>
+                <Text style={styles.infoValue}>
+                  {data.position || t('common.na')}
+                </Text>
               </View>
 
               <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>{t('registration.experienceLevel')}</Text>
-                <Text style={styles.infoValue}>{data.experienceLevel || t('common.na')}</Text>
+                <Text style={styles.infoLabel}>
+                  {t('registration.experienceLevel')}
+                </Text>
+                <Text style={styles.infoValue}>
+                  {data.experienceLevel || t('common.na')}
+                </Text>
               </View>
 
               <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>{t('registration.trainingFrequency')}</Text>
-                <Text style={styles.infoValue}>{getTrainingFrequencyShort()}</Text>
+                <Text style={styles.infoLabel}>
+                  {t('registration.trainingFrequency')}
+                </Text>
+                <Text style={styles.infoValue}>
+                  {getTrainingFrequencyShort()}
+                </Text>
               </View>
             </View>
 
@@ -243,8 +300,7 @@ export default function SummaryScreen() {
             <TouchableOpacity
               style={styles.startButton}
               onPress={handleFinishRegistration}
-              disabled={isLoading}
-            >
+              disabled={isLoading}>
               {isLoading ? (
                 <ActivityIndicator color="#4A90E2" size="small" />
               ) : (
@@ -264,7 +320,7 @@ export default function SummaryScreen() {
         message={errorMessage}
         onClose={() => setErrorModalVisible(false)}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -272,10 +328,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
-    paddingHorizontal: 20,    
+    paddingHorizontal: 20,
   },
   header: {
-    paddingTop: 25,
+    paddingTop: 30,
+  },
+  topBar: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+    position: 'relative',
+  },
+  topBarTitle: {
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#fff',
+    textAlign: 'center',
   },
   scrollContent: {
     paddingBottom: 30,
@@ -290,6 +360,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+    left: 0,
+    top: 12,
   },
   title: {
     fontFamily: 'AnonymousPro-Bold',
@@ -303,11 +376,12 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     justifyContent: 'center',
-    paddingBottom: 50,
   },
   card: {
     borderRadius: 30,
-    padding: 30,
+    width: '100%',
+    paddingHorizontal: 10,
+
     alignItems: 'center',
     shadowColor: '#4A90E2',
     shadowOffset: {
@@ -324,6 +398,7 @@ const styles = StyleSheet.create({
   },
   profileImageContainer: {
     marginBottom: 20,
+    marginTop: 30,
   },
   wrapper: {
     width: 150,
@@ -357,7 +432,7 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.8)',
   },
   infoGrid: {
-    width: '100%',
+    width: '85%',
     marginBottom: 30,
   },
   infoRow: {
@@ -389,7 +464,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    width: '100%',
+    width: '85%',
     marginBottom: 16,
   },
   allSetText: {
@@ -409,8 +484,8 @@ const styles = StyleSheet.create({
   startButton: {
     backgroundColor: '#fff',
     borderRadius: 25,
-    paddingVertical: 16,
-    width: '100%',
+    paddingVertical: 20,
+    width: '85%',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -420,12 +495,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 5,
+    marginBottom: 20,
   },
   startButtonText: {
     fontFamily: 'AnonymousPro-Bold',
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: '700',
     color: '#4A90E2',
   },
 });
-

@@ -100,7 +100,7 @@ export default function PlanSelectionScreen() {
     {
       id: 1,
       name: 'Mateo Seoane',
-      avatar: '#',
+      avatar: require('../../assets/img/mateo_user.png'),
       timeAgo: t('planSelection.testimonials.timeAgo.monthsAgo', {count: 3}),
       rating: 5,
       text: t('planSelection.testimonials.mateo.text'),
@@ -108,7 +108,7 @@ export default function PlanSelectionScreen() {
     {
       id: 2,
       name: 'Carlos Rodriguez',
-      avatar: '#',
+      avatar: require('../../assets/img/carlos_user.png'),
       timeAgo: t('planSelection.testimonials.timeAgo.monthsAgo', {count: 1}),
       rating: 5,
       text: t('planSelection.testimonials.carlos.text'),
@@ -430,8 +430,16 @@ export default function PlanSelectionScreen() {
                         style={[
                           styles.testimonialAvatar,
                           {backgroundColor: '#4A90E2'},
-                        ]}
-                      />
+                        ]}>
+                        <Image
+                          source={item.avatar}
+                          style={{
+                            width: 48,
+                            height: 48,
+                            borderRadius: 24,
+                          }}
+                        />
+                      </View>
                     </View>
                     <View style={styles.testimonialInfo}>
                       <Text style={styles.testimonialName}>{item.name}</Text>
