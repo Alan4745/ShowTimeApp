@@ -1,20 +1,25 @@
 import React, {useState} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar } from 'react-native';
-import { LinearGradient } from 'react-native-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
-import { useRegistration } from '../context/RegistrationContext';
-import { Image } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
+} from 'react-native';
+import {LinearGradient} from 'react-native-linear-gradient';
+import {useNavigation} from '@react-navigation/native';
+import {useRegistration} from '../context/RegistrationContext';
+import {Image} from 'react-native';
+import {useTranslation} from 'react-i18next';
 import LoginModal from '../components/modals/LoginModal';
 
-
 export default function RegisterMethodScreen() {
-  const { updateData } = useRegistration();
+  const {updateData} = useRegistration();
   const navigation = useNavigation();
-  const { t } = useTranslation();
+  const {t} = useTranslation();
 
   const [showLoginModal, setShowLoginModal] = useState(false);
-   
 
   const handleGoogleSignUp = () => {
     // Mock Google authentication
@@ -23,7 +28,7 @@ export default function RegisterMethodScreen() {
       email: 'user@gmail.com', // Mock email from Google
       username: 'GoogleUser', // Mock username from Google
     });
-    (navigation.navigate as any)({ name: 'SelectRole' });
+    (navigation.navigate as any)({name: 'SelectRole'});
   };
 
   const handleAppleSignUp = () => {
@@ -33,12 +38,12 @@ export default function RegisterMethodScreen() {
       email: 'user@privaterelay.appleid.com', // Mock Apple private email
       username: 'AppleUser', // Mock username from Apple
     });
-    (navigation.navigate as any)({ name: 'SelectRole' });
+    (navigation.navigate as any)({name: 'SelectRole'});
   };
 
   const handleCreateAccount = () => {
-    (navigation.navigate as any)({ name: 'CreateAccount' });
-  };  
+    (navigation.navigate as any)({name: 'CreateAccount'});
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,21 +53,29 @@ export default function RegisterMethodScreen() {
         {/* Main buttons section */}
         <View style={styles.buttonsContainer}>
           {/* Google Sign Up */}
-          <TouchableOpacity style={styles.socialButton} onPress={handleGoogleSignUp}>
+          <TouchableOpacity
+            style={styles.socialButton}
+            onPress={handleGoogleSignUp}>
             <View style={styles.iconContainer}>
               <View style={styles.googleIcon}>
                 <Image source={require('../../assets/img/icon/Google.png')} />
               </View>
             </View>
-            <Text style={styles.socialButtonText}>{t('registration.signUpGoogle')}</Text>
+            <Text style={styles.socialButtonText}>
+              {t('registration.signUpGoogle')}
+            </Text>
           </TouchableOpacity>
 
           {/* Apple Sign Up */}
-          <TouchableOpacity style={styles.socialButton} onPress={handleAppleSignUp}>
+          <TouchableOpacity
+            style={styles.socialButton}
+            onPress={handleAppleSignUp}>
             <View style={styles.iconContainer}>
               <Image source={require('../../assets/img/icon/Apple_Icon.png')} />
             </View>
-            <Text style={styles.socialButtonText}>{t('registration.signUpApple')}</Text>
+            <Text style={styles.socialButtonText}>
+              {t('registration.signUpApple')}
+            </Text>
           </TouchableOpacity>
 
           {/* Divider */}
@@ -76,18 +89,23 @@ export default function RegisterMethodScreen() {
           <TouchableOpacity onPress={handleCreateAccount}>
             <LinearGradient
               colors={['#4A90E2', '#357ABD']}
-              style={styles.createAccountButton}
-            >
-              <Text style={styles.createAccountText}>{t('registration.createAccount')}</Text>
+              style={styles.createAccountButton}>
+              <Text style={styles.createAccountText}>
+                {t('registration.createAccount')}
+              </Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
 
         {/* Bottom section */}
         <View style={styles.bottomSection}>
-          <Text style={styles.alreadyHaveText}>{t('registration.alreadyHaveAccount')}</Text>
+          <Text style={styles.alreadyHaveText}>
+            {t('registration.alreadyHaveAccount')}
+          </Text>
 
-          <TouchableOpacity style={styles.signInButton} onPress={() => setShowLoginModal(true)}>
+          <TouchableOpacity
+            style={styles.signInButton}
+            onPress={() => setShowLoginModal(true)}>
             <Text style={styles.signInText}>{t('registration.signIn')}</Text>
           </TouchableOpacity>
 
@@ -111,9 +129,9 @@ export default function RegisterMethodScreen() {
         <LoginModal
           visible={showLoginModal}
           onClose={() => setShowLoginModal(false)}
-          onSuccess={() => (navigation as any).navigate("Home")}
-        /> 
-      </View>    
+          onSuccess={() => (navigation as any).navigate('Home')}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -200,9 +218,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   createAccountButton: {
-    paddingVertical: 18,
     borderRadius: 50,
     alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    height: 56,
     marginBottom: 20,
     shadowColor: '#4A90E2',
     shadowOffset: {
@@ -262,7 +282,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 16,
     fontWeight: '400',
-
   },
   linkText: {
     fontFamily: 'AnonymousPro-Regular',
@@ -270,6 +289,5 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontSize: 13,
     fontWeight: '400',
-
   },
 });
