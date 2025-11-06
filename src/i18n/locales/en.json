@@ -15,7 +15,7 @@
     "subscribe": "Subscribe",
     "by": "by ",
     "delete": "Delete",
-    "send": "Send", 
+    "send": "Send",
     "registrationFailed": "Registration Failed",
     "na": "Not available"
   },
@@ -50,6 +50,7 @@
     "readyToCoach": "Showtime Coach",
     "signUpGoogle": "Sign up with Google",
     "signUpApple": "Sign up with Apple",
+    "comingSoon": "Coming soon",
     "alreadyHaveAccount": "Already have an account?",
     "signIn": "Sign in",
     "termsAgreement": "By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use.",
@@ -57,7 +58,7 @@
     "chooseRol": "Choose your role",
     "uploadMedia": "Upload your Media",
     "writeBio": "Write your bio",
-    "accomplishments": "My accomplishments"   
+    "accomplishments": "My accomplishments"
   },
   "planSelection": {
     "trainSmarter": "TRAIN SMARTER,",
@@ -70,16 +71,16 @@
     "takeNextStep": "take the next step",
     "voicesOfPlayers": "Voices of",
     "realPlayers": "Real Players",
-    "bottomText":{
-      "line1":"You're free to cancel",
-      "line2":"whenever. No penalties, no",
-      "line3":"extra costs."
+    "bottomText": {
+      "line1": "You're free to cancel",
+      "line2": "whenever. No penalties, no",
+      "line3": "extra costs."
     },
-    "buttons":{
+    "buttons": {
       "startFreeTrial": "Free 7 day trial",
       "premiumPlan": "Premium Plan"
     },
-    "coaches":{
+    "coaches": {
       "title": "COACHES",
       "feature1": "Personalized training plans created by real pro-level coaches.",
       "feature2": "Direct chat access for questions, feedback, and progress tracking",
@@ -93,78 +94,76 @@
       "accessToPost": "Access to Darwin's post",
       "ableToPost": "Able to post",
       "accessToStudentsAndCoachesPost": "Access to students and coaches post",
-      "accessToCoachMaterial": "Access to Coaches material (Learn)",  
-      "eventsAccess": "Showtime University events (camps, meetings, trainings)",   
+      "accessToCoachMaterial": "Access to Coaches material (Learn)",
+      "eventsAccess": "Showtime University events (camps, meetings, trainings)",
       "directMessageWithCoach": "Direct message with coaches",
       "oneOnOneCoachings": "1:1 coachings",
       "videoCallsWithDarwin": "Videocalls with Darwin",
       "videoCallsWithCoaches": "Videocalls with coaches",
       "connectionWithAgent": "If applicable, connection with agent/sport consultant"
-      
     },
-    "featuresTable":{
+    "featuresTable": {
       "featureHeader": "Feature / Section",
       "free": "Free",
       "basic": "Basic",
       "premium": "Premium",
       "elite": "Elite"
     },
-    "planPrices":{
+    "planPrices": {
       "freePlan": "Free",
       "basicPlan": "$49",
       "premiumPlan": "$99",
       "elitePlan": "$149"
-    },    
-    "hero":{
+    },
+    "hero": {
       "titleLine1": "TRAIN SMARTER,",
       "titleLine2": "GO FURTHER WITH",
       "titleLine3": "SHOWTIME UNIVERSITY"
     },
-    "plansTitle":{
+    "plansTitle": {
       "line1": "Start free, train",
       "line2": "smarter, go pro"
-    },  
-    "recommended":{
+    },
+    "recommended": {
       "title1": "Made by professionals",
       "title2": "for professional",
       "title3": "players."
     },
-    "testimonials":{
-      "titleLine1":"Testimonials",
-      "titleLine2":"",
-      "timeAgo":{
+    "testimonials": {
+      "titleLine1": "Testimonials",
+      "titleLine2": "",
+      "timeAgo": {
         "monthsAgo_one": "{{count}} month ago",
         "monthsAgo_other": "{{count}} months ago",
         "weeksAgo_one": "{{count}} week ago",
         "weeksAgo_other": "{{count}} weeks ago"
       },
-      "mateo":{
+      "mateo": {
         "text": "I used to doubt myself a lot. The mindset lessons in this app helped me stay focused, build confidence, and enjoy the game again 🧠⚽"
       }
-    },  
-    "texts":{
+    },
+    "texts": {
       "basicPlanDescription": "Just a preview of what we offer",
       "coachesSubtext": "Connect with coaches who work with professionals everday."
-    },    
-    "trainingCategories":{
-      "roleTraining":{
+    },
+    "trainingCategories": {
+      "roleTraining": {
         "title": "Role Train",
         "description": "Strenght, mobility and drills tailored to your position on the field"
       },
-      "smartFuel":{
+      "smartFuel": {
         "title": "Fuel",
         "description": "Nutrition and recovery tips to help you train harder and bounce back faster"
       },
-      "mindsetFocus":{
+      "mindsetFocus": {
         "title": "Focus",
         "description": "Daily habits and mental tools to build resilience, discipline and drive"
       },
-      "gameIQ":{
+      "gameIQ": {
         "title": "Game IQ",
         "description": "Tactical analysis and match breakdowns to sharpen your football intelligence"
       }
     }
-    
   },
   "trainingCategories": {
     "roleTraining": "Role Training",
@@ -192,7 +191,7 @@
     "uploadHelperText2": "Do not upload explicit sexual content",
     "uploadMedia": "Add a short .mp4 video or image of yourself coaching or share your experience. Make sure your media is in landscape format (16:9).",
     "writeBioHelperText": "Share your experience and specialty. This will appear on your profile (Max. 400 characters)",
-    "accomplishmentsHelperText" : "Max. 80 characters — example:Created personalized recovery method for elite players"
+    "accomplishmentsHelperText": "Max. 80 characters — example:Created personalized recovery method for elite players"
   },
   "errors": {
     "emailRequired": "Email is required",
@@ -313,7 +312,7 @@
     "nutrition": "Nutrition",
     "gameAnalysis": "Game analysis",
     "drillTechnical": "Drill / Technical",
-    "mindset": "Mindset" 
+    "mindset": "Mindset"
   },
   "placeholders": {
     "enterEmail": "Enter your email",
@@ -335,7 +334,7 @@
     "deleteComment": "Are you sure you want to delete this comment?",
     "month": "Month",
     "day": "Day",
-    "year": "Year"    
+    "year": "Year"
   },
   "modalTitles": {
     "selectMonth": "Select Month",
@@ -346,11 +345,11 @@
     "selectTrainingFrequencyTitle": "Training Frequency",
     "selectCitizenshipTitle": "Select Citizenship",
     "selectCategory": "Select a Category",
-    "highlights":"Share your highlight link",
+    "highlights": "Share your highlight link",
     "highlightsDescription": "This will not be public. It will be for Darwin to see the talent you have on the field & potentially pass on to coaches, scouts, or agents.",
     "selectImage": "Select Photo",
     "confirmDelete": "Confirm Deletion",
-    "buttonOptions":{
+    "buttonOptions": {
       "confirm": "Confirm",
       "cancel": "Cancel",
       "close": "Close",
@@ -363,18 +362,18 @@
   "splash": {
     "splashFooter": "© 2025 | Where talent meets opportunity | USA"
   },
-  "carousel":{
-    "text":{
+  "carousel": {
+    "text": {
       "line1": "Train like a pro.",
       "line2": "Play like a star."
     },
-    "buttons":{
+    "buttons": {
       "getStarted": "Get Started",
-      "accessAccount": "Access Account"      
+      "accessAccount": "Access Account"
     },
     "footerText": "© 2025 | Showtime University | USA"
   },
-  "subscription":{
+  "subscription": {
     "title": "Subscribe",
     "plansScreen": {
       "title": "Select Your Plan",
@@ -498,35 +497,35 @@
       "statusCanceled": "Canceled",
       "statusUnpaid": "Unpaid"
     },
-    "basic":{
+    "basic": {
       "title": "Basic",
       "description": "Access the program’s core features and get an inside look at the life of a professional athlete.",
-      "features":[
+      "features": [
         "Access to Home (Feed) Darwin's Content.",
         "Access to Darwin's material (Learn Section).",
         "Direct messages with Darwin.",
         "Access to guest speakers."
       ],
-      "button": "$49/Month "      
+      "button": "$49/Month "
     },
-    "premium":{
+    "premium": {
       "title": "Premium",
       "description": "Expand your network and receive valuable feedback by engaging with members and coaches on Showtime's feed.\n\nPlan your workouts by saving coache's posts directly on Showtime's feed.\n",
-      "features":[
+      "features": [
         "Access to Home (Feed) Darwin's Content.",
         "Access to Home (Feed) Darwin, coaches and students content.",
         "Post in Home",
         "Access to Darwin's material (Learn Section).",
         "Direct messages with Darwin.",
         "Access to exclusive Showtime University presencial events (camps, meetings, trainings).",
-        "Access to guest speakers."        
+        "Access to guest speakers."
       ],
-      "button": "$99/Month"      
+      "button": "$99/Month"
     },
-    "elite":{
+    "elite": {
       "title": "Elite",
       "description": "Full package:",
-      "features":[
+      "features": [
         "Access to Home (Feed) Darwin's Content.",
         "Access to Home (Feed) Darwin, coaches and students content.",
         "Post in Home",
@@ -538,24 +537,24 @@
         "Videocalls with coaches",
         "Access to exclusive Showtime University presencial events (camps, meetings, trainings).",
         "Access to guest speakers.",
-        "If applicable, connection with agent/sport consultant." 
+        "If applicable, connection with agent/sport consultant."
       ],
-      "button": "$149/Month"      
+      "button": "$149/Month"
     }
   },
-  "publishPost":{
-    "buttons":{
+  "publishPost": {
+    "buttons": {
       "post": "Post",
       "update": "Update",
       "video": "Video.mp4",
       "image": "Image.jpg",
-      "text": "Text.pdf"      
-    }, 
-    "placeholders":{
+      "text": "Text.pdf"
+    },
+    "placeholders": {
       "textInput": "What's happening ?",
       "category": "Category"
     },
-    "categories":{
+    "categories": {
       "accomplishments": "Accomplishments",
       "announcements": "Announcements",
       "dailyMotivation": "Daily motivation",
@@ -564,7 +563,7 @@
       "lifeOfAProfessional": "Life of a professional",
       "nutrition": "Nutrition",
       "training": "Training",
-      "mindset": "Mindset",      
+      "mindset": "Mindset",
       "tactics": "Tactics",
       "gameAnalysis": "Game Analysis",
       "strength": "Strength",
@@ -590,19 +589,18 @@
       "midfielders": "Midfielders",
       "questions": "Questions",
       "lifeAsAProfessional": "Life as a Professional"
-      
     },
-    "alertPost":{
+    "alertPost": {
       "title": "Post now ?",
       "message": "Are you sure you want to post this ?"
     },
-    "removeAlert":{
+    "removeAlert": {
       "title": "Remove File ?",
       "message": "Do you want to remove this file from the post ?",
       "optionCancel": "Cancel",
       "optionRemove": "Remove"
     },
-    "alerts":{
+    "alerts": {
       "emptyPost": "Looks like your post is empty. Try adding something!",
       "pdfError": "An unexpected error occurred while selecting the PDF. Please try again.",
       "thumbnailError": "An error occurred while generating the thumbnail."
@@ -620,7 +618,7 @@
     "noTestimonials": "No testimonials listed.",
     "letsChat": "Let's Chat"
   },
-  "account":{
+  "account": {
     "titles": {
       "account": "Account",
       "coachList": "Coach List",
@@ -630,7 +628,7 @@
       "editProfile": "Edit Profile",
       "uploadContent": "Upload content",
       "noThumbnail": "No media file selected",
-      "fileFormat" : "File Format",
+      "fileFormat": "File Format",
       "category": "Category",
       "selectMainCategory": "Select Main Category",
       "selectSubcategory": "Select Subcategory"
@@ -639,11 +637,11 @@
       "coach": "Coach",
       "save": "Save",
       "settings": "Settings",
-      "send" : "Send",
+      "send": "Send",
       "students": "Students",
       "upload": "Upload",
       "highlight": "HIGHLIGHT",
-      "shareTheApp" : "SHARE THE APP",
+      "shareTheApp": "SHARE THE APP",
       "signOut": "Sign Out",
       "uploadContent": "Upload content"
     },
@@ -653,11 +651,11 @@
       "contact": "Contact",
       "cancelSubscription": "Cancel subscription"
     },
-    "placeholders":{
+    "placeholders": {
       "inputTitle": "Content Title",
       "inputDescription": "Content Description",
       "mainCategory": "Main Category",
-      "subcategory": "Subcategory"        
+      "subcategory": "Subcategory"
     }
   },
   "learn": {
@@ -762,5 +760,5 @@
         "description": "Control tempo and connect the team."
       }
     }
-  }   
+  }
 }

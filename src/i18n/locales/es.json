@@ -18,7 +18,6 @@
     "send": "Enviar",
     "registrationFailed": "Registro Fallido",
     "na": "No disponible"
-
   },
   "registration": {
     "createAccount": "Crea tu cuenta",
@@ -29,10 +28,10 @@
     "coach": "Entrenador",
     "student": "Estudiante",
     "username": "Nombre de usuario",
-    "gender": "Género",    
+    "gender": "Género",
     "male": "Masculino",
     "female": "Femenino",
-    "other": "Otro",    
+    "other": "Otro",
     "dateOfBirth": "Ingresa tu fecha de nacimiento",
     "citizenship": "Ciudadanía",
     "physicalData": "¿Cuál es tu estatura y peso actual?",
@@ -51,6 +50,7 @@
     "readyToCoach": "Entrenador de Showtime",
     "signUpGoogle": "Registrarse con Google",
     "signUpApple": "Registrarse con Apple",
+    "comingSoon": "Próximamente",
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
     "signIn": "Iniciar sesión",
     "termsAgreement": "Al registrarte, aceptas los Términos de Servicio y la Política de Privacidad, incluyendo el Uso de Cookies.",
@@ -58,7 +58,7 @@
     "chooseRol": "Selecciona tu rol",
     "uploadMedia": "Sube tu contenido multimedia",
     "writeBio": "Write your bio",
-    "accomplishments": "Mis logros" 
+    "accomplishments": "Mis logros"
   },
   "planSelection": {
     "trainSmarter": "ENTRENA MÁS INTELIGENTE,",
@@ -71,16 +71,16 @@
     "takeNextStep": "dar el siguiente paso",
     "voicesOfPlayers": "Voces de",
     "realPlayers": "Jugadores Reales",
-    "bottomText":{
-      "line1":"Puedes cancelar en cualquier",
-      "line2":"momento. Sin penalidades, sin",
-      "line3":"costos extra."
+    "bottomText": {
+      "line1": "Puedes cancelar en cualquier",
+      "line2": "momento. Sin penalidades, sin",
+      "line3": "costos extra."
     },
-    "buttons":{
+    "buttons": {
       "startFreeTrial": "Prueba de 7 días gratis",
       "premiumPlan": "Plan Premium"
     },
-    "coaches":{
+    "coaches": {
       "title": "ENTRENADORES",
       "feature1": "Planes de entrenamiento personalizados creados por entrenadores profesionales.",
       "feature2": "Acceso directo por chat para preguntas, comentarios y seguimiento del progreso.",
@@ -100,45 +100,45 @@
       "oneOnOneCoachings": "Entrenamientos 1:1",
       "videoCallsWithDarwin": "Videollamadas con Darwin",
       "videoCallsWithCoaches": "Videollamadas con entrenadores",
-      "connectionWithAgent": "En caso de ser aplicable, conexión con agente o asesor deportivo" 
+      "connectionWithAgent": "En caso de ser aplicable, conexión con agente o asesor deportivo"
     },
-    "featuresTable":{
+    "featuresTable": {
       "featureHeader": "Característica / Sección",
       "free": "Gratis",
       "basic": "Básico",
       "premium": "Premium",
       "elite": "Élite"
     },
-    "planPrices":{
+    "planPrices": {
       "freePlan": "Gratis",
       "basicPlan": "$49",
       "premiumPlan": "$99",
       "elitePlan": "$149"
-    },    
-    "hero":{
+    },
+    "hero": {
       "titleLine1": "ENTRENA MÁS INTELIGENTE,",
       "titleLine2": "VE MÁS LEJOS CON",
       "titleLine3": "SHOWTIME UNIVERSITY"
     },
-    "plansTitle":{
+    "plansTitle": {
       "line1": "Empieza gratis, entrena",
       "line2": "más inteligente, hazte profesional"
-    },  
-    "recommended":{
+    },
+    "recommended": {
       "title1": "Hecho por profesionales",
       "title2": "para jugadores",
       "title3": "profesionales."
     },
-    "testimonials":{
-      "titleLine1":"Testimonios",
-      "titleLine2":"",
-      "timeAgo":{
+    "testimonials": {
+      "titleLine1": "Testimonios",
+      "titleLine2": "",
+      "timeAgo": {
         "monthsAgo_one": "Hace {{count}} mes",
         "monthsAgo_other": "Hace {{count}} meses",
         "weeksAgo_one": "Hace {{count}} semana",
         "weeksAgo_other": "Hace {{count}} semanas"
       },
-      "mateo":{
+      "mateo": {
         "text": "Solía dudar mucho de mí mismo. Las lecciones de estado mental en esta app me ayudaron a mantenerme enfocado, ganar confianza y volver a disfrutar del juego.  🧠⚽"
       }
     }
@@ -169,7 +169,7 @@
     "uploadHelperText2": "No subas contenido sexual explícito",
     "uploadMedia": "Agrega un video corto en formato .mp4 o una imagen tuya entrenando, o comparte tu experiencia. Asegúrate de que tu contenido esté en formato horizontal (16:9)",
     "writeBioHelperText": "Comparte tu experiencia y especialidad. Esto aparecerá en tu perfil (Máx. 400 caracteres).",
-    "accomplishmentsHelperText" : "Máx. 80 caracteres — ejemplo: Creé un método de recuperación personalizado para atletas de élite."   
+    "accomplishmentsHelperText": "Máx. 80 caracteres — ejemplo: Creé un método de recuperación personalizado para atletas de élite."
   },
   "errors": {
     "emailRequired": "El correo electrónico es requerido",
@@ -290,7 +290,7 @@
     "nutrition": "Nutrición",
     "gameAnalysis": "Análisis de juego",
     "drillTechnical": "Técnico y ejercicios",
-    "mindset": "Mentalidad ganadora" 
+    "mindset": "Mentalidad ganadora"
   },
   "placeholders": {
     "enterEmail": "Ingresa tu correo",
@@ -323,11 +323,11 @@
     "selectTrainingFrequencyTitle": "Seleccionar frecuencia de entrenamiento",
     "selectCitizenshipTitle": "Seleccionar ciudadanía",
     "selectCategory": "Selecionar una categoría",
-    "highlights":"Comparte tu video de highlights",
+    "highlights": "Comparte tu video de highlights",
     "highlightsDescription": "Esto no será público. Será para que Darwin vea el talento que tienes en el campo y potencialmente lo comparta con entrenadores, cazatalentos o agentes.",
     "selectImage": "Seleccionar Foto",
     "confirmDelete": "Confirmar Eliminación",
-    "buttonOptions":{
+    "buttonOptions": {
       "confirm": "Confirmar",
       "cancel": "Cancelar",
       "close": "Cerrar",
@@ -340,18 +340,18 @@
   "splash": {
     "splashFooter": "© 2025 | Donde el talento encuentra oportunidad | USA"
   },
-  "carousel":{
-    "text":{
+  "carousel": {
+    "text": {
       "line1": "Entrena como profesional.",
       "line2": "Juega como una estrella."
     },
-    "buttons":{
+    "buttons": {
       "getStarted": "Empezar",
       "accessAccount": "Iniciar sesión"
     },
     "footerText": "© 2025 | Showtime University | USA"
   },
-  "subscription":{
+  "subscription": {
     "title": "Suscribete",
     "plansScreen": {
       "title": "Elige tu Plan",
@@ -475,35 +475,35 @@
       "statusCanceled": "Cancelada",
       "statusUnpaid": "Sin pagar"
     },
-    "basic":{
+    "basic": {
       "title": "Básico",
       "description": "Accede a las funciones clave del programa y conoce desde dentro la vida de un atleta profesional.",
-      "features":[
+      "features": [
         "Acceso a Home (Feed) contenido de Darwin.",
         "Acceso al material de Darwin (Sección Learn).",
         "Mensajes directos con con Darwin.",
         "Acceso a conferencistas invitados."
       ],
-      "button": "$49/Mensual"      
+      "button": "$49/Mensual"
     },
-    "premium":{
+    "premium": {
       "title": "Premium",
       "description": "Expande tu red y recibe retroalimentación valiosa interactuando con miembros y entrenadores en el feed de Showtime.\n\nPlanifica tus entrenamientos guardando las publicaciones de los entrenadores directamente en el feed de Showtime.\n",
-      "features":[
+      "features": [
         "Acceso a Home (Feed) contenido de Darwin.",
         "Acceso a Home (Feed) contenido de Darwin, entrenadores y estudiantes.",
         "Publicar en Home",
         "Acceso al material de Darwin (Sección Learn).",
         "Mensajes directos con Darwin.",
         "Acceso a eventos presenciales exclusivos de Showtime University (campamentos, reuniones, entrenamientos).",
-        "Acceso a conferencistas invitados."        
+        "Acceso a conferencistas invitados."
       ],
-      "button": "$99/Mensual"      
+      "button": "$99/Mensual"
     },
-    "elite":{
+    "elite": {
       "title": "Élite",
       "description": "Paquete completo:",
-      "features":[
+      "features": [
         "Acceso a Home (Feed) contenido de Darwin.",
         "Acceso a Home (Feed) contenido de Darwin, entrenadores y estudiantes.",
         "Publicar en Home",
@@ -514,25 +514,25 @@
         "Videollamadas con Darwin",
         "Videollamadas con entrenadores",
         "Acceso a eventos presenciales exclusivos de Showtime University (campamentos, reuniones, entrenamientos).",
-        "Acceso a conferencistas invitados.", 
-        "En caso de ser aplicable, conexión con agente o asesor deportivo."              
+        "Acceso a conferencistas invitados.",
+        "En caso de ser aplicable, conexión con agente o asesor deportivo."
       ],
-      "button": "$149/Mensual"      
+      "button": "$149/Mensual"
     }
-  },  
-  "publishPost":{
-    "buttons":{
+  },
+  "publishPost": {
+    "buttons": {
       "post": "Publicar",
       "update": "Actualizar",
       "video": "Video.mp4",
       "image": "Imagen.jpg",
       "text": "Texto.pdf"
-    }, 
-    "placeholders":{
+    },
+    "placeholders": {
       "textInput": "¿Qué hay de nuevo?",
       "category": "Categoría"
     },
-    "categories":{
+    "categories": {
       "accomplishments": "Logros",
       "announcements": "Anuncios",
       "dailyMotivation": "Motivación diaria",
@@ -541,7 +541,7 @@
       "lifeOfAProfessional": "Vida del profesional",
       "nutrition": "Nutrición",
       "training": "Entrenamiento",
-      "mindset": "Mentalidad",      
+      "mindset": "Mentalidad",
       "tactics": "Tacticas",
       "gameAnalysis": "Análisis del juego",
       "Strength": "Fuerza",
@@ -568,17 +568,17 @@
       "questions": "Preguntas",
       "lifeAsAProfessional": "Vida como un Profesional"
     },
-    "alertPost":{
+    "alertPost": {
       "title": "¿Enviar el Post?",
       "message": "¿Estás seguro que quieres enviar el post?"
     },
-    "removeAlert":{
+    "removeAlert": {
       "title": "¿Remover Archivo?",
       "message": "¿Quieres remover este archivo del post?",
       "optionCancel": "Cancelar",
       "optionRemove": "Remover"
     },
-    "alerts":{
+    "alerts": {
       "emptyPost": "Parece que tú post está vacío. Intenta añadir algo!",
       "pdfError": "Un error inesperado ocurrió al seleccionar el PDF. Por favor intenta de nuevo.",
       "thumbnailError": "Un error ocurrió mientras se generaba el thumbnail."
@@ -596,7 +596,7 @@
     "noTestimonials": "No se han ingresado testimonios.",
     "letsChat": "Hablemos"
   },
-  "account":{
+  "account": {
     "titles": {
       "account": "Cuenta",
       "coachList": "Lista de Entrenadores",
@@ -606,7 +606,7 @@
       "editProfile": "Editar perfil",
       "uploadContent": "Subir Contenido",
       "noThumbnail": "No hay archivo seleccionado",
-      "fileFormat" : "Formato del archivo",
+      "fileFormat": "Formato del archivo",
       "category": "Categoría",
       "selectMainCategory": "Selecciona la Categoría",
       "selectSubcategory": "Selecciona la Subcategoría"
@@ -615,11 +615,11 @@
       "coach": "Entrenador",
       "save": "Guardar",
       "settings": "Ajustes",
-      "send" : "Enviar",
+      "send": "Enviar",
       "students": "Estudiantes",
       "upload": "Cargar",
       "highlight": "DESTACAR",
-      "shareTheApp" : "COMPARTIR LA APP",
+      "shareTheApp": "COMPARTIR LA APP",
       "signOut": "Cerrar Sesión",
       "uploadContent": "Subir contenido"
     },
@@ -629,11 +629,11 @@
       "contact": "Contacto",
       "cancelSubscription": "Cancelar suscripción"
     },
-    "placeholders":{
+    "placeholders": {
       "inputTitle": "Título del contenido",
       "inputDescription": "Descripción del contenido",
       "mainCategory": "Categoría",
-      "subcategory": "Subcategoría"        
+      "subcategory": "Subcategoría"
     }
   },
   "learn": {
@@ -738,5 +738,5 @@
         "description": "Controla el ritmo y conecta al equipo."
       }
     }
-  } 
+  }
 }

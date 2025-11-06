@@ -52,29 +52,33 @@ export default function RegisterMethodScreen() {
       <View style={styles.content}>
         {/* Main buttons section */}
         <View style={styles.buttonsContainer}>
-          {/* Google Sign Up */}
+          {/* Google Sign Up (Próximamente - deshabilitado) */}
           <TouchableOpacity
-            style={styles.socialButton}
-            onPress={handleGoogleSignUp}>
+            style={[styles.socialButton, styles.disabledButton]}
+            onPress={handleGoogleSignUp}
+            disabled={true}
+            accessibilityState={{disabled: true}}>
             <View style={styles.iconContainer}>
               <View style={styles.googleIcon}>
                 <Image source={require('../../assets/img/icon/Google.png')} />
               </View>
             </View>
-            <Text style={styles.socialButtonText}>
-              {t('registration.signUpGoogle')}
+            <Text style={[styles.socialButtonText, styles.disabledText]}>
+              {t('registration.comingSoon')}
             </Text>
           </TouchableOpacity>
 
-          {/* Apple Sign Up */}
+          {/* Apple Sign Up (Próximamente - deshabilitado) */}
           <TouchableOpacity
-            style={styles.socialButton}
-            onPress={handleAppleSignUp}>
+            style={[styles.socialButton, styles.disabledButton]}
+            onPress={handleAppleSignUp}
+            disabled={true}
+            accessibilityState={{disabled: true}}>
             <View style={styles.iconContainer}>
               <Image source={require('../../assets/img/icon/Apple_Icon.png')} />
             </View>
-            <Text style={styles.socialButtonText}>
-              {t('registration.signUpApple')}
+            <Text style={[styles.socialButtonText, styles.disabledText]}>
+              {t('registration.comingSoon')}
             </Text>
           </TouchableOpacity>
 
@@ -282,6 +286,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 16,
     fontWeight: '400',
+  },
+  disabledButton: {
+    backgroundColor: '#f2f2f2',
+    opacity: 0.9,
+  },
+  disabledText: {
+    color: '#999',
   },
   linkText: {
     fontFamily: 'AnonymousPro-Regular',
