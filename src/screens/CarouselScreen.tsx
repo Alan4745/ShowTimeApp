@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -7,50 +7,71 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
+  Animated,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import LoginModal from '../components/modals/LoginModal';
+import images from '../data/carouselImages';
+import CAROUSEL_CONFIG from '../config/carouselConfig';
 
 const {width, height} = Dimensions.get('window');
 
-const images = [
-  require('../../assets/img/carousel/carousel1.png'),
-  require('../../assets/img/carousel/carousel2.png'),
-  require('../../assets/img/carousel/carousel3.png'),
-  require('../../assets/img/carousel/carousel4.png'),
-  require('../../assets/img/carousel/carousel5.png'),
-  require('../../assets/img/carousel/carousel6.png'),
-  require('../../assets/img/carousel/carousel7.png'),
-];
+// images are imported from src/data/carouselImages
 
 export default function CarouselScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const overlayAnim = useRef(new Animated.Value(0)).current;
+  const currentIndexRef = useRef(0);
   const {t} = useTranslation();
   const navigation = useNavigation();
   const [loginVisible, setLoginVisible] = useState(false);
 
+  // Keep a ref so the interval handler doesn't close over stale state
+  useEffect(() => {
+    currentIndexRef.current = currentIndex;
+  }, [currentIndex]);
+
   // Temporizador para carousel
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex(prevIndex =>
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1,
-      );
-    }, 3000);
+      const next = (currentIndexRef.current + 1) % images.length;
+      // darken image, swap, then clear dark (durations from config)
+      setTimeout(() => {
+        setCurrentIndex(next);
+      }, 500);
+
+      Animated.timing(overlayAnim, {
+        toValue: 1,
+        duration: CAROUSEL_CONFIG.OVERLAY_DURATION,
+        useNativeDriver: true,
+      }).start(() => {
+        Animated.timing(overlayAnim, {
+          toValue: 0,
+          duration: 1500,
+          useNativeDriver: true,
+        }).start();
+      });
+    }, CAROUSEL_CONFIG.IMAGE_CHANGE_INTERVAL);
 
     return () => clearInterval(interval); // Limpia al desmontar
-  }, []);
+  }, [overlayAnim]);
 
   const handleGetStarted = () => {
     (navigation.navigate as any)({name: 'RegisterMethod'});
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.wrapper}>
       <ImageBackground
         source={images[currentIndex]}
         style={styles.backgroundImage}
         resizeMode="cover">
+        {/* overlay animation covers ONLY the image (placed before content so children render on top) */}
+        <Animated.View
+          pointerEvents="none"
+          style={[styles.overlay, {opacity: overlayAnim}]}
+        />
         <View style={styles.container}>
           <View style={styles.headerContainer}>
             <Image
@@ -107,9 +128,13 @@ const styles = StyleSheet.create({
     width: width,
     height: height,
   },
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: '#000',
   },
   container: {
     flex: 1,
