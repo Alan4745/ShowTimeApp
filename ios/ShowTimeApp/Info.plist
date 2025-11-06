@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>ShowTimeApp</string>
+	<string>ShowTime</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -31,8 +31,21 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need your permission to save the media you choosed.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your media galery.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>AnonymousPro-Bold.ttf</string>
+		<string>AnonymousPro-BoldItalic.ttf</string>
+		<string>AnonymousPro-Italic.ttf</string>
+		<string>AnonymousPro-Regular.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -47,19 +60,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>AnonymousPro-Bold.ttf</string>
-		<string>AnonymousPro-BoldItalic.ttf</string>
-		<string>AnonymousPro-Italic.ttf</string>
-		<string>AnonymousPro-Regular.ttf</string>
-	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>We need access to your camera.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your media galery.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>We need your permission to save the media you choosed.</string>
-
 </dict>
 </plist>
