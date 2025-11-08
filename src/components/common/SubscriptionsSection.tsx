@@ -3,10 +3,17 @@ se suscribió un estudiantes.  Y estudiantes que tiene suscritos en el caso de
 coaches y Darwin*/
 
 import React from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Mail } from 'lucide-react-native';
-import { useTranslation } from 'react-i18next';
-import { buildMediaUrl } from '../../utils/urlHelpers';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import {Mail} from 'lucide-react-native';
+import {useTranslation} from 'react-i18next';
+import {buildMediaUrl} from '../../utils/urlHelpers';
 
 interface SubscriptionsSectionProps {
   userType: 'student' | 'coach' | 'admin';
@@ -14,29 +21,39 @@ interface SubscriptionsSectionProps {
   onMessagePress: (item: any) => void;
 }
 
-export default function SubscriptionsSection({ userType, data, onMessagePress }: SubscriptionsSectionProps) {
-  const { t } = useTranslation();
-  const title = userType === 'student'
-    ? t('account.titles.coachList')
-    : t('account.titles.studentList');    
+export default function SubscriptionsSection({
+  userType,
+  data,
+  onMessagePress,
+}: SubscriptionsSectionProps) {
+  const {t} = useTranslation();
+  const title =
+    userType === 'student'
+      ? t('account.titles.coachList')
+      : t('account.titles.studentList');
 
-  const renderItem = ({ item }: { item: any }) => (
-    <View style={styles.item}>      
-    <Image source={
-        item.avatar
-          ? { uri: buildMediaUrl(item.avatar) }
-          : require('../../../assets/img/userGeneric.png')
-        } style={styles.avatar} 
+  const renderItem = ({item}: {item: any}) => (
+    <View style={styles.item}>
+      <Image
+        source={
+          item.avatar
+            ? {uri: buildMediaUrl(item.avatar)}
+            : require('../../../assets/img/userGeneric.png')
+        }
+        style={styles.avatar}
       />
-    <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <Text style={styles.coachName}>{item.username}</Text>
-        <Text style={styles.coachSubtitle}>{userType === "student" ? "Coach" : "Student"}</Text>
-    </View>
-    <TouchableOpacity onPress={() => onMessagePress(item)} style={styles.iconButton}>
+        <Text style={styles.coachSubtitle}>
+          {userType === 'student' ? 'Coach' : 'Student'}
+        </Text>
+      </View>
+      <TouchableOpacity
+        onPress={() => onMessagePress(item)}
+        style={styles.iconButton}>
         <Mail color="#929292" width={26} height={26} />
-    </TouchableOpacity>
+      </TouchableOpacity>
     </View>
-       
   );
 
   return (
@@ -44,7 +61,7 @@ export default function SubscriptionsSection({ userType, data, onMessagePress }:
       <Text style={styles.sectionTitle}>{title}</Text>
       <FlatList
         data={data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
       />
@@ -53,20 +70,20 @@ export default function SubscriptionsSection({ userType, data, onMessagePress }:
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    marginTop: 20 
-  },  
+  container: {
+    marginTop: 20,
+  },
   sectionTitle: {
     fontFamily: 'AnonymousPro-Bold',
-    fontWeight: "700",
+    fontWeight: '700',
     fontSize: 24,
     color: '#FFFFFF',
     marginBottom: 20,
   },
   item: {
     flexDirection: 'row',
-    alignItems: 'center',    
-    paddingVertical: 10,    
+    alignItems: 'center',
+    paddingVertical: 10,
   },
   avatar: {
     width: 50,
@@ -76,15 +93,15 @@ const styles = StyleSheet.create({
   },
   coachName: {
     fontFamily: 'AnonymousPro-Bold',
-    fontWeight: "700",
+    fontWeight: '700',
     fontSize: 20,
-    color: '#FFFFFF',    
-  },  
-  coachSubtitle:{
+    color: '#FFFFFF',
+  },
+  coachSubtitle: {
     fontFamily: 'AnonymousPro-Regular',
-    fontWeight: "400",
+    fontWeight: '400',
     fontSize: 16,
-    color: "#D9D9D9",
+    color: '#D9D9D9',
     marginLeft: 2,
   },
   iconButton: {
@@ -93,8 +110,8 @@ const styles = StyleSheet.create({
   coachItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15,    
+    marginBottom: 15,
     padding: 12,
     borderRadius: 10,
-  }
+  },
 });

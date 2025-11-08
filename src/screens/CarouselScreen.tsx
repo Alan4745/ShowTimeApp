@@ -39,7 +39,7 @@ export default function CarouselScreen() {
       // darken image, swap, then clear dark (durations from config)
       setTimeout(() => {
         setCurrentIndex(next);
-      }, 500);
+      }, 850);
 
       Animated.timing(overlayAnim, {
         toValue: 1,
