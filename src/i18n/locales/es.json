@@ -463,6 +463,13 @@
       "daysRemaining": "día restante",
       "daysRemainingPlural": "días restantes"
     },
+    "cancelAtPeriodEnd": "Programada para cancelar al final del periodo",
+    "reactivatedTitle": "Suscripción reactivada",
+    "reactivatedError": "No se pudo reactivar la suscripción",
+    "actions": {
+      "reactivate": "Reactivar suscripción"
+    },
+    "reactivating": "Reactivando...",
     "subscriptionInfo": {
       "price": "Precio:",
       "paymentMethod": "Método de pago:",
@@ -621,14 +628,31 @@
       "upload": "Cargar",
       "highlight": "DESTACAR",
       "shareTheApp": "COMPARTIR LA APP",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar",
+      "openSettings": "Abrir ajustes",
       "signOut": "Cerrar Sesión",
-      "uploadContent": "Subir contenido"
+      "uploadContent": "Subir contenido",
+      "comingSoon": "Próximamente"
     },
     "content": {
       "notifications": "Notificaciones",
       "subscription": "Suscripción",
       "contact": "Contacto",
       "cancelSubscription": "Cancelar suscripción"
+    },
+    "notifications": {
+      "enabled": "Notificaciones activadas",
+      "blockedTitle": "Permisos de notificaciones bloqueados",
+      "blockedMessage": "Por favor activa las notificaciones desde la configuración.",
+      "denied": "Permisos de notificaciones denegados",
+      "error": "No se pudo solicitar permisos de notificación"
+    },
+    "subscriptions": {
+      "cancelTitle": "Cancelar suscripción",
+      "cancelConfirm": "¿Deseas cancelar tu suscripción?",
+      "cancelled": "Suscripción cancelada",
+      "cancelError": "No se pudo cancelar la suscripción. Inténtalo de nuevo más tarde."
     },
     "placeholders": {
       "inputTitle": "Título del contenido",

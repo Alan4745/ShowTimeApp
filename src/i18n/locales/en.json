@@ -485,6 +485,13 @@
       "daysRemaining": "day remaining",
       "daysRemainingPlural": "days remaining"
     },
+    "cancelAtPeriodEnd": "Scheduled to cancel at period end",
+    "reactivatedTitle": "Subscription reactivated",
+    "reactivatedError": "Could not reactivate subscription",
+    "actions": {
+      "reactivate": "Reactivate subscription"
+    },
+    "reactivating": "Reactivating...",
     "subscriptionInfo": {
       "price": "Price:",
       "paymentMethod": "Payment method:",
@@ -643,14 +650,31 @@
       "upload": "Upload",
       "highlight": "HIGHLIGHT",
       "shareTheApp": "SHARE THE APP",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "openSettings": "Open settings",
       "signOut": "Sign Out",
-      "uploadContent": "Upload content"
+      "uploadContent": "Upload content",
+      "comingSoon": "Coming soon"
     },
     "content": {
       "notifications": "Notifications",
       "subscription": "Subscription",
       "contact": "Contact",
       "cancelSubscription": "Cancel subscription"
+    },
+    "notifications": {
+      "enabled": "Notifications enabled",
+      "blockedTitle": "Notification permissions blocked",
+      "blockedMessage": "Please enable notifications from settings.",
+      "denied": "Notification permissions denied",
+      "error": "Could not request notification permissions"
+    },
+    "subscriptions": {
+      "cancelTitle": "Cancel subscription",
+      "cancelConfirm": "Do you want to cancel your subscription?",
+      "cancelled": "Subscription cancelled",
+      "cancelError": "Could not cancel subscription. Please try again later."
     },
     "placeholders": {
       "inputTitle": "Content Title",
