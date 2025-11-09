@@ -156,22 +156,17 @@ export default function SettingsSection({userType}: SettingsSectionProps) {
           text: t('account.buttons.confirm') || 'Confirmar',
           onPress: async () => {
             try {
-              const response = await fetchWithTimeout(
-                '/api/v1/subscription/cancel/',
-                {
-                  method: 'POST',
-                  headers: {'Content-Type': 'application/json'},
-                },
-              );
+              const result = await peticiondecancelarplan();
 
-              if (!response.ok) {
-                const text = await response.text();
-                throw new Error(text || 'Network response was not ok');
+              // Si el backend devuelve un mensaje amigable, mostrarlo
+              if (result?.message) {
+                Alert.alert(result.message);
+              } else {
+                Alert.alert(
+                  t('account.subscriptions.cancelled') ||
+                    'Suscripción cancelada',
+                );
               }
-
-              Alert.alert(
-                t('account.subscriptions.cancelled') || 'Suscripción cancelada',
-              );
             } catch (error) {
               console.error('Error cancelling subscription:', error);
               Alert.alert(
@@ -183,6 +178,54 @@ export default function SettingsSection({userType}: SettingsSectionProps) {
         },
       ],
     );
+  };
+
+  // Llamada centralizada para cancelar (programar cancel_at_period_end)
+  // Retorna el JSON devuelto por el endpoint y actualiza subscriptionData si viene
+  const peticiondecancelarplan = async () => {
+    const headers: any = {'Content-Type': 'application/json'};
+    if (token) {
+      headers.Authorization = `Token ${token}`;
+    }
+
+    try {
+      const body = JSON.stringify({cancel_at_period_end: true});
+      const response = await fetchWithTimeout(
+        '/api/payments/subscriptions/cancel/',
+        {
+          method: 'POST',
+          headers,
+          body,
+        },
+      );
+
+      if (!response.ok) {
+        const text = await response.text().catch(() => null);
+        throw new Error(text || 'Network response was not ok');
+      }
+
+      const data = await response.json();
+
+      // Ejemplo de respuesta:
+      // {
+      //   status: 'success',
+      //   message: 'Tu suscripción se cancelará el 07/11/2025',
+      //   subscription: { id: '...', status: 'active', cancel_at_period_end: true }
+      // }
+
+      if (data?.subscription) {
+        // actualizar subscriptionData para reflejar el nuevo estado
+        setSubscriptionData((prev: any) => ({
+          ...(prev ?? {}),
+          has_subscription: true,
+          subscription: data.subscription,
+        }));
+      }
+
+      return data;
+    } catch (err) {
+      throw err;
+    }
   };
 
   const settings: SettingOption[] = [

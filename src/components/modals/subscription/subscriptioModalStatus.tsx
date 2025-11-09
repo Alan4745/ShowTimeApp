@@ -1,5 +1,13 @@
-import React from 'react';
-import {Modal, View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Modal,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {X} from 'lucide-react-native';
 
@@ -8,6 +16,8 @@ interface SubscriptionStatusModalProps {
   onClose: () => void;
   // Optional: if the parent already fetched the endpoint, pass it here
   subscriptionInfo?: any;
+  // Optional callback to notify parent that the subscription was reactivated
+  onSubscriptionReactivated?: (updated: any) => void;
   // Backwards compatible props
   isActive?: boolean;
   dueDate?: string | null; // fecha del próximo cobro (opcional)
@@ -19,15 +29,27 @@ export default function SubscriptionStatusModal({
   subscriptionInfo,
   isActive: isActiveProp,
   dueDate: dueDateProp,
+  onSubscriptionReactivated,
 }: SubscriptionStatusModalProps) {
   const {t} = useTranslation();
+  const {token} = require('../../../context/AuthContext').useAuth?.() || {};
+  const [localSubscription, setLocalSubscription] = useState<any | null>(
+    subscriptionInfo?.subscription ?? null,
+  );
+  const [reactivating, setReactivating] = useState(false);
+
+  useEffect(() => {
+    setLocalSubscription(subscriptionInfo?.subscription ?? null);
+  }, [subscriptionInfo]);
 
   // Prefer data passed from parent via `subscriptionInfo`, otherwise fall back to props
   const hasSubscription =
     subscriptionInfo?.has_subscription ??
     (typeof isActiveProp === 'boolean' ? isActiveProp : false);
 
-  const subscription = subscriptionInfo?.subscription ?? null;
+  // prefer localSubscription (may be updated after reactivation) otherwise fall back
+  const subscription =
+    localSubscription ?? subscriptionInfo?.subscription ?? null;
   const rawDue = subscription?.current_period_end ?? dueDateProp ?? null;
 
   let dueDisplay = rawDue;
@@ -79,12 +101,81 @@ export default function SubscriptionStatusModal({
                 )}
 
                 {subscription?.cancel_at_period_end ? (
-                  <View style={styles.cancelBox}>
-                    <Text style={styles.cancelBoxText}>
-                      {t('subscription.cancelAtPeriodEnd') ||
-                        `Scheduled to cancel at period end: ${dueDisplay}`}
-                    </Text>
-                  </View>
+                  <>
+                    <View style={styles.cancelBox}>
+                      <Text style={styles.cancelBoxText}>
+                        {t('subscription.cancelAtPeriodEnd') ||
+                          `Scheduled to cancel at period end: ${dueDisplay}`}
+                      </Text>
+                    </View>
+
+                    <TouchableOpacity
+                      style={styles.reactivateButton}
+                      onPress={async () => {
+                        try {
+                          setReactivating(true);
+                          const headers: any = {
+                            'Content-Type': 'application/json',
+                          };
+                          if (token) {
+                            headers.Authorization = `Token ${token}`;
+                          }
+
+                          const response = await fetch(
+                            '/api/payments/reactivate-subscription/',
+                            {
+                              method: 'POST',
+                              headers,
+                            },
+                          );
+
+                          if (!response.ok) {
+                            const text = await response
+                              .text()
+                              .catch(() => null);
+                            throw new Error(
+                              text || 'Network response was not ok',
+                            );
+                          }
+
+                          const data = await response.json().catch(() => null);
+
+                          // backend may return { subscription: { ... } } or the subscription directly
+                          const updated = data?.subscription ?? data ?? null;
+                          if (updated) {
+                            setLocalSubscription(updated);
+                            if (onSubscriptionReactivated) {
+                              onSubscriptionReactivated(data);
+                            }
+                          }
+
+                          Alert.alert(
+                            t('subscription.reactivatedTitle') ||
+                              'Subscription reactivated',
+                          );
+                        } catch (err) {
+                          console.error(
+                            'Error reactivating subscription:',
+                            err,
+                          );
+                          Alert.alert(
+                            t('subscription.reactivatedError') ||
+                              'Could not reactivate subscription. Try again later.',
+                          );
+                        } finally {
+                          setReactivating(false);
+                        }
+                      }}>
+                      {reactivating ? (
+                        <ActivityIndicator color="#FFFFFF" />
+                      ) : (
+                        <Text style={styles.reactivateButtonText}>
+                          {t('subscription.actions.reactivate') ||
+                            'Reactivate subscription'}
+                        </Text>
+                      )}
+                    </TouchableOpacity>
+                  </>
                 ) : null}
               </>
             ) : (
@@ -184,6 +275,20 @@ const styles = StyleSheet.create({
     fontFamily: 'AnonymousPro-Regular',
     fontWeight: '400',
     fontSize: 18,
+    color: '#FFFFFF',
+    textAlign: 'center',
+  },
+  reactivateButton: {
+    marginTop: 12,
+    backgroundColor: '#2B80BE',
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    alignSelf: 'center',
+  },
+  reactivateButtonText: {
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 16,
     color: '#FFFFFF',
     textAlign: 'center',
   },
