@@ -5,6 +5,10 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
 
@@ -26,7 +30,9 @@ export default function CommentModal({visible, onClose, onSubmit}: Props) {
     }
   }, [visible]);
 
-  if (!visible) return null;
+  if (!visible) {
+    return null;
+  }
 
   const handleSend = () => {
     if (comment.trim().length > 0) {
@@ -42,50 +48,57 @@ export default function CommentModal({visible, onClose, onSubmit}: Props) {
   };
 
   return (
-    <View style={styles.overlay}>
-      <View style={styles.modalContainer}>
-        {/* Botón de cerrar */}
-        <TouchableOpacity onPress={handleCancel} style={styles.closeButton}>
-          <Text style={styles.closeText}>×</Text>
-        </TouchableOpacity>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.overlay}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={styles.modalInnerWrapper}>
+          <View style={styles.modalContainer}>
+            {/* Botón de cerrar */}
+            <TouchableOpacity onPress={handleCancel} style={styles.closeButton}>
+              <Text style={styles.closeText}>×</Text>
+            </TouchableOpacity>
 
-        {/* Campo de texto */}
-        <TextInput
-          style={styles.input}
-          multiline
-          maxLength={MAX_LENGTH}
-          placeholder={t('placeholders.writeComment')}
-          placeholderTextColor="#999"
-          value={comment}
-          onChangeText={setComment}
-          autoCorrect={false}
-          autoComplete="off"
-          autoCapitalize="none"
-        />
+            {/* Campo de texto */}
+            <TextInput
+              style={styles.input}
+              multiline
+              maxLength={MAX_LENGTH}
+              placeholder={t('placeholders.writeComment')}
+              placeholderTextColor="#999"
+              value={comment}
+              onChangeText={setComment}
+              autoCorrect={false}
+              autoComplete="off"
+              autoCapitalize="none"
+            />
 
-        {/* Contador */}
-        <Text style={styles.counter}>
-          {comment.length} / {MAX_LENGTH}
-        </Text>
+            {/* Contador */}
+            <Text style={styles.counter}>
+              {comment.length} / {MAX_LENGTH}
+            </Text>
 
-        {/* Botón de enviar */}
-        <TouchableOpacity
-          style={[
-            styles.sendButton,
-            comment.trim().length === 0 && styles.disabled,
-          ]}
-          onPress={handleSend}
-          disabled={comment.trim().length === 0}>
-          <Text
-            style={[
-              styles.sendText,
-              comment.trim().length === 0 && styles.disabledText,
-            ]}>
-            {t('common.send')}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+            {/* Botón de enviar */}
+            <TouchableOpacity
+              style={[
+                styles.sendButton,
+                comment.trim().length === 0 && styles.disabled,
+              ]}
+              onPress={handleSend}
+              disabled={comment.trim().length === 0}>
+              <Text
+                style={[
+                  styles.sendText,
+                  comment.trim().length === 0 && styles.disabledText,
+                ]}>
+                {t('common.send')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -104,6 +117,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     zIndex: 9999,
     elevation: 10,
+  },
+  modalInnerWrapper: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   modalContainer: {
     backgroundColor: '#121212',

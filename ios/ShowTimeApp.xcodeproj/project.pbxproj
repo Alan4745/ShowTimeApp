@@ -298,7 +298,7 @@
 				DEVELOPMENT_TEAM = A5NUU4BY73;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ShowTimeApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Showtime;
+				INFOPLIST_KEY_CFBundleDisplayName = "Showtime University";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -331,7 +331,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A5NUU4BY73;
 				INFOPLIST_FILE = ShowTimeApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Showtime;
+				INFOPLIST_KEY_CFBundleDisplayName = "Showtime University";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

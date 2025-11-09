@@ -11,6 +11,8 @@ import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {useAuth} from '../context/AuthContext';
 import {ChevronUp} from 'lucide-react-native';
+import {ArrowLeft} from 'lucide-react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {createThumbnail} from 'react-native-create-thumbnail';
 import {PlayCircle} from 'lucide-react-native';
 import {buildMediaUrl} from '../utils/urlHelpers';
@@ -30,6 +32,7 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
   const {t} = useTranslation();
   const {user} = useAuth();
   const {coach} = route.params;
+  const insets = useSafeAreaInsets();
   const [showAccomplishments, setShowAccomplishments] = useState(true);
   const [showLessons, setShowLessons] = useState(true);
   const [showTestimonials, setShowTestimonials] = useState(true);
@@ -141,7 +144,18 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
   return (
     <View style={styles.container}>
       <AppHeaderNew userAvatar={buildMediaUrl(user?.studentProfileImage)} />
+
       <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View
+          style={[styles.topBar, {paddingTop: insets.top ? insets.top : 0}]}>
+          <TouchableOpacity
+            accessibilityLabel="back-button"
+            onPress={() => (navigate as any).goBack()}
+            style={styles.backButton}
+            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+            <ArrowLeft color="#FFFFFF" size={22} />
+          </TouchableOpacity>
+        </View>
         {/* IMAGEN O VIDEO */}
         <View style={styles.imageContainer}>
           {coach.coachMediaFile ? (
@@ -385,6 +399,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
     paddingBottom: 30,
+  },
+  topBar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    height: 56,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 15,
+    backgroundColor: 'rgba(0,0,0,0)',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 12,
+    top: 8,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   scrollContent: {
     paddingBottom: 40,

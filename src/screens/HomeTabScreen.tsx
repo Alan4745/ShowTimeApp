@@ -3,12 +3,12 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Text,
   FlatList,
   Image,
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
+import {Plus} from 'lucide-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
 import Post from '../components/common/Post';
@@ -359,8 +359,10 @@ export default function HomeTabScreen() {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => (navigation as any).navigate('PublishPost')}>
-        <Text style={styles.buttonText}>＋</Text>
+        onPress={() => (navigation as any).navigate('PublishPost')}
+        accessibilityLabel="publish-post"
+        accessibilityRole="button">
+        <Plus size={28} color="#FFFFFF" />
       </TouchableOpacity>
 
       <CommentModal
@@ -397,12 +399,19 @@ const styles = StyleSheet.create({
     right: 20,
     bottom: 10,
     backgroundColor: '#2B80BE',
-    width: 73,
-    height: 73,
-    borderRadius: 40,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 999,
+    // small shadow for iOS
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    // elevation for Android
+    elevation: 6,
   },
   buttonText: {
     fontFamily: 'AnonymousPro-Regular',

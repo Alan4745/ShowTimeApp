@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { PlayCircle } from 'lucide-react-native';
-import MediaViewerModal from '../modals/MediaViewerModal'; 
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {PlayCircle} from 'lucide-react-native';
+import MediaViewerModal from '../modals/MediaViewerModal';
 
 interface CoachCardProps {
   title?: string;
@@ -10,19 +17,23 @@ interface CoachCardProps {
   imageUrl?: string;
   tag?: string;
   onMorePress?: () => void;
+  onPress?: () => void;
   style?: any;
   children?: React.ReactNode;
   isVideo?: boolean;
-  mediaUrl?: string; 
+  mediaUrl?: string;
 }
 
 function truncateText(text: string, maxLength: number) {
-  if (!text) return '';
+  if (!text) {
+    return '';
+  }
+
   return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
 }
 
 export default function CoachCard(props: CoachCardProps) {
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
 
   const handlePressMedia = () => {
@@ -37,12 +48,24 @@ export default function CoachCard(props: CoachCardProps) {
         <>
           <TouchableOpacity
             activeOpacity={0.9}
-            onPress={handlePressMedia}
-            style={{ flex: 1 }}
-          >
+            onPress={() => {
+              // If parent passed an onPress (or onMorePress) prefer navigation behavior
+              if (props.onPress) {
+                props.onPress();
+                return;
+              }
+              if (props.onMorePress) {
+                props.onMorePress();
+                return;
+              }
+
+              // fallback: open media modal for videos
+              handlePressMedia();
+            }}
+            style={styles.touchableFull}>
             <View style={styles.imageContainer}>
               <Image
-                source={{ uri: props.imageUrl }}
+                source={{uri: props.imageUrl}}
                 style={styles.imageTop}
                 resizeMode="cover"
               />
@@ -65,9 +88,11 @@ export default function CoachCard(props: CoachCardProps) {
               {props.name && <Text style={styles.name}>{props.name}</Text>}
               {props.children && (
                 <Text style={styles.children}>
-                  {truncateText(String(props.children), 110)}{/* corta texto largo */}
+                  {truncateText(String(props.children), 110)}
+                  {/* corta texto largo */}
                   <Text style={styles.more} onPress={props.onMorePress}>
-                    {' '}... {t('common.more')}
+                    {' '}
+                    ... {t('common.more')}
                   </Text>
                 </Text>
               )}
@@ -96,10 +121,9 @@ export default function CoachCard(props: CoachCardProps) {
           {props.name && <Text style={styles.name}>{props.name}</Text>}
           {props.children && (
             <ScrollView
-              style={{ maxHeight: '90%' }}
+              style={styles.childrenScroll}
               nestedScrollEnabled
-              showsVerticalScrollIndicator={false}
-            >
+              showsVerticalScrollIndicator={false}>
               <Text style={styles.children}>
                 {props.children}{' '}
                 <Text style={styles.more} onPress={props.onMorePress}>
@@ -114,60 +138,60 @@ export default function CoachCard(props: CoachCardProps) {
   );
 }
 
-
 const styles = StyleSheet.create({
   card: {
     borderRadius: 20,
     overflow: 'hidden',
     backgroundColor: '#252A30',
-    height: 450,
-    maxHeight: 450,       
+    height: 420,
+    maxHeight: 420,
+    marginBottom: 12,
   },
   imageContainer: {
     position: 'relative',
     width: '100%',
-    height: '50%',
+    height: 240,
   },
   playOverlay: {
     position: 'absolute',
-    top: '40%',
+    top: '45%',
     left: '45%',
     backgroundColor: 'rgba(0,0,0,0.4)',
     borderRadius: 30,
     padding: 4,
   },
-  overlayContainer:{
+  overlayContainer: {
     position: 'absolute',
     top: 20,
     left: 20,
     width: 85,
     height: 35,
-    backgroundColor: '#2B80BE', 
+    backgroundColor: '#2B80BE',
     borderRadius: 35,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   overlayText: {
     color: '#FFFFFF',
     fontSize: 14,
     paddingHorizontal: 8,
-    paddingVertical: 4,    
+    paddingVertical: 4,
     fontFamily: 'AnonymousPro-Regular',
   },
   imageTop: {
     width: '100%',
-    height: "100%", 
+    height: '100%',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
   contentBottom: {
-    padding: 25,
+    padding: 20,
     backgroundColor: '#252A30',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
   content: {
-    padding: 25,
+    padding: 20,
     flex: 1,
   },
   title: {
@@ -184,13 +208,13 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginBottom: 10,
   },
-  children:{
+  children: {
     fontFamily: 'AnonymousPro-Regular',
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '400',
     color: '#FFFFFF',
-    marginBottom: 8,  
-    lineHeight: 22,
+    marginBottom: 8,
+    lineHeight: 20,
   },
   more: {
     fontFamily: 'AnonymousPro-Regular',
@@ -198,5 +222,11 @@ const styles = StyleSheet.create({
     color: '#2B80BE',
     fontWeight: '700',
     //textDecorationLine: 'underline',
+  },
+  touchableFull: {
+    flex: 1,
+  },
+  childrenScroll: {
+    maxHeight: 200,
   },
 });

@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
+import type {StackNavigationProp} from '@react-navigation/stack';
 
 type RootStackParamList = {
   Account: undefined;
@@ -19,7 +19,7 @@ export default function AppHeaderNew(props: AppHeaderProps) {
   const navigation = useNavigation<NavigationProp>();
 
   return (
-    <SafeAreaView style = {styles.safeArea}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <View style={styles.header}>
         <Image
           source={require('../../../assets/img/Logo_para_encabezado_app.png')}
@@ -27,12 +27,14 @@ export default function AppHeaderNew(props: AppHeaderProps) {
           resizeMode="contain"
         />
         <TouchableOpacity onPress={() => navigation.navigate('Account')}>
-          <Image source={
-            props.userAvatar
-            ? {uri: props.userAvatar}
-            : require('../../../assets/img/userGeneric.png')
-          }
-          style={styles.avatar} />
+          <Image
+            source={
+              props.userAvatar
+                ? {uri: props.userAvatar}
+                : require('../../../assets/img/userGeneric.png')
+            }
+            style={styles.avatar}
+          />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -40,8 +42,8 @@ export default function AppHeaderNew(props: AppHeaderProps) {
 }
 
 const styles = StyleSheet.create({
-    safeArea: {
-    backgroundColor: '#000000', // o el color que quieras de fondo
+  safeArea: {
+    backgroundColor: '#000000ff', // o el color que quieras de fondo
   },
   header: {
     flexDirection: 'row',
