@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
@@ -33,9 +34,9 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
   const {user} = useAuth();
   const {coach} = route.params;
   const insets = useSafeAreaInsets();
-  const [showAccomplishments, setShowAccomplishments] = useState(true);
-  const [showLessons, setShowLessons] = useState(true);
-  const [showTestimonials, setShowTestimonials] = useState(true);
+  const [showAccomplishments, setShowAccomplishments] = useState(false);
+  const [showLessons, setShowLessons] = useState(false);
+  const [showTestimonials, setShowTestimonials] = useState(false);
   const [showCoachError, setShowCoachError] = useState(true);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [showVideoModal, setShowVideoModal] = useState(false);
@@ -44,7 +45,33 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
   const [lessonsError, setLessonsError] = useState<string | null>(null);
   const [selectedLesson, setSelectedLesson] = useState<any>(null);
   const [showLessonModal, setShowLessonModal] = useState(false);
+  const [bioExpanded, setBioExpanded] = useState(false);
   const navigate = useNavigation();
+
+  // Parámetros de truncado calculados dinámicamente en base al ancho de pantalla
+  const charsLimit = useMemo(() => {
+    // Asumimos padding horizontal de 16 en `contentBottom` (32 total)
+    const horizPadding = 16 * 2;
+    const windowWidth = Dimensions.get('window').width;
+    const availableWidth = Math.max(windowWidth - horizPadding, 100);
+
+    // Usamos el tamaño de fuente declarado en styles.description (16)
+    const fontSize = 16;
+
+    // Factor aproximado ancho promedio por carácter (en unidades de fontSize).
+    // Para monospace o fuentes condensadas puede bajar; usamos 0.58 como estimación.
+    const avgCharWidthFactor = 0.58;
+
+    // Queremos mostrar aproximadamente 3 líneas al colapsar
+    const maxCollapsedLines = 3;
+
+    const charsPerLine = Math.floor(
+      availableWidth / (fontSize * avgCharWidthFactor),
+    );
+
+    const limit = Math.max(120, charsPerLine * maxCollapsedLines); // mínimo defensivo
+    return limit;
+  }, []);
 
   // Descargar las lecciones desde el backend
   useEffect(() => {
@@ -198,9 +225,9 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
           <View style={styles.overlayContainer}>
             {/*ETIQUETAS*/}
             <View style={styles.overlayTagContainer}>
-              <View style={styles.roleTag}>
+              {/* <View style={styles.roleTag}>
                 <Text style={styles.roleText}>{coach.role}</Text>
-              </View>
+              </View> */}
               <View style={styles.coachingRoleTag}>
                 <Text style={styles.coachingRoleText}>
                   {coach.coachingRole}
@@ -213,9 +240,49 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
           </View>
 
           {/*DESCRIPCION*/}
-          {coach.coachBiography && (
-            <Text style={styles.description}>{coach.coachBiography}</Text>
-          )}
+          {coach.coachBiography &&
+            (() => {
+              // Dividimos en párrafos, pero truncamos en base a caracteres calculados.
+              const paragraphs = coach.coachBiography
+                .split(/\r?\n{2,}|\n{2,}/)
+                .map(p => p.trim())
+                .filter(Boolean);
+
+              const firstPara = paragraphs[0] || coach.coachBiography;
+
+              // Si el primer párrafo es corto o el usuario ya expandió, mostramos todo
+              const firstParaNeedsTruncate = firstPara.length > charsLimit;
+
+              if (!firstParaNeedsTruncate) {
+                // No hay truncado necesario: mostramos todo el texto (incluye múltiples párrafos)
+                return (
+                  <Text style={styles.description}>
+                    {paragraphs.join('\n\n')}
+                  </Text>
+                );
+              }
+
+              // Si necesita truncado
+              return (
+                <View>
+                  <Text style={styles.description}>
+                    {bioExpanded
+                      ? paragraphs.join('\n\n')
+                      : `${firstPara.slice(0, charsLimit).trim()}...`}
+                  </Text>
+
+                  <TouchableOpacity
+                    onPress={() => setBioExpanded(prev => !prev)}
+                    style={styles.readMoreButton}
+                    activeOpacity={0.8}
+                    hitSlop={{top: 8, bottom: 8, left: 8, right: 8}}>
+                    <Text style={styles.readMoreText}>
+                      {bioExpanded ? 'Ver menos' : 'Ver más'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            })()}
 
           {/*ACCOMPLISHMENTS*/}
           <TouchableOpacity
@@ -447,14 +514,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   contentBottom: {
-    padding: 10,
+    padding: 16,
+    paddingTop: 20,
   },
   name: {
     fontFamily: 'AnonymousPro-Bold',
     fontSize: 22,
     fontWeight: '700',
     color: '#FFFFFF',
-    marginTop: 10,
+    marginTop: 0,
+    marginBottom: 12,
   },
   overlayContainer: {
     flexDirection: 'row',
@@ -462,7 +531,7 @@ const styles = StyleSheet.create({
     height: 35,
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 20,
     rowGap: 8,
   },
   overlayTagContainer: {
@@ -524,15 +593,33 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '400',
     color: '#FFFFFF',
-    marginVertical: 8,
+    marginTop: 12,
+    marginBottom: 20,
     lineHeight: 22,
+  },
+  readMoreText: {
+    color: '#2B80BE',
+    marginTop: 6,
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 14,
+  },
+  readMoreButton: {
+    alignSelf: 'flex-start',
+    marginBottom: 14,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#2B80BE',
+    backgroundColor: 'rgba(43,128,190,0.04)',
   },
   accordionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: 12,
     paddingHorizontal: 15,
+    marginBottom: 16,
   },
   accordionTitle: {
     fontFamily: 'AnonymousPro-Bold',
@@ -568,7 +655,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   testimonialsScroll: {
-    paddingVertical: 10,
+    paddingVertical: 12,
   },
   testimonialCard: {
     marginRight: 16,
@@ -584,7 +671,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   accompContainer: {
-    marginBottom: 5,
+    marginBottom: 20,
   },
   accompList: {
     flexDirection: 'row',
@@ -608,7 +695,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   lessonsContainer: {
-    marginBottom: 5,
+    marginBottom: 20,
   },
   lessonsList: {
     marginTop: 10,
