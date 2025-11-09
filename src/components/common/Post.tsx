@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {MessageCircle, Heart, Edit, Trash2} from 'lucide-react-native';
+import {
+  MessageCircle,
+  Heart,
+  Edit,
+  Trash2,
+  Bookmark,
+} from 'lucide-react-native';
 import MediaGrid from './MediaGrid';
 import MediaViewerModal from '../modals/MediaViewerModal';
 import PopupConfirm from '../modals/PopupConfirm';
@@ -28,8 +34,10 @@ type PostType = {
   text: string;
   commentsCount: number;
   likesCount: number;
+  savedCount?: number;
   media: MediaItem[];
   likedByMe: boolean;
+  savedByMe?: boolean;
 };
 
 type PostProps = {
@@ -37,6 +45,8 @@ type PostProps = {
   onPressComments: () => void;
   onToggleLike?: () => void;
   liking?: boolean; // <-- desactiva el botón mientras se hace la petición, evita doble click
+  onToggleSave?: () => void;
+  saving?: boolean;
   currentUserId?: number;
   onEdit?: () => void;
   onDelete?: () => void;
@@ -90,7 +100,10 @@ export default function Post({
           />
           <View style={styles.userInfo}>
             <Text style={styles.username}>{post.username}</Text>
-            <Text style={styles.userType}>{post.userType}</Text>
+            <Text style={styles.userType}>
+              {(post.userType || '').charAt(0).toUpperCase() +
+                (post.userType || '').slice(1)}
+            </Text>
           </View>
         </View>
 
@@ -117,25 +130,38 @@ export default function Post({
         {/* Imagen  y Video*/}
         <MediaGrid media={post.media} onMediaPress={setSelectedMedia} />
 
-        {/*SECCIÓN DE ÍCONOS*/}
-        <View style={styles.iconRow}>
+        {/*SECCIÓN DE ÍCONOS: cada icono ocupa 33.33% del ancho*/}
+        <View style={[styles.iconRow, styles.iconRowDark]}>
           <TouchableOpacity
-            style={styles.iconItem}
+            style={[styles.iconItem, styles.iconColumn]}
             onPress={onToggleLike}
             disabled={liking}>
             <Heart
-              size={20}
+              size={24}
               color="#FFFFFF"
               fill={post.likedByMe ? '#FFFFFF' : 'none'}
             />
             <Text style={styles.iconText}>{post.likesCount}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconItem} onPress={onPressComments}>
-            <MessageCircle size={20} color="#FFFFFF" />
+
+          <TouchableOpacity
+            style={[styles.iconItem, styles.iconColumn]}
+            onPress={onPressComments}>
+            <MessageCircle size={24} color="#FFFFFF" />
             <Text style={styles.iconText}>{post.commentsCount}</Text>
           </TouchableOpacity>
-          {/* Placeholder to keep spacing for a third button (bookmark not used yet) */}
-          <View style={styles.iconItem} />
+
+          <TouchableOpacity
+            style={[styles.iconItem, styles.iconColumn, styles.iconDisabled]}
+            disabled={true}
+            accessibilityState={{disabled: true}}>
+            <Bookmark
+              size={24}
+              color="#FFFFFF"
+              fill={post.savedByMe ? '#FFFFFF' : 'none'}
+            />
+            <Text style={styles.iconText}>{post.savedCount ?? 0}</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -257,15 +283,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
+  iconRowDark: {},
   iconItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
+    gap: 8,
+  },
+  iconColumn: {
+    width: '33.33%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  iconDisabled: {
+    opacity: 0.6,
   },
   iconText: {
     color: '#FFFFFF',
-    fontSize: 14,
-    marginLeft: 4,
+    fontSize: 16,
+    marginLeft: 6,
     fontFamily: 'AnonymousPro-Regular',
   },
 });

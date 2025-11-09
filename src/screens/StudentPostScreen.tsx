@@ -14,6 +14,8 @@ import {
   RefreshControl,
 } from 'react-native';
 import {Send} from 'lucide-react-native';
+import {ArrowLeft} from 'lucide-react-native';
+import {useNavigation} from '@react-navigation/native';
 import {useAuth} from '../context/AuthContext';
 import {useTranslation} from 'react-i18next';
 import ScreenLayout from '../components/common/ScreenLayout';
@@ -40,6 +42,7 @@ export default function StudentPostScreen({route}) {
   const {t} = useTranslation();
   const {token} = useAuth();
   const {postId} = route.params;
+  const navigation: any = useNavigation();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState<CommentType[]>([]);
   const [loading, setLoading] = useState(true);
@@ -260,6 +263,17 @@ export default function StudentPostScreen({route}) {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.keyboardView}>
         <View style={styles.container}>
+          {/* Header with back arrow and post title */}
+          <View style={styles.screenHeader}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}>
+              <ArrowLeft size={22} color="#FFFFFF" />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>
+              {post?.title ?? post?.username ?? ''}
+            </Text>
+          </View>
           <FlatList
             ListHeaderComponent={
               <View style={styles.headerWrapper}>
@@ -270,12 +284,18 @@ export default function StudentPostScreen({route}) {
                 />
               </View>
             }
+            ListEmptyComponent={
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>{t('comments.noComments')}</Text>
+              </View>
+            }
             data={comments}
             keyExtractor={item => item.id.toString()}
             renderItem={({item}) => (
               <CommentCard
                 comment={item}
                 onDelete={() => handleDeleteComment(item.id)}
+                postAuthorName={(post as any)?.username}
               />
             )}
             showsVerticalScrollIndicator={false}
@@ -379,6 +399,33 @@ const styles = StyleSheet.create({
   },
   commentsListContent: {
     paddingBottom: 120,
+  },
+  screenHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1a1a1a',
+    backgroundColor: '#000000',
+  },
+  backButton: {
+    paddingRight: 12,
+  },
+  headerTitle: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontFamily: 'AnonymousPro-Bold',
+    flex: 1,
+  },
+  emptyContainer: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  emptyText: {
+    color: '#BBBBBB',
+    fontSize: 14,
+    fontFamily: 'AnonymousPro-Regular',
   },
   bottomInputContainer: {
     position: 'absolute',

@@ -764,5 +764,8 @@
         "description": "Controla el ritmo y conecta al equipo."
       }
     }
+  },
+  "comments": {
+    "noComments": "Aún no hay comentarios"
   }
 }

@@ -786,5 +786,8 @@
         "description": "Control tempo and connect the team."
       }
     }
+  },
+  "comments": {
+    "noComments": "No comments yet"
   }
 }
