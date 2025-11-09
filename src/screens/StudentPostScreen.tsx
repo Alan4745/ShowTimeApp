@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   View,
   Text,
@@ -7,11 +8,13 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Animated,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   Keyboard,
   RefreshControl,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {Send} from 'lucide-react-native';
 import {ArrowLeft} from 'lucide-react-native';
@@ -53,6 +56,8 @@ export default function StudentPostScreen({route}) {
   const defaultPdfIcon = require('../../assets/img/pdfIcon.png');
   const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
+  const keyboardOffset = useRef(new Animated.Value(0)).current;
+  const insets = useSafeAreaInsets();
   const endpointPost = `/api/posts/${postId}/`;
   const endpointComments = `/api/posts/${postId}/comments/`;
 
@@ -100,11 +105,50 @@ export default function StudentPostScreen({route}) {
 
   // Función para cargar más comentarios al hacer scroll
   const loadMoreComments = async () => {
-    if (!nextPageUrl || loadingMore) return;
+    if (!nextPageUrl || loadingMore) {
+      return;
+    }
     setLoadingMore(true);
     await fetchComments(nextPageUrl, true);
     setLoadingMore(false);
   };
+
+  // Animar la barra de input cuando se abre/cierra el teclado
+  useEffect(() => {
+    const showEvent =
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent =
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const onShow = (e: any) => {
+      const height = e?.endCoordinates?.height || 0;
+      const duration = e?.duration || 250;
+      // Restar safe area bottom para que la barra quede pegada al teclado
+      const target = Math.max(0, height - (insets.bottom || 0));
+      Animated.timing(keyboardOffset, {
+        toValue: target,
+        duration,
+        useNativeDriver: false,
+      }).start();
+    };
+
+    const onHide = (e: any) => {
+      const duration = e?.duration || 250;
+      Animated.timing(keyboardOffset, {
+        toValue: 0,
+        duration,
+        useNativeDriver: false,
+      }).start();
+    };
+
+    const showSub = Keyboard.addListener(showEvent, onShow);
+    const hideSub = Keyboard.addListener(hideEvent, onHide);
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, [keyboardOffset]);
 
   // Recupera Post y comentarios de la base de datos al cargar el componente
   useEffect(() => {
@@ -316,7 +360,8 @@ export default function StudentPostScreen({route}) {
         </View>
 
         {/* Fixed bottom input bar - Twitter style - Always visible */}
-        <View style={styles.bottomInputContainer}>
+        <Animated.View
+          style={[styles.bottomInputContainer, {bottom: keyboardOffset}]}>
           <TextInput
             style={styles.input}
             value={commentText}
@@ -335,7 +380,7 @@ export default function StudentPostScreen({route}) {
             ]}>
             <Send size={20} color={commentText.trim() ? '#1DA1F2' : '#555'} />
           </TouchableOpacity>
-        </View>
+        </Animated.View>
 
         <CommentModal
           visible={showCommentModal}
@@ -429,7 +474,6 @@ const styles = StyleSheet.create({
   },
   bottomInputContainer: {
     position: 'absolute',
-    bottom: 0,
     left: 0,
     right: 0,
     flexDirection: 'row',
