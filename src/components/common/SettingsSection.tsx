@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   useWindowDimensions,
 } from 'react-native';
-import {Bell, Star, CircleHelp, X, Power} from 'lucide-react-native';
+import {Bell, Star, CircleHelp, X, Power, User} from 'lucide-react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {ChatParamList} from '../../types';
@@ -15,6 +15,7 @@ import type {StackNavigationProp} from '@react-navigation/stack';
 import {useAuth} from '../../context/AuthContext';
 import HighlightModal from '../modals/HighlightModal';
 import SubscriptionStatusModal from '../modals/subscription/subscriptioModalStatus';
+import MyReferralsModal from '../modals/MyReferrals/MyReferralsModal';
 import {buildMediaUrl} from '../../utils/urlHelpers';
 import {fetchWithTimeout} from '../../utils/fetchWithTimeout';
 const {Alert, Linking} = require('react-native');
@@ -46,6 +47,7 @@ export default function SettingsSection({userType}: SettingsSectionProps) {
   const navigation = useNavigation<ChatNavigationProp>();
   const [showHighlightModal, setShowHighlightModal] = useState(false);
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  const [showReferralsModal, setShowReferralsModal] = useState(false);
   const [subscriptionData, setSubscriptionData] = useState<any | null>(null);
   const [subscriptionLoading, setSubscriptionLoading] = useState(false);
 
@@ -320,6 +322,19 @@ export default function SettingsSection({userType}: SettingsSectionProps) {
           },
         ]
       : []),
+
+    ...(userType === 'coach'
+      ? [
+          {
+            icon: User,
+            label: t('account.content.myReferrals') || 'My Referrals',
+            onPress: () => {
+              // Abrir modal de referidos
+              setShowReferralsModal(true);
+            },
+          },
+        ]
+      : []),
   ];
 
   const handleSignOut = async () => {
@@ -410,6 +425,14 @@ export default function SettingsSection({userType}: SettingsSectionProps) {
         visible={showSubscriptionModal}
         onClose={() => setShowSubscriptionModal(false)}
         subscriptionInfo={subscriptionData}
+      />
+
+      <MyReferralsModal
+        visible={showReferralsModal}
+        onClose={() => setShowReferralsModal(false)}
+        referralLink={`https://showtime.app/referral/${
+          user?.id ?? user?.username ?? 'ABC123'
+        }`}
       />
     </View>
   );

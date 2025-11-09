@@ -639,7 +639,8 @@
       "notifications": "Notificaciones",
       "subscription": "Suscripción",
       "contact": "Contacto",
-      "cancelSubscription": "Cancelar suscripción"
+      "cancelSubscription": "Cancelar suscripción",
+      "myReferrals": "Mis referidos"
     },
     "notifications": {
       "enabled": "Notificaciones activadas",

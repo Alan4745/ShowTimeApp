@@ -661,7 +661,8 @@
       "notifications": "Notifications",
       "subscription": "Subscription",
       "contact": "Contact",
-      "cancelSubscription": "Cancel subscription"
+      "cancelSubscription": "Cancel subscription",
+      "myReferrals": "My Referrals"
     },
     "notifications": {
       "enabled": "Notifications enabled",
