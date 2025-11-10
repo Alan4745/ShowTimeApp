@@ -2,6 +2,7 @@
 export const learnCategories = [
   {
     key: 'training',
+    id: '1',
     subcategories: [
       {
         key: 'strength',
@@ -23,6 +24,7 @@ export const learnCategories = [
   },
   {
     key: 'mindset',
+    id: '2',
     subcategories: [
       {
         key: 'motivation',
@@ -48,6 +50,7 @@ export const learnCategories = [
   },
   {
     key: 'nutrition',
+    id: '3',
     subcategories: [
       {
         key: 'carbohydrates',
@@ -73,6 +76,7 @@ export const learnCategories = [
   },
   {
     key: 'tactics',
+    id: '4',
     subcategories: [
       {
         key: 'finishing',
@@ -90,6 +94,7 @@ export const learnCategories = [
   },
   {
     key: 'gameAnalysis',
+    id: '5',
     subcategories: [
       {
         key: 'defenders',

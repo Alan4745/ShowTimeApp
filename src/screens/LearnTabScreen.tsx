@@ -1,15 +1,22 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {useTranslation} from 'react-i18next';
 import LearnContentCard from '../components/common/LearnContentCard';
 import LearnCategoryScreen from './LearnCategoryScreen';
 import CalendarScreen from './CalendarScreen';
-import { learnCategories } from '../data/learnCategories';
+import {learnCategories} from '../data/learnCategories';
+
+// Category type derived from the data file
+type Category = (typeof learnCategories)[number];
 
 export default function LearnTabScreen() {
-  const { t } = useTranslation();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
+  const {t} = useTranslation();
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null,
+  );
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(
+    null,
+  );
   const [calendarLesson, setCalendarLesson] = useState<{
     lessonId: string;
     title: string;
@@ -17,18 +24,21 @@ export default function LearnTabScreen() {
 
   const handleOpenCalendar = (lessonId: string) => {
     if (selectedCategory) {
-      setCalendarLesson({ lessonId, title: selectedCategory });
+      setCalendarLesson({
+        lessonId,
+        title: t(`learn.categories.${selectedCategory.key}`),
+      });
     }
   };
 
-  const handleCardPress = (categoryTitle: string, subcategoryKey: string) => {
-    setSelectedCategory(categoryTitle);
+  const handleCardPress = (category: Category, subcategoryKey: string) => {
+    setSelectedCategory(category);
     setSelectedSubcategory(subcategoryKey);
   };
 
   const handleBack = () => {
     setSelectedCategory(null);
-  }
+  };
 
   if (calendarLesson) {
     return (
@@ -42,24 +52,26 @@ export default function LearnTabScreen() {
 
   // Si hay categoría seleccionada, mostrar la pantalla correspondiente
   if (selectedCategory && selectedSubcategory) {
-    const categoryTitle = t(`learn.categories.${selectedCategory}`);
+    const categoryTitle = t(`learn.categories.${selectedCategory.key}`);
     return (
       <LearnCategoryScreen
         title={categoryTitle}
-        categoryKey={selectedCategory}
+        category={selectedCategory}
         subcategoryKey={selectedSubcategory}
         onBack={handleBack}
         onOpenCalendar={handleOpenCalendar}
       />
     );
-  }  
+  }
 
   // Pantalla principal (categorías)
   return (
     <ScrollView style={styles.container}>
       {learnCategories.map((category, categoryIndex) => (
         <View key={categoryIndex} style={styles.categorySection}>
-          <Text style={styles.categoryTitle}>{t(`learn.categories.${category.key}`)}</Text>
+          <Text style={styles.categoryTitle}>
+            {t(`learn.categories.${category.key}`)}
+          </Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {category.subcategories.map((sub, subIndex) => {
               const COLOR_A = '#252A30';
@@ -67,7 +79,9 @@ export default function LearnTabScreen() {
 
               const isEvenCategory = categoryIndex % 2 === 0;
 
-              const backgroundColor = (isEvenCategory ? subIndex % 2 === 0 : subIndex % 2 !== 0)
+              const backgroundColor = (
+                isEvenCategory ? subIndex % 2 === 0 : subIndex % 2 !== 0
+              )
                 ? COLOR_A
                 : COLOR_B;
 
@@ -78,14 +92,14 @@ export default function LearnTabScreen() {
                   image={sub.image}
                   description={t(`learn.subcategories.${sub.key}.description`)}
                   backgroundColor={backgroundColor}
-                  onPress={() => handleCardPress(category.key, sub.key)}
+                  onPress={() => handleCardPress(category, sub.key)}
                 />
               );
-            })}               
+            })}
           </ScrollView>
         </View>
       ))}
-    </ScrollView>  
+    </ScrollView>
   );
 }
 
@@ -99,9 +113,9 @@ const styles = StyleSheet.create({
   },
   categoryTitle: {
     fontFamily: 'AnonymousPro-Bold',
-    fontWeight: "700",
+    fontWeight: '700',
     fontSize: 22,
-    color: '#FFFFFF',    
+    color: '#FFFFFF',
     marginBottom: 12,
-  }, 
+  },
 });
