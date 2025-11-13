@@ -1,0 +1,13 @@
+{
+  "id": "user-001",
+  "username": "Pedro30",
+  "avatar": "https://randomuser.me/api/portraits/men/35.jpg",
+  "userType": "student" ,
+  "email": "Pedro30@gmail.com",
+  "phoneNumber": "+1 202 5550147",
+  "weight": 176,
+  "weightUnit": "lb",
+  "height": 5.90,
+  "heightUnit": "ft",
+  "position": "Forward"
+}

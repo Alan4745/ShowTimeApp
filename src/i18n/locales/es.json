@@ -1,0 +1,771 @@
+{
+  "common": {
+    "continue": "Continuar",
+    "start": "Comenzar",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "home": "Inicio",
+    "learn": "Aprender",
+    "coaches": "Entrenadores",
+    "yes": "Sí",
+    "no": "No",
+    "or": "o",
+    "more": "más",
+    "gymflow": "Gymflow",
+    "subscribe": "Suscribirse",
+    "by": "por ",
+    "delete": "Borrar",
+    "send": "Enviar",
+    "registrationFailed": "Registro Fallido",
+    "na": "No disponible"
+  },
+  "registration": {
+    "createAccount": "Crea tu cuenta",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "role": "Rol",
+    "coach": "Entrenador",
+    "student": "Estudiante",
+    "username": "Nombre de usuario",
+    "gender": "Género",
+    "male": "Masculino",
+    "female": "Femenino",
+    "other": "Otro",
+    "dateOfBirth": "Ingresa tu fecha de nacimiento",
+    "citizenship": "Ciudadanía",
+    "physicalData": "¿Cuál es tu estatura y peso actual?",
+    "physicalGoal": "Objetivo físico",
+    "gainMuscle": "Ganar músculo",
+    "loseFat": "Perder grasa",
+    "maintain": "Mantener",
+    "position": "Posición de juego",
+    "experienceLevel": "Nivel de experiencia",
+    "trainingFrequency": "Frecuencia de entrenamiento",
+    "contentLikes": "Contenido que te gusta",
+    "notifications": "Habilitar notificaciones",
+    "appDiscovery": "¿Cómo te enteraste de la aplicación?",
+    "planSelection": "Selección de plan",
+    "readyToPlay": "Estudiante de Showtime",
+    "readyToCoach": "Entrenador de Showtime",
+    "signUpGoogle": "Registrarse con Google",
+    "signUpApple": "Registrarse con Apple",
+    "comingSoon": "Próximamente",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión",
+    "termsAgreement": "Al registrarte, aceptas los Términos de Servicio y la Política de Privacidad, incluyendo el Uso de Cookies.",
+    "coachingRole": "Tu rol como entrenador",
+    "chooseRol": "Selecciona tu rol",
+    "uploadMedia": "Sube tu contenido multimedia",
+    "writeBio": "Write your bio",
+    "accomplishments": "Mis logros"
+  },
+  "planSelection": {
+    "trainSmarter": "ENTRENA MÁS INTELIGENTE,",
+    "goFurther": "VE MÁS LEJOS CON",
+    "showtimePro": "SHOWTIME PRO",
+    "startFreeTrial": "Comenzar mi prueba gratuita de 10 días",
+    "basicPlan": "Plan Básico | Pruébalo sin riesgo — cancela en cualquier momento",
+    "recommendedFor": "Recomendado para",
+    "playersReady": "jugadores listos para",
+    "takeNextStep": "dar el siguiente paso",
+    "voicesOfPlayers": "Voces de",
+    "realPlayers": "Jugadores Reales",
+    "bottomText": {
+      "line1": "Puedes cancelar en cualquier",
+      "line2": "momento. Sin penalidades, sin",
+      "line3": "costos extra."
+    },
+    "buttons": {
+      "startFreeTrial": "Prueba de 7 días gratis",
+      "premiumPlan": "Plan Premium"
+    },
+    "coaches": {
+      "title": "ENTRENADORES",
+      "feature1": "Planes de entrenamiento personalizados creados por entrenadores profesionales.",
+      "feature2": "Acceso directo por chat para preguntas, comentarios y seguimiento del progreso.",
+      "feature3": "Llamadas de seguimiento mensuales o revisiones en video para apoyar tu crecimiento."
+    },
+    "features": {
+      "accessToHome": "Acceso a inicio (feed)",
+      "accessToDarwinMaterial": "Acceso al material de Darwin (learn)",
+      "directMessagesDarwin": "Mensajes directos con Darwin",
+      "accessToGuestSpeakers": "Acceso a conferencistas invitados",
+      "accessToPost": "Acceso a la publicación de Darwin",
+      "ableToPost": "Puede publicar",
+      "accessToStudentsAndCoachesPost": "Acceso a publicaciones de estudiantes y entrenadores",
+      "accessToCoachMaterial": "Acceso al material de los entrenadores (learn)",
+      "eventsAccess": "Eventos de Showtime University (campamentos, reuniones, entrenamientos)",
+      "directMessageWithCoach": "Mensaje directo con entrenadores",
+      "oneOnOneCoachings": "Entrenamientos 1:1",
+      "videoCallsWithDarwin": "Videollamadas con Darwin",
+      "videoCallsWithCoaches": "Videollamadas con entrenadores",
+      "connectionWithAgent": "En caso de ser aplicable, conexión con agente o asesor deportivo"
+    },
+    "featuresTable": {
+      "featureHeader": "Característica / Sección",
+      "free": "Gratis",
+      "basic": "Básico",
+      "premium": "Premium",
+      "elite": "Élite"
+    },
+    "planPrices": {
+      "freePlan": "Gratis",
+      "basicPlan": "$49",
+      "premiumPlan": "$99",
+      "elitePlan": "$149"
+    },
+    "hero": {
+      "titleLine1": "ENTRENA MÁS INTELIGENTE,",
+      "titleLine2": "VE MÁS LEJOS CON",
+      "titleLine3": "SHOWTIME UNIVERSITY"
+    },
+    "plansTitle": {
+      "line1": "Empieza gratis, entrena",
+      "line2": "más inteligente, hazte profesional"
+    },
+    "recommended": {
+      "title1": "Hecho por profesionales",
+      "title2": "para jugadores",
+      "title3": "profesionales."
+    },
+    "testimonials": {
+      "titleLine1": "Testimonios",
+      "titleLine2": "",
+      "timeAgo": {
+        "monthsAgo_one": "Hace {{count}} mes",
+        "monthsAgo_other": "Hace {{count}} meses",
+        "weeksAgo_one": "Hace {{count}} semana",
+        "weeksAgo_other": "Hace {{count}} semanas"
+      },
+      "mateo": {
+        "text": "Solía dudar mucho de mí mismo. Las lecciones de estado mental en esta app me ayudaron a mantenerme enfocado, ganar confianza y volver a disfrutar del juego.  🧠⚽"
+      }
+    }
+  },
+  "trainingCategories": {
+    "roleTraining": "Entrenamiento por Posición",
+    "roleTrainingDesc": "Fuerza, movilidad y ejercicios adaptados a tu posición en el campo.",
+    "smartFuel": "Combustible Inteligente",
+    "smartFuelDesc": "Consejos de nutrición y recuperación para entrenar más duro y recuperarte más rápido.",
+    "mindsetFocus": "Enfoque Mental",
+    "mindsetFocusDesc": "Hábitos diarios y herramientas mentales para desarrollar resistencia, disciplina e impulso.",
+    "gameIQ": "IQ del Juego",
+    "gameIQDesc": "Análisis táctico y desglose de partidos para agudizar tu inteligencia futbolística."
+  },
+  "homeScreen": {
+    "trendingVideos": "Videos en tendencia",
+    "training": "Entrenamiento",
+    "mindset": "Mentalidad",
+    "nutrition": "Nutrición",
+    "lessons": "Lecciones"
+  },
+  "helperTexts": {
+    "helperText": "Nos ayuda a crear una experiencia de entrenamiento que se adapte mejor a ti.",
+    "passwordRequirement": "La contraseña debe tener al menos 8 caracteres",
+    "termsText": "Al crear una cuenta, aceptas nuestros Términos de Servicio y Política de Privacidad",
+    "coachHelperText": "Conectate con entrenadores que trabajan con profesionales todos los días.",
+    "uploadHelperText1": "Utiliza únicamente música sin derechos de autor",
+    "uploadHelperText2": "No subas contenido sexual explícito",
+    "uploadMedia": "Agrega un video corto en formato .mp4 o una imagen tuya entrenando, o comparte tu experiencia. Asegúrate de que tu contenido esté en formato horizontal (16:9)",
+    "writeBioHelperText": "Comparte tu experiencia y especialidad. Esto aparecerá en tu perfil (Máx. 400 caracteres).",
+    "accomplishmentsHelperText": "Máx. 80 caracteres — ejemplo: Creé un método de recuperación personalizado para atletas de élite."
+  },
+  "itHelpsUsCreateATrainingExperienceThatFitsYouBest": "Nos ayuda a crear una experiencia de entrenamiento que se adapte mejor a ti.",
+  "errors": {
+    "emailRequired": "El correo electrónico es requerido",
+    "invalidEmail": "Por favor ingresa un correo electrónico válido",
+    "emailPassewordRequired": "Por favor ingres correo y contraseña",
+    "invalidEmailOrPassword": "Correo o contraseña inválidos",
+    "passwordRequired": "La contraseña es requerida",
+    "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
+    "confirmPasswordRequired": "Por favor confirma tu contraseña",
+    "passwordsNotMatch": "Las contraseñas no coinciden",
+    "usernameRequired": "Por favor ingresa un nombre de usuario",
+    "usernameTooShort": "El nombre de usuario debe tener al menos 3 caracteres",
+    "usernameTaken": "Este nombre de usuario ya está en uso",
+    "selectGender": "Por favor selecciona tu género",
+    "selectDateOfBirth": "Por favor selecciona tu fecha de nacimiento completa",
+    "ageRestriction": "Debes tener al menos 13 años para registrarte",
+    "selectCitizenship": "Por favor selecciona tu ciudadanía",
+    "enterPhysicalData": "Por favor ingresa tanto el peso como la estatura",
+    "validWeight": "Por favor ingresa un peso válido (1-500 kg)",
+    "validHeight": "Por favor ingresa una estatura válida (1-300 cm)",
+    "selectPhysicalGoal": "Por favor selecciona tu objetivo físico",
+    "selectPosition": "Por favor selecciona tu posición de juego",
+    "selectExperienceLevel": "Por favor selecciona tu nivel de experiencia",
+    "selectTrainingFrequency": "Por favor selecciona tu frecuencia de entrenamiento",
+    "selectContentLikes": "Por favor selecciona al menos un tipo de contenido que te guste",
+    "selectAppDiscovery": "Por favor selecciona cómo te enteraste de la aplicación",
+    "fixErrors": "Por favor corrige los errores anteriores antes de continuar",
+    "coachNotFound": "Coach no encontrado",
+    "tryAgain": "Intenta de nuevo más tarde.",
+    "networkError": "Error de la red, verifica tu conexión",
+    "serverConnection": "No se pudo conectar con el servidor",
+    "galleryAccessError": "No se pudo acceder a la galería.",
+    "cameraAccessError": "No se pudo acceder a la cámara.",
+    "invalidImageType": "Solo se permiten imágenes JPEG, JPG o PNG",
+    "emailTaken": "Este correo ya está registrado",
+    "loginFailed": "Falló inicio de sesión",
+    "connectionTimedOut": "Tiempo de conexión agotado",
+    "sessionExpired": "Tu sesión ha expirado, Vuelve a iniciar sesión",
+    "unexpectedError": "Error inesperado"
+  },
+  "quickSelect": "Selección rápida (Demo):",
+  "positions": {
+    "goalkeeper": "Portero",
+    "centerBack": "Defensa central",
+    "fullback": "Lateral",
+    "midfielder": "Centrocampista central",
+    "winger": "Extremo",
+    "forward": "Delantero"
+  },
+  "experienceLevels": {
+    "highSchool": "Preparatoria",
+    "academy": "Academia",
+    "college": "Universidad",
+    "semiPro": "Semi-profesional",
+    "lowerDivisionPro": "Profesional división menor"
+  },
+  "trainingFrequencies": {
+    "sessions3to5": "3-5 sesiones por semana",
+    "sessions5to7": "5-7 sesiones por semana",
+    "sessionsPlus7": "+7 sesiones por semana"
+  },
+  "contentTypes": {
+    "trainingRoutines": "Rutinas de entrenamiento",
+    "trainingRoutinesDesc": "(fitness, ejercicios y planes estructurados)",
+    "nutritionRecipes": "Nutrición y recetas",
+    "nutritionRecipesDesc": "(alimentación saludable y consejos)",
+    "dailyMotivation": "Motivación diaria",
+    "dailyMotivationDesc": "(frases, desafíos, historias reales)",
+    "highlightVideos": "Videos destacados",
+    "highlightVideosDesc": "(grabaciones, jugadas, repeticiones)",
+    "coachInterviews": "Entrevistas con entrenadores",
+    "coachInterviewsDesc": "(audio y video)",
+    "recoveryTips": "Consejos de recuperación y bienestar físico",
+    "athleteStories": "Historias de vida de atletas y entrenadores",
+    "personalAchievements": "Logros personales y desafíos completados",
+    "communityQA": "Comunidad: Preguntas y respuestas e interacción entre pares",
+    "eventsGiveaways": "Eventos y sorteos",
+    "eventsGiveawaysDesc": "(actualizaciones, torneos, premios)"
+  },
+  "appDiscoverySources": {
+    "tiktok": "TikTok",
+    "youtube": "Youtube",
+    "instagramOrFacebook": "Instagram (o Facebook)",
+    "instagramAdvertisement": "Anuncio de Instagram",
+    "friendsFamilyCoach": "Amigos/Familia/Entrenador",
+    "appStoreSearch": "Búsqueda en App Store",
+    "otherSource": "Otro"
+  },
+  "summary": {
+    "weight": "Peso",
+    "height": "Estatura",
+    "playingPosition": "Posición de juego",
+    "allSet": "Todo listo"
+  },
+  "units": {
+    "years": "Años",
+    "lb": "lb",
+    "ft": "ft",
+    "kg": "kg",
+    "cm": "cm"
+  },
+  "months": {
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "Octubre",
+    "november": "Noviembre",
+    "december": "Diciembre"
+  },
+  "coachingRoles": {
+    "performanceCoach": "Entrenador de rendimiento",
+    "nutrition": "Nutrición",
+    "gameAnalysis": "Análisis de juego",
+    "drillTechnical": "Técnico y ejercicios",
+    "mindset": "Mentalidad ganadora"
+  },
+  "placeholders": {
+    "enterEmail": "Ingresa tu correo",
+    "createPassword": "Crea una contraseña",
+    "confirmYourPassword": "Confirma tu contraseña",
+    "chooseUsername": "Elige un nombre de usuario",
+    "selectCitizenshipPlaceholder": "Selecciona tu ciudadanía",
+    "selectPosition": "Selecciona tu posición",
+    "selectLevel": "Selecciona tu nivel",
+    "selectFrequency": "Selecciona frecuencia de entrenamiento",
+    "selectDiscoverySource": "Selecciona fuente de descubrimiento",
+    "searchCountries": "Buscar países...",
+    "writeMessage": "Escribe un mensaje",
+    "writeComment": "Escribe tu comentario...",
+    "selectRole": "Seleccionar",
+    "upload": "Subir",
+    "writeBioText": "texto",
+    "accomplishmentInput": "Escribe un logro aquí",
+    "deleteComment": "¿Seguro que quieres eliminar este comentario?",
+    "month": "Mes",
+    "day": "Día",
+    "year": "Año"
+  },
+  "modalTitles": {
+    "selectMonth": "Seleccionar mes",
+    "selectDay": "Seleccionar día",
+    "selectYear": "Seleccionar año",
+    "selectPositionTitle": "Seleccionar posición",
+    "selectExperienceLevelTitle": "Seleccionar nivel de experiencia",
+    "selectTrainingFrequencyTitle": "Seleccionar frecuencia de entrenamiento",
+    "selectCitizenshipTitle": "Seleccionar ciudadanía",
+    "selectCategory": "Selecionar una categoría",
+    "highlights": "Comparte tu video de highlights",
+    "highlightsDescription": "Esto no será público. Será para que Darwin vea el talento que tienes en el campo y potencialmente lo comparta con entrenadores, cazatalentos o agentes.",
+    "selectImage": "Seleccionar Foto",
+    "confirmDelete": "Confirmar Eliminación",
+    "buttonOptions": {
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "delete": "Eliminar",
+      "save": "Guardar",
+      "useCamera": "Usar cámara",
+      "chooseGalery": "Escoger de la galería"
+    }
+  },
+  "splash": {
+    "splashFooter": "© 2025 | Donde el talento encuentra oportunidad | USA"
+  },
+  "carousel": {
+    "text": {
+      "line1": "Entrena como profesional.",
+      "line2": "Juega como una estrella."
+    },
+    "buttons": {
+      "getStarted": "Empezar",
+      "accessAccount": "Iniciar sesión"
+    },
+    "footerText": "© 2025 | Showtime University | USA"
+  },
+  "subscription": {
+    "title": "Suscribete",
+    "plansScreen": {
+      "title": "Elige tu Plan",
+      "subtitle": "Todos los planes incluyen 7 días de prueba gratuita",
+      "loading": "Cargando planes...",
+      "error": "Error al cargar los planes",
+      "noAuth": "No hay token de autenticación",
+      "selectError": "Error al seleccionar el plan",
+      "footerCancel": "Cancela cuando quieras",
+      "footerNoCharge": "Sin cargos durante el periodo de prueba",
+      "footerFullAccess": "Acceso completo durante el trial"
+    },
+    "checkoutOptions": {
+      "title": "Elige tu opción",
+      "subtitle": "Has seleccionado:",
+      "plan": "Plan:",
+      "price": "Precio:",
+      "option1Title": "Comenzar con Free Trial",
+      "option1Subtitle": "RECOMENDADO",
+      "option1Description": "Prueba 7 días gratis, luego",
+      "option1TodayCharge": "Cargo hoy:",
+      "option1AfterTrial": "Después de 7 días:",
+      "option1Benefit1": "✓ Sin cargo por 7 días",
+      "option1Benefit2": "✓ Acceso completo a todas las funciones",
+      "option1Benefit3": "✓ Cancela en cualquier momento sin cargos",
+      "option1Button": "Iniciar Free Trial",
+      "option2Title": "Saltar prueba y obtener 10% de descuento",
+      "option2Description": "Paga hoy y ahorra 10%",
+      "option2OriginalPrice": "Precio original:",
+      "option2Discount": "Descuento (10%):",
+      "option2TotalToday": "Total a pagar HOY:",
+      "option2Benefit1": "✓ Acceso inmediato",
+      "option2Benefit2": "✓ Ahorra 10% en el primer pago",
+      "option2Benefit3": "✓ Descuento aplicado con código skip_trial_10off",
+      "option2Button": "Pagar y Ahorrar 10%",
+      "footer": "🔒 Pago seguro procesado por Stripe"
+    },
+    "checkout": {
+      "title": "Método de Pago",
+      "planSummary": "Resumen del Plan",
+      "discountBadge": "Descuento del",
+      "paymentInfo": "Información de Pago",
+      "cardChargedToday": "Tu tarjeta será cobrada hoy",
+      "cardChargedAfter": "Tu tarjeta será cobrada después de 7 días",
+      "cardDetails": "Detalles de la Tarjeta",
+      "cardPlaceholder": "4242 4242 4242 4242",
+      "chargeSummary": "Resumen del Cargo",
+      "originalPrice": "Precio original:",
+      "discount": "Descuento",
+      "chargeToday": "Cargo hoy:",
+      "afterDays": "Después de 7 días:",
+      "totalToday": "Total a pagar HOY:",
+      "freeToday": "$0.00",
+      "buttonPay": "Pagar",
+      "buttonStartTrial": "Iniciar Free Trial",
+      "footerSecure": "🔒 Pago seguro procesado por Stripe",
+      "errorCompleteCard": "Por favor completa los datos de tu tarjeta",
+      "errorPaymentMethod": "No se pudo crear el método de pago",
+      "processing": "Procesando..."
+    },
+    "success": {
+      "titlePaid": "¡Pago Exitoso!",
+      "titleTrial": "¡Free Trial Activado!",
+      "subtitlePaid": "Tu suscripción está activa",
+      "subtitleTrial": "Disfruta 7 días gratis de",
+      "detailsTitle": "Detalles de la Suscripción",
+      "plan": "Plan:",
+      "amount": "Monto:",
+      "discount": "Descuento:",
+      "charged": "Cobrado:",
+      "status": "Estado:",
+      "trialEnds": "Trial termina:",
+      "nextCharge": "Próximo cargo:",
+      "active": "Activa",
+      "trialing": "En prueba",
+      "benefitsTitle": "🎉 Ya tienes acceso a:",
+      "benefit1": "✓ Acceso completo a todo el contenido",
+      "benefit2": "✓ Mensajes directos con entrenadores",
+      "benefit3": "✓ Eventos y webinars exclusivos",
+      "benefit4": "✓ Soporte premium",
+      "buttonHome": "Ir al Inicio",
+      "footerNote": "Recibirás un email de confirmación con todos los detalles"
+    },
+    "error": {
+      "title": "Error en el Pago",
+      "subtitle": "No pudimos procesar tu pago",
+      "errorTitle": "Error:",
+      "suggestionsTitle": "Por favor intenta lo siguiente:",
+      "suggestion1": "• Verifica que los datos de tu tarjeta sean correctos",
+      "suggestion2": "• Asegúrate de tener fondos suficientes",
+      "suggestion3": "• Intenta con otro método de pago",
+      "suggestion4": "• Contacta a tu banco si el problema persiste",
+      "buttonRetry": "Intentar de Nuevo",
+      "buttonBack": "Ver Otros Planes",
+      "buttonHome": "Ir al Inicio",
+      "supportNote": "Si el problema persiste, contacta a nuestro equipo de soporte",
+      "cardError": "Hubo un problema con tu tarjeta. Por favor verifica los datos e intenta nuevamente.",
+      "insufficientError": "Tu tarjeta no tiene fondos suficientes.",
+      "declinedError": "Tu tarjeta fue rechazada. Por favor contacta a tu banco."
+    },
+    "planCard": {
+      "popular": "MÁS POPULAR",
+      "startTrial": "Iniciar Free Trial de 7 días",
+      "then": "Después:"
+    },
+    "trialBanner": {
+      "title": "Estás en Free Trial",
+      "daysRemaining": "día restante",
+      "daysRemainingPlural": "días restantes"
+    },
+    "cancelAtPeriodEnd": "Programada para cancelar al final del periodo",
+    "reactivatedTitle": "Suscripción reactivada",
+    "reactivatedError": "No se pudo reactivar la suscripción",
+    "actions": {
+      "reactivate": "Reactivar suscripción"
+    },
+    "reactivating": "Reactivando...",
+    "subscriptionInfo": {
+      "price": "Precio:",
+      "paymentMethod": "Método de pago:",
+      "cancelAt": "Se cancela el:",
+      "nextRenewal": "Próxima renovación:",
+      "warningCancel": "⚠️ Tu suscripción se cancelará el",
+      "buttonCancel": "Cancelar Suscripción",
+      "statusTrialing": "En prueba",
+      "statusActive": "Activa",
+      "statusPastDue": "Pago pendiente",
+      "statusCanceled": "Cancelada",
+      "statusUnpaid": "Sin pagar"
+    },
+    "basic": {
+      "title": "Básico",
+      "description": "Accede a las funciones clave del programa y conoce desde dentro la vida de un atleta profesional.",
+      "features": [
+        "Acceso a Home (Feed) contenido de Darwin.",
+        "Acceso al material de Darwin (Sección Learn).",
+        "Mensajes directos con con Darwin.",
+        "Acceso a conferencistas invitados."
+      ],
+      "button": "$49/Mensual"
+    },
+    "premium": {
+      "title": "Premium",
+      "description": "Expande tu red y recibe retroalimentación valiosa interactuando con miembros y entrenadores en el feed de Showtime.\n\nPlanifica tus entrenamientos guardando las publicaciones de los entrenadores directamente en el feed de Showtime.\n",
+      "features": [
+        "Acceso a Home (Feed) contenido de Darwin.",
+        "Acceso a Home (Feed) contenido de Darwin, entrenadores y estudiantes.",
+        "Publicar en Home",
+        "Acceso al material de Darwin (Sección Learn).",
+        "Mensajes directos con Darwin.",
+        "Acceso a eventos presenciales exclusivos de Showtime University (campamentos, reuniones, entrenamientos).",
+        "Acceso a conferencistas invitados."
+      ],
+      "button": "$99/Mensual"
+    },
+    "elite": {
+      "title": "Élite",
+      "description": "Paquete completo:",
+      "features": [
+        "Acceso a Home (Feed) contenido de Darwin.",
+        "Acceso a Home (Feed) contenido de Darwin, entrenadores y estudiantes.",
+        "Publicar en Home",
+        "Acceso al material de Darwin (Sección Learn).",
+        "Mensajes directos con Darwin.",
+        "Mensajes directos con entrenadores",
+        "accede a orientación personalizada 1:1",
+        "Videollamadas con Darwin",
+        "Videollamadas con entrenadores",
+        "Acceso a eventos presenciales exclusivos de Showtime University (campamentos, reuniones, entrenamientos).",
+        "Acceso a conferencistas invitados.",
+        "En caso de ser aplicable, conexión con agente o asesor deportivo."
+      ],
+      "button": "$149/Mensual"
+    }
+  },
+  "publishPost": {
+    "buttons": {
+      "post": "Publicar",
+      "update": "Actualizar",
+      "video": "Video.mp4",
+      "image": "Imagen.jpg",
+      "text": "Texto.pdf"
+    },
+    "placeholders": {
+      "textInput": "¿Qué hay de nuevo?",
+      "category": "Categoría"
+    },
+    "categories": {
+      "accomplishments": "Logros",
+      "announcements": "Anuncios",
+      "dailyMotivation": "Motivación diaria",
+      "highlightTape": "Historias destacadas",
+      "introduceYourself": "Presentate",
+      "lifeOfAProfessional": "Vida del profesional",
+      "nutrition": "Nutrición",
+      "training": "Entrenamiento",
+      "mindset": "Mentalidad",
+      "tactics": "Tacticas",
+      "gameAnalysis": "Análisis del juego",
+      "Strength": "Fuerza",
+      "power": "Potencia",
+      "4WeekProgram": "Programa de 4 semanas",
+      "exerciseLibrary": "Libreria de ejercicios de Darwin",
+      "anxiety": "Ansiedad",
+      "growthMindset": "Mentalidad de crecimiento",
+      "conflictResolution": "Resolución de conflictos",
+      "teamDynamics": "Dinamica del equipo",
+      "carbohydrates": "Carbohidratos",
+      "protein": "Proteinas",
+      "fat": "Grasa",
+      "supplementsHydration": "Suplementos e Hidratación",
+      "nutritionProgram": "Programa de 4 Semanas",
+      "finishing": "Rematar",
+      "technical": "Técnico",
+      "passingDribbling": "Pasar y Driblar",
+      "defenders": "Defensas",
+      "forwards": "Delanteros",
+      "generalAnalysis": "Análisis General",
+      "interactive": "Interactivo",
+      "midfielders": "Mediocampistas",
+      "questions": "Preguntas",
+      "lifeAsAProfessional": "Vida como un Profesional"
+    },
+    "alertPost": {
+      "title": "¿Enviar el Post?",
+      "message": "¿Estás seguro que quieres enviar el post?"
+    },
+    "removeAlert": {
+      "title": "¿Remover Archivo?",
+      "message": "¿Quieres remover este archivo del post?",
+      "optionCancel": "Cancelar",
+      "optionRemove": "Remover"
+    },
+    "alerts": {
+      "emptyPost": "Parece que tú post está vacío. Intenta añadir algo!",
+      "pdfError": "Un error inesperado ocurrió al seleccionar el PDF. Por favor intenta de nuevo.",
+      "thumbnailError": "Un error ocurrió mientras se generaba el thumbnail."
+    },
+    "emptyState": "No has añadido archivos todavía",
+    "loading": "cargando ...",
+    "sending": "enviando ..."
+  },
+  "coachDetails": {
+    "myAccomplishments": "Mis Logros",
+    "noAccomplishments": "No se han ingresado logros.",
+    "lessons": "Lecciones",
+    "noLessons": "No se han ingresado lecciones.",
+    "testimonials": "Testimonios",
+    "noTestimonials": "No se han ingresado testimonios.",
+    "letsChat": "Hablemos"
+  },
+  "account": {
+    "titles": {
+      "account": "Cuenta",
+      "coachList": "Lista de Entrenadores",
+      "studentList": "Lista de Estudiantes",
+      "selectAFile": "SELECCIONA UN ARCHIVO",
+      "noSavedLessons": "No hay lecciones guardadas",
+      "editProfile": "Editar perfil",
+      "uploadContent": "Subir Contenido",
+      "noThumbnail": "No hay archivo seleccionado",
+      "fileFormat": "Formato del archivo",
+      "category": "Categoría",
+      "selectMainCategory": "Selecciona la Categoría",
+      "selectSubcategory": "Selecciona la Subcategoría"
+    },
+    "buttons": {
+      "coach": "Entrenador",
+      "save": "Guardar",
+      "settings": "Ajustes",
+      "send": "Enviar",
+      "students": "Estudiantes",
+      "upload": "Cargar",
+      "highlight": "DESTACAR",
+      "shareTheApp": "COMPARTIR LA APP",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar",
+      "openSettings": "Abrir ajustes",
+      "signOut": "Cerrar Sesión",
+      "uploadContent": "Subir contenido",
+      "comingSoon": "Próximamente"
+    },
+    "content": {
+      "notifications": "Notificaciones",
+      "subscription": "Suscripción",
+      "contact": "Contacto",
+      "cancelSubscription": "Cancelar suscripción",
+      "myReferrals": "Mis referidos"
+    },
+    "notifications": {
+      "enabled": "Notificaciones activadas",
+      "blockedTitle": "Permisos de notificaciones bloqueados",
+      "blockedMessage": "Por favor activa las notificaciones desde la configuración.",
+      "denied": "Permisos de notificaciones denegados",
+      "error": "No se pudo solicitar permisos de notificación"
+    },
+    "subscriptions": {
+      "cancelTitle": "Cancelar suscripción",
+      "cancelConfirm": "¿Deseas cancelar tu suscripción?",
+      "cancelled": "Suscripción cancelada",
+      "cancelError": "No se pudo cancelar la suscripción. Inténtalo de nuevo más tarde."
+    },
+    "placeholders": {
+      "inputTitle": "Título del contenido",
+      "inputDescription": "Descripción del contenido",
+      "mainCategory": "Categoría",
+      "subcategory": "Subcategoría"
+    }
+  },
+  "learn": {
+    "filter": "Filtrar",
+    "noLessons": "Ninguna lección coincide con tus filtros",
+    "calendarText": "Guarda tu día de entrenamiento",
+    "next": "Siguiente",
+    "categories": {
+      "training": "Entrenamiento",
+      "mindset": "Estado Mental",
+      "nutrition": "Nutrición",
+      "tactics": "Táctica",
+      "gameAnalysis": "Análisis de Partidos"
+    },
+    "subcategories": {
+      "strength": {
+        "title": "Fuerza",
+        "description": "Desarrolla músculo y aumenta la resistencia."
+      },
+      "power": {
+        "title": "Potencia",
+        "description": "Desarrolla la explosividad y la velocidad atlética."
+      },
+      "4weekProgram": {
+        "title": "Programa de 4 semanas",
+        "description": "Rutinas favoritas seleccionadas por Darwin."
+      },
+      "darwinsExerciseLibrary": {
+        "title": "Libreria de ejercicios de Darwin",
+        "description": "Ejercicios favoritos de Darwin."
+      },
+      "motivation": {
+        "title": "Motivación",
+        "description": "Impulsa tu motivación y sigue avanzando hacia tu objetivo."
+      },
+      "selfConfidence": {
+        "title": "Autoconfianza",
+        "description": "Desarrolla confianza en ti mismo para rendir al máximo."
+      },
+      "mindfulness": {
+        "title": "Atención plena",
+        "description": "Mantente presente y maneja el estrés con una mente clara."
+      },
+      "focus": {
+        "title": "Concentración",
+        "description": "Agudiza tu atención para mejorar el rendimiento en el campo."
+      },
+      "visualization": {
+        "title": "Visualización",
+        "description": "Visualiza el éxito y preparate mentalmente para cualquier desafío."
+      },
+      "carbohydrates": {
+        "title": "Carbohidratos",
+        "description": "El combustible que necesitas para rendir al máximo."
+      },
+      "protein": {
+        "title": "Proteina",
+        "description": "Desarrolla y repara la fuerza muscular."
+      },
+      "fat": {
+        "title": "Grasa",
+        "description": "Aumenta tu resistencia con grasas saludables."
+      },
+      "supplementsHydration": {
+        "title": "Suplementos  & Hidratación",
+        "description": "Mantente hidratado y mejora tu rendimiento de forma inteligente."
+      },
+      "4WeekPlan": {
+        "title": "Programa de 4 semanas",
+        "description": "Plan estructurado para mejores resultados."
+      },
+      "finishing": {
+        "title": "Definición",
+        "description": "Mejora tu habilidad para anotar con confianza."
+      },
+      "technical": {
+        "title": "Técnico",
+        "description": "Perfecciona las habilidades que mejoran tu desempeño global."
+      },
+      "passingDribbling": {
+        "title": "Pasar & Driblar",
+        "description": "Desarrolla el control para mover el balón eficazmente y superar a los oponentes."
+      },
+      "defenders": {
+        "title": "Defensas",
+        "description": "Comprende las estrategias defensivas y el posicionamiento para detener los ataques."
+      },
+      "forwards": {
+        "title": "Delanteros",
+        "description": "Aprende cómo los delanteros crean oportunidades y finalizan las jugadas."
+      },
+      "generalAnalysis": {
+        "title": "Análisis General",
+        "description": "Analiza partidos completos para ver el panorama general."
+      },
+      "interactive": {
+        "title": "Interactivo",
+        "description": "Involúcrate en sesiones dinámicas para evaluar tu inteligencia táctica."
+      },
+      "midfielders": {
+        "title": "Mediocampistas",
+        "description": "Controla el ritmo y conecta al equipo."
+      }
+    }
+  },
+  "comments": {
+    "noComments": "Aún no hay comentarios"
+  }
+}

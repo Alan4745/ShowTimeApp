@@ -1,0 +1,103 @@
+[
+  {
+    "id": "1",
+    "title": "Pro player",
+    "name": "Carlos López",
+    "avatar": "https://randomuser.me/api/portraits/men/70.jpg",    
+    "tag": "Player",
+    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.",
+    "imageUrl": "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "accomplishments": [
+      "Won national championship in 2020",
+      "MVP of the year 2019",
+      "10+ years of professional experience"
+    ],
+    "lessons": [
+      {
+        "id": "l1",
+        "title": "Strength Training Basics",
+        "author": "Carlos López",
+        "subcategory": "Gymflow",
+        "format": "Image",
+        "description": "A full-body approach to basic strength training techniques. This program focuses on building foundational movement patterns, improving core stability, and developing muscle control through compound exercises. Ideal for beginners looking to establish proper form before advancing to heavier loads or more complex routines.",
+        "mediaUrl": "https://images.pexels.com/photos/416778/pexels-photo-416778.jpeg?auto=compress&cs=tinysrgb&w=600"
+      },
+      {
+        "id": "l2",
+        "title": "Nutrition and Performance",
+        "author": "Carlos López",
+        "subcategory": "Recovery",
+        "format": "Image",
+        "description": "Learn how to eat and recover like a pro athlete.",
+        "mediaUrl": "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600"
+      }
+    ],
+    "testimonials": [
+      {
+        "id": "t1",
+        "avatar": "https://randomuser.me/api/portraits/women/65.jpg",
+        "username": "Ana Pérez",
+        "rating": "5",
+        "message": "I used to doubt myself a lot. The mindset lessons in this app helped me stay focused, build confidence, and enjoy the game again 🧠⚽",
+        "timeSincePost": "2 weeks ago"
+      },
+      {
+        "id": "t2",
+        "avatar": "https://randomuser.me/api/portraits/men/75.jpg",
+        "username": "Luis Mendoza",
+        "rating": "4.5",
+        "message": "Great sessions, very detailed and encouraging.",
+        "timeSincePost": "1 month ago"
+      }
+    ] 
+  },
+  {
+    "id": "2",
+    "title": "Coach",
+    "name": "Miguel García",
+    "avatar": "https://randomuser.me/api/portraits/men/71.jpg",
+    "tag": "Training",
+    "description": "Professional football coach with 10+ years of experience in developing young talent and tactical analysis.",
+    "imageUrl": "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "accomplishments": [
+      "Trained over 300 athletes",
+      "Head coach at National League 2018-2022"
+    ],
+    "lessons": [
+      {
+        "id": "l1",
+        "title": "Strength Training Basics",
+        "description": "A full-body approach to basic strength training techniques.",
+        "subcategory": "Gymflow",
+        "format": "Image",
+        "mediaUrl": "https://images.pexels.com/photos/416778/pexels-photo-416778.jpeg?auto=compress&cs=tinysrgb&w=600"
+      },
+      {
+        "id": "l2",
+        "title": "Nutrition and Performance",
+        "description": "Learn how to eat and recover like a pro athlete.",
+        "subcategory": "Recovery",
+        "format": "Image",
+        "mediaUrl": "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600"
+      }
+    ],
+    "testimonials": [
+      {
+        "id": "t1",
+        "avatar": "https://randomuser.me/api/portraits/women/65.jpg",
+        "username": "Ana Pérez",
+        "rating": "5",
+        "message": "I used to doubt myself a lot. The mindset lessons in this app helped me stay focused, build confidence, and enjoy the game again 🧠⚽",
+        "timeSincePost": "2 weeks ago"
+      },
+      {
+        "id": "t2",
+        "avatar": "https://randomuser.me/api/portraits/men/75.jpg",
+        "username": "Luis Mendoza",
+        "rating": "4.5",
+        "message": "Great sessions, very detailed and encouraging.",
+        "timeSincePost": "1 month ago"
+      }
+    ]  
+  }
+]

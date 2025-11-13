@@ -1,0 +1,137 @@
+import React from 'react';
+import {
+  FlatList,
+  View,
+  Image,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
+import {Play} from 'lucide-react-native';
+
+const screenWidth = Dimensions.get('window').width - 20;
+const numColumnsMultiple = 2; // columnas cuando hay varios items
+const paddingBetween = 5;
+
+export default function MediaGrid({media, onMediaPress}) {
+  if (!media || media.length === 0) return null;
+
+  const isSingle = media.length === 1;
+  const numColumns = isSingle ? 1 : numColumnsMultiple;
+
+  const itemSize = isSingle
+    ? screenWidth - paddingBetween * 2
+    : (screenWidth - paddingBetween * (numColumns + 1)) / numColumns;
+
+  const renderItem = ({item, index}) => {
+    const handlePress = e => {
+      if (e) {
+        e.stopPropagation?.();
+      }
+      onMediaPress(item);
+    };
+    //console.log('MediaGrid renderItem:', { thumbnail: item.thumbnail, uri: item.uri });
+    if (item.mediaType === 'image') {
+      return (
+        <TouchableOpacity
+          key={item.id || index}
+          onPress={handlePress}
+          style={[styles.itemContainer, {width: itemSize, height: itemSize}]}>
+          <Image
+            source={{uri: item.uri}}
+            style={styles.media}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
+      );
+    }
+
+    if (item.mediaType === 'video') {
+      return (
+        <View
+          style={[styles.itemContainer, {width: itemSize, height: itemSize}]}>
+          {/* Aquí mostramos la miniatura en lugar del video */}
+          <Image
+            source={
+              item.thumbnailUrl
+                ? {uri: item.thumbnailUrl}
+                : require('../../../assets/img/audioPlaceholder.png')
+            }
+            style={styles.media}
+            resizeMode="cover"
+          />
+
+          {/* Ícono de reproducción */}
+          <View style={styles.playIconWrapper}>
+            <Play size={32} color="#FFF" />
+          </View>
+
+          {/* Capa táctil que cubre todo */}
+          <TouchableOpacity
+            style={StyleSheet.absoluteFill}
+            onPress={handlePress}
+            activeOpacity={0.9}
+          />
+        </View>
+      );
+    }
+
+    if (item.mediaType === 'pdf') {
+      return (
+        <TouchableOpacity
+          key={item.id || index}
+          onPress={handlePress}
+          style={[styles.itemContainer, {width: itemSize, height: itemSize}]}
+          activeOpacity={0.8}>
+          <Image
+            source={
+              item.thumbnailUrl
+                ? {uri: item.thumbnailUrl}
+                : require('../../../assets/img/pdfIcon.png')
+            }
+            style={styles.media}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <FlatList
+      data={media}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => item.id || index.toString()}
+      numColumns={numColumns}
+      contentContainerStyle={styles.container}
+      key={numColumns} // importante para que se re-renderice si cambia numColumns
+    />
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: paddingBetween,
+    alignItems: 'center',
+  },
+  itemContainer: {
+    margin: paddingBetween / 2,
+    borderRadius: 8,
+    overflow: 'hidden',
+    backgroundColor: '#222',
+    position: 'relative',
+  },
+  media: {
+    width: '100%',
+    height: '100%',
+  },
+  playIconWrapper: {
+    position: 'absolute',
+    top: '40%',
+    left: '40%',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    padding: 10,
+    borderRadius: 20,
+  },
+});

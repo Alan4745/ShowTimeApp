@@ -1,0 +1,793 @@
+{
+  "common": {
+    "continue": "Continue",
+    "start": "Start",
+    "close": "Close",
+    "back": "Back",
+    "home": "Home",
+    "learn": "Learn",
+    "coaches": "Coaches",
+    "yes": "Yes",
+    "no": "No",
+    "or": "or",
+    "more": "more",
+    "gymflow": "Gymflow",
+    "subscribe": "Subscribe",
+    "by": "by ",
+    "delete": "Delete",
+    "send": "Send",
+    "registrationFailed": "Registration Failed",
+    "na": "Not available"
+  },
+  "registration": {
+    "createAccount": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "role": "Role",
+    "coach": "Coach",
+    "student": "Student",
+    "username": "Username",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "dateOfBirth": "Date of birth",
+    "citizenship": "Citizenship",
+    "physicalData": "What is your current height and weight?",
+    "physicalGoal": "Physical goal",
+    "gainMuscle": "Gain muscle",
+    "loseFat": "Lose fat",
+    "maintain": "Maintain",
+    "position": "Position",
+    "experienceLevel": "Experience",
+    "trainingFrequency": "Training frequency",
+    "contentLikes": "Content You Like",
+    "notifications": "Enable notifications",
+    "appDiscovery": "How did you find out\nabout the app?",
+    "planSelection": "Plan Selection",
+    "readyToPlay": "Showtime Student",
+    "readyToCoach": "Showtime Coach",
+    "signUpGoogle": "Sign up with Google",
+    "signUpApple": "Sign up with Apple",
+    "comingSoon": "Coming soon",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "termsAgreement": "By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use.",
+    "coachingRole": "Your coaching role",
+    "chooseRol": "Choose your role",
+    "uploadMedia": "Upload your Media",
+    "writeBio": "Write your bio",
+    "accomplishments": "My accomplishments"
+  },
+  "planSelection": {
+    "trainSmarter": "TRAIN SMARTER,",
+    "goFurther": "GO FURTHER WITH",
+    "showtimePro": "SHOWTIME PRO",
+    "startFreeTrial": "Start My 10-Day Free Trial",
+    "basicPlan": "Basic Plan | Try it risk-free — cancel anytime",
+    "recommendedFor": "Recommended for",
+    "playersReady": "players ready to",
+    "takeNextStep": "take the next step",
+    "voicesOfPlayers": "Voices of",
+    "realPlayers": "Real Players",
+    "bottomText": {
+      "line1": "You're free to cancel",
+      "line2": "whenever. No penalties, no",
+      "line3": "extra costs."
+    },
+    "buttons": {
+      "startFreeTrial": "Free 7 day trial",
+      "premiumPlan": "Premium Plan"
+    },
+    "coaches": {
+      "title": "COACHES",
+      "feature1": "Personalized training plans created by real pro-level coaches.",
+      "feature2": "Direct chat access for questions, feedback, and progress tracking",
+      "feature3": "Monthly follow-up calls or video reviews to support your growth"
+    },
+    "features": {
+      "accessToHome": "Access to home (feed)",
+      "accessToDarwinMaterial": "Access to Darwin's material (Learn)",
+      "directMessagesDarwin": "Direct messagges with Darwin",
+      "accessToGuestSpeakers": "Access to guest speakers",
+      "accessToPost": "Access to Darwin's post",
+      "ableToPost": "Able to post",
+      "accessToStudentsAndCoachesPost": "Access to students and coaches post",
+      "accessToCoachMaterial": "Access to Coaches material (Learn)",
+      "eventsAccess": "Showtime University events (camps, meetings, trainings)",
+      "directMessageWithCoach": "Direct message with coaches",
+      "oneOnOneCoachings": "1:1 coachings",
+      "videoCallsWithDarwin": "Videocalls with Darwin",
+      "videoCallsWithCoaches": "Videocalls with coaches",
+      "connectionWithAgent": "If applicable, connection with agent/sport consultant"
+    },
+    "featuresTable": {
+      "featureHeader": "Feature / Section",
+      "free": "Free",
+      "basic": "Basic",
+      "premium": "Premium",
+      "elite": "Elite"
+    },
+    "planPrices": {
+      "freePlan": "Free",
+      "basicPlan": "$49",
+      "premiumPlan": "$99",
+      "elitePlan": "$149"
+    },
+    "hero": {
+      "titleLine1": "TRAIN SMARTER,",
+      "titleLine2": "GO FURTHER WITH",
+      "titleLine3": "SHOWTIME UNIVERSITY"
+    },
+    "plansTitle": {
+      "line1": "Start free, train",
+      "line2": "smarter, go pro"
+    },
+    "recommended": {
+      "title1": "Made by professionals",
+      "title2": "for professional",
+      "title3": "players."
+    },
+    "testimonials": {
+      "titleLine1": "Testimonials",
+      "titleLine2": "",
+      "timeAgo": {
+        "monthsAgo_one": "{{count}} month ago",
+        "monthsAgo_other": "{{count}} months ago",
+        "weeksAgo_one": "{{count}} week ago",
+        "weeksAgo_other": "{{count}} weeks ago"
+      },
+      "mateo": {
+        "text": "I used to doubt myself a lot. The mindset lessons in this app helped me stay focused, build confidence, and enjoy the game again 🧠⚽"
+      }
+    },
+    "texts": {
+      "basicPlanDescription": "Just a preview of what we offer",
+      "coachesSubtext": "Connect with coaches who work with professionals everday."
+    },
+    "trainingCategories": {
+      "roleTraining": {
+        "title": "Role Train",
+        "description": "Strenght, mobility and drills tailored to your position on the field"
+      },
+      "smartFuel": {
+        "title": "Fuel",
+        "description": "Nutrition and recovery tips to help you train harder and bounce back faster"
+      },
+      "mindsetFocus": {
+        "title": "Focus",
+        "description": "Daily habits and mental tools to build resilience, discipline and drive"
+      },
+      "gameIQ": {
+        "title": "Game IQ",
+        "description": "Tactical analysis and match breakdowns to sharpen your football intelligence"
+      }
+    }
+  },
+  "trainingCategories": {
+    "roleTraining": "Role Training",
+    "roleTrainingDesc": "Strength, mobility, and drills tailored to your position on the field.",
+    "smartFuel": "Smart Fuel",
+    "smartFuelDesc": "Nutrition and recovery tips to train harder and bounce back faster.",
+    "mindsetFocus": "Mindset Focus",
+    "mindsetFocusDesc": "Daily habits and mental tools to build resilience, discipline, and drive.",
+    "gameIQ": "Game IQ",
+    "gameIQDesc": "Tactical analysis and match breakdowns to sharpen your football intelligence."
+  },
+  "homeScreen": {
+    "trendingVideos": "Trending Videos",
+    "training": "Training",
+    "mindset": "Mindset",
+    "nutrition": "Nutrition",
+    "lessons": "Lessons"
+  },
+  "helperTexts": {
+    "helperText": "It helps us create a training experience that fits you best.",
+    "passwordRequirement": "Password must be at least 8 characters long",
+    "termsText": "By creating an account, you agree to our Terms of Service and Privacy Policy",
+    "coachHelperText": "Connect with coaches who work with professionals everyday.",
+    "uploadHelperText1": "Use only copyright-free music",
+    "uploadHelperText2": "Do not upload explicit sexual content",
+    "uploadMedia": "Add a short .mp4 video or image of yourself coaching or share your experience. Make sure your media is in landscape format (16:9).",
+    "writeBioHelperText": "Share your experience and specialty. This will appear on your profile (Max. 400 characters)",
+    "accomplishmentsHelperText": "Max. 80 characters — example:Created personalized recovery method for elite players"
+  },
+  "itHelpsUsCreateATrainingExperienceThatFitsYouBest": "It helps us create a training experience that fits you best.",
+  "errors": {
+    "emailRequired": "Email is required",
+    "invalidEmail": "Please enter a valid email address",
+    "emailPassewordRequired": "Please enter email and password",
+    "invalidEmailOrPassword": "Invalid email or password",
+    "passwordRequired": "Password is required",
+    "passwordTooShort": "Password must be at least 8 characters long",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordsNotMatch": "Passwords do not match",
+    "usernameRequired": "Please enter a username",
+    "usernameTooShort": "Username must be at least 3 characters long",
+    "usernameTaken": "The username is already in use",
+    "selectGender": "Please select your gender",
+    "selectDateOfBirth": "Please select your complete date of birth",
+    "ageRestriction": "You must be at least 13 years old to register",
+    "selectCitizenship": "Please select your citizenship",
+    "enterPhysicalData": "Please enter both weight and height",
+    "validWeight": "Please enter a valid weight (1-500 kg)",
+    "validHeight": "Please enter a valid height (1-300 cm)",
+    "selectPhysicalGoal": "Please select your physical goal",
+    "selectPosition": "Select",
+    "selectExperienceLevel": "Select",
+    "selectTrainingFrequency": "Please select your training frequency",
+    "selectContentLikes": "Please select at least one content type you like",
+    "selectAppDiscovery": "Please select how you found out about the app",
+    "fixErrors": "Please fix the errors above before continuing",
+    "coachNotFound": "Coach not found",
+    "tryAgain": "Try again later",
+    "networkError": "Networt Error, check your connection",
+    "serverConnection": "Couldn't connect to the server",
+    "galleryAccessError": "Unable to access the image galery",
+    "cameraAccessError": "Unable to access the camera",
+    "invalidImageType": "Only JPEG, JPG or PNG images are allowed",
+    "emailTaken": "This email is already in use",
+    "loginFailed": "Login Failed",
+    "connectionTimedOut": "Connection timed out. Please try again",
+    "sessionExpired": "Your session has expired. Please log in again",
+    "unexpectedError": "Unexpected error"
+  },
+  "quickSelect": "Quick Select (Demo):",
+  "positions": {
+    "goalkeeper": "Goalkeeper",
+    "centerBack": "Center Back",
+    "fullback": "Fullback",
+    "midfielder": "Center Midfielder",
+    "winger": "Winger",
+    "forward": "Forward"
+  },
+  "experienceLevels": {
+    "highSchool": "High School",
+    "academy": "Academy",
+    "college": "College",
+    "semiPro": "Semi-Pro",
+    "lowerDivisionPro": "Lower division Pro"
+  },
+  "trainingFrequencies": {
+    "sessions3to5": "3-5 sessions per week",
+    "sessions5to7": "5-7 sessions per week",
+    "sessionsPlus7": "+7 sessions per week"
+  },
+  "contentTypes": {
+    "trainingRoutines": "Training routines",
+    "trainingRoutinesDesc": "(fitness, drills, and structured plans)",
+    "nutritionRecipes": "Nutrition & recipes",
+    "nutritionRecipesDesc": "(healthy eating and tips)",
+    "dailyMotivation": "Daily motivation",
+    "dailyMotivationDesc": "(quotes, challenges, real stories)",
+    "highlightVideos": "Highlight videos",
+    "highlightVideosDesc": "(tapes, plays, replays)",
+    "coachInterviews": "Coach interviews",
+    "coachInterviewsDesc": "(audio and video)",
+    "recoveryTips": "Recovery tips & physical wellness",
+    "athleteStories": "Athlete & coach life stories",
+    "personalAchievements": "Personal achievements & completed challenges",
+    "communityQA": "Community: Q&A and peer interaction",
+    "eventsGiveaways": "Events & giveaways",
+    "eventsGiveawaysDesc": "(updates, tournaments, prizes)"
+  },
+  "appDiscoverySources": {
+    "tiktok": "TikTok",
+    "youtube": "Youtube",
+    "instagramOrFacebook": "Instagram (or Facebook)",
+    "instagramAdvertisement": "Instagram Advertisement",
+    "friendsFamilyCoach": "Friends/Family/Coach",
+    "appStoreSearch": "App Store Search",
+    "otherSource": "Other"
+  },
+  "summary": {
+    "weight": "Weight",
+    "height": "Height",
+    "playingPosition": "Playing Position",
+    "allSet": "All set"
+  },
+  "units": {
+    "lb": "lb",
+    "ft": "ft",
+    "kg": "kg",
+    "cm": "cm",
+    "years": "Years"
+  },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+  "coachingRoles": {
+    "performanceCoach": "Performance Coach",
+    "nutrition": "Nutrition",
+    "gameAnalysis": "Game analysis",
+    "drillTechnical": "Drill / Technical",
+    "mindset": "Mindset"
+  },
+  "placeholders": {
+    "enterEmail": "Enter your email",
+    "createPassword": "Create a password",
+    "confirmYourPassword": "Confirm your password",
+    "chooseUsername": "Create username",
+    "selectCitizenshipPlaceholder": "Select",
+    "selectPosition": "Select your position",
+    "selectLevel": "Select your level",
+    "selectFrequency": "Select",
+    "selectDiscoverySource": "Select",
+    "searchCountries": "Search countries...",
+    "writeMessage": "Write a message",
+    "writeComment": "Write your comment...",
+    "selectRole": "Select",
+    "upload": "Upload",
+    "writeBioText": "text",
+    "accomplishmentInput": "Write accomplishment here",
+    "deleteComment": "Are you sure you want to delete this comment?",
+    "month": "Month",
+    "day": "Day",
+    "year": "Year"
+  },
+  "modalTitles": {
+    "selectMonth": "Select Month",
+    "selectDay": "Select Day",
+    "selectYear": "Select Year",
+    "selectPositionTitle": "Select Position",
+    "selectExperienceLevelTitle": "Experience Level",
+    "selectTrainingFrequencyTitle": "Training Frequency",
+    "selectCitizenshipTitle": "Select Citizenship",
+    "selectCategory": "Select a Category",
+    "highlights": "Share your highlight link",
+    "highlightsDescription": "This will not be public. It will be for Darwin to see the talent you have on the field & potentially pass on to coaches, scouts, or agents.",
+    "selectImage": "Select Photo",
+    "confirmDelete": "Confirm Deletion",
+    "buttonOptions": {
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "close": "Close",
+      "delete": "Delete",
+      "save": "Save",
+      "useCamera": "Use camera",
+      "chooseGalery": "Choose from galery"
+    }
+  },
+  "splash": {
+    "splashFooter": "© 2025 | Where talent meets opportunity | USA"
+  },
+  "carousel": {
+    "text": {
+      "line1": "Train like a pro.",
+      "line2": "Play like a star."
+    },
+    "buttons": {
+      "getStarted": "Get Started",
+      "accessAccount": "Access Account"
+    },
+    "footerText": "© 2025 | Showtime University | USA"
+  },
+  "subscription": {
+    "title": "Subscribe",
+    "plansScreen": {
+      "title": "Select Your Plan",
+      "subtitle": "All plans include a 7-day free trial",
+      "loading": "Loading plans...",
+      "error": "Error loading plans",
+      "noAuth": "No authentication token",
+      "selectError": "Error selecting plan",
+      "footerCancel": "Cancel anytime",
+      "footerNoCharge": "No charges during trial period",
+      "footerFullAccess": "Full access during trial"
+    },
+    "checkoutOptions": {
+      "title": "Choose Your Option",
+      "subtitle": "You have selected:",
+      "plan": "Plan:",
+      "price": "Price:",
+      "option1Title": "Start with Free Trial",
+      "option1Subtitle": "RECOMMENDED",
+      "option1Description": "Try 7 days free, then",
+      "option1TodayCharge": "Charge today:",
+      "option1AfterTrial": "After 7 days:",
+      "option1Benefit1": "✓ No charge for 7 days",
+      "option1Benefit2": "✓ Full access to all features",
+      "option1Benefit3": "✓ Cancel anytime without charges",
+      "option1Button": "Start Free Trial",
+      "option2Title": "Skip trial & get 10% OFF",
+      "option2Description": "Pay today and save 10%",
+      "option2OriginalPrice": "Original price:",
+      "option2Discount": "Discount (10%):",
+      "option2TotalToday": "Total to pay TODAY:",
+      "option2Benefit1": "✓ Immediate access",
+      "option2Benefit2": "✓ Save 10% on first payment",
+      "option2Benefit3": "✓ Discount applied with code skip_trial_10off",
+      "option2Button": "Pay and Save 10%",
+      "footer": "🔒 Secure payment processed by Stripe"
+    },
+    "checkout": {
+      "title": "Payment Method",
+      "planSummary": "Plan Summary",
+      "discountBadge": "Discount of",
+      "paymentInfo": "Payment Information",
+      "cardChargedToday": "Your card will be charged today",
+      "cardChargedAfter": "Your card will be charged after 7 days",
+      "cardDetails": "Card Details",
+      "cardPlaceholder": "4242 4242 4242 4242",
+      "chargeSummary": "Charge Summary",
+      "originalPrice": "Original price:",
+      "discount": "Discount",
+      "chargeToday": "Charge today:",
+      "afterDays": "After 7 days:",
+      "totalToday": "Total to pay TODAY:",
+      "freeToday": "$0.00",
+      "buttonPay": "Pay",
+      "buttonStartTrial": "Start Free Trial",
+      "footerSecure": "🔒 Secure payment processed by Stripe",
+      "errorCompleteCard": "Please complete your card details",
+      "errorPaymentMethod": "Could not create payment method",
+      "processing": "Processing..."
+    },
+    "success": {
+      "titlePaid": "Payment Successful!",
+      "titleTrial": "Free Trial Activated!",
+      "subtitlePaid": "Your subscription is now active",
+      "subtitleTrial": "Enjoy 7 days free of",
+      "detailsTitle": "Subscription Details",
+      "plan": "Plan:",
+      "amount": "Amount:",
+      "discount": "Discount:",
+      "charged": "Charged:",
+      "status": "Status:",
+      "trialEnds": "Trial ends:",
+      "nextCharge": "Next charge:",
+      "active": "Active",
+      "trialing": "In trial",
+      "benefitsTitle": "🎉 You now have access to:",
+      "benefit1": "✓ Full access to all content",
+      "benefit2": "✓ Direct messages with coaches",
+      "benefit3": "✓ Exclusive events and webinars",
+      "benefit4": "✓ Premium support",
+      "buttonHome": "Go to Home",
+      "footerNote": "You will receive a confirmation email with all the details"
+    },
+    "error": {
+      "title": "Payment Failed",
+      "subtitle": "We couldn't process your payment",
+      "errorTitle": "Error:",
+      "suggestionsTitle": "Please try the following:",
+      "suggestion1": "• Verify your card details are correct",
+      "suggestion2": "• Ensure you have sufficient funds",
+      "suggestion3": "• Try a different payment method",
+      "suggestion4": "• Contact your bank if the problem persists",
+      "buttonRetry": "Try Again",
+      "buttonBack": "View Other Plans",
+      "buttonHome": "Go to Home",
+      "supportNote": "If the problem persists, contact our support team",
+      "cardError": "There was a problem with your card. Please verify the details and try again.",
+      "insufficientError": "Your card has insufficient funds.",
+      "declinedError": "Your card was declined. Please contact your bank."
+    },
+    "planCard": {
+      "popular": "MOST POPULAR",
+      "startTrial": "Start 7-Day Free Trial",
+      "then": "Then:"
+    },
+    "trialBanner": {
+      "title": "You're on Free Trial",
+      "daysRemaining": "day remaining",
+      "daysRemainingPlural": "days remaining"
+    },
+    "cancelAtPeriodEnd": "Scheduled to cancel at period end",
+    "reactivatedTitle": "Subscription reactivated",
+    "reactivatedError": "Could not reactivate subscription",
+    "actions": {
+      "reactivate": "Reactivate subscription"
+    },
+    "reactivating": "Reactivating...",
+    "subscriptionInfo": {
+      "price": "Price:",
+      "paymentMethod": "Payment method:",
+      "cancelAt": "Cancels on:",
+      "nextRenewal": "Next renewal:",
+      "warningCancel": "⚠️ Your subscription will be canceled on",
+      "buttonCancel": "Cancel Subscription",
+      "statusTrialing": "In trial",
+      "statusActive": "Active",
+      "statusPastDue": "Payment pending",
+      "statusCanceled": "Canceled",
+      "statusUnpaid": "Unpaid"
+    },
+    "basic": {
+      "title": "Basic",
+      "description": "Access the program’s core features and get an inside look at the life of a professional athlete.",
+      "features": [
+        "Access to Home (Feed) Darwin's Content.",
+        "Access to Darwin's material (Learn Section).",
+        "Direct messages with Darwin.",
+        "Access to guest speakers."
+      ],
+      "button": "$49/Month "
+    },
+    "premium": {
+      "title": "Premium",
+      "description": "Expand your network and receive valuable feedback by engaging with members and coaches on Showtime's feed.\n\nPlan your workouts by saving coache's posts directly on Showtime's feed.\n",
+      "features": [
+        "Access to Home (Feed) Darwin's Content.",
+        "Access to Home (Feed) Darwin, coaches and students content.",
+        "Post in Home",
+        "Access to Darwin's material (Learn Section).",
+        "Direct messages with Darwin.",
+        "Access to exclusive Showtime University presencial events (camps, meetings, trainings).",
+        "Access to guest speakers."
+      ],
+      "button": "$99/Month"
+    },
+    "elite": {
+      "title": "Elite",
+      "description": "Full package:",
+      "features": [
+        "Access to Home (Feed) Darwin's Content.",
+        "Access to Home (Feed) Darwin, coaches and students content.",
+        "Post in Home",
+        "Access to Darwin's material (Learn Section).",
+        "Direct messages with Darwin.",
+        "Direct messages with coaches.",
+        "1:1 coachings",
+        "Videocalls with Darwin",
+        "Videocalls with coaches",
+        "Access to exclusive Showtime University presencial events (camps, meetings, trainings).",
+        "Access to guest speakers.",
+        "If applicable, connection with agent/sport consultant."
+      ],
+      "button": "$149/Month"
+    }
+  },
+  "publishPost": {
+    "buttons": {
+      "post": "Post",
+      "update": "Update",
+      "video": "Video.mp4",
+      "image": "Image.jpg",
+      "text": "Text.pdf"
+    },
+    "placeholders": {
+      "textInput": "What's happening ?",
+      "category": "Category"
+    },
+    "categories": {
+      "accomplishments": "Accomplishments",
+      "announcements": "Announcements",
+      "dailyMotivation": "Daily motivation",
+      "highlightTape": "Highlight tape",
+      "introduceYourself": "Introduce yourself",
+      "lifeOfAProfessional": "Life of a professional",
+      "nutrition": "Nutrition",
+      "training": "Training",
+      "mindset": "Mindset",
+      "tactics": "Tactics",
+      "gameAnalysis": "Game Analysis",
+      "strength": "Strength",
+      "power": "Power",
+      "4WeekProgram": "4 Week Program",
+      "exerciseLibrary": "Darwin's Exercise Library",
+      "anxiety": "Anxiety",
+      "growthMindset": "Growth Mindset",
+      "conflictResolution": "Conflict Resolution",
+      "teamDynamics": "Team Dynamics",
+      "carbohydrates": "Carbohydrates",
+      "protein": "Protein",
+      "fat": "Fat",
+      "supplementsHydration": "Supplements & Hydration",
+      "nutritionProgram": "4 Week Program",
+      "finishing": "Finishing",
+      "technical": "Technical",
+      "passingDribbling": "Passing & Dribbling",
+      "defenders": "Defenders",
+      "forwards": "Forwards",
+      "generalAnalysis": "General Analysis",
+      "interactive": "Interactive",
+      "midfielders": "Midfielders",
+      "questions": "Questions",
+      "lifeAsAProfessional": "Life as a Professional"
+    },
+    "alertPost": {
+      "title": "Post now ?",
+      "message": "Are you sure you want to post this ?"
+    },
+    "removeAlert": {
+      "title": "Remove File ?",
+      "message": "Do you want to remove this file from the post ?",
+      "optionCancel": "Cancel",
+      "optionRemove": "Remove"
+    },
+    "alerts": {
+      "emptyPost": "Looks like your post is empty. Try adding something!",
+      "pdfError": "An unexpected error occurred while selecting the PDF. Please try again.",
+      "thumbnailError": "An error occurred while generating the thumbnail."
+    },
+    "emptyState": "You haven’t added any media files yet.",
+    "loading": "loading ...",
+    "sending": "sending ..."
+  },
+  "coachDetails": {
+    "myAccomplishments": "My Accomplishments",
+    "noAccomplishments": "No accomplishments listed.",
+    "lessons": "Lessons",
+    "noLessons": "No lessons listed.",
+    "testimonials": "Testimonials",
+    "noTestimonials": "No testimonials listed.",
+    "letsChat": "Let's Chat"
+  },
+  "account": {
+    "titles": {
+      "account": "Account",
+      "coachList": "Coach List",
+      "studentList": "Student List",
+      "selectAFile": "SELECT A FILE",
+      "noSavedLessons": "No Saved Lessons",
+      "editProfile": "Edit Profile",
+      "uploadContent": "Upload content",
+      "noThumbnail": "No media file selected",
+      "fileFormat": "File Format",
+      "category": "Category",
+      "selectMainCategory": "Select Main Category",
+      "selectSubcategory": "Select Subcategory"
+    },
+    "buttons": {
+      "coach": "Coach",
+      "save": "Save",
+      "settings": "Settings",
+      "send": "Send",
+      "students": "Students",
+      "upload": "Upload",
+      "highlight": "HIGHLIGHT",
+      "shareTheApp": "SHARE THE APP",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "openSettings": "Open settings",
+      "signOut": "Sign Out",
+      "uploadContent": "Upload content",
+      "comingSoon": "Coming soon"
+    },
+    "content": {
+      "notifications": "Notifications",
+      "subscription": "Subscription",
+      "contact": "Contact",
+      "cancelSubscription": "Cancel subscription",
+      "myReferrals": "My Referrals"
+    },
+    "notifications": {
+      "enabled": "Notifications enabled",
+      "blockedTitle": "Notification permissions blocked",
+      "blockedMessage": "Please enable notifications from settings.",
+      "denied": "Notification permissions denied",
+      "error": "Could not request notification permissions"
+    },
+    "subscriptions": {
+      "cancelTitle": "Cancel subscription",
+      "cancelConfirm": "Do you want to cancel your subscription?",
+      "cancelled": "Subscription cancelled",
+      "cancelError": "Could not cancel subscription. Please try again later."
+    },
+    "placeholders": {
+      "inputTitle": "Content Title",
+      "inputDescription": "Content Description",
+      "mainCategory": "Main Category",
+      "subcategory": "Subcategory"
+    }
+  },
+  "learn": {
+    "filter": "Filter",
+    "noLessons": "No lessons matched your filters",
+    "calendarText": "Save your training day",
+    "next": "Next",
+    "categories": {
+      "training": "Training",
+      "mindset": "Mindset",
+      "nutrition": "Nutrition",
+      "tactics": "Tactics",
+      "gameAnalysis": "Game Analysis"
+    },
+    "subcategories": {
+      "strength": {
+        "title": "Strength",
+        "description": "Build muscle and increase endurance."
+      },
+      "power": {
+        "title": "Power",
+        "description": "Train explosiveness and athletic speed."
+      },
+      "4weekProgram": {
+        "title": "4 Week Program",
+        "description": "Favourite routines picked by Darwin."
+      },
+      "darwinsExerciseLibrary": {
+        "title": "Darwin's Exercise Library",
+        "description": "Favourite excercises picked by Darwin."
+      },
+      "motivation": {
+        "title": "Motivation",
+        "description": "Boost your drive and keep pushing toward your goal."
+      },
+      "selfConfidence": {
+        "title": "Self- Confidence",
+        "description": "Build trust in yourself to perform at your best."
+      },
+      "mindfulness": {
+        "title": "Mindfulness",
+        "description": "Stay present and manage stress with a clear mind."
+      },
+      "focus": {
+        "title": "Focus",
+        "description": "Sharpen your attention to improve performance on the field."
+      },
+      "visualization": {
+        "title": "Visualization",
+        "description": "Picture success and prepare mentally for any challenge."
+      },
+      "carbohydrates": {
+        "title": "Carbohydrates",
+        "description": "Energy fuel for top performance."
+      },
+      "protein": {
+        "title": "Protein",
+        "description": "Build and repair muscle strength."
+      },
+      "fat": {
+        "title": "Fat",
+        "description": "Boost endurance with healthy fats."
+      },
+      "supplementsHydration": {
+        "title": "Supplements  & Hydration",
+        "description": "Stay hydrated, enhance performance smartly."
+      },
+      "4WeekPlan": {
+        "title": "4 Week Program",
+        "description": "Structured plan for better results."
+      },
+      "finishing": {
+        "title": "Finishing",
+        "description": "Improve your ability to score with confidence."
+      },
+      "technical": {
+        "title": "Technical",
+        "description": "Master the skills that elevate your overall game."
+      },
+      "passingDribbling": {
+        "title": "Passing & Dribbling",
+        "description": "Develop control to move the ball effectively and outplay opponents."
+      },
+      "defenders": {
+        "title": "Defenders",
+        "description": "Understand defensive strategies and positioning to stop attacks."
+      },
+      "forwards": {
+        "title": "Forwards",
+        "description": "Learn how forwards create chances and finish plays."
+      },
+      "generalAnalysis": {
+        "title": "General Analysis",
+        "description": "Break down full matches to see the bigger picture"
+      },
+      "interactive": {
+        "title": "Interactive",
+        "description": "Engage with dynamic sessions to test your game IQ."
+      },
+      "midfielders": {
+        "title": "Midfielders",
+        "description": "Control tempo and connect the team."
+      }
+    }
+  },
+  "comments": {
+    "noComments": "No comments yet"
+  }
+}

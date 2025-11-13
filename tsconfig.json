@@ -1,0 +1,10 @@
+{
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true, // opcional pero recomendado
+    "jsx": "react-native"
+  },
+  "include": ["types.d.ts", "src"]
+}
