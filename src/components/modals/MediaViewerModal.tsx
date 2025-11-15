@@ -10,6 +10,10 @@ import {
 } from 'react-native';
 import VideoPlayer from 'react-native-video-controls';
 import Sound from 'react-native-sound';
+// ActivityIndicator/Alert not used in modal (handled in PdfViewerScreen)
+// WebView rendering moved to dedicated PdfViewerScreen
+// PDF handling moved to dedicated screen; no RNFetchBlob/useAuth here
+import {useNavigation} from '@react-navigation/native';
 import {
   X,
   PlayCircle,
@@ -20,7 +24,7 @@ import {
 
 interface MediaItem {
   id: string;
-  mediaType: 'image' | 'video' | 'audio';
+  mediaType: 'image' | 'video' | 'audio' | 'pdf';
   uri: string;
   title?: string;
   author?: string;
@@ -49,6 +53,7 @@ export default function MediaViewerModal({
   likesCount,
   commentsCount,
 }: MediaViewerModalProps) {
+  const navigation: any = useNavigation();
   const {width, height} = useWindowDimensions();
   const isPortrait = height >= width;
   const soundRef = useRef<Sound | null>(null);
@@ -80,6 +85,8 @@ export default function MediaViewerModal({
   const getAudioBackground = () => {
     return require('../../../assets/img/audioPlaceholder.png');
   };
+
+  // PDF download/view handled in `PdfViewerScreen` now.
 
   useEffect(() => {
     // Reset estado al abrir un nuevo media
@@ -249,6 +256,30 @@ export default function MediaViewerModal({
                 {isPlaying && (
                   <Text style={styles.audioText}>Playing audio...</Text>
                 )}
+              </View>
+            </View>
+          )}
+
+          {media.mediaType === 'pdf' && (
+            <View style={styles.pdfFullScreen}>
+              <View style={styles.pdfHeaderContainer}>
+                {media?.title ? (
+                  <Text style={styles.pdfHeaderTitle}>{media.title}</Text>
+                ) : null}
+
+                <TouchableOpacity
+                  style={[styles.externalButton, styles.externalButtonMb]}
+                  onPress={() => {
+                    navigation.navigate('PdfViewer', {
+                      uri: media.uri,
+                      id: media.id,
+                      title: media.title,
+                    });
+                  }}>
+                  <Text style={styles.externalButtonText}>
+                    Abrir en pantalla PDF
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           )}
@@ -442,5 +473,91 @@ const styles = StyleSheet.create({
   },
   visible: {
     opacity: 1,
+  },
+  pdfFullScreen: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pdfLoader: {
+    position: 'absolute',
+    top: 40,
+    left: 0,
+    right: 0,
+    zIndex: 20,
+  },
+  pdfError: {
+    position: 'absolute',
+    top: '50%',
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  pdfErrorText: {
+    color: '#FFFFFF',
+    marginBottom: 12,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 16,
+  },
+  localDebug: {
+    position: 'absolute',
+    top: 80,
+    left: 12,
+    right: 12,
+    backgroundColor: 'rgba(255,255,255,0.04)',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    alignItems: 'flex-start',
+    zIndex: 60,
+  },
+  localDebugText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    marginBottom: 6,
+  },
+  localDebugRow: {
+    flexDirection: 'row',
+    gap: 8,
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  debugButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 6,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginHorizontal: 4,
+  },
+  debugButtonText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+  },
+  externalButton: {
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.12)',
+  },
+  externalButtonText: {
+    color: '#FFFFFF',
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 14,
+  },
+  pdfHeaderContainer: {
+    alignItems: 'center',
+    padding: 20,
+  },
+  pdfHeaderTitle: {
+    fontSize: 20,
+    fontFamily: 'AnonymousPro-Bold',
+    color: '#FFF',
+    marginBottom: 8,
+  },
+  externalButtonMb: {
+    marginBottom: 8,
   },
 });

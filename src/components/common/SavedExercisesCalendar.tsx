@@ -1,11 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import {useTranslation} from 'react-i18next';
 import Calendar from '../common/Calendar';
 import LessonCard from './LessonCard';
 import MediaViewerModal from '../modals/MediaViewerModal';
-import { buildMediaUrl } from '../../utils/urlHelpers';
-import { fetchWithTimeout } from '../../utils/fetchWithTimeout';
+import {buildMediaUrl} from '../../utils/urlHelpers';
+import {fetchWithTimeout} from '../../utils/fetchWithTimeout';
 
 type MediaItem = {
   id: string;
@@ -48,7 +55,7 @@ type MarkedDates = {
 };
 
 export default function SavedExercisesCalendar() {
-  const { t, i18n } = useTranslation();
+  const {t, i18n} = useTranslation();
   const cardHeight = 150;
   const [markedDates, setMarkedDates] = useState<MarkedDates>({});
   const [savedLessons, setSavedLessons] = useState<SavedLesson[]>([]);
@@ -81,7 +88,12 @@ export default function SavedExercisesCalendar() {
         const lessonsWithDetails: SavedLesson[] = [];
         for (const e of events) {
           try {
-            const lessonRes = await fetchWithTimeout(`/api/v1/lessons/${e.lesson}`);
+            console.log('====================================');
+            console.log(e.lesson);
+            console.log('====================================');
+            const lessonRes = await fetchWithTimeout(
+              `/api/v1/lessons/${e.lesson}`,
+            );
             if (!lessonRes.ok) continue;
             const lessonData = await lessonRes.json();
             lessonsWithDetails.push({
@@ -126,9 +138,12 @@ export default function SavedExercisesCalendar() {
 
   const handleDelete = async (eventId: number) => {
     try {
-      const res = await fetchWithTimeout(`/api/v1/calendar/events/${eventId}/`, {
-        method: 'DELETE',
-      });
+      const res = await fetchWithTimeout(
+        `/api/v1/calendar/events/${eventId}/`,
+        {
+          method: 'DELETE',
+        },
+      );
       if (!res.ok) {
         Alert.alert('Error', 'No se pudo eliminar el evento');
         return;
@@ -138,7 +153,7 @@ export default function SavedExercisesCalendar() {
       if (!lessonToRemove) return;
 
       setSavedLessons(prev => prev.filter(l => l.eventId !== eventId));
-      const updatedMarks = { ...markedDates };
+      const updatedMarks = {...markedDates};
       delete updatedMarks[lessonToRemove.date];
       setMarkedDates(updatedMarks);
     } catch (err) {
@@ -153,20 +168,23 @@ export default function SavedExercisesCalendar() {
 
       {savedLessons.length > 0 ? (
         <ScrollView
-          style={{ flex: 1 }}
+          style={{flex: 1}}
           contentContainerStyle={styles.lessonScroll}
-          showsHorizontalScrollIndicator={false}
-        >
+          showsHorizontalScrollIndicator={false}>
           {savedLessons.map(lesson => {
-            const { year, monthDay } = getFormattedDateParts(lesson.date);
+            const {year, monthDay} = getFormattedDateParts(lesson.date);
 
             return (
-              <View key={lesson.eventId} style={[styles.lessonRow, { height: cardHeight }]}>
+              <View
+                key={lesson.eventId}
+                style={[styles.lessonRow, {height: cardHeight}]}>
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={[styles.lessonRow, { paddingRight: 70 }]}
-                >
+                  contentContainerStyle={[
+                    styles.lessonRow,
+                    {paddingRight: 70},
+                  ]}>
                   <LessonCard
                     {...lesson}
                     cardHeight={cardHeight}
@@ -197,7 +215,9 @@ export default function SavedExercisesCalendar() {
                     </View>
                   </View>
 
-                  <TouchableOpacity style={styles.deleteBox} onPress={() => handleDelete(lesson.eventId)}>
+                  <TouchableOpacity
+                    style={styles.deleteBox}
+                    onPress={() => handleDelete(lesson.eventId)}>
                     <Text style={styles.deleteX}>X</Text>
                     <Text style={styles.deleteLabel}>{t('common.delete')}</Text>
                   </TouchableOpacity>
@@ -207,7 +227,9 @@ export default function SavedExercisesCalendar() {
           })}
         </ScrollView>
       ) : (
-        <Text style={styles.noLessonsText}>{t('account.titles.noSavedLessons')}</Text>
+        <Text style={styles.noLessonsText}>
+          {t('account.titles.noSavedLessons')}
+        </Text>
       )}
 
       <MediaViewerModal
@@ -227,80 +249,80 @@ export default function SavedExercisesCalendar() {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     paddingHorizontal: 16,
   },
   lessonScroll: {
     gap: 15,
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 20,
-    paddingBottom: 60
+    paddingBottom: 60,
   },
   lessonRow: {
-    flexDirection: "row",            
-    borderRadius: 10,    
+    flexDirection: 'row',
+    borderRadius: 10,
     gap: 10,
   },
-  dateTimeContainer:{
-    height: "100%",
-    width: "15%",    
-  }, 
+  dateTimeContainer: {
+    height: '100%',
+    width: '15%',
+  },
   dateBox: {
-    height: "55%",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#2B80BE",  
+    height: '55%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#2B80BE',
     borderTopEndRadius: 10,
-    borderTopStartRadius: 10, 
+    borderTopStartRadius: 10,
   },
   dateText: {
-    fontFamily: "Roboto-Regular",
-    fontWeight: "400",
+    fontFamily: 'Roboto-Regular',
+    fontWeight: '400',
     fontSize: 12,
-    color: "#FFFFFF",
+    color: '#FFFFFF',
   },
-  timeBox:{
-    height: "45%",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFFFFF", 
+  timeBox: {
+    height: '45%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
     borderBottomEndRadius: 10,
-    borderBottomStartRadius: 10, 
+    borderBottomStartRadius: 10,
   },
   timeText: {
-    fontFamily: "Roboto-Regular",
-    fontWeight: "400",
+    fontFamily: 'Roboto-Regular',
+    fontWeight: '400',
     fontSize: 12,
-    color: "#000000",    
+    color: '#000000',
   },
-  deleteBox: {  
-    width: "15%",   
-    justifyContent: "center",
-    alignItems: "center",
+  deleteBox: {
+    width: '15%',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 6,
-    backgroundColor: "#CC0033",
+    backgroundColor: '#CC0033',
     borderRadius: 10,
   },
   deleteX: {
-    fontFamily: "Roboto-Regular",
-    fontWeight: "400",
+    fontFamily: 'Roboto-Regular',
+    fontWeight: '400',
     fontSize: 24,
-    color: "#FFFFFF",   
+    color: '#FFFFFF',
     marginBottom: 5,
   },
   deleteLabel: {
-    fontFamily: "Roboto-Regular",
-    fontWeight: "400",
+    fontFamily: 'Roboto-Regular',
+    fontWeight: '400',
     fontSize: 10,
-    color: "#FFFFFF",    
+    color: '#FFFFFF',
   },
   noLessonsText: {
     fontFamily: 'AnonymousPro-Regular',
-    fontWeight: "400",
+    fontWeight: '400',
     fontSize: 22,
-    color: "#FFFFFF",
-    alignSelf: "center",
+    color: '#FFFFFF',
+    alignSelf: 'center',
     marginTop: 35,
   },
 });

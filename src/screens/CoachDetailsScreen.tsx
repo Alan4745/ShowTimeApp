@@ -82,6 +82,9 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
       setLoadingLessons(true);
       setLessonsError(null);
       try {
+        console.log('====================================');
+        console.log(coach.id);
+        console.log('====================================');
         const response = await fetchWithTimeout(
           `/api/v1/coaches/${coach.id}/lessons`,
         );

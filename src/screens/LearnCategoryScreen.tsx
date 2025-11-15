@@ -8,7 +8,11 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {ChevronLeft, SlidersHorizontal} from 'lucide-react-native';
+import {
+  ChevronLeft,
+  ChevronRight,
+  SlidersHorizontal,
+} from 'lucide-react-native';
 import LessonCard from '../components/common/LessonCard';
 import MediaViewerModal from '../components/modals/MediaViewerModal';
 import FilterModal from '../components/modals/filterModal';
@@ -37,6 +41,7 @@ type MediaItem = {
   author?: string;
   description?: string;
   subcategory?: string;
+  variant?: string;
   format?: string;
   likes?: number;
   comments?: number;
@@ -57,6 +62,11 @@ export default function LearnCategoryScreen({
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [lessonsFromCoach, setLessonsFromCoach] = useState<LessonFromAPI[]>([]);
   const [filteredLessons, setFilteredLessons] = useState<LessonFromAPI[]>([]);
+  const [totalLessonsCount, setTotalLessonsCount] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+  const pageSize = 12;
+  const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
+  const [prevPageUrl, setPrevPageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -64,14 +74,52 @@ export default function LearnCategoryScreen({
       try {
         setLoading(true);
 
-        const res = await fetchWithTimeout(
-          `/api/v1/courses/category/${category.id}/lessons`,
-        );
+        console.log(`Fetching lessons for category ID: ${category.id}`);
+        console.log('====================================');
+        console.log(subcategoryKey);
+        console.log('====================================');
+
+        const params = new URLSearchParams({
+          page: String(page),
+          page_size: String(pageSize),
+        });
+        if (subcategoryKey) params.append('variant', subcategoryKey);
+
+        const url = `/api/v1/courses/category/${
+          category.id
+        }/lessons?${params.toString()}`;
+        const res = await fetchWithTimeout(url);
         if (!res.ok) throw new Error('Error fetching lessons');
         const data = await res.json();
         console.log(data);
-        setLessonsFromCoach(data.results);
-        setFilteredLessons(data.results);
+
+        // obtener total de la respuesta paginada (count) si existe
+        const total =
+          typeof data.count === 'number'
+            ? data.count
+            : Array.isArray(data.results)
+            ? data.results.length
+            : 0;
+        setTotalLessonsCount(total);
+        setNextPageUrl(data.next ?? null);
+        setPrevPageUrl(data.previous ?? null);
+
+        // Filtrar y ordenar los datos basándose en subcategoryKey
+        const sortedLessons = data.results.sort(
+          (a: LessonFromAPI, b: LessonFromAPI) => {
+            const aMatches = a.variant === subcategoryKey;
+            const bMatches = b.variant === subcategoryKey;
+
+            // Si ambos coinciden o ninguno coincide, mantener el orden original
+            if (aMatches === bMatches) return 0;
+
+            // Los que coinciden van primero (return -1 significa que 'a' va antes que 'b')
+            return aMatches ? -1 : 1;
+          },
+        );
+
+        setLessonsFromCoach(sortedLessons);
+        setFilteredLessons(sortedLessons);
       } catch (err) {
         console.error(err);
       } finally {
@@ -79,7 +127,12 @@ export default function LearnCategoryScreen({
       }
     };
     fetchLessons();
-  }, [category, subcategoryKey]);
+  }, [category, subcategoryKey, page]);
+
+  // reset page when category or subcategoryKey changes
+  useEffect(() => {
+    setPage(1);
+  }, [category.id, subcategoryKey]);
 
   const handleOpenMedia = (media: MediaItem) => {
     setSelectedMedia(media);
@@ -136,6 +189,41 @@ export default function LearnCategoryScreen({
 
       {/* Filter Button */}
       <View style={styles.filterContainer}>
+        <View style={styles.paginationContainer}>
+          <TouchableOpacity
+            style={[
+              styles.pageButton,
+              !prevPageUrl && styles.pageButtonDisabled,
+            ]}
+            onPress={() =>
+              prevPageUrl ? setPage(p => Math.max(1, p - 1)) : null
+            }
+            disabled={!prevPageUrl}>
+            <ChevronLeft
+              size={16}
+              color={prevPageUrl ? '#FFFFFF' : 'rgba(255,255,255,0.3)'}
+            />
+          </TouchableOpacity>
+
+          <Text style={styles.lessonCount}>
+            {filteredLessons.length}/
+            {totalLessonsCount || lessonsFromCoach.length}
+          </Text>
+
+          <TouchableOpacity
+            style={[
+              styles.pageButton,
+              !nextPageUrl && styles.pageButtonDisabled,
+            ]}
+            onPress={() => (nextPageUrl ? setPage(p => p + 1) : null)}
+            disabled={!nextPageUrl}>
+            <ChevronRight
+              size={16}
+              color={nextPageUrl ? '#FFFFFF' : 'rgba(255,255,255,0.3)'}
+            />
+          </TouchableOpacity>
+        </View>
+
         <TouchableOpacity
           style={styles.filterButton}
           onPress={() => setFilterModalVisible(true)}>
@@ -171,6 +259,7 @@ export default function LearnCategoryScreen({
                   author: lesson.author ?? '',
                   description: lesson.description ?? '',
                   subcategory: lesson.subcategory,
+                  variant: lesson.variant,
                   format: lesson.format,
                   likes: lesson.likes,
                   comments: lesson.comments,
@@ -240,10 +329,37 @@ const styles = StyleSheet.create({
   },
   filterContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 20,
     marginBottom: 20,
   },
+  lessonCount: {
+    fontFamily: 'AnonymousPro-Regular',
+    fontWeight: '400',
+    color: '#FFFFFF',
+    fontSize: 16,
+    opacity: 0.8,
+  },
+
+  paginationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  pageButton: {
+    padding: 6,
+    marginHorizontal: 8,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.12)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pageButtonDisabled: {
+    opacity: 0.35,
+    borderColor: 'rgba(255,255,255,0.06)',
+  },
+
   filterButton: {
     flexDirection: 'row',
     alignItems: 'center',
