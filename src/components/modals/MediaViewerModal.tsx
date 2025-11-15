@@ -60,7 +60,7 @@ export default function MediaViewerModal({
   const [isPlaying, setIsPlaying] = useState(false);
   const [liked, setLiked] = useState(false);
   const [localLikes, setLocalLikes] = useState<number | null>(null);
-  const [controlsVisible, setControlsVisible] = useState(true);
+  const [controlsVisible, setControlsVisible] = useState(false);
 
   const dynamicStyles = {
     fullscreenImage: {
@@ -73,14 +73,20 @@ export default function MediaViewerModal({
     },
   };
 
-  const infoContainerStyle = {
+  const infoContainerStyle: any = {
     position: 'absolute',
     left: 20,
-    bottom: isPortrait ? 40 : 20,
     width: isPortrait ? '80%' : '60%',
     marginBottom: 10,
-    zIndex: 50,
-  } as const;
+    zIndex: 60,
+  };
+
+  // Mostrar la info en la parte superior para vídeos (flotante), abajo para otros media
+  if (media?.mediaType === 'video') {
+    infoContainerStyle.top = isPortrait ? 60 : 20;
+  } else {
+    infoContainerStyle.bottom = isPortrait ? 40 : 20;
+  }
 
   const getAudioBackground = () => {
     return require('../../../assets/img/audioPlaceholder.png');
@@ -219,7 +225,8 @@ export default function MediaViewerModal({
               source={{uri: media.uri}}
               style={[styles.flexMedia, styles.transparentVideo]}
               resizeMode="contain"
-              controlTimeout={0}
+              controlTimeout={3000}
+              showOnStart={false}
               disableBack={true}
               disableVolume={true}
               disableFullscreen={true}
@@ -228,8 +235,11 @@ export default function MediaViewerModal({
               repeat={true}
               onShowControls={() => setControlsVisible(true)}
               onHideControls={() => setControlsVisible(false)}
+              paused={!isPlaying}
             />
           )}
+
+          {/* Controles de vídeo ahora se muestran por encima de la barra inferior (no sobrepuestos) */}
           {media.mediaType === 'audio' && (
             <View style={styles.audioFullScreen}>
               <Image
@@ -285,6 +295,8 @@ export default function MediaViewerModal({
           )}
 
           {/* Mostrar barra inline solo cuando los controles estén visibles (para video) o siempre (para imagen/audio) */}
+          {/* Contenedor de controles justo encima de la barra inferior */}
+          {/* Controles personalizados eliminados: se confía en los controles nativos del componente */}
           <View style={styles.bottomBarInline}>
             <TouchableOpacity
               style={styles.bottomIcon}
@@ -559,5 +571,12 @@ const styles = StyleSheet.create({
   },
   externalButtonMb: {
     marginBottom: 8,
+  },
+  videoControlsInline: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginRight: 'auto',
+    marginLeft: 12,
   },
 });
