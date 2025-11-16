@@ -625,6 +625,9 @@
     "noAccomplishments": "No accomplishments listed.",
     "lessons": "Lessons",
     "noLessons": "No lessons listed.",
+    "loadMoreLessons": "Load more lessons",
+    "loadingMoreLessons": "Loading more...",
+    "noMoreLessons": "No more lessons",
     "testimonials": "Testimonials",
     "noTestimonials": "No testimonials listed.",
     "letsChat": "Let's Chat"

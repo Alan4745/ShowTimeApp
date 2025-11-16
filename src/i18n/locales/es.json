@@ -603,6 +603,9 @@
     "noAccomplishments": "No se han ingresado logros.",
     "lessons": "Lecciones",
     "noLessons": "No se han ingresado lecciones.",
+    "loadMoreLessons": "Cargar más lecciones",
+    "loadingMoreLessons": "Cargando más...",
+    "noMoreLessons": "No hay más lecciones",
     "testimonials": "Testimonios",
     "noTestimonials": "No se han ingresado testimonios.",
     "letsChat": "Hablemos"
