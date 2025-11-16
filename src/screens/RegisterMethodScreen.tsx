@@ -116,17 +116,14 @@ export default function RegisterMethodScreen() {
           {/* Terms and Privacy */}
           <View style={styles.termsContainer}>
             <Text style={styles.termsText}>
-              {t('registration.termsAgreement')}
+              {t('registration.termsAcceptance')}
+              <Text
+                style={styles.linkText}
+                onPress={() => (navigation as any).navigate('TermsConditions')}>
+                {t('registration.termsLink')}
+              </Text>
+              .
             </Text>
-            {/* <Text style={styles.termsText}>
-              {t('registration.termsAgreement')}
-              By signing up, you agree to the{' '}
-              <Text style={styles.linkText}>Terms of Service</Text>
-              {' '}and{' '}
-              <Text style={styles.linkText}>Privacy Policy</Text>
-              , including{' '}
-              <Text style={styles.linkText}>Cookie Use</Text>.
-            </Text> */}
           </View>
         </View>
         {/* Login Modal*/}

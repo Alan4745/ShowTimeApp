@@ -43,6 +43,11 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
   const [lessons, setLessons] = useState<any[]>([]);
   const [loadingLessons, setLoadingLessons] = useState(false);
   const [lessonsError, setLessonsError] = useState<string | null>(null);
+  const [allLessons, setAllLessons] = useState<any[]>([]);
+  const [page, setPage] = useState(1);
+  const pageSize = 3; // mostrar 3 lecciones por carga
+
+  const [hasMore, setHasMore] = useState(true);
   const [selectedLesson, setSelectedLesson] = useState<any>(null);
   const [showLessonModal, setShowLessonModal] = useState(false);
   const [bioExpanded, setBioExpanded] = useState(false);
@@ -74,32 +79,53 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
   }, []);
 
   // Descargar las lecciones desde el backend
+  // Cuando cambia el coach, cargar TODAS las lecciones del servidor
   useEffect(() => {
-    const fetchCoachLessons = async () => {
+    let mounted = true;
+    const fetchAll = async () => {
       if (!coach.id) {
         return;
       }
       setLoadingLessons(true);
       setLessonsError(null);
       try {
-        const response = await fetchWithTimeout(
-          `/api/v1/coaches/${coach.id}/lessons`,
-        );
+        const url = `/api/v1/coaches/${coach.id}/lessons`;
+        const response = await fetchWithTimeout(url);
         if (!response.ok) {
           throw new Error('Error al obtener las lecciones');
         }
         const data = await response.json();
-        setLessons(data.lessons || []);
+        const fetched: any[] = data.lessons || [];
+        if (!mounted) {
+          return;
+        }
+        setAllLessons(fetched);
+        setPage(1);
+        setLessons(fetched.slice(0, pageSize));
+        setHasMore(fetched.length > pageSize);
       } catch (error: any) {
         console.error('Error cargando lecciones:', error);
         setLessonsError(error.message);
       } finally {
-        setLoadingLessons(false);
+        if (mounted) {
+          setLoadingLessons(false);
+        }
       }
     };
 
-    fetchCoachLessons();
+    fetchAll();
+
+    return () => {
+      mounted = false;
+    };
   }, [coach.id]);
+
+  // Actualizar las lecciones visibles cuando cambie la página o el conjunto completo
+  useEffect(() => {
+    const visible = allLessons.slice(0, page * pageSize);
+    setLessons(visible);
+    setHasMore(allLessons.length > visible.length);
+  }, [page, allLessons]);
 
   // Procesar la URL del coach (decodificar si viene codificada)
   const getProcessedMediaUrl = useCallback(() => {
@@ -173,8 +199,7 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
       <AppHeaderNew userAvatar={buildMediaUrl(user?.studentProfileImage)} />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View
-          style={[styles.topBar, {paddingTop: insets.top ? insets.top : 0}]}>
+        <View style={[styles.topBar, {paddingTop: insets.top || 0}]}>
           <TouchableOpacity
             accessibilityLabel="back-button"
             onPress={() => (navigate as any).goBack()}
@@ -245,7 +270,7 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
               // Dividimos en párrafos, pero truncamos en base a caracteres calculados.
               const paragraphs = coach.coachBiography
                 .split(/\r?\n{2,}|\n{2,}/)
-                .map(p => p.trim())
+                .map((p: string) => p.trim())
                 .filter(Boolean);
 
               const firstPara = paragraphs[0] || coach.coachBiography;
@@ -358,6 +383,20 @@ export default function CoachDetailsScreen({route}: CoachDetailsScreenProps) {
                       onOpenMedia={() => handleLessonPress(lesson)}
                     />
                   ))}
+                  {hasMore ? (
+                    <TouchableOpacity
+                      style={styles.loadMoreButton}
+                      onPress={() => setPage(prev => prev + 1)}
+                      disabled={loadingLessons}>
+                      <Text style={styles.loadMoreText}>
+                        {t('coachDetails.loadMoreLessons')}
+                      </Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <Text style={styles.noMoreText}>
+                      {t('coachDetails.noMoreLessons')}
+                    </Text>
+                  )}
                 </View>
               ) : (
                 <Text style={styles.emptyStateText}>
@@ -612,6 +651,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#2B80BE',
     backgroundColor: 'rgba(43,128,190,0.04)',
+  },
+  loadMoreButton: {
+    marginTop: 14,
+    alignSelf: 'center',
+    backgroundColor: '#2B80BE',
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: 8,
+  },
+  loadMoreText: {
+    color: '#fff',
+    fontSize: 14,
+    fontFamily: 'AnonymousPro-Bold',
+  },
+  noMoreText: {
+    color: '#888',
+    textAlign: 'center',
+    marginTop: 12,
   },
   accordionHeader: {
     flexDirection: 'row',

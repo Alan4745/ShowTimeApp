@@ -69,7 +69,7 @@ export const learnCategories = [
         image: require('../../assets/img/learn/nutrition/supplements.png'),
       },
       {
-        key: '4WeekPlan',
+        key: '4weekProgram',
         image: require('../../assets/img/learn/nutrition/4_week_program.png'),
       },
     ],

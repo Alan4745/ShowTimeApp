@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { useAuth } from '../context/AuthContext';
+import React, {useState, useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {useAuth} from '../context/AuthContext';
 import CustomSplashScreen from '../screens/CustomSplashScreen';
 
 // PUBLICAS
 import CarouselScreen from '../screens/CarouselScreen';
+import TermsConditionsScreen from '../screens/TermsConditionsScreen';
 import RegisterMethodScreen from '../screens/RegisterMethodScreen';
 import CreateAccountScreen from '../screens/CreateAccountScreen';
 import SelectRoleScreen from '../screens/SelectRoleScreen';
@@ -48,11 +49,12 @@ import ChatScreen from '../screens/ChatScreen';
 import UploadContentScreen from '../screens/UploadContentScreen';
 import UploadMediaScreen from '../screens/UploadMediaScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
+import PdfViewerScreen from '../screens/PdfViewerScreen';
 
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
-  const { token } = useAuth();
+  const {token} = useAuth();
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
@@ -66,7 +68,7 @@ export default function AppNavigator() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         {token ? (
           // PRIVADO - Usuario autenticado
           <>
@@ -75,25 +77,54 @@ export default function AppNavigator() {
             <Stack.Screen name="PublishPost" component={PublishPostScreen} />
             <Stack.Screen name="CoachDetails" component={CoachDetailsScreen} />
             <Stack.Screen name="Account" component={AccountScreen} />
-            <Stack.Screen name="UploadContent" component={UploadContentScreen} />
+            <Stack.Screen
+              name="UploadContent"
+              component={UploadContentScreen}
+            />
             <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="EditProfile" component={EditProfileScreen} />
             {/* Subscription Flow - Disponible después de crear cuenta */}
             <Stack.Screen name="Plans" component={PlansScreen} />
-            <Stack.Screen name="SubscribeBasic" component={SubscribeBasicScreen} />
-            <Stack.Screen name="SubscribePremium" component={SubscribePremiumScreen} />
-            <Stack.Screen name="SubscribeElite" component={SubscribeEliteScreen} />
-            <Stack.Screen name="CheckoutOptions" component={CheckoutOptionsScreen} />
+            <Stack.Screen
+              name="SubscribeBasic"
+              component={SubscribeBasicScreen}
+            />
+            <Stack.Screen
+              name="SubscribePremium"
+              component={SubscribePremiumScreen}
+            />
+            <Stack.Screen
+              name="SubscribeElite"
+              component={SubscribeEliteScreen}
+            />
+            <Stack.Screen
+              name="CheckoutOptions"
+              component={CheckoutOptionsScreen}
+            />
             <Stack.Screen name="Checkout" component={CheckoutScreen} />
-            <Stack.Screen name="PaymentSuccess" component={PaymentSuccessScreen} />
+            <Stack.Screen
+              name="PaymentSuccess"
+              component={PaymentSuccessScreen}
+            />
             <Stack.Screen name="PaymentError" component={PaymentErrorScreen} />
           </>
         ) : (
           // PÚBLICO - Sin autenticar
           <>
             <Stack.Screen name="Carousel" component={CarouselScreen} />
-            <Stack.Screen name="RegisterMethod" component={RegisterMethodScreen} />
-            <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
+            <Stack.Screen
+              name="TermsConditions"
+              component={TermsConditionsScreen}
+              options={{gestureEnabled: false}}
+            />
+            <Stack.Screen
+              name="RegisterMethod"
+              component={RegisterMethodScreen}
+            />
+            <Stack.Screen
+              name="CreateAccount"
+              component={CreateAccountScreen}
+            />
             <Stack.Screen name="SelectRole" component={SelectRoleScreen} />
             <Stack.Screen name="Username" component={UsernameScreen} />
             <Stack.Screen name="Gender" component={GenderScreen} />
@@ -102,20 +133,36 @@ export default function AppNavigator() {
             <Stack.Screen name="PhysicalData" component={PhysicalDataScreen} />
             <Stack.Screen name="PhysicalGoal" component={PhysicalGoalScreen} />
             <Stack.Screen name="Position" component={PositionScreen} />
-            <Stack.Screen name="ExperienceLevel" component={ExperienceLevelScreen} />
-            <Stack.Screen name="TrainingFrequency" component={TrainingFrequencyScreen} />
+            <Stack.Screen
+              name="ExperienceLevel"
+              component={ExperienceLevelScreen}
+            />
+            <Stack.Screen
+              name="TrainingFrequency"
+              component={TrainingFrequencyScreen}
+            />
             <Stack.Screen name="ContentLikes" component={ContentLikesScreen} />
             <Stack.Screen name="AppDiscovery" component={AppDiscoveryScreen} />
-            <Stack.Screen name="Notifications" component={NotificationsScreen} />
+            <Stack.Screen
+              name="Notifications"
+              component={NotificationsScreen}
+            />
             <Stack.Screen name="CoachingRole" component={CoachingRoleScreen} />
             <Stack.Screen name="UploadMedia" component={UploadMediaScreen} />
             <Stack.Screen name="WriteBio" component={WriteBioScreen} />
-            <Stack.Screen name="Accomplishments" component={AccomplishmentsScreen} />
+            <Stack.Screen
+              name="Accomplishments"
+              component={AccomplishmentsScreen}
+            />
             <Stack.Screen name="Summary" component={SummaryScreen} />
             <Stack.Screen name="CoachSummary" component={CoachSummaryScreen} />
-            <Stack.Screen name="PlanSelection" component={PlanSelectionScreen} />
+            <Stack.Screen
+              name="PlanSelection"
+              component={PlanSelectionScreen}
+            />
           </>
         )}
+        <Stack.Screen name="PdfViewer" component={PdfViewerScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

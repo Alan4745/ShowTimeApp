@@ -10,6 +10,10 @@ import {
 } from 'react-native';
 import VideoPlayer from 'react-native-video-controls';
 import Sound from 'react-native-sound';
+// ActivityIndicator/Alert not used in modal (handled in PdfViewerScreen)
+// WebView rendering moved to dedicated PdfViewerScreen
+// PDF handling moved to dedicated screen; no RNFetchBlob/useAuth here
+import {useNavigation} from '@react-navigation/native';
 import {
   X,
   PlayCircle,
@@ -20,7 +24,7 @@ import {
 
 interface MediaItem {
   id: string;
-  mediaType: 'image' | 'video' | 'audio';
+  mediaType: 'image' | 'video' | 'audio' | 'pdf';
   uri: string;
   title?: string;
   author?: string;
@@ -49,13 +53,14 @@ export default function MediaViewerModal({
   likesCount,
   commentsCount,
 }: MediaViewerModalProps) {
+  const navigation: any = useNavigation();
   const {width, height} = useWindowDimensions();
   const isPortrait = height >= width;
   const soundRef = useRef<Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [liked, setLiked] = useState(false);
   const [localLikes, setLocalLikes] = useState<number | null>(null);
-  const [controlsVisible, setControlsVisible] = useState(true);
+  const [controlsVisible, setControlsVisible] = useState(false);
 
   const dynamicStyles = {
     fullscreenImage: {
@@ -68,18 +73,26 @@ export default function MediaViewerModal({
     },
   };
 
-  const infoContainerStyle = {
+  const infoContainerStyle: any = {
     position: 'absolute',
     left: 20,
-    bottom: isPortrait ? 40 : 20,
     width: isPortrait ? '80%' : '60%',
     marginBottom: 10,
-    zIndex: 50,
-  } as const;
+    zIndex: 60,
+  };
+
+  // Mostrar la info en la parte superior para vídeos (flotante), abajo para otros media
+  if (media?.mediaType === 'video') {
+    infoContainerStyle.top = isPortrait ? 60 : 20;
+  } else {
+    infoContainerStyle.bottom = isPortrait ? 40 : 20;
+  }
 
   const getAudioBackground = () => {
     return require('../../../assets/img/audioPlaceholder.png');
   };
+
+  // PDF download/view handled in `PdfViewerScreen` now.
 
   useEffect(() => {
     // Reset estado al abrir un nuevo media
@@ -212,7 +225,8 @@ export default function MediaViewerModal({
               source={{uri: media.uri}}
               style={[styles.flexMedia, styles.transparentVideo]}
               resizeMode="contain"
-              controlTimeout={0}
+              controlTimeout={3000}
+              showOnStart={false}
               disableBack={true}
               disableVolume={true}
               disableFullscreen={true}
@@ -221,8 +235,11 @@ export default function MediaViewerModal({
               repeat={true}
               onShowControls={() => setControlsVisible(true)}
               onHideControls={() => setControlsVisible(false)}
+              paused={!isPlaying}
             />
           )}
+
+          {/* Controles de vídeo ahora se muestran por encima de la barra inferior (no sobrepuestos) */}
           {media.mediaType === 'audio' && (
             <View style={styles.audioFullScreen}>
               <Image
@@ -253,7 +270,33 @@ export default function MediaViewerModal({
             </View>
           )}
 
+          {media.mediaType === 'pdf' && (
+            <View style={styles.pdfFullScreen}>
+              <View style={styles.pdfHeaderContainer}>
+                {media?.title ? (
+                  <Text style={styles.pdfHeaderTitle}>{media.title}</Text>
+                ) : null}
+
+                <TouchableOpacity
+                  style={[styles.externalButton, styles.externalButtonMb]}
+                  onPress={() => {
+                    navigation.navigate('PdfViewer', {
+                      uri: media.uri,
+                      id: media.id,
+                      title: media.title,
+                    });
+                  }}>
+                  <Text style={styles.externalButtonText}>
+                    Abrir en pantalla PDF
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+
           {/* Mostrar barra inline solo cuando los controles estén visibles (para video) o siempre (para imagen/audio) */}
+          {/* Contenedor de controles justo encima de la barra inferior */}
+          {/* Controles personalizados eliminados: se confía en los controles nativos del componente */}
           <View style={styles.bottomBarInline}>
             <TouchableOpacity
               style={styles.bottomIcon}
@@ -442,5 +485,98 @@ const styles = StyleSheet.create({
   },
   visible: {
     opacity: 1,
+  },
+  pdfFullScreen: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pdfLoader: {
+    position: 'absolute',
+    top: 40,
+    left: 0,
+    right: 0,
+    zIndex: 20,
+  },
+  pdfError: {
+    position: 'absolute',
+    top: '50%',
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  pdfErrorText: {
+    color: '#FFFFFF',
+    marginBottom: 12,
+    fontFamily: 'AnonymousPro-Regular',
+    fontSize: 16,
+  },
+  localDebug: {
+    position: 'absolute',
+    top: 80,
+    left: 12,
+    right: 12,
+    backgroundColor: 'rgba(255,255,255,0.04)',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    alignItems: 'flex-start',
+    zIndex: 60,
+  },
+  localDebugText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    marginBottom: 6,
+  },
+  localDebugRow: {
+    flexDirection: 'row',
+    gap: 8,
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  debugButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 6,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginHorizontal: 4,
+  },
+  debugButtonText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+  },
+  externalButton: {
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.12)',
+  },
+  externalButtonText: {
+    color: '#FFFFFF',
+    fontFamily: 'AnonymousPro-Bold',
+    fontSize: 14,
+  },
+  pdfHeaderContainer: {
+    alignItems: 'center',
+    padding: 20,
+  },
+  pdfHeaderTitle: {
+    fontSize: 20,
+    fontFamily: 'AnonymousPro-Bold',
+    color: '#FFF',
+    marginBottom: 8,
+  },
+  externalButtonMb: {
+    marginBottom: 8,
+  },
+  videoControlsInline: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginRight: 'auto',
+    marginLeft: 12,
   },
 });
