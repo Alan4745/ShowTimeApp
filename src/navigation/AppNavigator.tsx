@@ -6,6 +6,7 @@ import CustomSplashScreen from '../screens/CustomSplashScreen';
 
 // PUBLICAS
 import CarouselScreen from '../screens/CarouselScreen';
+import TermsConditionsScreen from '../screens/TermsConditionsScreen';
 import RegisterMethodScreen from '../screens/RegisterMethodScreen';
 import CreateAccountScreen from '../screens/CreateAccountScreen';
 import SelectRoleScreen from '../screens/SelectRoleScreen';
@@ -111,6 +112,11 @@ export default function AppNavigator() {
           // PÚBLICO - Sin autenticar
           <>
             <Stack.Screen name="Carousel" component={CarouselScreen} />
+            <Stack.Screen
+              name="TermsConditions"
+              component={TermsConditionsScreen}
+              options={{gestureEnabled: false}}
+            />
             <Stack.Screen
               name="RegisterMethod"
               component={RegisterMethodScreen}
