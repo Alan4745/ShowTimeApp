@@ -280,11 +280,20 @@ export default function MediaViewerModal({
                 <TouchableOpacity
                   style={[styles.externalButton, styles.externalButtonMb]}
                   onPress={() => {
-                    navigation.navigate('PdfViewer', {
-                      uri: media.uri,
-                      id: media.id,
-                      title: media.title,
-                    });
+                    // Close modal before navigating to dedicated PdfViewer screen
+                    try {
+                      onClose();
+                    } catch (err) {
+                      // ignore if onClose is not provided
+                    }
+                    // navigate after closing modal
+                    setTimeout(() => {
+                      navigation.navigate('PdfViewer', {
+                        uri: media.uri,
+                        id: media.id,
+                        title: media.title,
+                      });
+                    }, 50);
                   }}>
                   <Text style={styles.externalButtonText}>
                     Abrir en pantalla PDF

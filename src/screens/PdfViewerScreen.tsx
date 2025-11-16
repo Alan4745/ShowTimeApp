@@ -9,6 +9,7 @@ import {
   Linking,
   Platform,
 } from 'react-native';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import RNFetchBlob from 'react-native-blob-util';
 // Optional native PDF renderer (faster, better PDF features)
 import Pdf from 'react-native-pdf';
@@ -27,6 +28,8 @@ export default function PdfViewerScreen() {
   const navigation: any = useNavigation();
   const {uri: initialUri, id, title} = (route.params || {}) as RouteParams;
   const {token} = useAuth();
+
+  const insets = useSafeAreaInsets();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -123,8 +126,8 @@ export default function PdfViewerScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaView style={[styles.container]}>
+      <View style={[styles.header]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.backButton}>
@@ -134,8 +137,7 @@ export default function PdfViewerScreen() {
           {title || 'PDF'}
         </Text>
       </View>
-
-      <View style={styles.content}>
+      <View style={[styles.content, {paddingBottom: insets.bottom}]}>
         {loading && (
           <View style={styles.center}>
             <ActivityIndicator size="large" color="#2B80BE" />
@@ -183,7 +185,7 @@ export default function PdfViewerScreen() {
           />
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
