@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo} from 'react';
+import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {
   View,
   Image,
@@ -14,7 +14,7 @@ import {
   Easing,
 } from 'react-native';
 import Video from 'react-native-video';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute, useIsFocused} from '@react-navigation/native';
 import {
   X,
   PlayCircle,
@@ -37,6 +37,9 @@ export default function MediaViewerScreen() {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isBuffering, setIsBuffering] = useState(false);
+  const [isCaching, setIsCaching] = useState(false);
+  const [_cacheProgress, setCacheProgress] = useState<number | null>(null);
+  const [cachedUri, setCachedUri] = useState<string | null>(null);
   const [progressWidth, setProgressWidth] = useState(0);
   const [audioError, setAudioError] = useState<string | null>(null);
   const [liked, setLiked] = useState(false);
@@ -55,6 +58,90 @@ export default function MediaViewerScreen() {
   }>({w: 0, h: 0});
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const {t} = useTranslation();
+
+  // startCachingIfNeeded will download the video into the cache directory
+  // and set `cachedUri` so the Video component can play from local file next time.
+  const startCachingIfNeeded = useCallback(
+    async (uri?: string) => {
+      if (!uri || media?.mediaType !== 'video') {
+        return;
+      }
+      if (cachedUri) {
+        return;
+      }
+      if (isCaching) {
+        return;
+      }
+
+      let RNFS: any = null;
+      try {
+        RNFS = require('react-native-fs');
+      } catch (e) {
+        RNFS = null;
+      }
+
+      if (!RNFS) {
+        return;
+      }
+
+      const cacheDir = `${RNFS.CachesDirectoryPath}/showtime_media_cache`;
+      const safeName = encodeURIComponent(uri).replace(/%/g, '');
+      const extMatch = uri.match(/\.(mp4|mov|m4v|webm|ogg)(\?|$)/i);
+      const ext = extMatch ? extMatch[1] : 'mp4';
+      const destPath = `${cacheDir}/${safeName}.${ext}`;
+
+      try {
+        const exists = await RNFS.exists(destPath);
+        if (exists) {
+          setCachedUri(
+            Platform.OS === 'android' ? `file://${destPath}` : destPath,
+          );
+          return;
+        }
+
+        setIsCaching(true);
+        setCacheProgress(0);
+
+        try {
+          const dirExists = await RNFS.exists(cacheDir);
+          if (!dirExists) {
+            await RNFS.mkdir(cacheDir);
+          }
+        } catch (err) {}
+
+        const download = RNFS.downloadFile({
+          fromUrl: uri,
+          toFile: destPath,
+          background: true,
+          discretionary: false,
+          progressDivider: 2,
+          progress: (res: any) => {
+            try {
+              const pct = Math.floor(
+                (res.bytesWritten / (res.contentLength || 1)) * 100,
+              );
+              setCacheProgress(Number.isFinite(pct) ? pct : null);
+            } catch (e) {
+              setCacheProgress(null);
+            }
+          },
+        });
+
+        const result = await download.promise;
+        if (result && result.statusCode >= 200 && result.statusCode < 300) {
+          setCachedUri(
+            Platform.OS === 'android' ? `file://${destPath}` : destPath,
+          );
+        }
+      } catch (err) {
+        console.log('Video caching error', err);
+      } finally {
+        setIsCaching(false);
+        setCacheProgress(null);
+      }
+    },
+    [cachedUri, isCaching, media?.mediaType],
+  );
 
   const dynamicStyles = {
     fullscreenImage: {width, height},
@@ -85,12 +172,118 @@ export default function MediaViewerScreen() {
     setAudioError(null);
   }, [media]);
 
+  // Simple local caching: try to download video to cache dir when available.
+  useEffect(() => {
+    let cancelled = false;
+    const uri: string | undefined = media?.uri;
+    if (!uri || media?.mediaType !== 'video') {
+      return;
+    }
+
+    // Try to require react-native-fs dynamically so app doesn't crash if it's not installed.
+    let RNFS: any = null;
+    try {
+      RNFS = require('react-native-fs');
+    } catch (e) {
+      RNFS = null;
+    }
+
+    if (!RNFS) {
+      // No RNFS available; skip caching.
+      setCachedUri(null);
+      return;
+    }
+
+    const cacheDir = `${RNFS.CachesDirectoryPath}/showtime_media_cache`;
+    const safeName = encodeURIComponent(uri).replace(/%/g, '');
+    const extMatch = uri.match(/\.(mp4|mov|m4v|webm|ogg)(\?|$)/i);
+    const ext = extMatch ? extMatch[1] : 'mp4';
+    const destPath = `${cacheDir}/${safeName}.${ext}`;
+
+    const start = async () => {
+      try {
+        const exists = await RNFS.exists(destPath);
+        if (cancelled) {
+          return;
+        }
+        if (exists) {
+          setCachedUri(
+            Platform.OS === 'android' ? `file://${destPath}` : destPath,
+          );
+          return;
+        }
+
+        setIsCaching(true);
+        setCacheProgress(0);
+
+        // ensure cache dir
+        try {
+          const dirExists = await RNFS.exists(cacheDir);
+          if (!dirExists) {
+            await RNFS.mkdir(cacheDir);
+          }
+        } catch (err) {
+          // ignore directory create errors
+        }
+
+        const download = RNFS.downloadFile({
+          fromUrl: uri,
+          toFile: destPath,
+          background: true,
+          discretionary: false,
+          progressDivider: 2,
+          progress: (res: any) => {
+            if (cancelled) {
+              return;
+            }
+            try {
+              const pct = Math.floor(
+                (res.bytesWritten / (res.contentLength || 1)) * 100,
+              );
+              setCacheProgress(Number.isFinite(pct) ? pct : null);
+            } catch (e) {
+              setCacheProgress(null);
+            }
+          },
+        });
+
+        const result = await download.promise;
+        if (cancelled) {
+          return;
+        }
+        if (result && result.statusCode >= 200 && result.statusCode < 300) {
+          setCachedUri(
+            Platform.OS === 'android' ? `file://${destPath}` : destPath,
+          );
+        } else {
+          setCachedUri(null);
+        }
+      } catch (err) {
+        console.log('Video caching error', err);
+        setCachedUri(null);
+      } finally {
+        if (!cancelled) {
+          setIsCaching(false);
+          setCacheProgress(null);
+        }
+      }
+    };
+
+    start();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [media?.uri, media?.mediaType]);
+
   const togglePlayback = () => {
     try {
       setIsPlaying(prev => {
         const next = !prev;
         // if starting playback, hide UI immediately (no timer)
         if (next) {
+          // start caching in background (if supported)
+          startCachingIfNeeded(media?.uri);
           // if we were at end, reset to start
           if (!prev && currentTime >= duration && duration > 0) {
             playerRef.current?.seek(0);
@@ -136,7 +329,7 @@ export default function MediaViewerScreen() {
     }).start();
   };
 
-  const hideControlsAnimated = () => {
+  const hideControlsAnimated = useCallback(() => {
     Animated.timing(controlsAnim, {
       toValue: 0,
       duration: 260,
@@ -147,7 +340,23 @@ export default function MediaViewerScreen() {
         setControlsMounted(false);
       }
     });
-  };
+  }, [controlsAnim]);
+
+  const isFocused = useIsFocused();
+
+  // Autoplay when entering the screen for video media. Start caching silently.
+  useEffect(() => {
+    if (media?.mediaType === 'video' && isFocused) {
+      try {
+        startCachingIfNeeded(media?.uri);
+      } catch (e) {}
+      setIsPlaying(true);
+      setControlsVisible(false);
+      try {
+        hideControlsAnimated();
+      } catch (e) {}
+    }
+  }, [media, isFocused, startCachingIfNeeded, hideControlsAnimated]);
 
   const videoContainerStyle = useMemo(() => {
     if (rotateVideo) {
@@ -198,6 +407,8 @@ export default function MediaViewerScreen() {
       console.log('onLoadVideo error', err);
     }
   };
+
+  // removed duplicate hook: caching is handled on-demand via startCachingIfNeeded
 
   const onProgress = (p: any) => {
     try {
@@ -372,7 +583,7 @@ export default function MediaViewerScreen() {
               ]}>
               <Video
                 ref={playerRef}
-                source={{uri: media.uri}}
+                source={cachedUri ? {uri: cachedUri} : {uri: media.uri}}
                 style={[
                   styles.flexMedia,
                   styles.transparentVideo,
@@ -435,6 +646,8 @@ export default function MediaViewerScreen() {
                 }
               }}
             />
+
+            {/* caching runs silently in background; no UI shown */}
           </>
         )}
 
@@ -933,5 +1146,24 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     zIndex: 5,
+  },
+  cachingOverlay: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: '45%',
+    zIndex: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 8,
+    flexDirection: 'row',
+  },
+  cachingText: {
+    color: '#FFFFFF',
+    fontFamily: 'AnonymousPro-Bold',
+    marginLeft: 8,
+    fontSize: 13,
   },
 });
