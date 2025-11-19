@@ -17,8 +17,13 @@
     "delete": "Borrar",
     "send": "Enviar",
     "registrationFailed": "Registro Fallido",
-    "na": "No disponible"
+    "na": "No disponible",
+    "unavailable": "Información no disponible",
+    "seeMore": "Ver más...",
+    "seeLess": "Ver menos"
   },
+  "seeMore": "Ver más...",
+  "seeLess": "Ver menos",
   "registration": {
     "createAccount": "Crea tu cuenta",
     "email": "Correo electrónico",

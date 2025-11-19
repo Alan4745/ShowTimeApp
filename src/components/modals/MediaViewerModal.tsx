@@ -7,6 +7,9 @@ import {
   StyleSheet,
   useWindowDimensions,
   Text,
+  Platform,
+  Alert,
+  Linking,
 } from 'react-native';
 import VideoPlayer from 'react-native-video-controls';
 import Sound from 'react-native-sound';
@@ -21,6 +24,7 @@ import {
   Heart,
   MessageCircle,
 } from 'lucide-react-native';
+import {useTranslation} from 'react-i18next';
 
 interface MediaItem {
   id: string;
@@ -58,9 +62,12 @@ export default function MediaViewerModal({
   const isPortrait = height >= width;
   const soundRef = useRef<Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [audioError, setAudioError] = useState<string | null>(null);
   const [liked, setLiked] = useState(false);
   const [localLikes, setLocalLikes] = useState<number | null>(null);
   const [controlsVisible, setControlsVisible] = useState(false);
+  const [descriptionExpanded, setDescriptionExpanded] = useState(false);
+  const {t} = useTranslation();
 
   const dynamicStyles = {
     fullscreenImage: {
@@ -104,35 +111,67 @@ export default function MediaViewerModal({
 
   useEffect(() => {
     if (media?.mediaType === 'audio' && visible) {
-      // Habilitar reproducción incluso en modo silencioso (solo iOS)
-      Sound.setCategory('Playback');
-
-      const sound = new Sound(media.uri, undefined, error => {
-        if (error) {
-          console.log('Error cargando el audio:', error);
-          return;
+      try {
+        // Habilitar reproducción incluso en modo silencioso (solo iOS)
+        if (Platform.OS === 'ios' && Sound.setCategory) {
+          try {
+            Sound.setCategory('Playback');
+          } catch (e) {
+            console.log('Sound.setCategory error:', e);
+          }
         }
 
-        sound.play(success => {
-          if (!success) {
-            console.log('Error reproduciendo el audio');
+        // Proteger la creación del objeto Sound — algunos URIs remotos o configuraciones
+        // pueden dar lugar a errores nativos que cierran la app si no son soportados.
+        const sound = new Sound(media.uri, undefined, error => {
+          if (error) {
+            console.log('Error cargando el audio:', error);
+            setAudioError(String(error || 'Audio load error'));
+            return;
           }
-          setIsPlaying(false);
-        });
-        setIsPlaying(true);
-      });
 
-      soundRef.current = sound;
+          try {
+            sound.play(success => {
+              if (!success) {
+                console.log('Error reproduciendo el audio');
+              }
+              setIsPlaying(false);
+            });
+            setIsPlaying(true);
+            setAudioError(null);
+            soundRef.current = sound;
+          } catch (playErr) {
+            console.log('Error al reproducir audio:', playErr);
+            setAudioError(String(playErr));
+            try {
+              sound.release();
+            } catch (e) {
+              // ignore
+            }
+          }
+        });
+      } catch (e) {
+        console.log('Audio init unexpected error:', e);
+        setAudioError(String(e));
+      }
     }
 
     // Cleanup: parar y liberar audio
     return () => {
-      if (soundRef.current) {
-        soundRef.current.stop(() => {
-          soundRef.current?.release();
-        });
-        soundRef.current = null;
-        setIsPlaying(false);
+      try {
+        if (soundRef.current) {
+          soundRef.current.stop(() => {
+            try {
+              soundRef.current?.release();
+            } catch (e) {
+              // ignore
+            }
+          });
+          soundRef.current = null;
+          setIsPlaying(false);
+        }
+      } catch (cleanupErr) {
+        console.log('Audio cleanup error:', cleanupErr);
       }
     };
   }, [media, visible]);
@@ -140,6 +179,16 @@ export default function MediaViewerModal({
   const togglePlayback = () => {
     const sound = soundRef.current;
     if (!sound) {
+      // Si ocurrió un error al preparar audio, mostrar alerta ligera
+      if (audioError) {
+        if (Platform.OS === 'android') {
+          // En Android a veces el módulo nativo falla — informar al usuario
+          Alert.alert(
+            'Audio no disponible',
+            'No se puede reproducir este audio en este dispositivo.',
+          );
+        }
+      }
       return;
     }
 
@@ -189,7 +238,24 @@ export default function MediaViewerModal({
               <Text style={styles.author}>by {media.author}</Text>
             )}
             {media?.description && (
-              <Text style={styles.description}>{media.description}</Text>
+              <View>
+                <Text style={styles.description}>
+                  {media.description.length > 15 && !descriptionExpanded
+                    ? `${media.description.slice(0, 15)}...`
+                    : media.description}
+                </Text>
+                {media.description.length > 15 && (
+                  <TouchableOpacity
+                    onPress={() => setDescriptionExpanded(!descriptionExpanded)}
+                    style={styles.toggleButton}>
+                    <Text style={styles.toggleButtonText}>
+                      {descriptionExpanded
+                        ? t('common.seeLess')
+                        : t('common.seeMore')}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             )}
             <View style={styles.labelRow}>
               {media?.subcategory && (
@@ -235,6 +301,38 @@ export default function MediaViewerModal({
               repeat={true}
               onShowControls={() => setControlsVisible(true)}
               onHideControls={() => setControlsVisible(false)}
+              onError={e => {
+                console.log('VideoPlayer error', e);
+                // If it's a .mov, offer to open externally (Android may not support some codecs)
+                try {
+                  const uri = media.uri ?? '';
+                  if (uri.toLowerCase().endsWith('.mov')) {
+                    Alert.alert(
+                      'Formato no compatible',
+                      'Este video no se puede reproducir en la app. ¿Quieres abrirlo en una aplicación externa?',
+                      [
+                        {text: 'Cancelar', style: 'cancel'},
+                        {
+                          text: 'Abrir',
+                          onPress: async () => {
+                            try {
+                              await Linking.openURL(uri);
+                            } catch (err) {
+                              console.log('open external error', err);
+                              Alert.alert(
+                                'Error',
+                                'No se pudo abrir el archivo en una app externa',
+                              );
+                            }
+                          },
+                        },
+                      ],
+                    );
+                  }
+                } catch (err) {
+                  console.log('onError fallback failed', err);
+                }
+              }}
               paused={!isPlaying}
             />
           )}
@@ -578,5 +676,17 @@ const styles = StyleSheet.create({
     gap: 10,
     marginRight: 'auto',
     marginLeft: 12,
+  },
+  toggleButton: {
+    alignSelf: 'flex-start',
+    marginTop: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+  },
+  toggleButtonText: {
+    color: '#2B80BE',
+    fontSize: 14,
+    fontFamily: 'AnonymousPro-Bold',
+    textDecorationLine: 'underline',
   },
 });
