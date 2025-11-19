@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
 
 interface LearnContentCardProps {
   title?: string;
@@ -7,34 +13,35 @@ interface LearnContentCardProps {
   backgroundColor?: string;
   image?: any;
   onPress?: () => void;
-  
 }
 
 export default function LearnContentCard(props: LearnContentCardProps) {
   return (
     <TouchableOpacity style={styles.card} onPress={props.onPress}>
-      <View style={[styles.imageContainer, { backgroundColor: props.backgroundColor }]}>
+      <View
+        style={[
+          styles.imageContainer,
+          {backgroundColor: props.backgroundColor},
+        ]}>
         <ImageBackground
           source={props.image}
           style={styles.image}
           imageStyle={styles.imageStyle}
-          resizeMode="cover"
-        >
+          resizeMode="cover">
           <View style={styles.titleOverlay}>
             <Text style={styles.titleText}>{props.title}</Text>
           </View>
           <View style={styles.descriptionOverlay}>
             <Text style={styles.descriptionText}>{props.description}</Text>
           </View>
-        </ImageBackground>  
-        
-      </View>      
+        </ImageBackground>
+      </View>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {    
+  card: {
     borderRadius: 20,
     overflow: 'hidden',
     marginRight: 16,
@@ -42,18 +49,18 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     height: 250,
-    overflow: "hidden",    
+    overflow: 'hidden',
   },
   image: {
     flex: 1,
-    position: "relative"
+    position: 'relative',
   },
   imageStyle: {
-    marginLeft: 55, 
+    marginLeft: 55,
   },
   titleOverlay: {
     position: 'absolute',
-    width: "55%",
+    width: '55%',
     top: 0,
     left: 0,
     right: 0,
@@ -61,25 +68,25 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontFamily: 'AnonymousPro-Regular',
-    fontWeight: "400",
+    fontWeight: '400',
     fontSize: 22,
     color: '#FFFFFF',
     marginTop: 10,
     marginLeft: 5,
   },
-  descriptionOverlay:{
+  descriptionOverlay: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    padding: 12,  
+    padding: 12,
   },
   descriptionText: {
     fontFamily: 'AnonymousPro-Regular',
-    fontWeight: "400",
+    fontWeight: '400',
     fontSize: 14,
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     marginBottom: 10,
     marginLeft: 5,
-  }
+  },
 });
