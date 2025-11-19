@@ -14,8 +14,8 @@ import {
   SlidersHorizontal,
 } from 'lucide-react-native';
 import LessonCard from '../components/common/LessonCard';
-import MediaViewerModal from '../components/modals/MediaViewerModal';
 import FilterModal from '../components/modals/filterModal';
+import {useNavigation} from '@react-navigation/native';
 import {fetchWithTimeout} from '../utils/fetchWithTimeout';
 
 interface LearnCategoryScreenProps {
@@ -54,11 +54,11 @@ export default function LearnCategoryScreen({
   category,
   subcategoryKey,
   onBack,
-  onOpenCalendar,
+  onOpenCalendar: _onOpenCalendar,
 }: LearnCategoryScreenProps) {
   const {t} = useTranslation();
-  const [mediaViewerVisible, setMediaViewerVisible] = useState(false);
-  const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
+
+  const navigation: any = useNavigation();
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [lessonsFromCoach, setLessonsFromCoach] = useState<LessonFromAPI[]>([]);
   const [filteredLessons, setFilteredLessons] = useState<LessonFromAPI[]>([]);
@@ -135,13 +135,20 @@ export default function LearnCategoryScreen({
   }, [category.id, subcategoryKey]);
 
   const handleOpenMedia = (media: MediaItem) => {
-    setSelectedMedia(media);
-    setMediaViewerVisible(true);
-  };
-
-  const handleCloseMedia = () => {
-    setSelectedMedia(null);
-    setMediaViewerVisible(false);
+    navigation.navigate('MediaViewer', {
+      media: {
+        id: media.id,
+        mediaType: media.mediaType,
+        uri: media.mediaUrl ?? media.uri ?? '',
+        title: media.title ?? '',
+        author: media.author ?? '',
+        description: media.description ?? '',
+        subcategory: media.subcategory,
+        format: media.format,
+        likes: media.likes,
+        comments: media.comments,
+      },
+    });
   };
 
   const applyFilters = (filters: {
@@ -270,21 +277,7 @@ export default function LearnCategoryScreen({
         )}
       </ScrollView>
 
-      {/* Media Modal */}
-      <MediaViewerModal
-        visible={mediaViewerVisible}
-        media={selectedMedia}
-        onClose={handleCloseMedia}
-        showInfo={true}
-        likesCount={selectedMedia?.likes ?? 0}
-        commentsCount={selectedMedia?.comments ?? 0}
-        onBookmarkPress={() => {
-          if (selectedMedia?.id) {
-            setTimeout(() => handleCloseMedia());
-            onOpenCalendar(selectedMedia.id);
-          }
-        }}
-      />
+      {/* Media now opens in a dedicated screen via navigation */}
 
       {/* Filter Modal */}
       <FilterModal

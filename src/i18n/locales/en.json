@@ -17,8 +17,13 @@
     "delete": "Delete",
     "send": "Send",
     "registrationFailed": "Registration Failed",
-    "na": "Not available"
+    "na": "Not available",
+    "unavailable": "Information not available",
+    "seeMore": "See more...",
+    "seeLess": "See less"
   },
+  "seeMore": "See more...",
+  "seeLess": "See less",
   "registration": {
     "createAccount": "Create account",
     "email": "Email",

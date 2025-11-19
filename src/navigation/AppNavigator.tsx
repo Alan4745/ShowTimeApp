@@ -50,6 +50,7 @@ import UploadContentScreen from '../screens/UploadContentScreen';
 import UploadMediaScreen from '../screens/UploadMediaScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import PdfViewerScreen from '../screens/PdfViewerScreen';
+import MediaViewerScreen from '../screens/MediaViewerScreen';
 
 const Stack = createStackNavigator();
 
@@ -162,6 +163,7 @@ export default function AppNavigator() {
             />
           </>
         )}
+        <Stack.Screen name="MediaViewer" component={MediaViewerScreen} />
         <Stack.Screen name="PdfViewer" component={PdfViewerScreen} />
       </Stack.Navigator>
     </NavigationContainer>
